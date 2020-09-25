@@ -17,7 +17,7 @@ import CalendarStrip from 'react-native-slideable-calendar-strip';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { TextInput } from 'react-native-paper';
 import moment from 'moment' // 2.20.1
-
+import { BarIndicator, } from 'react-native-indicators';
 import ActionButton from 'react-native-action-button';
 const w = Dimensions.get("window").width;
 const screenWidth = Dimensions.get("window").width;
@@ -29,7 +29,7 @@ export class WeightGain extends Component {
     super(props);
     this.state = {
       _list_wgData: [],
-      _lastWeigtValue:0,
+      _lastWeigtValue: 0,
       _min_weight: 0,
       _max_weight: 0,
       selectedDate: new Date(),
@@ -72,22 +72,6 @@ export class WeightGain extends Component {
 
       result = data;
       if (result == 0) {
-        // var temp2 = [1];
-        // var temp3 = ['2020-01-01'];
-        // var temp4 = [0];
-        // const dataClone = { ...self.state.data }
-
-        // dataClone.labels = temp3;
-        // dataClone.datasets[0].data = temp2;
-        // // dataClone.datasets[1].data = temp4;
-        // // dataClone.datasets[2].data = temp5;
-
-        // self.setState({
-        //   isLoading: false,
-        //   data: dataClone,
-        //   _list_wgData: data,
-        // });
-
 
       } else {
 
@@ -113,7 +97,7 @@ export class WeightGain extends Component {
           temp2.push([result[i].wgValue]);
           temp3.push([_monthDate]);
           if (tempMin != 0) {
-       
+
             minValue += (12 / 10);
             maxValue += (14 / 10);
             temppp = parseFloat(weight_firstMonth) + parseFloat(minValue.toFixed(2));
@@ -121,18 +105,18 @@ export class WeightGain extends Component {
 
             temp4.push(temppp);
             temp5.push(tempmax);
-         
+
           } else {
-          
+
             temppp = weight_firstMonth;
-            tempmax= weight_firstMonth;
+            tempmax = weight_firstMonth;
             temp4.push(temppp);
-            temp5.push(parseFloat(tempmax)+0.001);
-           console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+temppp);
+            temp5.push(parseFloat(tempmax) + 0.001);
+
           }
 
           tempMin = [result[i].wgValue];
-       
+
         }
 
 
@@ -141,7 +125,7 @@ export class WeightGain extends Component {
         dataClone.datasets[1].data = temp4;
         dataClone.datasets[2].data = temp5;
         self.setState({
-          isLoading: false,
+
           data: dataClone,
           _list_wgData: data,
           _min_weight: temppp,
@@ -151,7 +135,7 @@ export class WeightGain extends Component {
       }
     }).catch((err) => {
       console.log(err);
-    })
+    });
     db.lastWeightGain().then((data) => {
 
       result = data;
@@ -177,7 +161,7 @@ export class WeightGain extends Component {
     const _selectedDay = moment(this.state.selectedDate).format(_format);
 
     this.setState({
-      isLoading: true,
+      // isLoading: false,
     });
     let data = {
       // pId: this.state.pId,
@@ -187,14 +171,14 @@ export class WeightGain extends Component {
     db.addWGvalue(data).then((result) => {
       console.log(result);
       this.setState({
-        isLoading: false,
+        // isLoading: false,
       });
       //   this.props.navigation.state.params.onNavigateBack;
       //   this.props.navigation.goBack();
     }).catch((err) => {
       console.log(err);
       this.setState({
-        isLoading: false,
+        // isLoading: false,
       });
     })
   }
@@ -287,7 +271,7 @@ export class WeightGain extends Component {
 
               <Progress.Bar progress={this.state._lastWeigtValue / 150} width={screenWidth - 20} color={'#f78a2c'} style={{ marginTop: 0 }} borderRadius={5} />
               <View style={{ flexDirection: "row", marginBottom: 15 }}>
-      
+
                 <View style={styles.innerCircle6} >
                   <Text style={{ color: '#fff', fontSize: 9 }}>{'<'}Under weight</Text>
                 </View>
@@ -474,7 +458,7 @@ export class WeightGain extends Component {
               />
 
 
-              <Text>ssfsfsdxxxx</Text>
+
               {/* <TextInput /> */}
               <TextInput onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
               <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
@@ -488,6 +472,7 @@ export class WeightGain extends Component {
         </RBSheet>
       </SafeAreaView>
     );
+
   }
 } const styles = StyleSheet.create({
 
@@ -575,20 +560,20 @@ export class WeightGain extends Component {
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.7,
   }, innerCircle6: {
-    width:(screenWidth - 20)/3,
+    width: (screenWidth - 20) / 3,
     height: 20,
     backgroundColor: '#ffc107',
     justifyContent: 'center',
     alignItems: 'center'
   },
   innerCircle7: {
-    width:(screenWidth - 20)/3,
+    width: (screenWidth - 20) / 3,
     height: 20,
     backgroundColor: '#4caf50',
     justifyContent: 'center',
     alignItems: 'center'
   }, innerCircle8: {
-    width:(screenWidth - 20)/3,
+    width: (screenWidth - 20) / 3,
     height: 20,
     backgroundColor: '#e81e63',
     justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView,StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
 
 import { CustomHeader } from '../index';
@@ -9,11 +9,12 @@ export class DitHelthyMother extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
         <CustomHeader bgcolor='#f2f2f2' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
 
         <View style={styles.header}>
           <View style={styles.backgroundImage} >
- 
+
             <ImageBackground
               source={IMAGE.ICON_DEIT_PREG}
               style={{ width: 320, height: 300, marginLeft: 15, alignItems: 'flex-start', resizeMode: 'cover', position: 'absolute' }}>
@@ -36,7 +37,7 @@ export class DitHelthyMother extends Component {
         <View style={styles.footer}>
           <View style={{ paddingLeft: 18, paddingTop: 15 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Most Popular Exercises</Text>
-            <Text style={{color:'gray'}}>Keeps your waist in shape</Text>
+            <Text style={{ color: 'gray' }}>Keeps your waist in shape</Text>
           </View>
           <ScrollView
 

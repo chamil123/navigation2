@@ -13,7 +13,7 @@ import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
 
 import Database from '../Database';
-
+import { BarIndicator } from 'react-native-indicators';
 const db = new Database();
 
 export class HospitalBagBaby extends Component {
@@ -65,13 +65,13 @@ export class HospitalBagBaby extends Component {
             db.updateStatusBaby(data).then((result) => {
                 console.log(result);
                 this.setState({
-                    // isLoading: false,
+                    isLoading: false,
                 });
 
             }).catch((err) => {
                 console.log(err);
                 this.setState({
-                    // isLoading: false,
+                    isLoading: false,
                 });
             })
         }
@@ -99,13 +99,13 @@ export class HospitalBagBaby extends Component {
 
             if (data != null) {
                 baby_bag = data;
-             
+
                 this.setState({
                     _baby_bag: baby_bag,
                     isLoading: false,
                 });
 
-                
+
 
             }
 
@@ -123,72 +123,73 @@ export class HospitalBagBaby extends Component {
 
         let value = 0;
 
-        if (this.state.isLoading) {
+        let { isLoading } = this.state
+
+        if (isLoading) {
             return (
-                <View style={styles.activity}>
+                <BarIndicator color='#fbb146' />
+            );
+        } else {
 
-                </View>
-            )
-        }
-  
-        return (
+            return (
 
-            <SafeAreaView style={{ flex: 1, }}>
-   
-                <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+                <SafeAreaView style={{ flex: 1, }}>
 
-                <View style={styles.header}>
-                    <Image style={{ width: 350, height: 260, marginLeft: 0, }}
-                        source={IMAGE.ICON_HOSPITAL_MOM_BAG}
-                        resizeMode="contain"
-                    />
-                    {/* <TouchableOpacity style={styles.button}>
+                    <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+
+                    <View style={styles.header}>
+                        <Image style={{ width: 350, height: 260, marginLeft: 0, }}
+                            source={IMAGE.ICON_HOSPITAL_MOM_BAG}
+                            resizeMode="contain"
+                        />
+                        {/* <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Prepare baby bag</Text>
 
 
                     </TouchableOpacity> */}
-                </View>
-                <Animatable.View style={styles.footer} animation="fadeInUpBig">
-                    <Text style={{marginHorizontal:20,fontSize:18,fontWeight:"bold"}}>Prepare a bag for baby</Text>
-                    <FlatList
+                    </View>
+                    <Animatable.View style={styles.footer} animation="fadeInUpBig">
+                        <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>Prepare a bag for baby</Text>
+                        <FlatList
 
 
-                        keyExtractor={this.keyExtractor}
-                        data={this.state._baby_bag}
-                        // renderItem={this.renderItem}
+                            keyExtractor={this.keyExtractor}
+                            data={this.state._baby_bag}
+                            // renderItem={this.renderItem}
 
-                        renderItem={({ item }) => <ListItem
-                            style={{ height: 60, paddingTop: 20 }}
-                            onPress={() => {
-                                this.getData(item.bId, item.bStatus);
-                                // this.props.navigation.navigate('ProductDetails', {
-                                //   prodId: `${item.hId}`,
-                                // });
-                            }}
-                        >
+                            renderItem={({ item }) => <ListItem
+                                style={{ height: 60, paddingTop: 20 }}
+                                onPress={() => {
+                                    this.getData(item.bId, item.bStatus);
+                                    // this.props.navigation.navigate('ProductDetails', {
+                                    //   prodId: `${item.hId}`,
+                                    // });
+                                }}
+                            >
 
-                            <Body>
+                                <Body>
 
-                                <Text>{item.bName}</Text>
-                                <Text style={styles.dateText}>{item.bDate}</Text>
-                            </Body>
-                            <Right>
+                                    <Text>{item.bName}</Text>
+                                    <Text style={styles.dateText}>{item.bDate}</Text>
+                                </Body>
+                                <Right>
 
-                                <Switch
-                                    value={item.bStatus == "true" ? true : false}
-                                />
+                                    <Switch
+                                        value={item.bStatus == "true" ? true : false}
+                                    />
 
-                            </Right>
-                        </ListItem>
-
-
-
-                        } />
+                                </Right>
+                            </ListItem>
 
 
-                </Animatable.View>
-            </SafeAreaView>
-        );
+
+                            } />
+
+
+                    </Animatable.View>
+                </SafeAreaView>
+            );
+        }
         // <SafeAreaView style={{ flex: 1, }}>
         //     <ScrollView
         //         contentInsetAdjustmentBehavior="automatic"

@@ -20,22 +20,25 @@ export class CustomHeader extends Component {
   render() {
     let { navigation, isHome, title, bgcolor, bdcolor, isPost } = this.props
     return (
-      <View style={{ flexDirection: 'row', height: 50, backgroundColor: bgcolor, borderBottomColor: bdcolor, borderBottomWidth: 1 }} >
+      <View style={{ flexDirection: 'row', height: 55, backgroundColor: bgcolor, borderBottomColor: bdcolor, borderBottomWidth: 1 }} >
 
 
         <View style={{ flex: 1, justifyContent: 'center' }}>
           {
             isHome ?
-              <TouchableOpacity >
-                 <Icon
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 }}
+                onPress={() => this.props.navigation.openDrawer()}
+              >
+                <Icon
                   // raised
                   name='bars'
                   type='font-awesome'
-                  color='black'
-                  iconStyle={{ fontSize: 30 ,}}
-                  onPress={() => navigation.openDrawer()}/>
-                {/* <Image style={{ width: 20, height: 20, marginLeft: 10 }}
-                  source={IMAGE.ICON_MENU}
+                  color='white'
+                  iconStyle={{ fontSize: 30,fontWeight:'normal' }}
+                  onPress={() => navigation.openDrawer()} />
+                {/* <Image style={{ width: 28, height: 28, marginLeft: 0,padding:4 }}
+                  source={IMAGE.ICON_MENU_ICON}
                   resizeMode="contain"
 
                 /> */}
@@ -43,7 +46,7 @@ export class CustomHeader extends Component {
 
               :
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center',marginLeft:18 }}
+                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 }}
                 onPress={() => this.props.navigation.goBack()}
               >
 
@@ -52,8 +55,8 @@ export class CustomHeader extends Component {
                   name='angle-left'
                   type='font-awesome'
                   color='black'
-                  iconStyle={{ fontSize: 34 ,}}
-                  onPress={() => this.props.navigation.goBack()}/>
+                  iconStyle={{ fontSize: 34, }}
+                  onPress={() => this.props.navigation.goBack()} />
 
                 {/* <Image style={{ width: 20, height: 20, marginLeft: 10 }}
                   source={IMAGE.ICON_BACK}

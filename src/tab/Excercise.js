@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
 
 import { CustomHeader } from '../index';
@@ -8,6 +8,7 @@ export class Excercise extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
         <CustomHeader bgcolor='#f2f2f2' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
 
         <View style={styles.header}>
@@ -39,7 +40,7 @@ export class Excercise extends Component {
         <View style={styles.footer}>
           <View style={{ paddingLeft: 18, paddingTop: 15 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Most Popular Exercises</Text>
-            <Text style={{color:'gray'}}>Keeps your waist in shape</Text>
+            <Text style={{ color: 'gray' }}>Keeps your waist in shape</Text>
           </View>
           <ScrollView
 

@@ -8,7 +8,10 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { CustomHeader, CustomDrawerContent } from './src';
-import { HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen,MemberProfile,MenuScreen,PeriodCalandar,TestScreeen,ProductScreen2,HospitalBag,HospitalBagBaby,BMICalculator, BMIMeter, IdentifyPregnancy,RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter } from './src/tab';
+import {
+  HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, ProductScreen2, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
+  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart
+} from './src/tab';
 import { NotificationsScreen } from './src/drawer';
 import { RegisterScreen, LoginScreen, Login2Screen } from './src/auth';
 import { FlatList } from 'react-native-gesture-handler';
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
 function HomeScreen4() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* <CustomHeader bgcolor='white' title="Home" isHome={true} navigation={this.props.navigation} /> */}
+      <CustomHeader bgcolor='white' title="Home" isHome={true} navigation={this.props.navigation} />
 
       <View style={{ flexDirection: 'row', height: 60, borderBottomColor: '#cccccc', borderBottomWidth: 1, paddingBottom: 10 }} >
         <View style={{ height: 50, padding: 12 }}>
@@ -196,7 +199,7 @@ function TabNavigator() {
         }}
 
       />
-       <Tab.Screen
+      <Tab.Screen
         name="menu"
         component={MenuScreen}
         options={{
@@ -254,9 +257,15 @@ const Drawer = createDrawerNavigator();
 
 function DrawerNavigator({ navigation }) {
   return (
-    <Drawer.Navigator initialRouteName="MenuTab" drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
-      <Drawer.Screen name="MenuTab" component={TabNavigator} />
+    // <Drawer.Navigator initialRouteName="MenuTab" drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+    //   <Drawer.Screen name="MenuTab" component={TabNavigator} />
+    // <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+    // </Drawer.Navigator>
+    <Drawer.Navigator initialRouteName="HomeScreen"  drawerStyle={{backgroundColor: 'transparent'}} drawerContent={() => <CustomDrawerContent navigation={navigation}  />}>
+  
+      <Drawer.Screen name="HomeScreen" component={HomeScreen} />
       <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+      <Drawer.Screen name="member" component={MemberProfile} />
     </Drawer.Navigator>
   )
 }
@@ -264,35 +273,47 @@ function DrawerNavigator({ navigation }) {
 const StackApp = createStackNavigator()
 // class SplashComponent extends React.Component
 export default class App extends React.Component {
-// export default function App() {
+  // export default function App() {
   render() {
-  return (
-    <NavigationContainer>
-      <StackApp.Navigator initialRouteName="Login">
-        <StackApp.Screen name="HomeApp" component={DrawerNavigator} options={navOptionHandler} />
-        <StackApp.Screen name="Login" component={LoginScreen} options={navOptionHandler} />
-        <StackApp.Screen name="Login2" component={Login2Screen} options={navOptionHandler} />
-        <StackApp.Screen name="Register" component={RegisterScreen} options={navOptionHandler} />
-        <StackApp.Screen name="NewPost" component={NewPost} options={navOptionHandler} />
-        <StackApp.Screen name="PeriodCalandar" component={PeriodCalandar} options={navOptionHandler} />
-        <StackApp.Screen name="TestScreeen" component={TestScreeen} options={navOptionHandler} />
-        <StackApp.Screen name="ProductScreen2" component={ProductScreen2} options={navOptionHandler} />
-        <StackApp.Screen name="HospitalBag" component={HospitalBag} options={navOptionHandler} />
-        <StackApp.Screen name="HospitalBagBaby" component={HospitalBagBaby} options={navOptionHandler} />
-        <StackApp.Screen name="BMICalculator" component={BMICalculator} options={navOptionHandler} />
-        <StackApp.Screen name="BMIMeter" component={BMIMeter} options={navOptionHandler} />
-        <StackApp.Screen name="IdentifyPregnancy" component={IdentifyPregnancy} options={navOptionHandler} />
-        <StackApp.Screen name="RegularMenstruation" component={RegularMenstruation} options={navOptionHandler} />
-        <StackApp.Screen name="BloodPresure" component={BloodPresure} options={navOptionHandler} />
-        <StackApp.Screen name="MatirializeDialog" component={MatirializeDialog} options={navOptionHandler} />
-        <StackApp.Screen name="Investigation" component={Investigation} options={navOptionHandler} />
-        <StackApp.Screen name="Excercise" component={Excercise} options={navOptionHandler} />
-        <StackApp.Screen name="DitHelthyMother" component={DitHelthyMother} options={navOptionHandler} />
-        <StackApp.Screen name="WeightGain" component={WeightGain} options={navOptionHandler} />
-        <StackApp.Screen name="AddWeight" component={AddWeight} options={navOptionHandler} />
-        <StackApp.Screen name="KickCounter" component={KickCounter} options={navOptionHandler} />
-      </StackApp.Navigator>
-    </NavigationContainer>
-  );
+    return (
+      <NavigationContainer>
+        <StackApp.Navigator initialRouteName="Login">
+          <StackApp.Screen name="HomeApp" component={DrawerNavigator} options={navOptionHandler} />
+          <StackApp.Screen name="Login" component={LoginScreen} options={navOptionHandler} />
+          <StackApp.Screen name="Login2" component={Login2Screen} options={navOptionHandler} />
+          <StackApp.Screen name="Register" component={RegisterScreen} options={navOptionHandler} />
+          <StackApp.Screen name="NewPost" component={NewPost} options={navOptionHandler} />
+          <StackApp.Screen name="PeriodCalandar" component={PeriodCalandar} options={navOptionHandler} />
+          <StackApp.Screen name="TestScreeen" component={TestScreeen} options={navOptionHandler} />
+          <StackApp.Screen name="ProductScreen2" component={ProductScreen2} options={navOptionHandler} />
+          <StackApp.Screen name="HospitalBag" component={HospitalBag} options={navOptionHandler} />
+          <StackApp.Screen name="HospitalBagBaby" component={HospitalBagBaby} options={navOptionHandler} />
+          <StackApp.Screen name="BMICalculator" component={BMICalculator} options={navOptionHandler} />
+          <StackApp.Screen name="BMIMeter" component={BMIMeter} options={navOptionHandler} />
+          <StackApp.Screen name="IdentifyPregnancy" component={IdentifyPregnancy} options={navOptionHandler} />
+          <StackApp.Screen name="RegularMenstruation" component={RegularMenstruation} options={navOptionHandler} />
+          <StackApp.Screen name="BloodPresure" component={BloodPresure} options={navOptionHandler} />
+          <StackApp.Screen name="MatirializeDialog" component={MatirializeDialog} options={navOptionHandler} />
+          <StackApp.Screen name="Investigation" component={Investigation} options={navOptionHandler} />
+          <StackApp.Screen name="Excercise" component={Excercise} options={navOptionHandler} />
+          <StackApp.Screen name="DitHelthyMother" component={DitHelthyMother} options={navOptionHandler} />
+          <StackApp.Screen name="WeightGain" component={WeightGain} options={navOptionHandler} />
+          <StackApp.Screen name="AddWeight" component={AddWeight} options={navOptionHandler} />
+          <StackApp.Screen name="KickCounter" component={KickCounter} options={navOptionHandler} />
+          <StackApp.Screen name="EDDCalculator" component={EDDCalculator} options={navOptionHandler} />
+          <StackApp.Screen name="CalandarData" component={CalandarData} options={navOptionHandler} />
+          <StackApp.Screen name="BreastFeeding" component={BreastFeeding} options={navOptionHandler} />
+          <StackApp.Screen name="VerticleYearChart" component={VerticleYearChart} options={navOptionHandler} />
+          <StackApp.Screen name="VerticleYearChart2" component={VerticleYearChart2} options={navOptionHandler} />
+          <StackApp.Screen name="BabyActivities" component={BabyActivities} options={navOptionHandler} />
+          <StackApp.Screen name="FeedingTimeChart" component={FeedingTimeChart} options={navOptionHandler} />
+          <StackApp.Screen name="UrinationTime" component={UrinationTime} options={navOptionHandler} />
+          <StackApp.Screen name="EliminationChart" component={EliminationChart} options={navOptionHandler} />
+          <StackApp.Screen name="SleepingTimeChart" component={SleepingTimeChart} options={navOptionHandler} />
+          <StackApp.Screen name="TestMail" component={TestMail} options={navOptionHandler} />
+          <StackApp.Screen name="WeightChart" component={WeightChart} options={navOptionHandler} />
+        </StackApp.Navigator>
+      </NavigationContainer>
+    );
   }
 }

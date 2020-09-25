@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         // width: 280,
         paddingLeft: 15,
         paddingRight: 15,
-        borderRadius: 5,
+        borderRadius: 25,
     },
     buttonText: {
         fontSize: 18,
@@ -110,14 +110,14 @@ export class Login2Screen extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                   <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#fff" />
+                   <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
                    <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
                 <ScrollView
                     contentInsetAdjustmentBehavior="automatic"
                     style={styles.scrollView}>
                    
                     <View style={{
-                        flex: 1, justifyContent: 'center', paddingHorizontal: 15,
+                        flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
                         paddingVertical: 0,
                     }}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -132,7 +132,7 @@ export class Login2Screen extends Component {
                             <TextInput  onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Username" />
                             <TextInput  secureTextEntry={true}  onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 15 }} label="Password" />
 
-                            <TouchableOpacity  activeOpacity={1.0}  ref="touchableOpacity" style={{ marginTop: 60 }} onPress={this.InputUsers}>
+                            <TouchableOpacity  activeOpacity={1.0}  ref="touchableOpacity" style={{ marginTop: 60, }} onPress={this.InputUsers}>
 
                                 <LinearGradient colors={['#fbb146', '#f78a2c']}
                                     // '#ffd600',

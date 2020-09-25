@@ -30,9 +30,12 @@ export class Investigation extends Component {
     render() {
 
         return (
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 ,backgroundColor:'#fff'}}>
 
-                <CustomHeader bgcolor='white' title="Settinfgs" isHome={true} navigation={this.props.navigation} bdcolor='#f2f2f2' />
+                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1, }}>
+
+                </View>
                 <View style={styles.footer}>
                     <Text>Setting!</Text>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -51,7 +54,7 @@ export class Investigation extends Component {
                                         <Text >{item.Begin}</Text>
                                         <Text >{item.End}</Text>
                                     </Body>
-                                    <Right style={{width:5}}>
+                                    <Right style={{ width: 5 }}>
                                         <View style={styles.iconMore}>
                                             <Icon name="angle-right" color="gray" />
                                         </View>
@@ -94,8 +97,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-
+bottom:80,
         paddingVertical: 20,
+      
         //  paddingHorizontal: 20
     }
 });

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+// import com.reactlibrary.messagecompose.RNMessageComposePackage;
+// import com.dieam.reactnativepushnotification.ReactNativePushNotificationPacka;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -14,6 +16,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.pgsqlite.SQLitePluginPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.tkporter.sendsms.SendSMSPackage;
+
+import com.reactlibrary.RNSmtpMailerPackage;
+
+
+
+
+
+
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -29,7 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add( new SQLitePluginPackage() );
+          // packages.add( new RNMail());
           return packages;
         }
 

@@ -38,7 +38,7 @@ export class BMICalculator extends Component {
 
   saveProduct() {
     this.setState({
-      isLoading: true,
+      isLoading: false,
     });
     let data = {
       prodId: this.state.prodId,

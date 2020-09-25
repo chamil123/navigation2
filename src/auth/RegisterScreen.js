@@ -5,7 +5,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
 
 import { CustomHeader } from '../index';
 
@@ -144,6 +154,7 @@ export class RegisterScreen extends Component {
 
 
   render() {
+    let { isLoading } = this.state
 
     let data = [{
       value: 'Banana',
@@ -152,7 +163,13 @@ export class RegisterScreen extends Component {
     }, {
       value: 'Pear',
     }];
+    if (isLoading) {
+      return (
 
+        <BarIndicator color='#fbb146' />
+
+      );
+    } else { 
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -176,8 +193,8 @@ export class RegisterScreen extends Component {
                 selectedValue={this.state.PickerValueHolder}
 
                 onValueChange={(itemValue, itemIndex) => this.setState({ PickerValueHolder: itemValue })}
-                // onChangeText={itemValue => this.setState({ PickerValueHolder: itemValue })}
-                >
+              // onChangeText={itemValue => this.setState({ PickerValueHolder: itemValue })}
+              >
 
                 {this.state.dataSource.map((item, key) => (
                   <Picker.Item label={item.role_name} value={item.role_name} key={key} />)
@@ -235,4 +252,5 @@ export class RegisterScreen extends Component {
       </SafeAreaView>
     );
   }
+}
 }

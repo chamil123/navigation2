@@ -22,7 +22,7 @@ import { TextInput } from 'react-native-paper';
 import moment from 'moment' // 2.20.1
 import { IMAGE } from '../constants/image';
 import { Icon } from 'react-native-elements';
-
+import { BarIndicator } from 'react-native-indicators';
 
 const db = new Database();
 
@@ -57,6 +57,7 @@ export class BloodPresure extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       _list_bpData: [],
       selectedDate: new Date(),
 
@@ -64,8 +65,8 @@ export class BloodPresure extends Component {
       TextInpuPbValue: '',
 
       visible: true,
-      isLoading: true,
-      dataSource: 10,
+
+      // dataSource: 10,
       data: {
         labels: ["j"],
 
@@ -89,9 +90,9 @@ export class BloodPresure extends Component {
     }
   }
 
-  FloatingButtonEvent = () => {
-    Alert.alert("dasdasdasd");
-  }
+  // FloatingButtonEvent = () => {
+  //   Alert.alert("dasdasdasd");
+  // }
   componentDidMount() {
     this.getData();
     // const self = this;
@@ -134,10 +135,16 @@ export class BloodPresure extends Component {
   // this.getData();
   // }
   getData() {
+
     const self = this;
     db.listBloodPresure().then((data) => {
-      result = data;
+      let result = data;
       if (result == 0) {
+
+        this.setState({
+          isLoading: false,
+
+        });
         // db.addItemOfBloodPresure().then((result) => {
         // }).catch((err) => {
         //   console.log(err);
@@ -162,7 +169,7 @@ export class BloodPresure extends Component {
         dataClone.datasets[0].data = temp2;
         dataClone.datasets[1].data = temp4;
         dataClone.datasets[2].data = temp5;
-
+       
         self.setState({
           isLoading: false,
           data: dataClone,
@@ -181,224 +188,205 @@ export class BloodPresure extends Component {
     const _format = 'YYYY-MM-DD'
     const _selectedDay = moment(this.state.selectedDate).format(_format);
 
-    this.setState({
-      isLoading: true,
+    // this.setState({
+    //   isLoading: false,
 
 
-    });
+    // });
     let data = {
       // pId: this.state.pId,
       bpDate: _selectedDay.toString(),
       bpValue: parseInt(this.state.TextInpuPbValue)
     }
     db.addPBvalue(data).then((result) => {
-      console.log(result);
-      this.setState({
-        isLoading: false,
-      });
+      
+      this.getData();
       //   this.props.navigation.state.params.onNavigateBack;
       //   this.props.navigation.goBack();
     }).catch((err) => {
       console.log(err);
-      this.setState({
-        isLoading: false,
-      });
+  
     })
+
   }
   keyExtractor = (item, index) => index.toString()
   render() {
-    const data = {
-      labels: ["s"],
-      datasets: [
-        {
-          data: [50],
-          // color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-          // strokeWidth: 2 // optional
-        }
-      ],
-      legend: ["Rainy Days"] // optional
-    };
-    const chartConfig = {
-      backgroundGradientFrom: "#F57C00",
-      backgroundGradientFromOpacity: 10,
-      backgroundGradientTo: "#F57C00",
-      backgroundGradientToOpacity: 0.8,
-      color: (opacity = 5) => `rgba(255, 255, 255, ${opacity})`,
-      strokeWidth: 3, // optional, default 3
-      barPercentage: 0.5,
-      useShadowColorFromDataset: false // optional
-    };
-    // let sampleData = [
+    let { isLoading } = this.state
+    if (isLoading) {
+      return (
+     
 
-    //   {
-    //     seriesName: 'series2',
-    //     data= [
-    //       {
-    //         x: '2020-10-20',
-    //         y: [50]
-    //       },
+        <BarIndicator color='#fbb146' />
+      );
+    }
+    else {
+      // const data = {
+      //   labels: ["s"],
+      //   datasets: [
+      //     {
+      //       data: [50],
+      //       // color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+      //       // strokeWidth: 2 // optional
+      //     }
+      //   ],
+      //   legend: ["Rainy Days"] // optional
+      // };
+      const chartConfig = {
+        backgroundGradientFrom: "#F57C00",
+        backgroundGradientFromOpacity: 10,
+        backgroundGradientTo: "#F57C00",
+        backgroundGradientToOpacity: 0.8,
+        color: (opacity = 5) => `rgba(255, 255, 255, ${opacity})`,
+        strokeWidth: 3, // optional, default 3
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false // optional
+      };
 
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
 
-    //     ],
-    //     color: 'red'
-    //   }
-    // ]
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+          <View style={styles.header}>
 
-        <View style={styles.header}>
+            <Card style={styles.cardHorizontal} >
+              {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('')}> */}
+              <LineChart
+                data={this.state.data}
+                width={Dimensions.get("window").width - 20}
+                // yAxisLabel={"$"}
+                height={175}
+                bezier
+                verticalLabelRotation={-10}
+                chartConfig={chartConfig}
+                fromZero={true}
+                style={{
+                  marginVertical: 0,
+                  borderRadius: 16
+                }}
+              />
 
-          <Card style={styles.cardHorizontal} >
-            {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('')}> */}
-            <LineChart
-              data={this.state.data}
-              width={Dimensions.get("window").width - 20}
-              // yAxisLabel={"$"}
-              height={175}
-              bezier
-              verticalLabelRotation={-10}
-              chartConfig={chartConfig}
-              style={{
-                marginVertical: 0,
-                borderRadius: 16
-              }}
-            />
+              {/* </TouchableOpacity> */}
+            </Card>
 
-            {/* </TouchableOpacity> */}
-          </Card>
+          </View>
 
-        </View>
-
-        <View style={{ flex: 4, marginTop: 10, }}>
+          <View style={{ flex: 4, marginTop: 10, }}>
 
 
-          <Text style={{ paddingLeft: 10 }}>Previous data</Text>
-          {/* <Card style={styles.cardHorizontal1} >
+            <Text style={{ paddingLeft: 10 }}>Previous data</Text>
+            {/* <Card style={styles.cardHorizontal1} >
               <Text>dasdasda</Text>
 
 
             </Card> */}
-          {/* <Card>
+            {/* <Card>
             <View > */}
-          <View style={{ padding: 10, }} >
+            <View style={{ padding: 10, }} >
 
-            <FlatList
+              <FlatList
 
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={this.keyExtractor}
-              data={this.state._list_bpData}
-              // renderItem={this.renderItem}
+                style={{ backgroundColor: 'white' }}
+                keyExtractor={this.keyExtractor}
+                data={this.state._list_bpData}
+                // renderItem={this.renderItem}
 
-              renderItem={({ item }) => <ListItem
-                style={{ height: 50, paddingTop: 15 }}
+                renderItem={({ item }) => <ListItem
+                  style={{ height: 50, paddingTop: 15 }}
 
-              >
-                <Left>
-                  <Icon
-                    name='heartbeat'
-                    type='font-awesome'
-                    color='red'
-                    onPress={() => console.log('hello')} />
-                </Left>
-                <Body style={{ marginLeft: -150 }}>
-                  <Text style={{ color: 'gray', fontSize: 12 }}>{item.bpDate}</Text>
-                  <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
-                </Body>
-                <Right>
-                  <View style={styles.iconMore}>
-                  <Icon
-                    name='angle-right'
-                    type='font-awesome'
-                    color='gray'
-                    onPress={() => console.log('hello')} />
-                  </View>
-                </Right>
-              </ListItem>
-              }
-            />
+                >
+                  <Left>
+                    <Icon
 
-          </View>
+                      name='heartbeat'
+                      type='font-awesome'
+                      color='pink'
 
-
-          {/* </View>
-          </Card> */}
-
-        </View>
-        <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-          {/* Rest of the app comes ABOVE the action button component !*/}
-          <ActionButton buttonColor="#f78a2c" onPress={() =>
-            this.RBSheet.open()
-          }
-          style={{position:'absolute',zIndex:999}}
-          >
-            {/* <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </ActionButton.Item> */}
-
-          </ActionButton>
-
-        </View>
-
-
-
-        <RBSheet
-          ref={ref => {
-            this.RBSheet = ref;
-          }}
-          closeOnDragDown={true}
-          // closeOnPressMask={false}
-          height={300}
-          openDuration={250}
-          customStyles={{
-            container: {
-              justifyContent: "center",
-              alignItems: "center",
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20
-            }
-          }}
-
-        >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.scrollView}>
-            <View style={{ flex: 1 }}>
-              <CalendarStrip
-
-                selectedDate={this.state.selectedDate}
-                onPressDate={(date) => {
-                  this.setState({ selectedDate: date });
-
-                }}
-                onPressGoToday={(today) => {
-                  this.setState({ selectedDate: today });
-                }}
-                onSwipeDown={() => {
-                  // alert('onSwipeDown');
-                }}
-                markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                      onPress={() => console.log('hello')} />
+                  </Left>
+                  <Body style={{ marginLeft: -150 }}>
+                    <Text style={{ color: 'gray', fontSize: 12 }}>{item.bpDate}</Text>
+                    <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
+                  </Body>
+                  <Right>
+                    <View style={styles.iconMore}>
+                      <Icon
+                        name='angle-right'
+                        type='font-awesome'
+                        color='gray'
+                        onPress={() => console.log('hello')} />
+                    </View>
+                  </Right>
+                </ListItem>
+                }
               />
 
-
-              <Text>ssfsfsdxxxx</Text>
-              {/* <TextInput /> */}
-              <TextInput onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
-              <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                <Text style={styles.buttonText}>Period Start ?</Text>
-
-
-              </TouchableOpacity>
-
             </View>
-          </ScrollView>
-        </RBSheet>
+            {/* </View>
+          </Card> */}
+          </View>
+          <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+            {/* Rest of the app comes ABOVE the action button component !*/}
+            <ActionButton buttonColor="#f78a2c" onPress={() =>
+              this.RBSheet.open()
+            }
+              style={{ position: 'absolute', zIndex: 999 }}
+            >
+              {/* <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item> */}
+            </ActionButton>
+          </View>
+          <RBSheet
+            ref={ref => {
+              this.RBSheet = ref;
+            }}
+            closeOnDragDown={true}
+            // closeOnPressMask={false}
+            height={300}
+            openDuration={400}
+            customStyles={{
+              container: {
+                justifyContent: "center",
+                alignItems: "center",
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20
+              }
+            }}
+          >
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentInsetAdjustmentBehavior="automatic"
+              style={styles.scrollView}>
+              <View style={{ flex: 1 }}>
+                <CalendarStrip
+                  selectedDate={this.state.selectedDate}
+                  onPressDate={(date) => {
+                    this.setState({ selectedDate: date });
 
-      </SafeAreaView>
+                  }}
+                  onPressGoToday={(today) => {
+                    this.setState({ selectedDate: today });
+                  }}
+                  onSwipeDown={() => {
+                    // alert('onSwipeDown');
+                  }}
+                  markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                />
+                <TextInput onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                  <Text style={styles.buttonText}>Period Start ?</Text>
 
 
-    );
+                </TouchableOpacity>
+
+              </View>
+            </ScrollView>
+          </RBSheet>
+
+        </SafeAreaView>
+
+      );
+    }
   }
 }
 
@@ -454,6 +442,8 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     marginHorizontal: 10
   }, button: {
+    alignItems:'center',
+        justifyContent:'center',
     backgroundColor: "red",
     padding: 12,
     borderRadius: 25,

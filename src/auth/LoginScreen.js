@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, Image, View, SafeAreaView, TouchableOpacity, StyleSheet,TouchableHighlight } from 'react-native';
+import { Text, ScrollView, Image, View, SafeAreaView, TouchableOpacity, StyleSheet,StatusBar,TouchableHighlight } from 'react-native';
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -9,12 +9,13 @@ import { Button } from 'react-native-elements';
 export class LoginScreen extends Component {
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 ,justifyContent: 'center' , alignItems: 'center'}}>
+         <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           {/* <CustomHeader title="Login" isHome={true} navigation={navigation} /> */}
-          <View style={{ flex:1, justifyContent: 'center' , alignItems: 'center'}}>
+          <View style={{ flex:1, justifyContent: 'space-around' , alignItems: 'center'}}>
             <Text style={{ fontSize: 22, fontWeight: "bold", marginTop:50}}> Welcome To 
             
             <Text  style={{color:'#ff9100',}}>  App</Text>
@@ -34,7 +35,7 @@ export class LoginScreen extends Component {
               <Text>Login</Text>
             </TouchableOpacity> */}
 
-            <TouchableOpacity style={{ marginTop: 0 }}
+            <TouchableOpacity style={{ marginTop: 0}}
               onPress={() => this.props.navigation.navigate('Login2')}
 
             >

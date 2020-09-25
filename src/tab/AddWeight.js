@@ -17,11 +17,6 @@ export class AddWeight extends Component {
 
         this.state = {
             _markedDates: this.initialState,
-
-            // abc: '',
-
-
-            // pId: '',
             pName: '',
             isLoading: false,
             ovulation_date: '',

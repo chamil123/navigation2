@@ -14,7 +14,7 @@ import { Avatar } from 'react-native-elements';
 
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
-
+import { BarIndicator } from 'react-native-indicators';
 const options = {
   title: 'Select Avatar',
   takePhotoButtonTitle: 'Take a photo',
@@ -25,6 +25,7 @@ export class MemberProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: true,
       dataSource: "",
       TextInputID: '',
       TextInputName: '',
@@ -35,8 +36,8 @@ export class MemberProfile extends Component {
       memberNames: '',
       imageSource: null,
       dataa: null,
-      abc:null,
-    
+      abc: null,
+
     }
   }
 
@@ -102,11 +103,12 @@ export class MemberProfile extends Component {
           member_address = responseJson[i].member_address
           // member_image = responseJson[i].member_image
 
-          abc =  responseJson[i].member_image;
+          abc = responseJson[i].member_image;
 
         }
-        console.log('source eke value eka vvvvvvvvvvvvvvvvvvvvvv  : '+abc);
+        console.log('source eke value eka vvvvvvvvvvvvvvvvvvvvvv  : ' + abc);
         this.setState({
+          isLoading: false,
           dataSource: responseJson,
           TextInputID: id,
           TextInputName: member_name,
@@ -115,11 +117,11 @@ export class MemberProfile extends Component {
           TextInputpassword: member_password,
           TextInputAddress: member_address,
           abc: abc,
-         
+
           // imageSource: source,
-       
+
         }, function () { })
-       
+
       }).catch((error) => {
         console.error(error)
       })
@@ -136,12 +138,13 @@ export class MemberProfile extends Component {
         const source = { uri: response.uri };
         const imdata = response.data;
 
-        
+
 
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
         this.setState({
+          isLoading: false,
           imageSource: source,
           dataa: imdata
 
@@ -185,30 +188,79 @@ export class MemberProfile extends Component {
     // })
   }
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        {/* <CustomHeader bgcolor='#ff9100' title="Profile" navigation={this.props.navigation} bdcolor='#f2f2f2' /> */}
-        <View style={styles.header}>
+    let { isLoading } = this.state
+    if (isLoading) {
+      return (
+        <BarIndicator color='#fbb146' />
+      );
+    } else {
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <CustomHeader bgcolor='#fbb146' title="Home detail" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
+          {/* <View style={styles.header}>
 
-          <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
-              {/* <Avatar.Image
-                  source={{
-                    uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
+            <View style={styles.userInfoSection}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
+
+                <Avatar
+
+                  rounded
+                  showEditButton
+                  size={130}
+
+                  source={this.state.imageSource != null ? this.state.imageSource : require('../images/person.png')}
+
+                  containerStyle={{ margin: 10 }}
+                  onEditPress={() => console.log('edit button pressed')}
+                  onLongPress={() => console.log('component long pressed')}
+                  onPress={() => this.selectPhoto()}
+                  editButton={{
+                    name: 'edit'
                   }}
-                  size={70}
-                /> */}
+
+                />
+
+
+                <View style={{ marginLeft: 0, flexDirection: 'column', marginTop: -30 }}>
+                  <Title style={styles.title} >
+
+                  </Title>
+                  <Caption style={styles.caption}>
+                    {this.state.TextInputEmail}
+                  </Caption>
+                </View>
+              </View>
+            </View>
+
+          </View> */}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}
+          >
+            <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
+              <View style={{ marginTop: 0, marginLeft: 20 }}>
+                {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Baby activity</Text> */}
+                {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bottom: 90 }}>
+
               <Avatar
-              
+
                 rounded
                 showEditButton
-                size={130}
-               
-                source={this.state.imageSource != null ? this.state.imageSource : require('../images/person.png')}
+                size={150}
 
-                // https://cdn.pixabay.com/photo/2018/10/30/16/06/water-lily-3784022__340.jpg
-                // title='Grace'
-                containerStyle={{ margin: 10 }}
+                source={this.state.imageSource != null ? this.state.imageSource : require('../images/profiled.png')}
+
+                containerStyle={{
+                  margin: 10, shadowColor: 'rgba(0,0,0, .4)', // IOS
+                  shadowOffset: { height: 3, width: 8 }, borderWidth: 10, borderColor: 'white', // IOS
+                  shadowOpacity: 3, // IOS
+                  shadowRadius: 5, elevation: 8
+                }}
                 onEditPress={() => console.log('edit button pressed')}
                 onLongPress={() => console.log('component long pressed')}
                 onPress={() => this.selectPhoto()}
@@ -219,18 +271,7 @@ export class MemberProfile extends Component {
               />
 
 
-              {/* <Avatar.Image size={24} source={require('../images/bell.png')} />
-
-
-              <Image style={{ width: 130, height: 150, }}
-                // source={IMAGE.ICON_PROFILE}
-                resizeMode="contain"
-                source={this.state.imageSource != null ? this.state.imageSource : require('../images/bell.png')}
-                onPress={() => this.selectPhoto}
-                showEditButton
-
-              /> */}
-              <View style={{ marginLeft: 0, flexDirection: 'column', marginTop: -30 }}>
+              <View style={{ marginLeft: 0, flexDirection: 'column', marginBottom: -150 }}>
                 <Title style={styles.title} >
 
                 </Title>
@@ -239,22 +280,14 @@ export class MemberProfile extends Component {
                 </Caption>
               </View>
             </View>
-          </View>
-
-        </View>
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}
-        >
-          <View style={{
-            flex: 1, justifyContent: 'center', paddingHorizontal: 15,
-            paddingVertical: 0,
-          }}>
+            <View style={{
+              flex: 1, justifyContent: 'center', paddingHorizontal: 15,
+              paddingVertical: 0,
+            }}>
 
 
-            <TextInput value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
-            {/* <FlatList
+              <TextInput value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
+              {/* <FlatList
                 data={this.state.dataSource}
                 ItemSeparatorComponent={this.FlatListItemSeparator}
                 renderItem={({ item }) => <ListItem >
@@ -273,47 +306,48 @@ export class MemberProfile extends Component {
               </FlatList> */}
 
 
-            <TextInput value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
-            <TextInput value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
-            <TextInput value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
+              <TextInput value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
+              <TextInput value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
+              <TextInput value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
 
-            <TextInput value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
-            <TouchableOpacity style={{ marginTop: 30 }} onPress={this.InputUsers} >
-              <LinearGradient colors={['#fbb146', '#f78a2c']}
-                // '#ffd600',
-                // locations={[1,0.3,0.5]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0.9 }}
-                // locations={[0.3, 0.6,1]} 
-                style={styles.linearGradient}>
-                <Text style={styles.buttonText}>
-                  SAVE
+              <TextInput value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
+              <TouchableOpacity style={{ marginTop: 30 }} onPress={this.InputUsers} >
+                <LinearGradient colors={['#fbb146', '#f78a2c']}
+                  // '#ffd600',
+                  // locations={[1,0.3,0.5]}
+                  start={{ x: 0, y: 1 }}
+                  end={{ x: 1, y: 0.9 }}
+                  // locations={[0.3, 0.6,1]} 
+                  style={styles.linearGradient}>
+                  <Text style={styles.buttonText}>
+                    SAVE
     </Text>
-              </LinearGradient>
+                </LinearGradient>
 
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={{ marginTop: 30 }} onPress={this.uploadPhoto()} >
-              <LinearGradient colors={['#fbb146', '#f78a2c']}
-                // '#ffd600',
-                // locations={[1,0.3,0.5]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0.9 }}
-                // locations={[0.3, 0.6,1]} 
-                style={styles.linearGradient}>
-                <Text style={styles.buttonText}>
-                  Upload
+              {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={this.uploadPhoto()} >
+                <LinearGradient colors={['#fbb146', '#f78a2c']}
+                  // '#ffd600',
+                  // locations={[1,0.3,0.5]}
+                  start={{ x: 0, y: 1 }}
+                  end={{ x: 1, y: 0.9 }}
+                  // locations={[0.3, 0.6,1]} 
+                  style={styles.linearGradient}>
+                  <Text style={styles.buttonText}>
+                    Upload
     </Text>
-              </LinearGradient>
+                </LinearGradient>
 
-            </TouchableOpacity>
+              </TouchableOpacity> */}
 
-          </View>
-        </ScrollView>
+            </View>
+          </ScrollView>
 
 
-      </SafeAreaView>
-    );
+        </SafeAreaView>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
