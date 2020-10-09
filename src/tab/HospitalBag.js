@@ -17,12 +17,16 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 const db = new Database();
-
+// const dbs=null;
+// var db = openDatabase({ name: 'UserDatabase.db' });
+var ddd;
 export class HospitalBag extends Component {
 
 
     constructor(props) {
         super(props);
+
+
 
         this.state = {
             dataSource: [],
@@ -31,10 +35,17 @@ export class HospitalBag extends Component {
             notFound: 'mother bag not found.\nPlease click (+) button to add it.',
             switchValue: '',
             date: '',
+            dbs: '',
 
 
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+
+        this.loadDbVarable = this.loadDbVarable.bind(this);
         this.getData = this.getData.bind(this);
+
     }
     abc = (value) => {
 
@@ -49,7 +60,13 @@ export class HospitalBag extends Component {
             date:
                 year + '-' + month + '-' + date,
         });
-        this.getData();
+        // this.getData();
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+        this.viewListData();
     }
 
     getData = (value, value2) => {
@@ -64,7 +81,7 @@ export class HospitalBag extends Component {
         let int;
         let result;
         if (value != null) {
-            db.updateStatus(data).then((result) => {
+            db.updateStatus(this.state.dbs, data).then((result) => {
                 console.log(result);
                 this.setState({
                     isLoading: false,
@@ -77,10 +94,10 @@ export class HospitalBag extends Component {
                 });
             })
         }
-        db.listBag().then((data) => {
+        db.listBag(this.state.dbs).then((data) => {
             result = data;
             if (result == 0) {
-                db.addItemOfMother_bag().then((result) => {
+                db.addItemOfMother_bag(this.state.dbs).then((result) => {
                     console.log(result);
 
                 }).catch((err) => {
@@ -94,9 +111,10 @@ export class HospitalBag extends Component {
         })
     }
     viewListData() {
-        let mother_bag = [];
 
-        db.listMotherBagItems().then((data) => {
+
+        let mother_bag = [];
+        db.listMotherBagItems(this.state.dbs).then((data) => {
 
 
             if (data != null) {
@@ -148,17 +166,16 @@ export class HospitalBag extends Component {
                     </TouchableOpacity> */}
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
+                        <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+                            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('HospitalBagBaby')}>
+                                <Text style={styles.buttonText}>Prepare baby bag</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button, { marginRight: 20 }]} onPress={() => this.props.navigation.navigate('LabourRoomPacking')}>
+                                <Text style={styles.buttonText}>labour room pack </Text>
 
-
-
-                        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('HospitalBagBaby')}>
-                            <Text style={styles.buttonText}>Prepare baby bag</Text>
-
-
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
                         <FlatList
-
-
                             keyExtractor={this.keyExtractor}
                             data={this.state._mother_bag}
                             // renderItem={this.renderItem}
@@ -176,11 +193,18 @@ export class HospitalBag extends Component {
                                 <Body>
 
                                     <Text>{item.hName}</Text>
-                                    <Text style={styles.dateText}>{item.hDate}</Text>
+                                    <Text style={styles.dateText}>{
+                                        item.hStatus == "true" ?
+                                            item.hDate : ''
+                                    }</Text>
                                 </Body>
                                 <Right>
 
                                     <Switch
+                                        disabled={true}
+                                        trackColor={{ true: '#f78a2ced', false: 'grey' }}
+                                        thumbColor={'white'}
+
                                         value={item.hStatus == "true" ? true : false}
                                     />
 
@@ -225,6 +249,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#6a1b9a",
         padding: 10,
         borderRadius: 25,
+        justifyContent:'center',
+        alignItems:'center',
         // width:'200',
         width: 150,
 

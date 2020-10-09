@@ -36,5 +36,18 @@ export * from './EliminationChart';
 export * from './SleepingTimeChart';
 export * from './TestMail';
 export * from './WeightChart';
-
+export * from './HealthDietChart';
+export * from './LabourRoomPacking';
+export * from './MealPlan';
+export * from './PeriodAgenda';
+export * from './PeriodHistory';
+export * from './SpecialNotes';
+export * from './TestChart';
+export * from './AreaCharts';
+export * from './AddMesurement';
+export * from './PrograssCircular';
+export * from './FoodPhyramid';
+export * from './WightGainBarchart';
+export * from './WeightGainDetailsAdd';
+export * from './BloodPresureBarChart';
 

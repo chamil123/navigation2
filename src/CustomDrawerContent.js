@@ -2,8 +2,28 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, Image, ImageBackground, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { IMAGE } from './constants/image';
-
+import AsyncStorage from '@react-native-community/async-storage';
 export class CustomDrawerContent extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      userName: '',
+    }
+  }
+  doLogout() {
+    AsyncStorage.removeItem("memberNames").then(
+      res => {
+        this.props.navigation.navigate('Login');
+        AsyncStorage.removeItem("memberId");
+      }
+    );
+  }
+  async componentDidMount() {
+    const myArray = await AsyncStorage.getItem('memberNames');
+    this.setState({
+      userName: myArray,
+    });
+  }
   render() {
     return (
 
@@ -24,7 +44,7 @@ export class CustomDrawerContent extends Component {
             <Image source={IMAGE.ICON_MENU_PROFILE}
               style={{ height: 90, width: 90, borderRadius: 60, }}
             />
-            <Text style={{ color: "white", fontSize: 15, marginVertical: 8 }}>Chamil pathirana</Text>
+            <Text style={{ color: "white", fontSize: 15, marginVertical: 8 }}>{this.state.userName}</Text>
           </ImageBackground>
 
           <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('HomeScreen')}>
@@ -34,7 +54,7 @@ export class CustomDrawerContent extends Component {
               type='font-awesome'
               color='#f78a2c'
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 25 }}
-              />
+            />
             <View style={styles.SeparatorLine} />
             <Text style={styles.TextStyle}>Home </Text>
           </TouchableOpacity>
@@ -54,17 +74,17 @@ export class CustomDrawerContent extends Component {
               type='font-awesome'
               color='#f78a2c'
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 25 }}
-              />
+            />
             <View style={styles.SeparatorLine} />
             <Text style={styles.TextStyle}>Settings </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.doLogout()}>
             <Icon
               name='sign-out'
               type='font-awesome'
               color='#f78a2c'
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 25 }}
-              />
+            />
             <View style={styles.SeparatorLine} />
             <Text style={styles.TextStyle}>Logout </Text>
           </TouchableOpacity>

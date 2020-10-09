@@ -19,7 +19,7 @@ import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { LineChart, } from "react-native-chart-kit";
 
-import { BarIndicator} from 'react-native-indicators';
+import { BarIndicator } from 'react-native-indicators';
 const db = new Database();
 var j = 0;
 
@@ -39,6 +39,7 @@ export class FeedingTimeChart extends Component {
             TextInputdaValue: '',
             _current_time: time,
             _list_feeding_time: [],
+            dbs:'',
             data: {
                 labels: ["j"],
 
@@ -63,18 +64,31 @@ export class FeedingTimeChart extends Component {
 
 
         }
-
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        // this.getData = this.getData.bind(this);
+        this.loadDbVarable = this.loadDbVarable.bind(this);
 
     }
-    componentDidMount() {
-        this.getData();
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+
+       
         this.getaAllFeedingData();
+        this.getData();
+    }
+    componentDidMount() {
+        // this.getData();
+        // this.getaAllFeedingData();
     }
 
     getData() {
 
         const self = this;
-        db.listFeedingCountByDate().then((data) => {
+        db.listFeedingCountByDate(this.state.dbs).then((data) => {
             let result = data;
             if (result == 0) {
 
@@ -120,15 +134,15 @@ export class FeedingTimeChart extends Component {
 
         }
 
-        db.addFeedingTime(data).then((result) => {
+        db.addFeedingTime(this.state.dbs,data).then((result) => {
             console.log(result);
-           
-            // this.getData();
+            this.getaAllFeedingData();
+            this.getData();
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
         }).catch((err) => {
             console.log(err);
-           
+
         })
 
 
@@ -136,8 +150,10 @@ export class FeedingTimeChart extends Component {
 
     getaAllFeedingData() {
 
-        db.listAllFeedingTime().then((results) => {
+        db.listAllFeedingTime(this.state.dbs).then((results) => {
+          
             result = results;
+           
             this.setState({
                 isLoading: false,
                 _list_feeding_time: results,
@@ -175,14 +191,14 @@ export class FeedingTimeChart extends Component {
 
         if (isLoading) {
             return (
-              
-                    <BarIndicator color='#fbb146' />
-            
+
+                <BarIndicator color='#fbb146' />
+
             );
-        } 
+        }
         else {
             return (
-          
+
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
                     <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
@@ -316,9 +332,9 @@ export class FeedingTimeChart extends Component {
                                     markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                 />
                                 {/* <TextInput /> */}
-                                <TextInput onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
                                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add Activity</Text>
+                                    <Text style={styles.buttonText}>Add </Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>

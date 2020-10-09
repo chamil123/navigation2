@@ -17,6 +17,7 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 
 import * as Progress from 'react-native-progress';
 // import FusionCharts from "react-native-fusioncharts";
 import Speedometer from 'react-native-speedometer-chart';
+import { ECharts } from "react-native-echarts-wrapper";
 import { color } from 'react-native-reanimated';
 
 export class BMIMeter extends Component {
@@ -54,6 +55,29 @@ export class BMIMeter extends Component {
 
     // onChange = (value) => this.setState({ value: 20});
     render() {
+        option = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '业务指标',
+                    type: 'gauge',
+                    detail: {formatter: '{value}%'},
+                    data: [{value: 50, name: '完成率'}]
+                }
+            ]
+        };
+        setInterval(function () {
+            option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+           // myChart.setOption(option, true);
+        },2000);
         return (
 
             <SafeAreaView style={{ flex: 1 }}>
@@ -162,6 +186,9 @@ export class BMIMeter extends Component {
 
 
                         </View>
+                        <ECharts
+                        option={option} height={300}
+                    />
                     </ScrollView>
                 </Animatable.View>
 

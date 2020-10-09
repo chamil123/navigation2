@@ -12,7 +12,6 @@ export class CalandarData extends Component {
     }
     componentDidMount() {
         this.props.route.params.data;
-        console.log("??????????????????????????>>>>>>>>>>>>>>>>>>>>>>>>  :  " + this.props.route.params.data);
         //const data = this.props.navigation.getParam('data');
         this.setState({
             data: this.props.route.params.data,

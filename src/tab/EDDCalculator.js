@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions,ScrollView, Image } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Image } from 'react-native';
 import { IMAGE } from '../constants/image';
 
 import { CustomHeader } from '../index';
@@ -12,9 +12,11 @@ import StepIndicator from 'react-native-step-indicator';
 import moment from 'moment' // 2.20.1
 import { extendMoment } from 'moment-range';
 const moments = extendMoment(moment);
-
+import RBSheet from "react-native-raw-bottom-sheet";
 import Database from '../Database';
 import *as Animatable from 'react-native-animatable';
+import CalendarStrip from 'react-native-slideable-calendar-strip';
+import { TextInput } from 'react-native-paper';
 const db = new Database();
 
 const _format = 'YYYY-MM-DD'
@@ -52,24 +54,38 @@ export class EDDCalculator extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selectedDate: new Date(),
             currentPosition: 0,
             _eddDateCount: '',
-            _compltedMonths: ''
+            _compltedMonths: '',
+            dbs: '',
+            TextInpuPbValue: '',
+
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        this.loadDbVarable = this.loadDbVarable.bind(this);
     }
-    componentDidMount() {
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+        this.getDDDate();
+    }
+    getDDDate() {
         const start = moment(_today, 'YYYY-MM-DD');
 
-        db.loadDB();
+        // db.loadDB();
         let edd = [];
         let plastdate = "";
         let eddDate = "";
         let compltedMonths = "";
-        db.getEddDate().then((datat) => {
+        db.getEddDate(this.state.dbs).then((datat) => {
             edd = datat;
             for (var i = 0; i < edd.length; i++) {
                 plastdate = edd[i].pName
-                console.log("dsdssd ((((((((((((((((((((((())))))))))))))))))))))) : " + plastdate);
+                // console.log("dsdssd ((((((((((((((((((((((())))))))))))))))))))))) : " + plastdate);
             }
             // eddDate = moment(plastdate).add(277, 'day').format('YYYY-MM-DD');
             const end = moment(plastdate, 'YYYY-MM-DD');
@@ -82,6 +98,9 @@ export class EDDCalculator extends Component {
             });
 
         });
+    }
+    componentDidMount() {
+
 
 
 
@@ -90,14 +109,65 @@ export class EDDCalculator extends Component {
     onPageChange(position) {
         this.setState({ currentPosition: position });
     }
-    updateEdd() {
-    
-      
-        db.loadDB();
+    addEDD() {
+        this.RBSheet.close();
+        this.setState({
+            isLoading: false,
+        });
+        const eddDate = moment(this.state.selectedDate).add(277, 'day').format('YYYY-MM-DD');
+        let data = {
+            pName: eddDate,
+            pDescription: 'Delevary Date',
+        }
         let result = [];
         let _eddIdId;
         let availabeledd = 0;
-        db.getEddDate().then((datas) => {
+
+
+        // db.loadDB();
+
+        console.log("edd dATE :::::::::::::::"+eddDate);
+        db.getEddDate(this.state.dbs).then((datas) => {
+            result = datas;
+            for (var i = 0; i < result.length; i++) {
+                _eddIdId = result[i].pId
+                availabeledd = 1;
+
+            }
+            if (availabeledd == 1) {
+
+                availabeledd = 0;
+            } else {
+                db.addEDD(this.state.dbs,data).then((result) => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                    this.getDDDate();
+                }).catch((err) => {
+                    console.log(err);
+                    this.setState({
+                        isLoading: false,
+                    });
+                })
+
+            }
+            
+            availabeledd = 0;
+        })
+
+
+
+
+
+    }
+    updateEdd() {
+
+
+        // db.loadDB();
+        let result = [];
+        let _eddIdId;
+        let availabeledd = 0;
+        db.getEddDate(this.state.dbs).then((datas) => {
             result = datas;
             for (var i = 0; i < result.length; i++) {
                 _eddIdId = result[i].pId
@@ -151,7 +221,7 @@ export class EDDCalculator extends Component {
                 </View>
                 <View style={styles.footer}>
                     <ScrollView
-                    showsVerticalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                         contentInsetAdjustmentBehavior="automatic"
                         style={styles.scrollView}>
                         <View style={{ justifyContent: 'center', padding: 10, paddingTop: 30 }}>
@@ -204,9 +274,9 @@ export class EDDCalculator extends Component {
                                     width={8}
                                     fill={(this.state._eddDateCount / 277) * 100}
 
-                                    
+
                                     tintColor="#f78a2c"
-                                    
+
                                     backgroundColor="#cfd8dc">
                                     {
                                         (fill) => (
@@ -240,7 +310,7 @@ export class EDDCalculator extends Component {
                             </View>
                             <View style={{ justifyContent: 'center', padding: 50, }}>
 
-                                <TouchableOpacity style={styles.button} onPress={() => {this.updateEdd();this.props.navigation.navigate('PeriodCalandar')}}>
+                                <TouchableOpacity style={styles.button} onPress={() => { this.updateEdd();  this.RBSheet.open() }}>
                                     {/* <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('BMIMeter')}> */}
                                     <Text style={styles.buttonText}>Edit EDD  Date</Text>
                                 </TouchableOpacity>
@@ -253,7 +323,54 @@ export class EDDCalculator extends Component {
                     </ScrollView>
 
                 </View>
+                <RBSheet
+                    ref={ref => {
+                        this.RBSheet = ref;
+                    }}
+                    closeOnDragDown={true}
+                    // closeOnPressMask={false}
+                    height={300}
+                    openDuration={400}
+                    customStyles={{
+                        container: {
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderTopRightRadius: 20,
+                            borderTopLeftRadius: 20
+                        }
+                    }}
+                >
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps='handled'
+                        contentInsetAdjustmentBehavior="automatic"
+                        style={styles.scrollView}>
+                        <View style={{ flex: 1 }}>
+                            <CalendarStrip
+                                selectedDate={this.state.selectedDate}
+                                onPressDate={(date) => {
+                                    this.setState({ selectedDate: date });
 
+                                }}
+                                onPressGoToday={(today) => {
+                                    this.setState({ selectedDate: today });
+                                }}
+                                onSwipeDown={() => {
+                                    // alert('onSwipeDown');
+                                }}
+                                markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                            />
+                            {/* <TextInput value={this.state.selectedDate} autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="BP value" /> */}
+                            {/* <Text>{this.state.selectedDate}</Text> */}
+                            <TouchableOpacity onPress={() => this.addEDD()} style={styles.button}>
+                                <Text style={styles.buttonText}>Add Edd Date ?</Text>
+
+
+                            </TouchableOpacity>
+
+                        </View>
+                    </ScrollView>
+                </RBSheet>
             </SafeAreaView>
         );
     }

@@ -35,23 +35,34 @@ export class BreastFeeding extends Component {
             _babyWeght: '',
             isLoading: true,
             date: new Date(),
+            dbs: '',
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
     }
-    componentDidMount() {
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
         this.loadData();
     }
+    componentDidMount() {
+        // this.loadData();
+    }
     loadData() {
-        db.listBabyDetails().then((data) => {
+        db.listBabyDetails(this.state.dbs).then((data) => {
             let result = data;
             if (result == 0) {
                 this.setState({
                     isLoading: false,
-          
-                  });
+
+                });
                 this.RBSheet.open();
-                
+
             } else {
                 let { babyName, babybDate, babyWeght } = this.props
                 for (var i = 0; i < result.length; i++) {
@@ -59,6 +70,7 @@ export class BreastFeeding extends Component {
                     babybDate = result[i].bbDate;
                     babyWeght = result[i].bWeight;
                 }
+
                 this.setState({
                     isLoading: false,
                     _baby_name: babyName,
@@ -82,7 +94,8 @@ export class BreastFeeding extends Component {
             bWeight: this.state.TextInpuBWValue,
             bbDate: formattedDate,
         }
-        db.babyData(data).then((result) => {
+
+        db.babyData(this.state.dbs, data).then((result) => {
 
 
             this.loadData();
@@ -120,7 +133,7 @@ export class BreastFeeding extends Component {
                                 <Text style={{ fontWeight: 'bold', }}>{this.state._baby_name}</Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth date :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
-                                <Text style={{ color: 'white', paddingTop: 5 }}>Age: <Text style={{ fontWeight: 'bold', color: 'black' }}> 1 </Text> year</Text>
+                                {/* <Text style={{ color: 'white', paddingTop: 5 }}>Age: <Text style={{ fontWeight: 'bold', color: 'black' }}> 1 </Text> year</Text> */}
                                 <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
                                     <Text style={styles.buttonText2}>Edit</Text>
                                 </TouchableOpacity>
@@ -342,11 +355,13 @@ export class BreastFeeding extends Component {
                                     <View style={{ flex: 1 }}>
                                         <Text style={{ paddingBottom: 5 }}>Select Baby's birthday</Text>
                                         <DatePicker
+                                            mode="date"
+                                            enableAutoDarkMode={true}
                                             date={this.state.date}
                                             onDateChange={(date) => { this.setState({ date: date }) }}
                                         />
-                                        <TextInput onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
-                                        <TextInput onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                             <Text style={styles.buttonText}>Save Baby' Data</Text>

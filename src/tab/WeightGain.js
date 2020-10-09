@@ -19,6 +19,7 @@ import { TextInput } from 'react-native-paper';
 import moment from 'moment' // 2.20.1
 import { BarIndicator, } from 'react-native-indicators';
 import ActionButton from 'react-native-action-button';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const w = Dimensions.get("window").width;
 const screenWidth = Dimensions.get("window").width;
 
@@ -37,42 +38,64 @@ export class WeightGain extends Component {
       isLoading: true,
       TextInpuPbValue: '',
       basicOkCancelVisible: false,
-
       dataSource: 10,
+      dbs: '',
       data: {
-        labels: ["j"],
+        labels: ["i"],
 
         datasets: [
           {
-            data: [1],
+            data: [0],
             strokeWidth: 2,
             color: (opacity = 1) => `rgba(255,255,255,${opacity})`, // optional
           },
           {
-            data: [1],
+            data: [0],
             strokeWidth: 2,
             color: (opacity = 1) => `rgba(156,39,176, ${opacity})`, // optional
           },
           {
-            data: [2],
+            data: [0],
             strokeWidth: 2,
-            color: (opacity = 1) => `rgba(232,30,99, ${opacity})`, // optional
+            color: (opacity = 1) => `rgba(255,255,0, ${opacity})`, // optional
           },
         ]
       }
     }
+    db.initDB().then((result) => {
+      this.loadDbVarable(result);
+    })
+    this.loadDbVarable = this.loadDbVarable.bind(this);
+
   }
   componentDidMount() {
+    // this.getData();
+  }
+  loadDbVarable(result) {
+    this.setState({
+      dbs: result,
+    });
     this.getData();
+    // this.viewListData();
+  }
+  emptyComponent = () => {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#f2f2f2', justifyContent: 'center', alignItems: 'center' }}>
+        <Text >oops! There's no data here!</Text>
+      </View>);
   }
   getData() {
 
     const self = this;
-    db.listWeightGain().then((data) => {
+    db.listWeightGain(this.state.dbs).then((data) => {
 
       result = data;
       if (result == 0) {
+        this.setState({
+          isLoading: false,
+          _list_wgData: '',
 
+        });
       } else {
 
         var temp2 = [];
@@ -136,7 +159,7 @@ export class WeightGain extends Component {
     }).catch((err) => {
       console.log(err);
     });
-    db.lastWeightGain().then((data) => {
+    db.lastWeightGain(this.state.dbs).then((data) => {
 
       result = data;
       if (result != 0) {
@@ -154,7 +177,23 @@ export class WeightGain extends Component {
   saveWeight() {
     this.props.navigation.navigate('AddWeight')
   }
+  deleteData(id) {
 
+    this.setState({
+      // isLoading: true
+    });
+    db.deleteWeight(this.state.dbs, id).then((result) => {
+
+      this.getData();
+      // this.getaAllClickData();
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        // isLoading: false
+      }
+    })
+  }
   saveData() {
     this.RBSheet.close();
     const _format = 'YYYY-MM-DD'
@@ -168,18 +207,14 @@ export class WeightGain extends Component {
       wgDate: _selectedDay.toString(),
       wgValue: parseInt(this.state.TextInpuPbValue)
     }
-    db.addWGvalue(data).then((result) => {
-      console.log(result);
-      this.setState({
-        // isLoading: false,
-      });
+    db.addWGvalue(this.state.dbs, data).then((result) => {
+      // console.log(result);
+      this.getData();
       //   this.props.navigation.state.params.onNavigateBack;
       //   this.props.navigation.goBack();
     }).catch((err) => {
       console.log(err);
-      this.setState({
-        // isLoading: false,
-      });
+
     })
   }
   keyExtractor = (item, index) => index.toString()
@@ -198,6 +233,7 @@ export class WeightGain extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <CustomHeader bgcolor='#f2f2f2' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+        <FlashMessage duration={1000} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentInsetAdjustmentBehavior="automatic"
@@ -246,7 +282,7 @@ export class WeightGain extends Component {
                 </View>
                 <View style={{ flexDirection: 'row', paddingRight: 20 }}>
                   <View style={[styles.squrecolor, {
-                    backgroundColor: '#e81e63'
+                    backgroundColor: '#ffc107'
                   }]} />
                   <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Max weight</Text>
                 </View>
@@ -299,6 +335,7 @@ export class WeightGain extends Component {
                   shadowRadius: 8,
 
                 }}
+                ListEmptyComponent={this.emptyComponent}
                 keyExtractor={this.keyExtractor}
                 data={this.state._list_wgData}
 
@@ -332,7 +369,16 @@ export class WeightGain extends Component {
                         type='font-awesome'
                         color='gray'
                         iconStyle={{ fontSize: 18 }}
-                        name="trash-o" color="gray" />
+                        name="trash-o" color="gray"
+                        onPress={() => {
+                          this.deleteData(item.wgId); showMessage({
+
+                            message: "Hello there",
+                            description: "successfuly deleted " + `${item.wgDate}`,
+                            type: "success",
+                          })
+                        }}
+                      />
                     </View>
                   </Right>
                 </ListItem>
@@ -438,6 +484,7 @@ export class WeightGain extends Component {
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps='handled'
             contentInsetAdjustmentBehavior="automatic"
             style={styles.scrollView}>
             <View style={{ flex: 1 }}>
@@ -460,9 +507,9 @@ export class WeightGain extends Component {
 
 
               {/* <TextInput /> */}
-              <TextInput onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+              <TextInput autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter weight value" />
               <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                <Text style={styles.buttonText}>Period Start ?</Text>
+                <Text style={styles.buttonText}>Add Weight </Text>
 
 
               </TouchableOpacity>
@@ -484,7 +531,8 @@ export class WeightGain extends Component {
     width: (Dimensions.get("window").width - 50),
     marginTop: 15,
     marginLeft: 18,
-    marginVertical: 5
+    marginVertical: 5,
+    alignItems: 'center'
   },
   buttonText: {
     fontSize: 15,

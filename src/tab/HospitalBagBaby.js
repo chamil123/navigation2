@@ -29,10 +29,21 @@ export class HospitalBagBaby extends Component {
             notFound: 'mother bag not found.\nPlease click (+) button to add it.',
             switchValue: '',
             date: '',
-
+            dbs: '',
 
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+
+        this.loadDbVarable = this.loadDbVarable.bind(this);
         this.getData = this.getData.bind(this);
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+        this.getData();
     }
     abc = (value) => {
 
@@ -47,7 +58,7 @@ export class HospitalBagBaby extends Component {
             date:
                 year + '-' + month + '-' + date,
         });
-        this.getData();
+        // this.getData();
     }
 
     getData = (value, value2) => {
@@ -62,7 +73,7 @@ export class HospitalBagBaby extends Component {
         let int;
         let result;
         if (value != null) {
-            db.updateStatusBaby(data).then((result) => {
+            db.updateStatusBaby(this.state.dbs, data).then((result) => {
                 console.log(result);
                 this.setState({
                     isLoading: false,
@@ -75,10 +86,10 @@ export class HospitalBagBaby extends Component {
                 });
             })
         }
-        db.listBag().then((data) => {
+        db.listBag(this.state.dbs).then((data) => {
             result = data;
             if (result == 0) {
-                db.addItemOfMother_bag().then((result) => {
+                db.addItemOfMother_bag(this.state.dbs).then((result) => {
                     console.log(result);
 
                 }).catch((err) => {
@@ -94,7 +105,7 @@ export class HospitalBagBaby extends Component {
     viewListData() {
         let baby_bag = [];
 
-        db.listBabyBagItems().then((data) => {
+        db.listBabyBagItems(this.state.dbs).then((data) => {
 
 
             if (data != null) {
@@ -136,7 +147,7 @@ export class HospitalBagBaby extends Component {
                 <SafeAreaView style={{ flex: 1, }}>
 
                     <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
-
+                 
                     <View style={styles.header}>
                         <Image style={{ width: 350, height: 260, marginLeft: 0, }}
                             source={IMAGE.ICON_HOSPITAL_MOM_BAG}
@@ -149,6 +160,7 @@ export class HospitalBagBaby extends Component {
                     </TouchableOpacity> */}
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
+               
                         <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>Prepare a bag for baby</Text>
                         <FlatList
 
@@ -170,11 +182,17 @@ export class HospitalBagBaby extends Component {
                                 <Body>
 
                                     <Text>{item.bName}</Text>
-                                    <Text style={styles.dateText}>{item.bDate}</Text>
+                                    <Text style={styles.dateText}>{
+                                        item.bStatus == "true" ?
+                                            item.bDate : ''
+                                    }</Text>
                                 </Body>
                                 <Right>
 
                                     <Switch
+                                        disabled={true}
+                                        trackColor={{ true: '#f78a2ced', false: 'grey' }}
+                                        thumbColor={'white'}
                                         value={item.bStatus == "true" ? true : false}
                                     />
 

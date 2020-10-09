@@ -8,7 +8,7 @@ import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { BarIndicator } from 'react-native-indicators';
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 var j = 0;
 const _format = 'YYYY-MM-DD'
@@ -20,17 +20,30 @@ export class KickCounter extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            _current_date: date,
+            _current_date: _today,
             _list_kcData: [],
             _kick_count: 0,
             increment: 0,
+            dbs: '',
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        this.loadDbVarable = this.loadDbVarable.bind(this);
+        this.saveData = this.saveData.bind(this);
+        this.getaAllClickData = this.getaAllClickData.bind(this);
     }
     componentDidMount() {
-        this.getData();
+        // this.getData();
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LL  : " );
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+
         this.getaAllClickData();
     }
-
     saveData() {
         j = 1;
         this.setState({
@@ -38,10 +51,11 @@ export class KickCounter extends Component {
             // isLoading: false,
         });
         this.getData();
+        // this.getaAllClickData();
     }
     getaAllClickData() {
 
-        db.listAllKickCount().then((results) => {
+        db.listAllKickCount(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
@@ -52,6 +66,7 @@ export class KickCounter extends Component {
         }).catch((err) => {
             console.log(err);
         })
+        this.getData();
     }
     getData() {
         var temp;
@@ -59,15 +74,17 @@ export class KickCounter extends Component {
             kcDate: this.state._current_date.toString(),
             kcValue: this.state._kick_count,
         }
-        db.listKickCount(data).then((results) => {
+        db.listKickCount(this.state.dbs, data).then((results) => {
             result = results;
             if (result == 0) {
-                db.addKickCount(data).then((results) => {
+                db.addKickCount(this.state.dbs, data).then((results) => {
 
                 }).catch((err) => {
                     console.log(err);
                 })
+
             } else {
+
                 var _clickValue;
                 for (var i = 0; i < result.length; i++) {
                     _clickValue = result[i].kcCount;
@@ -80,16 +97,44 @@ export class KickCounter extends Component {
                     kcDate: this.state._current_date.toString(),
                     kcValue: this.state._kick_count,
                 }
-                db.updateClickCount(data).then((result) => {
+                db.updateClickCount(this.state.dbs, data).then((result) => {
                 }).catch((err) => {
                     console.log(err);
 
                 })
+
             }
         }).catch((err) => {
             console.log(err);
         })
+        // this.getaAllClickData();
     }
+    deleteData(id, date) {
+        if (_today == date) {
+            this.setState({
+                // isLoading: false,
+                _kick_count: 0,
+            });
+
+        }
+
+        // const { navigation } = this.props;
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteKicks(this.state.dbs, id).then((result) => {
+            console.log(result);
+            // this.getData();
+            this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
+
     keyExtractor = (item, index) => index.toString()
     render() {
         const data = [10, 5, 25, 15, 20]
@@ -117,7 +162,9 @@ export class KickCounter extends Component {
             );
         } else {
             return (
+
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#fbb146' }}>
+                    <FlashMessage duration={1000} />
                     <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
 
                     <View style={styles.header}>
@@ -141,6 +188,28 @@ export class KickCounter extends Component {
                             </View>
                             <Text style={{ fontSize: 22, paddingBottom: 10 }}>{this.state._kick_count}</Text>
                             <AnimatedCircularProgress
+                                size={152}
+                                rotation={0}
+                                width={8}
+                                fill={(this.state._kick_count / 10) * 100}
+                                tintColor="#f78a2c"
+                                backgroundColor="#cfd8dc">
+                                {
+                                    (fill) => (
+                                        <TouchableOpacity style={styles.button5}
+                                            onPress={() => this.saveData()}>
+                                            <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
+                                                source={IMAGE.ICON_BABY_FOOT2}
+                                                resizeMode="contain"
+                                            />
+                                        </TouchableOpacity>
+                                    )
+                                }
+                            </AnimatedCircularProgress>
+                            
+                        </View>
+                        <View style={{bottom:150,left:120}}>
+                        <AnimatedCircularProgress
                                 size={152}
                                 rotation={0}
                                 width={8}
@@ -185,7 +254,15 @@ export class KickCounter extends Component {
                                                 type='font-awesome'
                                                 color='gray'
                                                 iconStyle={{ fontSize: 18 }}
-                                                onPress={() => console.log('hello')} />
+
+                                            //   Alert.alert("dsfsdf"+value)
+                                            // onPress={() => console.log(">>>>>>>>>>>>>>>>>>>")}
+                                            // onPress={() => showMessage({
+                                            //     message: "Hello World",
+                                            //     description: "This is our second message",
+                                            //     type: "success",
+                                            //   })} 
+                                            />
                                         </View>
                                     </Left>
                                     <Body style={{ marginLeft: -160 }}>
@@ -197,13 +274,23 @@ export class KickCounter extends Component {
                                             <Icon
                                                 type='font-awesome'
                                                 color='gray'
-                                                iconStyle={{ fontSize: 18 }}
-                                                name="trash-o" color="gray" />
+                                                iconStyle={{ fontSize: 18, padding: 8 }}
+                                                name="trash-o" color="gray"
+                                                onPress={() => {
+                                                    this.deleteData(item.kcId, item.kcDate,); showMessage({
+
+                                                        message: "Hello there",
+                                                        description: "successfuly deleted "+ `${item.kcDate}`,
+                                                        type: "success",
+                                                    })
+                                                }}
+                                            />
                                         </View>
                                     </Right>
                                 </ListItem>
                                 }
                             />
+
                         </View>
                     </View>
 

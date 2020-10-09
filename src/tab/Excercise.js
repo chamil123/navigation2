@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import { CustomHeader } from '../index';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 export class Excercise extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      userName: '',
+    }
+  }
+  async componentDidMount() {
+    const myArray = await AsyncStorage.getItem('memberNames');
+    this.setState({
+      userName: myArray,
+    });
+  }
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
-        <CustomHeader bgcolor='#f2f2f2' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+        <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
 
         <View style={styles.header}>
           <View style={styles.backgroundImage} >
@@ -22,7 +34,7 @@ export class Excercise extends Component {
               source={IMAGE.ICON_EXCERCISE}
               style={{ width: 300, height: 270, marginLeft: 15, alignItems: 'flex-start', resizeMode: 'cover', position: 'absolute' }}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Hello User</Text>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Hello {this.state.userName}</Text>
                 <Text>Pregnancy exercise</Text>
               </View>
             </ImageBackground>

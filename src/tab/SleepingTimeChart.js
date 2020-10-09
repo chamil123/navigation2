@@ -430,7 +430,7 @@ export class SleepingTimeChart extends Component {
 
 
                             {/* <TextInput /> */}
-                            <TextInput onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                            <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
                             <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                 <Text style={styles.buttonText}>Add Activity</Text>
 

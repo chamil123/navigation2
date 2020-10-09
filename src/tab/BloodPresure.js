@@ -23,7 +23,7 @@ import moment from 'moment' // 2.20.1
 import { IMAGE } from '../constants/image';
 import { Icon } from 'react-native-elements';
 import { BarIndicator } from 'react-native-indicators';
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 
 const w = Dimensions.get("window").width;
@@ -65,36 +65,45 @@ export class BloodPresure extends Component {
       TextInpuPbValue: '',
 
       visible: true,
+      dbs: '',
 
       // dataSource: 10,
       data: {
-        labels: ["j"],
+        labels: ["i"],
 
-        datasets: [
-          {
-            data: [1],
+        datasets: [{
+            data: [0],
             strokeWidth: 2,
             color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
           },
+    
           {
-            data: [1],
+            data: [0],
             strokeWidth: 2,
             color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
           }, {
-            data: [1],
+            data: [0],
             strokeWidth: 2,
             color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
           },
         ]
       }
     }
-  }
+    db.initDB().then((result) => {
+      this.loadDbVarable(result);
+    })
 
-  // FloatingButtonEvent = () => {
-  //   Alert.alert("dasdasdasd");
-  // }
-  componentDidMount() {
+    this.loadDbVarable = this.loadDbVarable.bind(this);
+  }
+  loadDbVarable(result) {
+    this.setState({
+      dbs: result,
+    });
     this.getData();
+    // this.viewListData();
+  }
+  componentDidMount() {
+    // this.getData();
     // const self = this;
     // return fetch('https://api.mockaroo.com/api/12a7ead0?count=20&key=8ba88000')
     //   .then(response => response.json())
@@ -137,12 +146,13 @@ export class BloodPresure extends Component {
   getData() {
 
     const self = this;
-    db.listBloodPresure().then((data) => {
+    db.listBloodPresure(this.state.dbs).then((data) => {
       let result = data;
       if (result == 0) {
 
         this.setState({
           isLoading: false,
+          _list_bpData: '',
 
         });
         // db.addItemOfBloodPresure().then((result) => {
@@ -169,7 +179,7 @@ export class BloodPresure extends Component {
         dataClone.datasets[0].data = temp2;
         dataClone.datasets[1].data = temp4;
         dataClone.datasets[2].data = temp5;
-       
+
         self.setState({
           isLoading: false,
           data: dataClone,
@@ -198,24 +208,45 @@ export class BloodPresure extends Component {
       bpDate: _selectedDay.toString(),
       bpValue: parseInt(this.state.TextInpuPbValue)
     }
-    db.addPBvalue(data).then((result) => {
-      
+    db.addPBvalue(this.state.dbs, data).then((result) => {
+
       this.getData();
       //   this.props.navigation.state.params.onNavigateBack;
       //   this.props.navigation.goBack();
     }).catch((err) => {
       console.log(err);
-  
+
     })
 
+  }
+  deleteData(id) {
+
+    this.setState({
+      // isLoading: true
+    });
+    db.deleteBlood(this.state.dbs, id).then((result) => {
+
+      this.getData();
+      // this.getaAllClickData();
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        // isLoading: false
+      }
+    })
+  }
+  emptyComponent = () => {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#f2f2f2', justifyContent: 'center', alignItems: 'center' }}>
+        <Text >oops! There's no data here!</Text>
+      </View>);
   }
   keyExtractor = (item, index) => index.toString()
   render() {
     let { isLoading } = this.state
     if (isLoading) {
       return (
-     
-
         <BarIndicator color='#fbb146' />
       );
     }
@@ -232,7 +263,7 @@ export class BloodPresure extends Component {
       //   legend: ["Rainy Days"] // optional
       // };
       const chartConfig = {
-        backgroundGradientFrom: "#F57C00",
+        backgroundGradientFrom: "#ffb74d",
         backgroundGradientFromOpacity: 10,
         backgroundGradientTo: "#F57C00",
         backgroundGradientToOpacity: 0.8,
@@ -245,7 +276,7 @@ export class BloodPresure extends Component {
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
-
+          <FlashMessage duration={1000} />
           <View style={styles.header}>
 
             <Card style={styles.cardHorizontal} >
@@ -272,8 +303,28 @@ export class BloodPresure extends Component {
 
           <View style={{ flex: 4, marginTop: 10, }}>
 
+            <View style={{ flexDirection: 'row',justifyContent:'center', marginLeft: 20 }}>
+              <View style={{ flexDirection: 'row', paddingRight: 20 }}>
+                <View style={[styles.squrecolor, {
+                  backgroundColor: 'white'
+                }]} />
+                <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>You BP value</Text>
+              </View>
+              <View style={{ flexDirection: 'row', paddingRight: 20 }}>
+                <View style={[styles.squrecolor, {
+                  backgroundColor: 'red'
 
-            <Text style={{ paddingLeft: 10 }}>Previous data</Text>
+                }]} />
+                <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Min (80 mm hg)</Text>
+              </View>
+              <View style={{ flexDirection: 'row', paddingRight: 20 }}>
+                <View style={[styles.squrecolor, {
+                  backgroundColor: 'blue'
+                }]} />
+                <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>high (80 mm hg)</Text>
+              </View>
+            </View>
+            <Text style={{ paddingLeft: 10, fontWeight: 'bold', paddingTop:10,fontSize: 14 }}>Previous data</Text>
             {/* <Card style={styles.cardHorizontal1} >
               <Text>dasdasda</Text>
 
@@ -287,6 +338,7 @@ export class BloodPresure extends Component {
 
                 style={{ backgroundColor: 'white' }}
                 keyExtractor={this.keyExtractor}
+                ListEmptyComponent={this.emptyComponent}
                 data={this.state._list_bpData}
                 // renderItem={this.renderItem}
 
@@ -310,11 +362,28 @@ export class BloodPresure extends Component {
                   <Right>
                     <View style={styles.iconMore}>
                       <Icon
+                        type='font-awesome'
+                        color='gray'
+                        iconStyle={{ fontSize: 18, padding: 8 }}
+                        name="trash-o" color="gray"
+                        onPress={() => {
+                          this.deleteData(item.bpId); showMessage({
+
+                            message: "Hello there",
+                            description: "successfuly deleted " + `${item.bpDate}`,
+                            type: "success",
+                          })
+                        }}
+                      />
+                    </View>
+                    {/* <View style={styles.iconMore}>
+
+                      <Icon
                         name='angle-right'
                         type='font-awesome'
                         color='gray'
                         onPress={() => console.log('hello')} />
-                    </View>
+                    </View> */}
                   </Right>
                 </ListItem>
                 }
@@ -355,6 +424,7 @@ export class BloodPresure extends Component {
           >
             <ScrollView
               showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps='handled'
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
               <View style={{ flex: 1 }}>
@@ -372,9 +442,9 @@ export class BloodPresure extends Component {
                   }}
                   markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                 />
-                <TextInput onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                <TextInput autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="BP value" />
                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                  <Text style={styles.buttonText}>Period Start ?</Text>
+                  <Text style={styles.buttonText}>Add BP value ?</Text>
 
 
                 </TouchableOpacity>
@@ -442,13 +512,14 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     marginHorizontal: 10
   }, button: {
-    alignItems:'center',
-        justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: "red",
     padding: 12,
     borderRadius: 25,
     // width:'200',
     width: 300,
+    alignItems: 'center',
 
     marginTop: 20
   },
@@ -474,6 +545,11 @@ const styles = StyleSheet.create({
     width: 30,
     // backgroundColor: '#ffcce8',
     borderRadius: 60,
-  }
+  }, squrecolor: {
+    width: 13, height: 13, elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.7,
+  },
 
 });

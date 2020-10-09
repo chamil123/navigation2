@@ -121,7 +121,7 @@ export class NewPost extends Component {
                     </View>
                 </View>
                 <View style={{ flex: 1, padding: 0, borderBottomColor: '#ccc', borderBottomWidth: 1 }}>
-                    <TextInput multiline={true} underlineColorAndroid="transparent"
+                    <TextInput autoFocus={false} multiline={true} underlineColorAndroid="transparent"
                         onChangeText={TextInputValue => this.setState({ TextInputPost: TextInputValue })}
                         placeholder="What's Your mind" style={styles.TextInputStyleClass} onPress={() => this.props.navigation.navigate('NewPost')}>
                         <Text style={{ padding: 8, paddingStart: 20, color: 'grey', fontSize: 25 }}> </Text>

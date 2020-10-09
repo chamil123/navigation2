@@ -10,12 +10,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CustomHeader, CustomDrawerContent } from './src';
 import {
   HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, ProductScreen2, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
-  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart
+  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda,PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement,PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd
 } from './src/tab';
 import { NotificationsScreen } from './src/drawer';
 import { RegisterScreen, LoginScreen, Login2Screen } from './src/auth';
 import { FlatList } from 'react-native-gesture-handler';
 import { IMAGE } from './src/constants/image';
+
 
 
 const styles = StyleSheet.create({
@@ -261,8 +262,8 @@ function DrawerNavigator({ navigation }) {
     //   <Drawer.Screen name="MenuTab" component={TabNavigator} />
     // <Drawer.Screen name="Notifications" component={NotificationsScreen} />
     // </Drawer.Navigator>
-    <Drawer.Navigator initialRouteName="HomeScreen"  drawerStyle={{backgroundColor: 'transparent'}} drawerContent={() => <CustomDrawerContent navigation={navigation}  />}>
-  
+    <Drawer.Navigator initialRouteName="HomeScreen" drawerStyle={{ backgroundColor: 'transparent' }} drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+
       <Drawer.Screen name="HomeScreen" component={HomeScreen} />
       <Drawer.Screen name="Notifications" component={NotificationsScreen} />
       <Drawer.Screen name="member" component={MemberProfile} />
@@ -312,7 +313,20 @@ export default class App extends React.Component {
           <StackApp.Screen name="SleepingTimeChart" component={SleepingTimeChart} options={navOptionHandler} />
           <StackApp.Screen name="TestMail" component={TestMail} options={navOptionHandler} />
           <StackApp.Screen name="WeightChart" component={WeightChart} options={navOptionHandler} />
-        </StackApp.Navigator>
+          <StackApp.Screen name="HealthDietChart" component={HealthDietChart} options={navOptionHandler} />
+          <StackApp.Screen name="LabourRoomPacking" component={LabourRoomPacking} options={navOptionHandler} />
+          <StackApp.Screen name="MealPlan" component={MealPlan} options={navOptionHandler} />
+          <StackApp.Screen name="PeriodAgenda" component={PeriodAgenda} options={navOptionHandler} />
+          <StackApp.Screen name="PeriodHistory" component={PeriodHistory} options={navOptionHandler} />
+          <StackApp.Screen name="SpecialNotes" component={SpecialNotes} options={navOptionHandler} />
+          <StackApp.Screen name="TestChart" component={TestChart} options={navOptionHandler} />
+          <StackApp.Screen name="AreaChart" component={AreaCharts} options={navOptionHandler} />
+          <StackApp.Screen name="AddMesurement" component={AddMesurement} options={navOptionHandler} />
+          <StackApp.Screen name="PrograssCircular" component={PrograssCircular} options={navOptionHandler} />
+          <StackApp.Screen name="FoodPhyramid" component={FoodPhyramid} options={navOptionHandler} />
+          <StackApp.Screen name="WightGainBarchart" component={WightGainBarchart} options={navOptionHandler} />
+          <StackApp.Screen name="WeightGainDetailsAdd" component={WeightGainDetailsAdd} options={navOptionHandler} />
+           </StackApp.Navigator>
       </NavigationContainer>
     );
   }

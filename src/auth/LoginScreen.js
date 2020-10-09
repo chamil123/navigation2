@@ -2,11 +2,24 @@ import React, { Component } from 'react';
 import { Text, ScrollView, Image, View, SafeAreaView, TouchableOpacity, StyleSheet,StatusBar,TouchableHighlight } from 'react-native';
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import { Button } from 'react-native-elements';
 
 
 export class LoginScreen extends Component {
+
+  constructor(props){
+    super(props)
+    this.checkToken();
+  }
+  checkToken=async()=>{
+    const token=await AsyncStorage.getItem('memberNames');
+    if(token){
+      this.props.navigation.navigate('HomeApp');
+    }else{
+      this.props.navigation.navigate('Login2')
+    }
+  }
   render() {
     return (
       <SafeAreaView style={{ flex: 1 ,justifyContent: 'center' , alignItems: 'center'}}>

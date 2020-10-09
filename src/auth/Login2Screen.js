@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
-import { Text, StatusBar,View, Image, SafeAreaView, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import { Text, StatusBar, View, Image, SafeAreaView, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
-
+import Database from '../Database';
+const db = new Database();
 import AsyncStorage from '@react-native-community/async-storage';
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+} from 'react-native-indicators';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -74,8 +86,41 @@ export class Login2Screen extends Component {
         super(props)
         this.state = {
             TextInputName: '',
-            TextInputpassword: ''
+            TextInputpassword: '',
+            dbs: '',
+            isLoading: true,
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+
+        this.loadDbVarable = this.loadDbVarable.bind(this);
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+            isLoading: false,
+        });
+        db.listBag(this.state.dbs).then((data) => {
+            result = data;
+            if (result == 0) {
+
+                db.addItemOfMother_bag(this.state.dbs).then((result) => {
+
+                }).catch((err) => {
+                    console.log(err);
+                })
+            }
+            this.setState({
+
+                isLoading: false,
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
+
+
+
     }
     InputUsers = () => {
         const { TextInputName } = this.state;
@@ -88,81 +133,98 @@ export class Login2Screen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                member_name: TextInputName,
+                member_email: TextInputName,
                 member_password: TextInputpassword,
             })
         }).then((response) => response.json())
             .then((responseJson) => {
-                AsyncStorage.setItem('memberNames', TextInputName);
-               
-                if(responseJson=="Login success"){
-                    Alert.alert(responseJson);
-                    this.props.navigation.navigate('HomeApp')
-                }else{
-                    Alert.alert("Login Fail");
+                id = "";
+                member_name = "";
+                member_role_id = "";
+                this.setState({
+                    isLoading: false,
+                }, function () {
+                    // In this block you can do something with new state.
+                });
+                if (responseJson !== "") {
+                    AsyncStorage.setItem('memberNames', responseJson.member_name).then(
+                        responseJson => {
+                            this.props.navigation.navigate('HomeApp', { msg: responseJson })
+                        }
+                    );
+                    AsyncStorage.setItem('memberId', responseJson.member_role);
+                } else {
+                    // Alert.alert("Login Fail");
+                    showMessage({
+                        message: "Login Fail",
+                        description: "Username or password incorrect" + `${responseJson}`,
+                        backgroundColor: 'red',
+
+                    })
                     this.props.navigation.navigate('Login2')
                 }
-                
             }).catch((error) => {
                 console.error(error);
             })
+
     }
     render() {
-        return (
-            <SafeAreaView style={{ flex: 1 }}>
-                   <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
-                   <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-                <ScrollView
-                    contentInsetAdjustmentBehavior="automatic"
-                    style={styles.scrollView}>
-                   
-                    <View style={{
-                        flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
-                        paddingVertical: 0,
-                    }}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}>Log in </Text>
-                            <Text style={{ fontSize: 12, marginTop: -2, color: 'grey' }}>Use email to Login</Text>
-                            <Image style={{ width: 210, height: 190, marginLeft: 0 }}
-                                source={IMAGE.ICON_LOG}
-                                resizeMode="contain"
-                            />
-                        </View>
-                        <Animatable.View animation="fadeInUp">
-                            <TextInput  onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Username" />
-                            <TextInput  secureTextEntry={true}  onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 15 }} label="Password" />
+        let { isLoading } = this.state
+        if (isLoading) {
+            return (
 
-                            <TouchableOpacity  activeOpacity={1.0}  ref="touchableOpacity" style={{ marginTop: 60, }} onPress={this.InputUsers}>
+                <BarIndicator color='#fbb146' />
 
-                                <LinearGradient colors={['#fbb146', '#f78a2c']}
-                                    // '#ffd600',
-                                    // locations={[1,0.3,0.5]}
-                                    start={{ x: 0, y: 1 }}
-                                    end={{ x: 1, y: 0.9 }}
-                                    // locations={[0.3, 0.6,1]} 
-                                    style={styles.linearGradient}>
-                                    <Text style={styles.buttonText}>
-                                        Log in
+            );
+        } else {
+            return (
+                <SafeAreaView style={{ flex: 1 }}>
+                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
+                    <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+                    <FlashMessage duration={1000} />
+                    <ScrollView
+                        contentInsetAdjustmentBehavior="automatic"
+                        style={styles.scrollView}>
+
+                        <View style={{
+                            flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
+                            paddingVertical: 0,
+                        }}>
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}>Log in </Text>
+                                <Text style={{ fontSize: 12, marginTop: -2, color: 'grey' }}>Use email to Login</Text>
+                                <Image style={{ width: 210, height: 190, marginLeft: 0 }}
+                                    source={IMAGE.ICON_LOG}
+                                    resizeMode="contain"
+                                />
+                            </View>
+                            <Animatable.View animation="fadeInUp">
+                                <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Username" />
+                                <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 15 }} label="Password" />
+
+                                <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 60, }} onPress={this.InputUsers}>
+
+                                    <LinearGradient colors={['#fbb146', '#f78a2c']}
+
+                                        start={{ x: 0, y: 1 }}
+                                        end={{ x: 1, y: 0.9 }}
+
+                                        style={styles.linearGradient}>
+                                        <Text style={styles.buttonText}>
+                                            Log in
   </Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                                    </LinearGradient>
+                                </TouchableOpacity>
 
-                        </Animatable.View>
-                        {/* <Text>Login2!</Text>
-                        <TouchableOpacity style={{ marginTop: 20 }}
-                            onPress={() => this.props.navigation.navigate('HomeApp')}
-
-                        >
-                            <Text>Home</Text>
-                        </TouchableOpacity> */}
+                            </Animatable.View>
 
 
+                        </View>
 
-                    </View>
 
-
-                </ScrollView>
-            </SafeAreaView>
-        );
+                    </ScrollView>
+                </SafeAreaView>
+            );
+        }
     }
 }

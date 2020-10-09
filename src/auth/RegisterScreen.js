@@ -5,6 +5,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-community/async-storage';
+import FlashMessage, { showMessage } from "react-native-flash-message";
+// import ValidationComponent from 'react-native-form-validator';
+
+
+
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   BallIndicator,
   BarIndicator,
@@ -62,11 +68,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold'
   }, linearGradient: {
-    // flex: 1,
-    // width: 280,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 5,
+    borderRadius: 25,
   },
   buttonText: {
     fontSize: 18,
@@ -93,39 +97,82 @@ export class RegisterScreen extends Component {
 
       isLoading: true,
 
-      PickerValueHolder: ''
+      PickerValueHolder: '',
+      value: null,
+      items: [],
+
+      emailError: "",
     }
   }
+
   InputUsers = () => {
+    const emailError = validate("email", this.state.TextInputEmail)
+    this.setState({
+      emailError: emailError,
+      passwordError: passwordError
+    })
+
+    // this.validate({
+    //   TextInputName: { required: true},
+    //   TextInputEmail: {email: true},
+    //   TextInputPhoneNumber: {numbers: true},
+    //   PickerValueHolder:{required: true},
+    //   // date: {date: 'YYYY-MM-DD'}
+    // });
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
     const { TextInputPhoneNumber } = this.state;
     const { TextInputpassword } = this.state;
     const { PickerValueHolder } = this.state;
-    // Alert.alert("sdsdsd");
-    fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/insert.php', {
-      method: 'post',
-      header: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        member_name: TextInputName,
-        member_email: TextInputEmail,
-        member_mobilenumber: TextInputPhoneNumber,
-        member_password: TextInputpassword,
-        member_role: PickerValueHolder,
-      })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        AsyncStorage.setItem('memberNames', TextInputName);
-        Alert.alert(responseJson);
-        this.props.navigation.navigate('HomeApp');
-        Alert.alert(this.state.PickerValueHolder);
+    if (PickerValueHolder !== '') {
+      fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/insert.php', {
+        method: 'post',
+        header: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          member_name: TextInputName,
+          member_email: TextInputEmail,
+          member_mobilenumber: TextInputPhoneNumber,
+          member_password: TextInputpassword,
+          member_role: PickerValueHolder,
+        })
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({
+            isLoading: false,
+          }, function () {
 
-      }).catch((error) => {
-        console.error(error);
+          });
+          if (responseJson == "Insert success") {
+            AsyncStorage.setItem('memberNames', TextInputName).then(
+              responseJson => {
+                // this.props.navigation.navigate('HomeApp');
+              }
+            );
+            AsyncStorage.setItem('memberId', PickerValueHolder);
+
+          } else {
+            showMessage({
+
+              message: "Register Fail",
+              description: "" + `${responseJson}`,
+              backgroundColor: 'red'
+            })
+            this.props.navigation.navigate('Register')
+          }
+        }).catch((error) => {
+          console.error(error);
+        })
+
+
+    } else {
+      showMessage({
+        message: "Please select an option first",
+        backgroundColor: 'red'
       })
+    }
   }
 
 
@@ -139,20 +186,38 @@ export class RegisterScreen extends Component {
 
     }).then((response) => response.json())
       .then((responseJson) => {
+        for (var i = 0; i < responseJson.length; i++) {
+          role_id = responseJson[i].id
+          role_name = responseJson[i].role_name
+          console.warn(role_id);
+        }
+
+        console.log(responseJson);
+
         // var datas=JSON.stringify(responseJson);
         // Alert.alert(datas.id);
         this.setState({
           isLoading: false,
-          dataSource: responseJson
+          dataSource: responseJson,
+          _role_id: role_id,
+          items: role_name,
+
         }, function () {
           // In this block you can do something with new state.
         });
       }).catch((error) => {
         console.error(error);
       })
+
+
   }
 
+  handleChangeOption(itemValue) {
+    if (itemValue !== 0) {
+      this.setState({ PickerValueHolder: itemValue });
 
+    }
+  }
   render() {
     let { isLoading } = this.state
 
@@ -169,77 +234,82 @@ export class RegisterScreen extends Component {
         <BarIndicator color='#fbb146' />
 
       );
-    } else { 
+    } else {
 
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+          <FlashMessage duration={1000} />
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}>
+            <View style={{
+              flex: 1, justifyContent: 'center', paddingHorizontal: 15,
+              paddingVertical: 0
+            }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}> Create New Account </Text>
 
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={{
-            flex: 1, justifyContent: 'center', paddingHorizontal: 15,
-            paddingVertical: 0,
-          }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}> Create New Account </Text>
+                <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 20, color: 'grey' }}>Use email to register</Text>
+              </View>
+              <Animatable.View animation="fadeInLeft">
+                <View style={{ borderBottomWidth: 0.6, paddingBottom: 5 }}>
+                  <Picker
 
-              <Text style={{ fontSize: 12, marginTop: -2, color: 'grey' }}>Use email to register</Text>
-            </View>
-            <Animatable.View animation="fadeInUp">
+                    mode="dropdown"
+                    // selectedValue={this.state.datasource[index].packselectedValue}
+                    selectedValue={this.state.PickerValueHolder}
+                    // style={{ borderBottomColor: 'red', borderWidth: 1 }}
+                    // onValueChange={this.handleChangeOption}
+                    prompt='Options'
+                    onValueChange={
 
-              <Picker
-                selectedValue={this.state.PickerValueHolder}
+                      (itemValue, itemIndex) =>
 
-                onValueChange={(itemValue, itemIndex) => this.setState({ PickerValueHolder: itemValue })}
-              // onChangeText={itemValue => this.setState({ PickerValueHolder: itemValue })}
-              >
+                        this.setState(
+                          { PickerValueHolder: itemValue },
+                          (name, index) => {
+                          }
+                        )
 
-                {this.state.dataSource.map((item, key) => (
-                  <Picker.Item label={item.role_name} value={item.role_name} key={key} />)
-                )}
 
-              </Picker>
-              {/* <Dropdown
-                label='Favorite Fruit'
-                data={this.state.dataSource.id}
-              // data={data}
-              /> */}
+                    }
+                  >
+                    <RedPickerItem label={'Please select an option'} value="red" color='red' fontSize='15' value={0} />
 
-              <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" />
-              <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Email address" />
-              <TextInput onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobil number" />
-              <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10, }} label="Password" />
-              <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
-                {/* <View style={{
-                backgroundColor: '#ff9100', alignItems: 'center',
-                justifyContent: 'center', borderRadius: 25,
-                height: 50,
-                marginTop: 50
-              }}
-              >
-                <Text style={{ color: 'white' }}>Button</Text>
-              </View> */}
-                <LinearGradient colors={['#fbb146', '#f78a2c']}
-                  // '#ffd600',
-                  // locations={[1,0.3,0.5]}
-                  start={{ x: 0, y: 1 }}
-                  end={{ x: 1, y: 0.9 }}
-                  // locations={[0.3, 0.6,1]} 
-                  style={styles.linearGradient}>
-                  <Text style={styles.buttonText}>
-                    Sign in
+                    {this.state.dataSource.map((item, key) => (
+
+                      <Picker.Item label={item.role_name} value={item.id} key={key} />)
+                    )}
+
+                  </Picker>
+                </View>
+                <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" />
+                <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Email address" />
+                <TextInput
+                  onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
+                  keyboardType="numeric"
+                  maxLength={10}
+                  style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobil number" />
+                <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10, }} label="Password" />
+                <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
+
+                  <LinearGradient colors={['#fbb146', '#f78a2c']}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 1, y: 0.9 }}
+                    style={styles.linearGradient}>
+                    <Text style={styles.buttonText}>
+                      Sign in
                 </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </Animatable.View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animatable.View>
 
-          </View>
-        </ScrollView>
+            </View>
+          </ScrollView>
 
 
-        {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text>Register!</Text>
                 <TouchableOpacity style={{ marginTop: 20 }}
                   onPress={() => this.props.navigation.navigate('HomeApp')}
@@ -249,8 +319,14 @@ export class RegisterScreen extends Component {
                 </TouchableOpacity>
               </View> */}
 
-      </SafeAreaView>
-    );
+        </SafeAreaView>
+      );
+    }
   }
-}
+} class RedPickerItem extends Component {
+  render() {
+    return (
+      <Picker.Item {...this.props} style={{ color: '#fff', placeholderTextColor: '#fff' }} />
+    )
+  }
 }

@@ -43,17 +43,17 @@ export class EliminationChart extends Component {
             _current_date: date,
             _current_time: time,
             _list_elimination: [],
-
+            dbs: '',
 
             _kick_count: 0,
             increment: 0,
 
             data: {
-                labels: ["j"],
+                labels: ["."],
 
                 datasets: [
                     {
-                        data: [1],
+                        data: [0],
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
@@ -71,17 +71,27 @@ export class EliminationChart extends Component {
 
 
         }
-
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        this.loadDbVarable = this.loadDbVarable.bind(this);
 
     }
-    componentDidMount() {
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
         this.getData();
         this.getaAllEliminateData();
+    }
+    componentDidMount() {
+        // this.getData();
+        // this.getaAllEliminateData();
     }
     getData() {
 
         const self = this;
-        db.listEliminationCountByDate().then((data) => {
+        db.listEliminationCountByDate(this.state.dbs).then((data) => {
             let result = data;
             if (result == 0) {
 
@@ -117,7 +127,7 @@ export class EliminationChart extends Component {
         const _format = 'YYYY-MM-DD'
         const _selectedDay = moment(this.state.selectedDate).format(_format);
 
- 
+
         let data = {
             // pId: this.state.pId,
             eDate: _selectedDay.toString(),
@@ -126,13 +136,14 @@ export class EliminationChart extends Component {
 
         }
 
-        db.addElimination(data).then((result) => {
-            console.log(result);
-           
+        db.addElimination(this.state.dbs,data).then((result) => {
+            // console.log(result);
+            this.getData();
+            this.getaAllEliminateData();
 
         }).catch((err) => {
             console.log(err);
-         
+
         })
 
 
@@ -140,7 +151,7 @@ export class EliminationChart extends Component {
 
     getaAllEliminateData() {
 
-        db.listAllElimination().then((results) => {
+        db.listAllElimination(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
@@ -364,9 +375,9 @@ export class EliminationChart extends Component {
 
 
                                 {/* <TextInput /> */}
-                                <TextInput onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter Comment" />
                                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add Activity</Text>
+                                    <Text style={styles.buttonText}>Add </Text>
 
 
                                 </TouchableOpacity>
@@ -482,10 +493,13 @@ export class EliminationChart extends Component {
         borderRadius: 25,
         // width:'200',
         width: 300,
+        alignItems:'center',
+        justifyContent:'center',
 
         marginTop: 20
     }, buttonText: {
         fontSize: 15,
         color: '#fff',
+  
     }
 });

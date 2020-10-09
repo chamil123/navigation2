@@ -42,7 +42,7 @@ export class UrinationTime extends Component {
             TextInputdaValue: '',
             _current_time: time,
             _list_Urination_time: [],
-
+            dbs: '',
             data: {
                 labels: ["j"],
 
@@ -66,18 +66,23 @@ export class UrinationTime extends Component {
 
 
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
     }
-    componentDidMount() {
-
-        // this.getData();
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
         this.getaAllUrinationData();
-
-
-
+        this.listUrinationCountByDate();
+    }
+    listUrinationCountByDate() {
         const self = this;
-        db.listUrinationCountByDate().then((data) => {
+        db.listUrinationCountByDate(this.state.dbs).then((data) => {
             let result = data;
             if (result == 0) {
 
@@ -115,6 +120,15 @@ export class UrinationTime extends Component {
             console.log(err);
         })
 
+    }
+    componentDidMount() {
+
+        // this.getData();
+
+
+
+
+
 
     }
     saveData() {
@@ -130,14 +144,15 @@ export class UrinationTime extends Component {
 
         }
 
-        db.addUrination(data).then((result) => {
-           
+        db.addUrination(this.state.dbs,data).then((result) => {
+            this.listUrinationCountByDate();
+            this.getaAllUrinationData();
             // this.getData();
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
         }).catch((err) => {
             console.log(err);
-           
+
         })
 
 
@@ -145,7 +160,7 @@ export class UrinationTime extends Component {
 
     getaAllUrinationData() {
 
-        db.listAllUrination().then((results) => {
+        db.listAllUrination(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
@@ -386,9 +401,9 @@ export class UrinationTime extends Component {
                                     markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                 />
                                 {/* <TextInput /> */}
-                                <TextInput onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
                                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add Activity</Text>
+                                    <Text style={styles.buttonText}>Add </Text>
                                 </TouchableOpacity>
 
                             </View>

@@ -13,7 +13,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Avatar } from 'react-native-elements';
 
 import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob'
+// import RNFetchBlob from 'react-native-fetch-blob';
 import { BarIndicator } from 'react-native-indicators';
 const options = {
   title: 'Select Avatar',
@@ -286,7 +287,7 @@ export class MemberProfile extends Component {
             }}>
 
 
-              <TextInput value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
               {/* <FlatList
                 data={this.state.dataSource}
                 ItemSeparatorComponent={this.FlatListItemSeparator}
@@ -306,11 +307,11 @@ export class MemberProfile extends Component {
               </FlatList> */}
 
 
-              <TextInput value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
-              <TextInput value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
-              <TextInput value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
 
-              <TextInput value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
               <TouchableOpacity style={{ marginTop: 30 }} onPress={this.InputUsers} >
                 <LinearGradient colors={['#fbb146', '#f78a2c']}
                   // '#ffd600',

@@ -40,16 +40,28 @@ export class BabyActivities extends Component {
 
             _kick_count: 0,
             increment: 0,
+            dbs: '',
 
 
         }
+        db.initDB().then((result) => {
+            this.loadDbVarable(result);
+        })
+        // this.getData = this.getData.bind(this);
+        this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+        this.getaAllClickData();
     }
     componentDidMount() {
 
 
-        this.getaAllClickData();
+        // this.getaAllClickData();
     }
     saveData() {
         this.RBSheet.close();
@@ -67,14 +79,14 @@ export class BabyActivities extends Component {
             baText: this.state.TextInputdaValue
         }
 
-        console.log("################ :" + _selectedDay.toString());
-        console.log("^^^^^^^^^^^^^^^^ :" + this.state.TextInputdaValue);
-        db.addBabyActivity(data).then((result) => {
+        // console.log("################ :" + _selectedDay.toString());
+        // console.log("^^^^^^^^^^^^^^^^ :" + this.state.TextInputdaValue);
+        db.addBabyActivity(this.state.dbs,data).then((result) => {
             console.log(result);
             this.setState({
                 isLoading: false,
             });
-            this.getData();
+            this.getaAllClickData();
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
         }).catch((err) => {
@@ -89,7 +101,7 @@ export class BabyActivities extends Component {
 
     getaAllClickData() {
 
-        db.listAllBabyActivity().then((results) => {
+        db.listAllBabyActivity(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
@@ -151,7 +163,7 @@ export class BabyActivities extends Component {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
                     <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
-                 
+
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentInsetAdjustmentBehavior="automatic"
@@ -216,7 +228,7 @@ export class BabyActivities extends Component {
                                     </TouchableOpacity>
                                 </Card>
                                 <Card style={[styles.card, { backgroundColor: '#fce6d2' }]} >
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('SleepingTimeChart')}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('')}>
                                         <View style={{ alignItems: "center" }} >
                                             <View style={{ height: 45, padding: 10 }}>
                                                 <Image source={IMAGE.ICON_BABY_BOTTLE}
@@ -349,7 +361,7 @@ export class BabyActivities extends Component {
 
 
                                 {/* <TextInput /> */}
-                                <TextInput onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="PB value" />
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
                                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                     <Text style={styles.buttonText}>Add Activity</Text>
 
