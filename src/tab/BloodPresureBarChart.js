@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, ActivityIndicator, View, TextInput, DrawerLayoutAndroidBase, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, ScrollView, ActivityIndicator, View, TextInput, DrawerLayoutAndroidBase, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { CustomHeader } from '../index';
 import Database from '../Database';
@@ -13,7 +13,10 @@ import Swipeout from 'react-native-swipeout';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import moment from 'moment'; // 2.20.1
-
+import { IMAGE } from '../constants/image';
+import LinearGradient from 'react-native-linear-gradient';
+import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
+import SegmentedControlTab from "react-native-segmented-control-tab";
 // import Echarts from 'native-echarts';
 const db = new Database();
 var swipeoutBtns = [
@@ -40,6 +43,8 @@ export class BloodPresureBarChart extends Component {
     super();
     this.state = {
       deletedRowKey: null,
+      selectedIndex: 0,
+      // backgr,
       selectedDate: new Date(),
       prodId: '',
       prodName: '',
@@ -48,58 +53,287 @@ export class BloodPresureBarChart extends Component {
       isLoading: false,
       basicOkCancelVisible: false,
       data: {
-        // color: ['#4cabce', '#d50000', '#003366', '#e5323e'],
-        color: ['#4cabce', '#d50000', '#003366'],
+        colors: ['#4cabce', '#d50000', '#003366'],
+        // title: {
+        //   text: 'Systolic',
+
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow'
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
           }
         },
         legend: {
-          data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+          data: ['High', 'Pre-High', 'Ideal', 'Low']
         },
-
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        grid: {
+          // left: '3%',
+          // right: '4%',
+          // bottom: '3%',
+          // containLabel: true
+        },
         xAxis: [
           {
             type: 'category',
-            axisTick: { show: false },
+            // boundaryGap: false,
             data: []
           }
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            min: 70,
           }
         ],
-        backgroundColor: ' #ffc15a',
         series: [
           {
-            // name: 'Forest',
-            type: 'bar',
-            name: "test",
-            stack: 'color',
-            barGap: 0,
-            // label: labelOption,
-            data: [0]
+            name: 'High',
+            type: 'line',
+            // stack: '总量',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: 'red',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'red',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'red', opacity: 0.2 },
+            data: []
           },
           {
-            // name: 'Steppe',
-            type: 'bar',
-            // label: labelOption,
-            data: [0]
+            name: 'Pre-High',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'yellow',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'yellow',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'yellow', opacity: 0.2 },
+            data: []
           },
           {
-            // name: 'Desert',
-            type: 'bar',
-            //  label: labelOption,
-            data: [0]
+            name: 'Ideal',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'green',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'green',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'green', opacity: 0.2 },
+            data: []
+          },
+          {
+            name: 'Low',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'blue',
+                lineStyle: {
+                  color: 'blue',
+                  opacity: 0.2
+                }
+              }
+            },
+            areaStyle: { color: 'blue', opacity: 0.3 },
+            data: []
+          },
+          {
+            name: '搜索引擎',
+            type: 'line',
+            stack: '总量',
+
+            itemStyle: {
+              normal: {
+                color: 'red',
+                lineStyle: {
+                  color: 'red',
+                  opacity: 0.2
+                }
+              }
+            },
+            areaStyle: { color: 'red', opacity: 0.2 },
+            data: []
           },
 
-
-
+          {
+            name: 'Your Value',
+            type: 'bar',
+            data: [],
+          }
         ]
+      },
 
+      data2: {
+        colors: ['#4cabce', '#d50000', '#003366'],
+        // title: {
+        //   text: 'Diastolic',
+
+        // },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: ['High', 'Pre-High', 'Ideal', 'Low']
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        grid: {
+          // left: '3%',
+          // right: '4%',
+          // bottom: '3%',
+          // containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            // boundaryGap: false,
+            data: []
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            min: 40,
+          }
+        ],
+        series: [
+          {
+            name: 'High',
+            type: 'line',
+            // stack: '总量',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: 'red',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'red',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'red', opacity: 0.2 },
+            data: []
+          },
+          {
+            name: 'Pre-High',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'yellow',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'yellow',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'yellow', opacity: 0.2 },
+            data: []
+          },
+          {
+            name: 'Ideal',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'green',
+                opacity: 0.9,
+                lineStyle: {
+                  color: 'green',
+                  opacity: 0.9
+                }
+              }
+            },
+            areaStyle: { color: 'green', opacity: 0.2 },
+            data: []
+          },
+          {
+            name: 'Low',
+            type: 'line',
+            // stack: '总量',
+            itemStyle: {
+              normal: {
+                color: 'blue',
+                lineStyle: {
+                  color: 'blue',
+                  opacity: 0.2
+                }
+              }
+            },
+            areaStyle: { color: 'blue', opacity: 0.3 },
+            data: []
+          },
+          {
+            name: '搜索引擎',
+            type: 'line',
+            stack: '总量',
+
+            itemStyle: {
+              normal: {
+                color: 'red',
+                lineStyle: {
+                  color: 'red',
+                  opacity: 0.2
+                }
+              }
+            },
+            areaStyle: { color: 'red', opacity: 0.2 },
+            data: []
+          },
+
+          {
+            name: 'Your Value',
+            type: 'bar',
+            data: [],
+          }
+        ]
       }
     };
     db.initDB().then((result) => {
@@ -107,7 +341,12 @@ export class BloodPresureBarChart extends Component {
     })
     this.loadDbVarable = this.loadDbVarable.bind(this);
   }
-
+  handleIndexChange = index => {
+    this.setState({
+      ...this.state,
+      selectedIndex: index
+    });
+  };
   loadDbVarable(result) {
     this.setState({
       dbs: result,
@@ -120,101 +359,76 @@ export class BloodPresureBarChart extends Component {
     var temp3 = [];
     var temp4 = [];
     var temp5 = [];
+    var temp6 = [];
+    var temp7 = [];
+    var temp8 = [];
+
+    var temp9 = [];
+    var temp10 = [];
+    var temp11 = [];
+    var temp12 = [];
+    var temp13 = [];
     var _monthDate;
-    var tempMin = 0;
-    var weight_firstMonth = 0;
-    var finalValue = 0;
-    var minValue = 0;
-    var maxValue = 0;
-    var temppp = 0;
-    var temppp2 = 0;
-    var tempmax = 0;
     const self = this;
     const dataClone = { ...self.state.data }
-    db.listWeightGain(this.state.dbs).then((data) => {
-
-      result = data;
+    const dataClone2 = { ...self.state.data2 }
+    db.listBloodPresure(this.state.dbs).then((data) => {
+      let result = data;
       if (result == 0) {
-        for (var i = 0; i < 3; i++) {
-
-
-        }
-        dataClone.series[0].data = [1, 1, 1];
-        dataClone.series[1].data = [1, 1, 1];
-        dataClone.series[2].data = [1, 1, 1];
-
-        // dataClone.xAxis[0].data = [0,0,0];
-        dataClone.color[0] = ['rgba(242, 242,242, 0.2)'];
-        dataClone.color[1] = ['rgba(242, 242,242, 0.1)'];
-        dataClone.color[2] = ['rgba(242, 242,242, 0.2)'];
 
         this.setState({
           isLoading: false,
-          _list_wgData: '',
-
+          _list_bpData: '',
 
         });
+
       } else {
 
+
         for (var i = 0; i < result.length; i++) {
-          if (i == 0) {
-            weight_firstMonth = [result[i].wgValue];
-          }
-          _monthDate = result[i].wgDate.substring(5, 10);
-          temp2.push(parseFloat([result[i].wgValue]));
+          _monthDate = result[i].bpDate.substring(5, 10);
+
           temp3.push([_monthDate]);
-          if (tempMin != 0) {
+          temp4.push(parseFloat([result[i].bpslow]));
+          temp5.push(parseFloat([result[i].bpsideal]));
+          temp6.push(parseFloat([result[i].bpsprehigh]));
+          temp7.push(parseFloat([result[i].bpshigh]));
+          temp8.push(parseFloat([result[i].bpValue]));
 
-            minValue += (12 / 10);
-            maxValue += (14 / 10);
-            temppp = parseFloat(weight_firstMonth) + parseFloat(minValue.toFixed(2));
-            tempmax = parseFloat(weight_firstMonth) + parseFloat(maxValue.toFixed(2));
 
-            temp4.push(temppp);
-            temp5.push(tempmax);
-
-          } else {
-
-            temppp = weight_firstMonth;
-            tempmax = weight_firstMonth;
-            temp4.push(parseFloat(temppp));
-            temp5.push(parseFloat(tempmax));
-
-          }
-
-          tempMin = [result[i].wgValue];
-
+          temp9.push(parseFloat([result[i].bpdlow]));
+          temp10.push(parseFloat([result[i].bpdideal]));
+          temp11.push(parseFloat([result[i].bpdprehigh]));
+          temp12.push(parseFloat([result[i].bpdhigh]));
+          temp13.push(parseFloat([result[i].bpdstValue]));
         }
         dataClone.xAxis[0].data = temp3;
-        dataClone.series[1].data = temp2;
-        dataClone.series[0].data = temp4;
+        dataClone.series[0].data = temp7;
+        dataClone.series[1].data = temp6;
         dataClone.series[2].data = temp5;
+        dataClone.series[3].data = temp4;
+        dataClone.series[5].data = temp8;
+
+        dataClone2.xAxis[0].data = temp3;
+        dataClone2.series[5].data = temp13;
+        dataClone2.series[3].data = temp9;
+        dataClone2.series[2].data = temp10;
+        dataClone2.series[1].data = temp11;
+        dataClone2.series[0].data = temp12;
 
         self.setState({
           isLoading: false,
           data: dataClone,
-          _list_wgData: data,
-          _min_weight: temppp,
-          _max_weight: tempmax,
-        });
-
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-    db.lastWeightGain(this.state.dbs).then((data) => {
-
-      result = data;
-      if (result != 0) {
-        var _lastValue = result;
-        self.setState({
-          _lastWeigtValue: _lastValue,
+          data2: dataClone2,
+          _list_bpData: data,
         });
 
       }
     }).catch((err) => {
       console.log(err);
     })
+
+
   }
   saveData() {
     this.RBSheet.close();
@@ -229,7 +443,7 @@ export class BloodPresureBarChart extends Component {
       wgDate: _selectedDay.toString(),
       wgValue: parseInt(this.state.TextInpuPbValue)
     }
-  
+
     db.addWGvalue(this.state.dbs, data).then((result) => {
       // console.log(result);
       this.getData();
@@ -267,16 +481,42 @@ export class BloodPresureBarChart extends Component {
       sectionId: 1
 
     };
+
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffc15a' }}>
-        <CustomHeader bgcolor='#ffc15a' title="Home detail" navigation={this.props.navigation} bdcolor='#ffc15a' />
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
         <View style={styles.header}>
+          {/* <View> */}
+          <SegmentedControlTab
+            values={["Systolic", "Diastolic"]}
+            selectedIndex={this.state.selectedIndex}
+            onTabPress={this.handleIndexChange}
 
-          <ECharts
-            option={this.state.data}
-            height={300}
-
+            borderRadius={0}
+            tabsContainerStyle={{ height: 40, backgroundColor: '#F2F2F2' }}
+            tabStyle={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderColor: 'transparent',borderRadius:5 }}
+            activeTabStyle={{ backgroundColor: 'white', margin: 2 }}
+            tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
+            activeTabTextStyle={{ color: '#888888' }}
           />
+          {this.state.selectedIndex === 0
+            &&
+
+            <ECharts
+              option={this.state.data}
+            // height={300}
+            />
+
+          }
+          {this.state.selectedIndex === 1
+            && <ECharts
+              option={this.state.data2}
+            // height={300}
+            />
+          }
+          {/* </View> */}
+
+      
           {/* <Swipeout right={swipeoutBtns}>
             <View>
               <Text>Swipe me left</Text>
@@ -291,69 +531,55 @@ export class BloodPresureBarChart extends Component {
 
             <FlatList
 
-              style={{
-                backgroundColor: 'white', marginVertical: 0,
-                //  borderRadius: 16,
-                // elevation: 2,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 3 },
-                shadowOpacity: 0.7,
-                shadowRadius: 8,
-
-              }}
-              ListEmptyComponent={this.emptyComponent}
+              style={{ backgroundColor: '#ffc15a' }}
               keyExtractor={this.keyExtractor}
-              data={this.state._list_wgData}
-
+              ListEmptyComponent={this.emptyComponent}
+              data={this.state._list_bpData}
               // renderItem={this.renderItem}
 
-              renderItem={({ item }) =>
-                <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
-                  <ListItem
-                    style={{
-                      height: 50, paddingTop: 15,
+              renderItem={({ item }) => <ListItem
+                style={{ height: 50, paddingTop: 15, borderBottomColor: 'white' }}
 
-                    }}
+              >
+                <Left>
+                  <Icon
 
-                    parentFlatList={this}
-                  >
+                    name='heartbeat'
+                    type='font-awesome'
+                    color='red'
 
-                    <Left>
-                      <View style={styles.iconMore}>
+                    onPress={() => console.log('hello')} />
+                </Left>
+                <Body style={{ marginLeft: -150 }}>
+                  <Text style={{ color: 'white', fontSize: 13 }}>{item.bpDate}</Text>
 
-                        <Icon
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 2 }}>Systolic </Text>
+                    <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
+                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 3 }}>Diastolic</Text>
+                    <Text style={styles.dateText}> {item.bpdstValue} mm hg</Text>
+                  </View>
+                </Body>
+                <Right>
+                  <View style={styles.iconMore}>
+                    <Icon
+                      type='font-awesome'
+                      color='white'
+                      iconStyle={{ fontSize: 18, padding: 8 }}
+                      name="trash-o" color="white"
+                      onPress={() => {
+                        this.deleteData(item.bpId); showMessage({
 
-                          name='line-chart'
-                          type='font-awesome'
-                          color='gray'
-                          iconStyle={{ fontSize: 18 }}
-                          onPress={() => console.log('hello')} />
-                      </View>
-                    </Left>
-                    <Body style={{ marginLeft: -160 }}>
-                      <Text style={{ color: 'gray', fontSize: 12 }}>{item.wgDate}</Text>
-                      <Text style={styles.dateText}>{item.wgValue} kg</Text>
-                    </Body>
-                    <Right>
-                      <View style={styles.iconMore}>
-                        <Icon
-                          type='font-awesome'
-                          color='gray'
-                          iconStyle={{ fontSize: 18 }}
-                          name="trash-o" color="gray"
-                          onPress={() => {
-                            this.deleteData(item.wgId); showMessage({
+                          message: "Hello there",
+                          description: "successfuly deleted " + `${item.bpDate}`,
+                          type: "success",
+                        })
+                      }}
+                    />
+                  </View>
 
-                              message: "Hello there",
-                              description: "successfuly deleted " + `${item.wgDate}`,
-                              type: "success",
-                            })
-                          }}
-                        />
-                      </View>
-                    </Right>
-                  </ListItem>
-                </Swipeout>
+                </Right>
+              </ListItem>
               }
             />
 
@@ -362,7 +588,7 @@ export class BloodPresureBarChart extends Component {
           {/* </View> */}
 
         </Animatable.View>
-  
+
         <RBSheet
           ref={ref => {
             this.RBSheet = ref;
@@ -406,11 +632,11 @@ export class BloodPresureBarChart extends Component {
 
 
               {/* <TextInput /> */}
-              <TextInput autoFocus={false} keyboardType='numeric'  onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter weight value" />
+              <TextInput autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter weight value" />
               <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-              onPress={() => this.props.navigation.navigate('PeriodCalandar', {
-                          data: ''
-                        })}
+                onPress={() => this.props.navigation.navigate('PeriodCalandar', {
+                data: ''
+              })}
                 <Text style={styles.buttonText}>Add Weight </Text>
 
 
@@ -429,16 +655,24 @@ const styles = StyleSheet.create({
 
   footer: {
     flex: 2,
-    backgroundColor: 'white',
+    backgroundColor: '#ffc15a',
     // borderTopLeftRadius: 30,
     borderTopRightRadius: 50,
     // paddingVertical: 30,
     //  paddingHorizontal: 20
   }, header: {
     flex: 3,
-    backgroundColor: '#ffc15a'
+    // backgroundColor: '#ffc15a'
     // justifyContent: 'center',
     // alignItems: 'center',
-  }
+  }, container: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: 'red'
+  },
 
 })

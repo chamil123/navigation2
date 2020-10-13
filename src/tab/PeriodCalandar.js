@@ -263,7 +263,7 @@ export class PeriodCalandar extends Component {
                         if (i < 6) {
                             var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
 
-                            console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ : "+pPeriod_Id);
+                            console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ : " + pPeriod_Id);
                             db.deleteOvanpPeriod(this.state.dbs, pPeriod_Id).then((result) => {
                             }).catch((err) => {
                                 this.setState = {
@@ -552,65 +552,69 @@ export class PeriodCalandar extends Component {
                                 {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('PeriodAgenda')} >
                                     <Text>View</Text>
                                 </TouchableOpacity> */}
-                                <AnimatedCircularProgress
-                                    size={200}
-                                    rotation={0}
-                                    width={8}
-                                    // friction={1} 
-                                    // linecap='round' 
-                                    circleRadian={200}
-                                    fill={(this.state._day / this.state._days_count) * 100}
-                                    tintColor="#00e0ff"
-                                    // lineCap="round"
-                                    style={
-                                        { zIndex: -5, }
-                                    }
-                                    // tintColorSecondary="#ff0000"
-                                    backgroundColor="#3d5875"
-                                // renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="blue" />}
-                                >
-                                    {
-                                        (fill) => (
+                                {
+                                    this.state.reacl_next_ov_date ?
+                                        <View>
                                             <AnimatedCircularProgress
                                                 size={200}
-                                                rotation={(this.state._day_of_month / this.state._days_count) * 360}
-                                                width={15}
-                                                fill={(1 / this.state._days_count) * 100}
+                                                rotation={0}
+                                                width={8}
+                                                // friction={1} 
+                                                // linecap='round' 
+                                                circleRadian={200}
+                                                fill={(this.state._day / this.state._days_count) * 100}
+                                                tintColor="#00e0ff"
+                                                // lineCap="round"
                                                 style={
-                                                    { zIndex: 1 }
+                                                    { zIndex: -5, }
                                                 }
-                                                // arcSweepAngle={100}
-                                                tintColor="red"
-                                            // backgroundColor="white"
+                                                // tintColorSecondary="#ff0000"
+                                                backgroundColor="#3d5875"
+                                            // renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="blue" />}
                                             >
                                                 {
                                                     (fill) => (
-                                                        <Text>
-                                                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                                                <Text style={{ fontSize: 20, marginBottom: -20 }}>{this.state._month_name}</Text>
-                                                                <Text style={{ fontSize: 70, }}>{this.state._day}</Text>
-                                                            </View>
-                                                        </Text>
-                                                    )}
+                                                        <AnimatedCircularProgress
+                                                            size={200}
+                                                            rotation={(this.state._day_of_month / this.state._days_count) * 360}
+                                                            width={15}
+                                                            fill={(1 / this.state._days_count) * 100}
+                                                            style={
+                                                                { zIndex: 1 }
+                                                            }
+                                                            // arcSweepAngle={100}
+                                                            tintColor="red"
+                                                        // backgroundColor="white"
+                                                        >
+                                                            {
+                                                                (fill) => (
+                                                                    <Text>
+                                                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                                                            <Text style={{ fontSize: 20, marginBottom: -20 }}>{this.state._month_name}</Text>
+                                                                            <Text style={{ fontSize: 70, }}>{this.state._day}</Text>
+                                                                        </View>
+                                                                    </Text>
+                                                                )}
+                                                        </AnimatedCircularProgress>
+                                                    )
+                                                }
                                             </AnimatedCircularProgress>
-                                        )
-                                    }
-                                </AnimatedCircularProgress>
-                                <AnimatedCircularProgress
-                                    size={195}
-                                    rotation={(this.state.ovulation_date / this.state._days_count) * 360}
-                                    width={18}
-                                    fill={(5 / this.state._days_count) * 100}
-                                    tintColor="#50cebb"
-                                    // lineCap="round"
+                                            <AnimatedCircularProgress
+                                                size={195}
+                                                rotation={(this.state.ovulation_date / this.state._days_count) * 360}
+                                                width={18}
+                                                fill={(5 / this.state._days_count) * 100}
+                                                tintColor="#50cebb"
+                                                // lineCap="round"
 
-                                    style={
-                                        { zIndex: -5, top: -200 }
-                                    }
-                                    backgroundColor="transparent"
-                                >
-                                </AnimatedCircularProgress>
-
+                                                style={
+                                                    { zIndex: -5, top: -200 }
+                                                }
+                                                backgroundColor="transparent"
+                                            >
+                                            </AnimatedCircularProgress>
+                                        </View> : <Text></Text>
+                                }
 
                             </View>
 

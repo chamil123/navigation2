@@ -101,15 +101,15 @@ export class RegisterScreen extends Component {
       value: null,
       items: [],
 
-      emailError: "",
+      // emailError: "",
     }
   }
 
   InputUsers = () => {
-    const emailError = validate("email", this.state.TextInputEmail)
+    // const emailError = validate("email", this.state.TextInputEmail)
     this.setState({
-      emailError: emailError,
-      passwordError: passwordError
+      // emailError: emailError,
+      // passwordError: passwordError
     })
 
     // this.validate({

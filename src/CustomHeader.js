@@ -46,7 +46,7 @@ export class CustomHeader extends Component {
 
               :
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 }}
+                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 ,backgroundColor:'#ffc470',padding:5,paddingLeft:-5,width:40,borderRadius:15}}
                 onPress={() => this.props.navigation.goBack()}
               >
 
@@ -55,7 +55,7 @@ export class CustomHeader extends Component {
                   name='angle-left'
                   type='font-awesome'
                   color='black'
-                  iconStyle={{ fontSize: 34, }}
+                  iconStyle={{ fontSize: 34,marginLeft:6 }}
                   onPress={() => this.props.navigation.goBack()} />
 
                 {/* <Image style={{ width: 20, height: 20, marginLeft: 10 }}

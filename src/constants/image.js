@@ -118,6 +118,11 @@ const IMAGE = {
     ICON_DIET_20: require('../images/20food.gif'),
     ICON_DIET_35: require('../images/druit_35.gif'),
     ICON_DIET_40: require('../images/diet_40.gif'),
+    ICON_EDD_DATE: require('../images/Edd.png'),
+    ICON_CLINICK_MANAGEMENT: require('../images/medicalreport.png'),
+    ICON_BLOOD_PRESURE: require('../images/blooddonation.png'),
+    ICON_BREAST_FEEDING: require('../images/feeding.png'),
+    ICON_BABY_ACTIVITY_MENU: require('../images/babyActivityGradient.png'),
 }
 
 export { IMAGE }

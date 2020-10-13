@@ -72,20 +72,20 @@ export class BloodPresure extends Component {
         labels: ["i"],
 
         datasets: [{
-            data: [0],
-            strokeWidth: 2,
-            color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
-          },
-    
-          {
-            data: [0],
-            strokeWidth: 2,
-            color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
-          }, {
-            data: [0],
-            strokeWidth: 2,
-            color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
-          },
+          data: [0],
+          strokeWidth: 2,
+          color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
+        },
+
+        {
+          data: [0],
+          strokeWidth: 2,
+          color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
+        }, {
+          data: [0],
+          strokeWidth: 2,
+          color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
+        },
         ]
       }
     }
@@ -303,7 +303,7 @@ export class BloodPresure extends Component {
 
           <View style={{ flex: 4, marginTop: 10, }}>
 
-            <View style={{ flexDirection: 'row',justifyContent:'center', marginLeft: 20 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginLeft: 20 }}>
               <View style={{ flexDirection: 'row', paddingRight: 20 }}>
                 <View style={[styles.squrecolor, {
                   backgroundColor: 'white'
@@ -324,7 +324,7 @@ export class BloodPresure extends Component {
                 <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>high (80 mm hg)</Text>
               </View>
             </View>
-            <Text style={{ paddingLeft: 10, fontWeight: 'bold', paddingTop:10,fontSize: 14 }}>Previous data</Text>
+            <Text style={{ paddingLeft: 10, fontWeight: 'bold', paddingTop: 10, fontSize: 14 }}>Previous data</Text>
             {/* <Card style={styles.cardHorizontal1} >
               <Text>dasdasda</Text>
 

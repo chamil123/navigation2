@@ -44,7 +44,7 @@ export default class Database {
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Period] ([pId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [pName] NVARCHAR(50) NULL,[pDescription] NVARCHAR(255) NULL, [pCatId] INTEGER NOT NULL, [pParityBit] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Hospitalbagmother] ([hId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [hName] NVARCHAR(255) NULL, [hStatus] NVARCHAR(10) NULL, [hDate] NVARCHAR(10) NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Hospitalbagbaby] ([bId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bName] NVARCHAR(255) NULL, [bStatus] NVARCHAR(10) NULL, [bDate] NVARCHAR(10) NULL)');
-                                tx.executeSql('CREATE TABLE IF NOT EXISTS [BloodPresure] ([bpId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bpDate] NVARCHAR(25) NULL, [bpValue] INTEGER NOT NULL, [bpmin] INTEGER NOT NULL, [bpmax] INTEGER NOT NULL)');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS [BloodPresure] ([bpId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bpDate] NVARCHAR(25) NULL, [bpValue] INTEGER NOT NULL, [bpdstValue] INTEGER NOT NULL, [bpsmin] INTEGER NOT NULL, [bpdmin] INTEGER NOT NULL, [bpslow] INTEGER NOT NULL, [bpsideal] INTEGER NOT NULL, [bpsprehigh] INTEGER NOT NULL, [bpshigh] INTEGER NOT NULL, [bpdlow] INTEGER NOT NULL, [bpdideal] INTEGER NOT NULL, [bpdprehigh] INTEGER NOT NULL, [bpdhigh] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [WeightGain] ([wgId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [wgDate] NVARCHAR(25) NULL, [wgValue] INTEGER NOT NULL, [wgmin] INTEGER NOT NULL, [wgmax] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [KickCount] ([kcId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [kcDate] NVARCHAR(25) NULL, [kcCount] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyActivity] ([baId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [baDate] NVARCHAR(25) NULL, [baText] NVARCHAR(255) NULL, [baStatus] INTEGER NOT NULL)');
@@ -238,14 +238,14 @@ export default class Database {
         });
     }
 
-    addOvPeriod(db, upnxtOvl,i) {
+    addOvPeriod(db, upnxtOvl, i) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 // for (var i = 0; i < 5; i++) {
                 //     const nxtOvl = moment(upnxtOvl).add(i, 'days').format(_format);
-                    tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, upnxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
-                        resolve(results);
-                    });
+                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, upnxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
+                    resolve(results);
+                });
                 // }
             }).then((result) => {
             }).catch((err) => {
@@ -712,16 +712,23 @@ export default class Database {
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
                         // console.log(`Prr ID: ${row.hId}, Pr Name: ${row.hName}`)
-                        const { bpId, bpDate, bpValue, bpmin, bpmax } = row;
+                        const { bpId, bpDate, bpValue, bpsmin, bpdmin, bpdstValue,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh } = row;
                         blood_presure.push({
 
                             bpId,
                             bpDate,
                             bpValue,
-                            bpmin,
-                            bpmax,
-
-
+                            bpsmin,
+                            bpdmin,
+                            bpdstValue,
+                            bpslow,
+                            bpsideal,
+                            bpsprehigh,
+                            bpshigh,
+                            bpdlow,
+                            bpdideal,
+                            bpdprehigh,
+                            bpdhigh
                         });
                     }
                     // console.log(mother_bag);
@@ -830,27 +837,24 @@ export default class Database {
 
     addPBvalue(db, pb) {
         return new Promise((resolve) => {
-
-            // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO BloodPresure (bpDate,bpValue,bpmin,bpmax) VALUES (?,?,?,?)', [pb.bpDate, pb.bpValue, 80, 120]).then(([tx, results]) => {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pb.bpValue+"  /  "+ pb.bpdstValue);
+                tx.executeSql('INSERT INTO BloodPresure (bpDate,bpValue,bpdstValue,bpsmin,bpdmin,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [pb.bpDate, pb.bpValue, pb.bpdstValue, 70, 40,90,120,140,190,60,80,90,100]).then(([tx, results]) => {
                     resolve(results);
                 });
 
             }).then((result) => {
-                // this.closeDatabase(db);
+
             }).catch((err) => {
                 console.log(err);
             });
-            // }).catch((err) => {
-            //     console.log(err);
-            // });
+
         });
     }
     addWGvalue(db, wg) {
-       
+
         return new Promise((resolve) => {
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+wg.wgDate+" //  "+ wg.wgValue);
+
             // this.initDB().then((db) => {
             db.transaction((tx) => {
                 tx.executeSql('INSERT INTO WeightGain (wgDate,wgValue,wgmin,wgmax) VALUES (?,?,?,?)', [wg.wgDate, wg.wgValue, 80, 120]).then(([tx, results]) => {

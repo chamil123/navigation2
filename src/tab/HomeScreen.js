@@ -372,14 +372,14 @@ export class HomeScreen extends Component {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_BABY_DELIVARY}
+                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#e3f5fd',borderRadius:50}}>
+                            <Image source={IMAGE.ICON_EDD_DATE}
                               style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0 }}> Due Date Calculator</Text>
+                          <Text style={{ marginTop: 0,color:'#0a94f4' }}> Due Date Calculator</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -390,13 +390,13 @@ export class HomeScreen extends Component {
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}>
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_PERIOD_CLANDAR}
-                              style={{ height: 55, width: 55 }}
+                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#f1edfe',borderRadius:50}}>
+                            <Image source={IMAGE.ICON_CLINICK_MANAGEMENT}
+                              style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0 }}>Clinic Management</Text>
+                          <Text style={{  marginTop: 0,color:'#4800fe'}}>Clinic Management</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -424,13 +424,13 @@ export class HomeScreen extends Component {
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('WeightGainDetailsAdd')}>
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_WEIGHT_SCALE2}
-                              style={{ height: 55, width: 55 }}
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fceefd',borderRadius:50 }}>
+                            <Image source={IMAGE.ICON_WEIGHT_SCALE}
+                              style={{ height: 45, width:45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0 }}>Weight Gain chart</Text>
+                          <Text style={{ marginTop: 0,color:'#ff00da' }}>Weight Gain chart</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -451,15 +451,15 @@ export class HomeScreen extends Component {
                     </Card> */}
 
                     <Card style={styles.card} >
-                      <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BloodPresure')}>
+                      <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BloodPresureDetailsAdd')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_BLOOD_TEST}
-                              style={{ height: 45, width: 45 }}
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fdefe6',borderRadius:50 }}>
+                            <Image source={IMAGE.ICON_BLOOD_PRESURE}
+                              style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0 }}>Blood presure</Text>
+                          <Text style={{ marginTop: 0,color:'#ff6c00' }}>Blood presure</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -471,13 +471,13 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('HospitalBag')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_HAND_BAG}
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#edf1fc',borderRadius:50 }}>
+                            <Image source={IMAGE.ICON_HOSPITAL_BAG}
                               style={{ height: 45, width: 45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0 }}>Hospital Bag</Text>
+                          <Text style={{  marginTop: 0,color:'#0039fb'}}>Hospital Bag</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -486,13 +486,13 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('KickCounter')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
+                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#e3fcdf',borderRadius:50  }}>
                             <Image source={IMAGE.ICON_BABY_FOOT}
                               style={{ height: 45, width: 45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0 }}>Kick Counter</Text>
+                          <Text style={{  marginTop: 0 }}>Kick Counter</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -510,9 +510,9 @@ export class HomeScreen extends Component {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_GROUTH_CHART_1}
-                              style={{ height: 45, width: 45 }}
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fff7e5',borderRadius:50 }}>
+                            <Image source={IMAGE.ICON_BREAST_FEEDING}
+                              style={{ height: 55, width: 55 }}
                             >
                             </Image>
                           </View>
@@ -527,7 +527,7 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('VerticleYearChart2')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
+                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#ffe4e1',borderRadius:50 }}>
                             <Image source={IMAGE.ICON_VACCINE}
                               style={{ height: 45, width: 45 }}
                             >
@@ -543,27 +543,27 @@ export class HomeScreen extends Component {
 
 
                   </View>
-                  <View style={styles.container}>
+                  <View style={[styles.container,{marginBottom:20}]}>
 
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BabyActivities', {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
-                            <Image source={IMAGE.ICON_GROUTH_CHART_1}
-                              style={{ height: 45, width: 45 }}
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#e5fff9',borderRadius:50}}>
+                            <Image source={IMAGE.ICON_BABY_ACTIVITY_MENU}
+                              style={{ height: 65, width: 65 }}
                             >
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0 }}>Baby Grouth</Text>
+                          <Text style={{ marginTop: 0 }}>Baby Activity</Text>
 
                         </View>
                       </TouchableOpacity>
                     </Card>
 
-                    <Card style={styles.card} >
+                    {/* <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('TestChart', {
                         data: ''
                       })}>
@@ -579,13 +579,13 @@ export class HomeScreen extends Component {
 
                         </View>
                       </TouchableOpacity>
-                    </Card>
+                    </Card> */}
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('AreaChart', {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 70, padding: 10 }}>
+                          <View style={{height: 80, padding: 15 ,backgroundColor:'#f5ffe2',borderRadius:50 }}>
                             <Image source={IMAGE.ICON_GROUTH_CHART_1}
                               style={{ height: 45, width: 45 }}
                             >
@@ -597,7 +597,7 @@ export class HomeScreen extends Component {
                         </View>
                       </TouchableOpacity>
                     </Card>
-                    <Card style={styles.card} >
+                    {/* <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('PrograssCircular', {
                         data: ''
                       })}>
@@ -613,7 +613,7 @@ export class HomeScreen extends Component {
 
                         </View>
                       </TouchableOpacity>
-                    </Card>
+                    </Card> */}
 
                   </View>
 
@@ -797,10 +797,10 @@ export class HomeScreen extends Component {
     backgroundColor: 'rgba(255, 255, 255,1)',
     borderRadius: 15,
     // padding: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
+    elevation: 1,
+    // shadowColor: '#fff',
+    shadowOffset: { width: 5, height: 10 },
+    shadowOpacity: 0.1,
     shadowRadius: 5,
     alignItems: 'center',
 

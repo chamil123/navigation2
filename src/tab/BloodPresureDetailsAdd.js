@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import { TextInput, Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
+import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-// import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-date-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
-// import RBSheet from "react-native-raw-bottom-sheet";
-
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 // import { TextInput } from 'react-native-paper';
 
-export class WeightGainDetailsAdd extends Component {
+export class BloodPresureDetailsAdd extends Component {
     constructor(props) {
         super(props);
         this.state = {
             DateText: '',
-
             DateHolder: null,
-            TextInpuPbValue: '',
+            TextInpuSystolicbValue: '',
+            TextInpuDiastolicValue: '',
             isLoading: true,
             date: new Date(),
             dbs: '',
@@ -34,6 +33,19 @@ export class WeightGainDetailsAdd extends Component {
         this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
+    }
+    async componentDidMount() {
+        const myArray = await AsyncStorage.getItem('memberNames');
+        this.setState({
+            userName: myArray,
+        });
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+        });
+        // this.getData();
+        // this.viewListData();
     }
     DatePickerMainFunctionCall = () => {
 
@@ -55,28 +67,10 @@ export class WeightGainDetailsAdd extends Component {
         });
 
     }
-
-    /**
-     * Call back for dob date picked event
-     *
-     */
     onDatePickedFunction = (date) => {
         this.setState({
             dobDate: date,
             DateText: moment(date).format('YYYY-MM-DD')
-        });
-    }
-    loadDbVarable(result) {
-        this.setState({
-            dbs: result,
-        });
-        // this.getData();
-        // this.viewListData();
-    }
-    async componentDidMount() {
-        const myArray = await AsyncStorage.getItem('memberNames');
-        this.setState({
-            userName: myArray,
         });
     }
     saveData() {
@@ -85,17 +79,17 @@ export class WeightGainDetailsAdd extends Component {
 
         this.setState({
             // isLoading: false,
-           
         });
         let data = {
             // pId: this.state.pId,
-            wgDate: formattedDate.toString(),
-            wgValue: parseInt(this.state.TextInpuPbValue)
+            bpDate: formattedDate.toString(),
+            bpValue: parseInt(this.state.TextInpuSystolicbValue),
+            bpdstValue: parseInt(this.state.TextInpuDiastolicValue)
         }
-        if (dates != '' && this.state.wgValue != '') {
-            db.addWGvalue(this.state.dbs, data).then((results) => {
-                //    this.props.navigation.navigate('WightGainBarchart')
-                this.props.navigation.navigate('WightGainBarchart');
+        if (dates != '' && this.state.bpValue != ''&& this.state.bpdstValue != '') {
+            db.addPBvalue(this.state.dbs, data).then((result) => {
+                this.props.navigation.navigate('BloodPresureBarChart');
+
             }).catch((err) => {
                 console.log(err);
 
@@ -109,7 +103,6 @@ export class WeightGainDetailsAdd extends Component {
             })
 
         }
-
 
     }
     render() {
@@ -127,10 +120,10 @@ export class WeightGainDetailsAdd extends Component {
                         <View style={{ backgroundColor: '#fbb146', height: 150, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Weight level</Text>
+                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
                                 <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
                             </View>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('WightGainBarchart')} style={styles.button}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon
 
@@ -149,22 +142,32 @@ export class WeightGainDetailsAdd extends Component {
                         </View>
 
                         <View style={styles.breadthPo1}>
+                            {/* <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FIRST YEAR OF LIFE</Text>
+                            <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View> */}
 
-                            <Text style={{ marginVertical: 10 }} >Select date</Text>
-
+                            <Text style={{ marginVertical: 15 }}>Select date</Text>
+                            {/* <DatePicker
+                                mode="date"
+                                androidVariant="iosClone"
+                                enableAutoDarkMode={true}
+                                date={this.state.date}
+                                onDateChange={(date) => { this.setState({ date: date }) }}
+                            /> */}
                             <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
-
-                                <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
-
+                                <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }} placeholder="Select Date">
                                     <Text style={styles.datePickerText}>{this.state.DateText}</Text>
-
                                 </View>
-
                             </TouchableOpacity>
-                            <Text style={{ marginVertical: 10 }}> Weight Value </Text>
+                            <Text style={{ marginVertical: 15 }}> Systolic Value :</Text>
                             <TextInput
                                 keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                                autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} label="Baby Name" />
+                                placeholder="Foobar" onEndEditing={this.clearFocus} autoFocus={false}  onChangeText={TextInputValue => this.setState({ TextInpuSystolicbValue: TextInputValue })}  placeholder="Enter Systolic Value"
+                            />
+                            <Text style={{ marginVertical: 15 }}> Diastolic  Value :</Text>
+                            <TextInput
+                                keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
+                                onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuDiastolicValue: TextInputValue })} placeholder="Enter Diastolic Value"
+                            />
                             <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                                 {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
                                  */}
@@ -176,7 +179,7 @@ export class WeightGainDetailsAdd extends Component {
 
                                     style={styles.linearGradient}>
                                     <Text style={styles.buttonText}>
-                                        Add weight
+                                        Add Blood Presure
 </Text>
                                 </LinearGradient>
 
@@ -187,9 +190,8 @@ export class WeightGainDetailsAdd extends Component {
                     </View>
                 </ScrollView>
 
-                {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
-                <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
 
+                <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
             </SafeAreaView>
         );
     }
@@ -309,7 +311,7 @@ export class WeightGainDetailsAdd extends Component {
         marginHorizontal: 20,
 
     }, linearGradient: {
-        marginTop: 20,
+        marginTop: 40,
         width: 335,
         paddingLeft: 15,
         paddingRight: 15,
@@ -321,24 +323,5 @@ export class WeightGainDetailsAdd extends Component {
         margin: 10,
         color: '#ffffff',
         backgroundColor: 'transparent',
-    }, datePickerBox: {
-        marginTop: 9,
-        borderColor: '#FF5722',
-        borderWidth: 0.5,
-        padding: 0,
-        borderTopLeftRadius: 4,
-        borderTopRightRadius: 4,
-        borderBottomLeftRadius: 4,
-        borderBottomRightRadius: 4,
-        height: 38,
-        justifyContent: 'center'
-    },
-
-    datePickerText: {
-        fontSize: 14,
-        marginLeft: 5,
-        borderWidth: 0,
-        color: '#000',
-
-    },
+    }
 });

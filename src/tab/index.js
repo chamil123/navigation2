@@ -50,4 +50,4 @@ export * from './FoodPhyramid';
 export * from './WightGainBarchart';
 export * from './WeightGainDetailsAdd';
 export * from './BloodPresureBarChart';
-
+export * from './BloodPresureDetailsAdd';

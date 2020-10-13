@@ -57,7 +57,7 @@ export class WightGainBarchart extends Component {
           }
         },
         legend: {
-          data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+          data: ['Min Value', 'Your Value', 'Max Value']
         },
 
         xAxis: [
@@ -77,20 +77,20 @@ export class WightGainBarchart extends Component {
           {
             // name: 'Forest',
             type: 'bar',
-            name: "test",
+            name: "Min Value",
             stack: 'color',
             barGap: 0,
             // label: labelOption,
             data: [0]
           },
           {
-            // name: 'Steppe',
+            name: 'Your Value',
             type: 'bar',
             // label: labelOption,
             data: [0]
           },
           {
-            // name: 'Desert',
+            name: 'Max Value',
             type: 'bar',
             //  label: labelOption,
             data: [0]

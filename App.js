@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CustomHeader, CustomDrawerContent } from './src';
 import {
   HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, ProductScreen2, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
-  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda,PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement,PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd
+  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda, PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement, PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd, BloodPresureBarChart, BloodPresureDetailsAdd
 } from './src/tab';
 import { NotificationsScreen } from './src/drawer';
 import { RegisterScreen, LoginScreen, Login2Screen } from './src/auth';
@@ -326,7 +326,9 @@ export default class App extends React.Component {
           <StackApp.Screen name="FoodPhyramid" component={FoodPhyramid} options={navOptionHandler} />
           <StackApp.Screen name="WightGainBarchart" component={WightGainBarchart} options={navOptionHandler} />
           <StackApp.Screen name="WeightGainDetailsAdd" component={WeightGainDetailsAdd} options={navOptionHandler} />
-           </StackApp.Navigator>
+          <StackApp.Screen name="BloodPresureBarChart" component={BloodPresureBarChart} options={navOptionHandler} />
+          <StackApp.Screen name="BloodPresureDetailsAdd" component={BloodPresureDetailsAdd} options={navOptionHandler} />
+        </StackApp.Navigator>
       </NavigationContainer>
     );
   }

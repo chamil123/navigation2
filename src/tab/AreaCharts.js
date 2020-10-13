@@ -239,7 +239,7 @@ export class AreaCharts extends Component {
                     temp7.push(parseFloat([result[i].wlhw]));
                     temp8.push(parseFloat([result[i].wlbaby]));
 
-                    console.log("?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+result[i].wlbaby);
+                  
 
 
                 }
