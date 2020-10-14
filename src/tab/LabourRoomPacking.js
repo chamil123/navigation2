@@ -4,7 +4,7 @@ import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, S
 import { CustomHeader } from '../index';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment' // 2.20.1
-
+import { Icon } from 'react-native-elements';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { TextInput, Card, Title, Paragraph } from 'react-native-paper';
 import { Button } from 'react-native-elements';
@@ -163,6 +163,10 @@ export class LabourRoomPacking extends Component {
                     </TouchableOpacity> */}
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
+                    <View style={styles.brestposition5}></View>
+                    <View style={styles.brestposition6}></View>
+                    <View style={styles.brestposition3}></View>
+                    <View style={styles.brestposition4}></View>
                         <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold", marginTop: 15 }}>Prepare Labour room bag</Text>
                         <FlatList
 
@@ -175,13 +179,28 @@ export class LabourRoomPacking extends Component {
                                 style={{ height: 60, paddingTop: 30 }}
                                 onPress={() => {
                                     this.getData(item.lId, item.lStatus);
-                                    // this.props.navigation.navigate('ProductDetails', {
-                                    //   prodId: `${item.hId}`,
-                                    // });
+
                                 }}
                             >
-
-                                <Body>
+                                {
+                                    item.lStatus == "true" ?
+                                        <Left >
+                                            <Icon
+                                                name='check-circle'
+                                                type='font-awesome'
+                                                color='#009688'
+                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                onPress={() => console.log('hello')} />
+                                        </Left> : <Left>
+                                            <Icon
+                                                name='check-circle'
+                                                type='font-awesome'
+                                                color='#fff'
+                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
+                                                onPress={() => console.log('hello')} />
+                                        </Left>
+                                }
+                                <Body style={{ marginLeft: -200 }}>
 
                                     <Text>{item.lName}</Text>
                                     <Text style={styles.dateText}>{
@@ -196,14 +215,11 @@ export class LabourRoomPacking extends Component {
                                         trackColor={{ true: '#f78a2ced', false: 'grey' }}
                                         thumbColor={'white'}
                                         value={item.lStatus == "true" ? true : false}
-                                        // style={[item.lStatus ? styles.switchEnableBorder : styles.switchDisableBorder]}
+                                    // style={[item.lStatus ? styles.switchEnableBorder : styles.switchDisableBorder]}
                                     />
 
                                 </Right>
                             </ListItem>
-
-
-
                             } />
 
 
@@ -277,5 +293,52 @@ const styles = StyleSheet.create({
     switchDisableBorder: {
         borderColor: 'red',
         borderWidth: 1,
-    },
+    },  brestposition5: {
+        width: 260,
+        height: 260,
+        marginLeft: 280,
+        marginTop: 390,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 175, 0.3)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition6: {
+        width: 140,
+        height: 140,
+        // marginRight: 12,
+        marginTop: 450,
+        marginLeft: 338,
+        backgroundColor: 'rgba(242, 242,242, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }
+   , brestposition3: {
+        width: 260,
+        height: 260,
+        marginLeft: -120,
+        marginTop: 10,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 178, 0.2)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition4: {
+        width: 170,
+        height: 170,
+        // marginRight: 12,
+        marginTop: 52,
+        marginLeft: -82,
+        backgroundColor: 'rgba(255, 255,255, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }
 });

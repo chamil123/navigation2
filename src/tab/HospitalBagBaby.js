@@ -11,17 +11,14 @@ import { Button } from 'react-native-elements';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
-
+import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import { BarIndicator } from 'react-native-indicators';
 const db = new Database();
 
 export class HospitalBagBaby extends Component {
-
-
     constructor(props) {
         super(props);
-
         this.state = {
             dataSource: [],
             isLoading: true,
@@ -30,12 +27,10 @@ export class HospitalBagBaby extends Component {
             switchValue: '',
             date: '',
             dbs: '',
-
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
         })
-
         this.loadDbVarable = this.loadDbVarable.bind(this);
         this.getData = this.getData.bind(this);
     }
@@ -147,7 +142,8 @@ export class HospitalBagBaby extends Component {
                 <SafeAreaView style={{ flex: 1, }}>
 
                     <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
-                 
+                    <View style={styles.brestposition3}></View>
+                    <View style={styles.brestposition4}></View>
                     <View style={styles.header}>
                         <Image style={{ width: 350, height: 260, marginLeft: 0, }}
                             source={IMAGE.ICON_HOSPITAL_MOM_BAG}
@@ -155,12 +151,12 @@ export class HospitalBagBaby extends Component {
                         />
                         {/* <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Prepare baby bag</Text>
-
-
                     </TouchableOpacity> */}
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
-               
+                        <View style={styles.brestposition5}></View>
+                        <View style={styles.brestposition6}></View>
+
                         <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>Prepare a bag for baby</Text>
                         <FlatList
 
@@ -178,8 +174,26 @@ export class HospitalBagBaby extends Component {
                                     // });
                                 }}
                             >
+                                {
+                                    item.bStatus == "true" ?
+                                        <Left >
+                                            <Icon
+                                                name='check-circle'
+                                                type='font-awesome'
+                                                color='#009688'
+                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                onPress={() => console.log('hello')} />
+                                        </Left> : <Left>
+                                            <Icon
+                                                name='check-circle'
+                                                type='font-awesome'
+                                                color='#fff'
+                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
+                                                onPress={() => console.log('hello')} />
+                                        </Left>
+                                }
 
-                                <Body>
+                                <Body style={{ marginLeft: -190 }}>
 
                                     <Text>{item.bName}</Text>
                                     <Text style={styles.dateText}>{
@@ -267,5 +281,52 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-    },
+    }, brestposition5: {
+        width: 260,
+        height: 260,
+        marginLeft: 280,
+        marginTop: 390,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 175, 0.5)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition6: {
+        width: 140,
+        height: 140,
+        // marginRight: 12,
+        marginTop: 450,
+        marginLeft: 338,
+        backgroundColor: 'rgba(242, 242,242, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }
+    , brestposition3: {
+        width: 260,
+        height: 260,
+        marginLeft: -70,
+        marginTop: 110,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 178, 0.8)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition4: {
+        width: 170,
+        height: 170,
+        // marginRight: 12,
+        marginTop: 152,
+        marginLeft: -32,
+        backgroundColor: 'rgba(243, 242,242, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }
 });

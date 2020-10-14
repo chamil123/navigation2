@@ -564,6 +564,61 @@ export default class Database {
             // });
         });
     }
+    countMotherBag(db) {
+        return new Promise((resolve) => {
+            let motherbag_count;
+            db.transaction((tx) => {
+                tx.executeSql('SELECT COUNT(hId) AS motherbagcount FROM Hospitalbagmother WHERE hStatus="true"', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { motherbagcount } = row;
+                        motherbag_count = motherbagcount;
+                    }
+                    resolve(motherbag_count);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+            });
+        });
+    }
+    countBabyBag(db) {
+        return new Promise((resolve) => {
+            let babybag_count;
+            db.transaction((tx) => {
+                tx.executeSql('SELECT COUNT(bId) AS babybagcount FROM Hospitalbagbaby WHERE bStatus="true"', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { babybagcount } = row;
+                        babybag_count = babybagcount;
+                    }
+
+                    resolve(babybag_count);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+            });
+        });
+    } countLRoomBag(db) {
+        return new Promise((resolve) => {
+            let lroombag_count;
+            db.transaction((tx) => {
+                tx.executeSql('SELECT COUNT(lId) AS lroomcount FROM LaboRoomPacket WHERE bStatus="true"', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { lroomcount } = row;
+                        lroombag_count = lroomcount;
+                    }
+
+                    resolve(lroombag_count);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+            });
+        });
+    }
     updateStatus(db, data) {
         return new Promise((resolve) => {
             let status = "";
@@ -644,7 +699,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Hospitalbagmother (hName,hStatus) VALUES ("Wearing cloths 05 with bed jacket 04","false"),'
+                tx.executeSql('INSERT INTO Hospitalbagmother (hName,hStatus) VALUES ("Wearing cloths 05 with bed jacket 04","false"),("Pad pack 02 (with loop)","false"),("A few straps to tie the waist and hair ","false"),("Hot water bottle","false"),("Toothpaste | Toothbrush | Soap","false"),("Milk | Tea leaf | Snacks or biscuits","false"),("IndentifyCard","false"),("Label Bag – Your Name | Address | Age","false"),'
                     + '("Shopping bag 04 (clean)","false"),("Bed sheet 01 (pillow)","false"),("Blade-01 or a bottle of anima","false"),("A pair of rubber slippers","false")').then(([tx, results]) => {
                         resolve(results);
                     });
@@ -712,7 +767,7 @@ export default class Database {
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
                         // console.log(`Prr ID: ${row.hId}, Pr Name: ${row.hName}`)
-                        const { bpId, bpDate, bpValue, bpsmin, bpdmin, bpdstValue,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh } = row;
+                        const { bpId, bpDate, bpValue, bpsmin, bpdmin, bpdstValue, bpslow, bpsideal, bpsprehigh, bpshigh, bpdlow, bpdideal, bpdprehigh, bpdhigh } = row;
                         blood_presure.push({
 
                             bpId,
@@ -838,8 +893,8 @@ export default class Database {
     addPBvalue(db, pb) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pb.bpValue+"  /  "+ pb.bpdstValue);
-                tx.executeSql('INSERT INTO BloodPresure (bpDate,bpValue,bpdstValue,bpsmin,bpdmin,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [pb.bpDate, pb.bpValue, pb.bpdstValue, 70, 40,90,120,140,190,60,80,90,100]).then(([tx, results]) => {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pb.bpValue + "  /  " + pb.bpdstValue);
+                tx.executeSql('INSERT INTO BloodPresure (bpDate,bpValue,bpdstValue,bpsmin,bpdmin,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [pb.bpDate, pb.bpValue, pb.bpdstValue, 70, 40, 90, 120, 140, 190, 60, 80, 90, 100]).then(([tx, results]) => {
                     resolve(results);
                 });
 

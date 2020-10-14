@@ -37,7 +37,9 @@ export class HospitalBag extends Component {
             switchValue: '',
             date: '',
             dbs: '',
-
+            motherbag_count: 0,
+            babybag_count: 0,
+            lroombag_count: 0,
 
         }
         db.initDB().then((result) => {
@@ -61,13 +63,15 @@ export class HospitalBag extends Component {
             date:
                 year + '-' + month + '-' + date,
         });
-        // this.getData();
+
     }
     loadDbVarable(result) {
         this.setState({
             dbs: result,
         });
         this.viewListData();
+
+
     }
 
     getData = (value, value2) => {
@@ -109,7 +113,9 @@ export class HospitalBag extends Component {
             }
         }).catch((err) => {
             console.log(err);
-        })
+        });
+
+
     }
     viewListData() {
 
@@ -136,6 +142,33 @@ export class HospitalBag extends Component {
             }
         })
 
+        db.countMotherBag(this.state.dbs).then((data) => {
+            if (data != null) {
+
+                this.setState({
+                    motherbag_count: data,
+                    isLoading: false,
+                });
+            }
+        });
+
+        db.countBabyBag(this.state.dbs).then((data) => {
+            if (data != null) {
+                this.setState({
+                    babybag_count: data,
+                    isLoading: false,
+                });
+            }
+        });
+        db.countLRoomBag(this.state.dbs).then((data) => {
+            if (data != null) {
+                this.setState({
+                    lroombag_count: data,
+                    isLoading: false,
+                });
+            }
+        });
+
     }
     keyExtractor = (item, index) => index.toString()
     render() {
@@ -158,111 +191,92 @@ export class HospitalBag extends Component {
                     <View style={styles.brestposition6}></View>
                     <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View>
-                    <ImageBackground
+                    {/* <ImageBackground
                         source={require('../images/undraw_pilates_gpdb.png')}
                         style={{ paddingBottom: 0, paddingTop: 0, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
-                    >
-                        <View style={{ backgroundColor: '#fbb146', height: 165, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                            <View style={{ marginTop: 0, marginLeft: 20 }}>
+                    > */}
+                    <View style={{ backgroundColor: '#fbb146', height: 165, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                        <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-                                <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
-                                <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130 }]}>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
-                                            <Icon
-                                                name='suitcase'
-                                                type='font-awesome'
-                                                color='red'
-                                                iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
-                                            />
-                                        </View>
-                                        <Text style={{ color: 'white', padding: 7 }}>Baby Bag</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
-                                            <Icon
-                                                name='shopping-bag'
-                                                type='font-awesome'
-                                                color='red'
-                                                iconStyle={{ fontSize: 13, color: 'white' }}
-                                            />
-                                        </View>
-                                        <Text style={{ color: 'white', padding: 7 }}>labour room Pack</Text>
-
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
+                            <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
                         </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130 }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='suitcase'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>Baby Bag</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='shopping-bag'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, color: 'white' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>labour room Pack</Text>
+
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
 
-                    </ImageBackground>
-                    {/* <ScrollView
+                    {/* </ImageBackground> */}
+                    <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentInsetAdjustmentBehavior="automatic"
-                        style={styles.scrollView}> */}
+                        style={styles.scrollView}>
                         <View style={styles.container}>
-
                             <Card style={[styles.card]} >
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('FeedingTimeChart', {
-                                    data: ''
-                                })}>
-                                    <View style={{ alignItems: "center" }} >
-                                        <View style={{ height: 45, padding: 0 }}>
-                                            <AnimatedCircularProgress
-                                                size={85}
-                                                rotation={0}
-                                                width={5}
-                                                fill={25}
-                                                tintColor="#f78a2c"
-                                                backgroundColor="#cfd8dc">
-                                                {
-                                                    (fill) => (
-                                                        <TouchableOpacity style={styles.button5}
-                                                        >
-                                                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
-                                                                <Text style={{ fontSize: 20, }}>25</Text>
-                                                            </View>
-                                                        </TouchableOpacity>
-                                                    )
-                                                }
-                                            </AnimatedCircularProgress>
-                                            <Text style={{ marginTop: 5 }}>Hospital Bag</Text>
-                                        </View>
-
-
-
+                                <View style={{ alignItems: "center" }} >
+                                    <View style={{ height: 45, padding: 0 }}>
+                                        <AnimatedCircularProgress
+                                            size={85}
+                                            rotation={0}
+                                            width={5}
+                                            fill={(parseFloat(this.state.motherbag_count) / 12) * 100}
+                                            tintColor="#f78a2c"
+                                            backgroundColor="#cfd8dc">
+                                            {
+                                                (fill) => (
+                                                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                                        <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.motherbag_count) / 12) * 100).toFixed(0)}%</Text>
+                                                    </View>
+                                                )
+                                            }
+                                        </AnimatedCircularProgress>
+                                        <Text style={{ marginTop: 5 }}>Hospital Bag</Text>
                                     </View>
-                                </TouchableOpacity>
-
+                                </View>
                             </Card>
-
-
                             <Card style={[styles.card]} >
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('UrinationTime')}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')}>
                                     <View style={{ alignItems: "center" }} >
                                         <AnimatedCircularProgress
                                             size={85}
                                             rotation={0}
                                             width={5}
-                                            fill={25}
+                                            fill={(parseFloat(this.state.babybag_count) / 12) * 100}
                                             tintColor="red"
                                             backgroundColor="#cfd8dc">
                                             {
                                                 (fill) => (
-                                                    <TouchableOpacity style={styles.button5}
-                                                    >
-                                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
-                                                            <Text style={{ fontSize: 20, }}>25</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
+                                                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                                        <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.babybag_count) / 12) * 100).toFixed(0)}%</Text>
+                                                    </View>
                                                 )
                                             }
                                         </AnimatedCircularProgress>
@@ -271,25 +285,20 @@ export class HospitalBag extends Component {
                                 </TouchableOpacity>
                             </Card>
                             <Card style={[styles.card]} >
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('EliminationChart')}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')}>
                                     <View style={{ alignItems: "center" }} >
-
                                         <AnimatedCircularProgress
                                             size={85}
                                             rotation={0}
                                             width={5}
-                                            fill={25}
+                                            fill={(parseFloat(this.state.lroombag_count) / 12) * 100}
                                             tintColor="green"
                                             backgroundColor="#cfd8dc">
                                             {
                                                 (fill) => (
-                                                    <TouchableOpacity style={styles.button5}
-                                                    >
-                                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
-                                                            <Text style={{ fontSize: 20, }}>25%</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
+                                                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                                      <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.lroombag_count) / 12) * 100).toFixed(0)}%</Text>
+                                                    </View>
                                                 )
                                             }
                                         </AnimatedCircularProgress>
@@ -297,10 +306,17 @@ export class HospitalBag extends Component {
                                     </View>
                                 </TouchableOpacity>
                             </Card>
-
                         </View>
-                        <View >
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'black', marginTop: 25, marginLeft: 18 }}>Prepair Hospital Bag</Text>
+                        <View style={{ marginBottom: 30 }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'black', marginTop: 25, marginLeft: 18 }}>Prepair Hospital Bag</Text>
+                                {/* <Icon
+                                    name='filter'
+                                    type='font-awesome'
+                                    color='gray'
+                                    iconStyle={{ fontSize: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, marginRight: 30  }}
+                                    onPress={() => console.log('hello')} /> */}
+                            </View>
 
 
                             <FlatList
@@ -312,13 +328,29 @@ export class HospitalBag extends Component {
                                     style={{ height: 60, paddingTop: 30 }}
                                     onPress={() => {
                                         this.getData(item.hId, item.hStatus);
-                                        // this.props.navigation.navigate('ProductDetails', {
-                                        //   prodId: `${item.hId}`,
-                                        // });
+
                                     }}
                                 >
+                                    {
+                                        item.hStatus == "true" ?
+                                            <Left >
+                                                <Icon
+                                                    name='check-circle'
+                                                    type='font-awesome'
+                                                    color='#009688'
+                                                    iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                    onPress={() => console.log('hello')} />
+                                            </Left> : <Left>
+                                                <Icon
+                                                    name='check-circle'
+                                                    type='font-awesome'
+                                                    color='#fff'
+                                                    iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
+                                                    onPress={() => console.log('hello')} />
+                                            </Left>
+                                    }
 
-                                    <Body>
+                                    <Body style={{ marginLeft: -200 }}>
 
                                         <Text>{item.hName}</Text>
                                         <Text style={styles.dateText}>{
@@ -343,7 +375,7 @@ export class HospitalBag extends Component {
 
                                 } />
                         </View>
-                    {/* </ScrollView> */}
+                    </ScrollView>
 
                     {/* <View style={styles.header}> */}
                     {/* <Image style={{ width: 350, height: 260, marginLeft: 0, }}
