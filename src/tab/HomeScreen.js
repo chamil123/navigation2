@@ -372,14 +372,14 @@ export class HomeScreen extends Component {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#e3f5fd',borderRadius:50}}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#e3f5fd', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_EDD_DATE}
                               style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0,color:'#0a94f4' }}> Due Date Calculator</Text>
+                          <Text style={{ marginTop: 0, color: '#0a94f4' }}> Due Date Calculator</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -390,13 +390,13 @@ export class HomeScreen extends Component {
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}>
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
-                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#f1edfe',borderRadius:50}}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#f1edfe', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_CLINICK_MANAGEMENT}
                               style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{  marginTop: 0,color:'#4800fe'}}>Clinic Management</Text>
+                          <Text style={{ marginTop: 0, color: '#4800fe' }}>Clinic Management</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -424,13 +424,13 @@ export class HomeScreen extends Component {
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('WeightGainDetailsAdd')}>
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fceefd',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#fceefd', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_WEIGHT_SCALE}
-                              style={{ height: 45, width:45 }}
+                              style={{ height: 45, width: 45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0,color:'#ff00da' }}>Weight Gain chart</Text>
+                          <Text style={{ marginTop: 0, color: '#ff00da' }}>Weight Gain chart</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -453,13 +453,13 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BloodPresureDetailsAdd')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fdefe6',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#fdefe6', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_BLOOD_PRESURE}
                               style={{ height: 50, width: 50 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0,color:'#ff6c00' }}>Blood presure</Text>
+                          <Text style={{ marginTop: 0, color: '#ff6c00' }}>Blood presure</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -471,13 +471,13 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('HospitalBag')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#edf1fc',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#edf1fc', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_HOSPITAL_BAG}
                               style={{ height: 45, width: 45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{  marginTop: 0,color:'#0039fb'}}>Hospital Bag</Text>
+                          <Text style={{ marginTop: 0, color: '#0039fb' }}>Hospital Bag</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -486,13 +486,13 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('KickCounter')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#e3fcdf',borderRadius:50  }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#e3fcdf', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_BABY_FOOT}
                               style={{ height: 45, width: 45 }}
                             >
                             </Image>
                           </View>
-                          <Text style={{  marginTop: 0 }}>Kick Counter</Text>
+                          <Text style={{ marginTop: 0 }}>Kick Counter</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -510,7 +510,7 @@ export class HomeScreen extends Component {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#fff7e5',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#fff7e5', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_BREAST_FEEDING}
                               style={{ height: 55, width: 55 }}
                             >
@@ -527,7 +527,7 @@ export class HomeScreen extends Component {
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('VerticleYearChart2')}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{ height: 80, padding: 15 ,backgroundColor:'#ffe4e1',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#ffe4e1', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_VACCINE}
                               style={{ height: 45, width: 45 }}
                             >
@@ -543,14 +543,14 @@ export class HomeScreen extends Component {
 
 
                   </View>
-                  <View style={[styles.container,{marginBottom:20}]}>
+                  <View style={[styles.container, { marginBottom: 20 }]}>
 
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BabyActivities', {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#e5fff9',borderRadius:50}}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#e5fff9', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_BABY_ACTIVITY_MENU}
                               style={{ height: 65, width: 65 }}
                             >
@@ -585,7 +585,7 @@ export class HomeScreen extends Component {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
-                          <View style={{height: 80, padding: 15 ,backgroundColor:'#f5ffe2',borderRadius:50 }}>
+                          <View style={{ height: 80, padding: 15, backgroundColor: '#f5ffe2', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_GROUTH_CHART_1}
                               style={{ height: 45, width: 45 }}
                             >
@@ -644,41 +644,47 @@ export class HomeScreen extends Component {
                     <View style={styles.container}>
                       <Text style={{ fontSize: 25, fontWeight: 'bold', marginLeft: 7, marginTop: 10 }}>Hello {this.state._member_name}</Text>
                     </View>
-                    <View style={styles.container}>
 
-                      <Card style={[styles.periodcard]}>
+                    {
+                      this.state.reacl_next_p_dateCount ?
+                        <View style={styles.container}>
 
-                        <View style={{ flexDirection: 'row' }}>
-                          <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ fontSize: 60, marginBottom: -10, marginTop: -10, color: '#424242' }}>{this.state.reacl_next_p_dateCount}</Text>
-                            <Text>Days left</Text>
+                          <Card style={[styles.periodcard]}>
 
-                          </View>
-                          <View >
-                            <View style={{ marginLeft: 8, flexDirection: 'column' }}>
-                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                  <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Start date</Text>
-                                  <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text>
-                                </View>
-
-                                <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                  <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0 }}>Next Perod date</Text>
-                                  <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', textAlign: 'right' }}>{this.state._next_period_date}</Text>
-                                </View>
+                            <View style={{ flexDirection: 'row' }}>
+                              <View style={{ flexDirection: 'column' }}>
+                                <Text style={{ fontSize: 60, marginBottom: -10, marginTop: -10, color: '#424242' }}>{this.state.reacl_next_p_dateCount}</Text>
+                                <Text>Days left</Text>
 
                               </View>
+                              <View >
+                                <View style={{ marginLeft: 8, flexDirection: 'column' }}>
+                                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
+                                      <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Start date</Text>
+                                      <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text>
+                                    </View>
 
-                              <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(28-this.state.reacl_next_p_dateCount)/100} height={5} borderRadius={5} width={250} />
-                              <View>
-                                <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Ovulation Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>2020-10-15</Text></Text>
+                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
+                                      <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0 }}>Next Perod date</Text>
+                                      <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', textAlign: 'right' }}>{this.state._next_period_date}</Text>
+                                    </View>
+
+                                  </View>
+
+                                  <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(28 - this.state.reacl_next_p_dateCount) / 100} height={5} borderRadius={5} width={250} />
+                                  <View>
+                                    <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Ovulation Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>2020-10-15</Text></Text>
+                                  </View>
+                                </View>
                               </View>
                             </View>
-                          </View>
-                        </View>
 
-                      </Card>
-                    </View>
+                          </Card>
+                        </View> :
+                        <View></View>
+                    }
+
 
                     <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 10 }}>Menu</Text>
                     <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>

@@ -85,7 +85,7 @@ export class WeightGainDetailsAdd extends Component {
 
         this.setState({
             // isLoading: false,
-           
+
         });
         let data = {
             // pId: this.state.pId,
@@ -132,15 +132,16 @@ export class WeightGainDetailsAdd extends Component {
                             </View>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('WightGainBarchart')} style={styles.button}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Icon
+                                    <View style={{ backgroundColor: 'gray', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='bar-chart'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'black', padding: 7 }}>History</Text>
 
-                                        name='bar-chart'
-                                        type='font-awesome'
-                                        color='red'
-                                        iconStyle={{ fontSize: 18, paddingRight: 8 }}
-
-                                    />
-                                    <Text>History</Text>
                                 </View>
 
 
@@ -297,10 +298,10 @@ export class WeightGainDetailsAdd extends Component {
 
     }, button: {
         backgroundColor: "white",
-        padding: 12,
+        padding: 7,
         borderRadius: 25,
         marginTop: 18,
-        width: 120,
+        width: 125,
         elevation: 10,
         shadowColor: '#30C1DD',
         shadowOffset: { width: 0, height: 5 },

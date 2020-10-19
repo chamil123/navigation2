@@ -113,7 +113,6 @@ export class PeriodCalandar extends Component {
             products = data;
             for (var i = 0; i < products.length; i++) {
 
-
                 _pdate = products[i].pName
                 _pcatId = products[i].pCatId
                 _pDescription = products[i].pDescription
@@ -131,6 +130,7 @@ export class PeriodCalandar extends Component {
                     });
                 }
                 if (_pcatId == 4) {
+
                     if (firstOvDate == '') {
                         let data = {
                             _title: " " + _pDescription + "" + _pdate,
@@ -226,6 +226,7 @@ export class PeriodCalandar extends Component {
         let pDateandMonth;
         let pDateandMonthId;
         let availabel = 0;
+        let availabelOvl = 0;
 
         db.listGetCurrntMonthPeriod(this.state.dbs).then((datas) => {
             result = datas;
@@ -239,44 +240,49 @@ export class PeriodCalandar extends Component {
                     p_Id = result[i].pId,
                     pcat_Id = result[i].pCatId,
                     pPeriod_Id = result[i].pId
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pDateandMonth);
+
                 if (pDateandMonth >= _today) {
 
-                    let data2 = {
-                        _pDateandMonth: this.state.pName,
-                        _pPeriod_Id: pPeriod_Id,
-                    }
+
 
                     if (pcat_Id == 1) {
                         availabel = 1
+                        let data2 = {
+                            _pDateandMonth: this.state.pName,
+                            _pPeriod_Id: pPeriod_Id,
+                        }
+
+                        console.log("o )))))))))))))))))))))))))))))))))))))))))))) A   : " + pDateandMonth);
                         db.updatePeriod(this.state.dbs, data2).then((result) => {
+
                             this.setState({
-                                pName: pDateandMonth,
+                                // pName: pDateandMonth,
                                 isLoading: false,
                             });
                         }).catch((err) => {
                         })
+
                     } if (pcat_Id == 4) {
-
+                        availabelOvl = 1;
                         this.unmarkDate(pDateandMonth);
-                        var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
-                        if (i < 6) {
-                            var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
 
-                            console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ : " + pPeriod_Id);
-                            db.deleteOvanpPeriod(this.state.dbs, pPeriod_Id).then((result) => {
-                            }).catch((err) => {
-                                this.setState = {
-                                    isLoading: false,
-                                }
-                            })
-                            // db.updateOvanpPeriod(this.state.dbs, upnxtOvl, pPeriod_Id).then((result) => {
-                            // }).catch((err) => {
-                            //     this.setState({
-                            //         isLoading: false,
-                            //     });
-                            // });
-                        }
+                        // console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  $ > abc  : " + pDateandMonth);
+                        // var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
+                        // if (i < 6) {
+                        //     var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
+                        //     // db.deleteOvanpPeriod(this.state.dbs, pPeriod_Id).then((result) => {
+                        //     // }).catch((err) => {
+                        //     //     this.setState = {
+                        //     //         isLoading: false,
+                        //     //     }
+                        //     // })
+                        //     db.updateOvanpPeriod(this.state.dbs, upnxtOvl, pPeriod_Id).then((result) => {
+                        //     }).catch((err) => {
+                        //         this.setState({
+                        //             isLoading: false,
+                        //         });
+                        //     });
+                        // }
 
 
                     } if (pcat_Id == 5) {
@@ -290,39 +296,10 @@ export class PeriodCalandar extends Component {
                             });
                         })
                     }
-                } else {
-                    console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  $ > : " + pDateandMonth);
-                    if (pcat_Id == 4) {
-
-                        // this.unmarkDate(pDateandMonth);
-                        // var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
-                        // if (i < 6) {
-                        //     var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
-                        //     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _ovlDate + "  /  " + upnxtOvl);
-                        //     db.updateOvanpPeriod(this.state.dbs, upnxtOvl, pPeriod_Id).then((result) => {
-                        //     }).catch((err) => {
-                        //         this.setState({
-                        //             isLoading: false,
-                        //         });
-                        //     });
-                        // }
-
-
-                    } if (pcat_Id == 5) {
-                        // this.unmarkDate(pDateandMonth);
-                        // var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
-
-                        // db.updateOvanpPeriod(this.state.dbs, _nextDate, pPeriod_Id).then((result) => {
-                        // }).catch((err) => {
-                        //     this.setState({
-                        //         isLoading: false,
-                        //     });
-                        // })
-                    }
                 }
                 this.unmarkDate(pDateandMonth);
             }
-            this.loadData();
+            // this.loadData();
             if (availabel == 1) {
                 // console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  3 > : " + pcat_Id);
                 // if (pcat_Id == 5) {
@@ -330,7 +307,6 @@ export class PeriodCalandar extends Component {
                 // }
 
             } else {
-
 
                 db.adderiod(this.state.dbs, data).then((result) => {
                     this.setState({
@@ -342,8 +318,52 @@ export class PeriodCalandar extends Component {
                         isLoading: false,
                     });
                 })
+                if (availabelOvl == 0) {
+                    db.addOvulationPeriod(this.state.dbs, data).then((result) => {
+                        this.setState({
+                            isLoading: false,
+                        });
+                        this.loadData();
+                    }).catch((err) => {
+                        this.setState({
+                            isLoading: false,
+                        });
+                    })
+                }
+            }
+
+            if (availabelOvl == 1) {
+
+                db.gwtOvulationDates(this.state.dbs, data).then((results) => {
+                    var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
+
+                    result = results;
+                    var _pid, _pName;
+                    for (var i = 0; i < result.length; i++) {
+                        _pid = result[i].pId;
+                        _pName = result[i].pName;
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>>console log and : >>>>>>>>OPO As P : " + _pName);
+                        var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
+
+                        db.updateOvanpPeriod(this.state.dbs, upnxtOvl, _pid).then((result) => {
+                        }).catch((err) => {
+                            this.setState({
+                                isLoading: false,
+                            });
+                        });
+                        this.unmarkDate(pDateandMonth);
+
+                    }
+                    this.loadData();
+                    this.setState({
+
+                    });
+                }).catch((err) => {
+                    console.log(err);
+                })
             }
             availabel = 0;
+            availabelOvl = 0;
         })
         // availabel = 0;
     }
@@ -353,6 +373,8 @@ export class PeriodCalandar extends Component {
         this.setState(state);
     }
     unmarkDate(dateUnmark) {
+
+
         let selected = false;
         let markedDates = {}
         let updatedMarkedDates = '';

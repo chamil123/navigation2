@@ -148,7 +148,7 @@ export class RegisterScreen extends Component {
           if (responseJson == "Insert success") {
             AsyncStorage.setItem('memberNames', TextInputName).then(
               responseJson => {
-                // this.props.navigation.navigate('HomeApp');
+                this.props.navigation.navigate('HomeApp');
               }
             );
             AsyncStorage.setItem('memberId', PickerValueHolder);

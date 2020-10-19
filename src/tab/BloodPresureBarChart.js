@@ -494,7 +494,7 @@ export class BloodPresureBarChart extends Component {
 
             borderRadius={0}
             tabsContainerStyle={{ height: 40, backgroundColor: '#F2F2F2' }}
-            tabStyle={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderColor: 'transparent',borderRadius:5 }}
+            tabStyle={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderColor: 'transparent', borderRadius: 5 }}
             activeTabStyle={{ backgroundColor: 'white', margin: 2 }}
             tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
             activeTabTextStyle={{ color: '#888888' }}
@@ -516,7 +516,7 @@ export class BloodPresureBarChart extends Component {
           }
           {/* </View> */}
 
-      
+
           {/* <Swipeout right={swipeoutBtns}>
             <View>
               <Text>Swipe me left</Text>
@@ -541,22 +541,22 @@ export class BloodPresureBarChart extends Component {
                 style={{ height: 50, paddingTop: 15, borderBottomColor: 'white' }}
 
               >
-                <Left>
+                <Left >
                   <Icon
-
                     name='heartbeat'
                     type='font-awesome'
                     color='red'
-
+                    iconStyle={{ fontSize: 20, paddingTop: 15, paddingBottom: 15, paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffa726', borderRadius: 8, }}
                     onPress={() => console.log('hello')} />
                 </Left>
-                <Body style={{ marginLeft: -150 }}>
+
+                <Body style={{ marginLeft: -170 }}>
                   <Text style={{ color: 'white', fontSize: 13 }}>{item.bpDate}</Text>
 
                   <View style={{ flexDirection: 'row' }}>
                     <Text style={{ color: '#fff', fontSize: 12, marginTop: 2 }}>Systolic </Text>
                     <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
-                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 3 }}>Diastolic</Text>
+                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 3 }}> Diastolic</Text>
                     <Text style={styles.dateText}> {item.bpdstValue} mm hg</Text>
                   </View>
                 </Body>

@@ -216,13 +216,7 @@ export default class Database {
                 tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 1, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
-                for (var i = 0; i < 5; i++) {
-                    const nxtOvl = moment(pd.pOvlDate).add(i, 'days').format(_format);
-                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ovl date is : " + pd.pOvlDate + "" + ovldate);
-                    tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, nxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
-                        resolve(results);
-                    });
-                }
+               
                 tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pNexpdate, "Next period date", 5, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
@@ -237,7 +231,23 @@ export default class Database {
             // });
         });
     }
+    addOvulationPeriod(db, pd) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                for (var i = 0; i < 5; i++) {
+                    const nxtOvl = moment(pd.pOvlDate).add(i, 'days').format(_format);
+                    tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, nxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
+                        resolve(results);
+                    });
+                }
+            }).then((result) => {
+                // this.closeDatabase(db);
+            }).catch((err) => {
+                console.log(err);
+            });
 
+        });
+    }
     addOvPeriod(db, upnxtOvl, i) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
@@ -604,7 +614,7 @@ export default class Database {
         return new Promise((resolve) => {
             let lroombag_count;
             db.transaction((tx) => {
-                tx.executeSql('SELECT COUNT(lId) AS lroomcount FROM LaboRoomPacket WHERE bStatus="true"', []).then(([tx, results]) => {
+                tx.executeSql('SELECT COUNT(lId) AS lroomcount FROM LaboRoomPacket WHERE lStatus="true"', []).then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -975,6 +985,7 @@ export default class Database {
             // });
         });
     }
+
     updateClickCount(db, data) {
         return new Promise((resolve) => {
 
@@ -1054,6 +1065,31 @@ export default class Database {
             // }).catch((err) => {
             //     console.log(err);
             // });
+        });
+    }
+    gwtOvulationDates(db) {
+        return new Promise((resolve) => {
+            var ovulationDates = [];
+            db.transaction((tx) => {
+                tx.executeSql('SELECT * FROM Period p WHERE p.pCatId=4 ORDER BY pId ASC', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { pId, pName, pCatId } = row;
+                        ovulationDates.push({
+                            pId,
+                            pName,
+                            pCatId,
+                        });
+                    }
+                    resolve(ovulationDates);
+                });
+
+            }).then((result) => {
+                // this.closeDatabase(db);
+            }).catch((err) => {
+                console.log(err);
+            });
         });
     }
     addEDD(db, pd) {

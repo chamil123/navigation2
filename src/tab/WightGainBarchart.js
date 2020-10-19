@@ -229,7 +229,7 @@ export class WightGainBarchart extends Component {
       wgDate: _selectedDay.toString(),
       wgValue: parseInt(this.state.TextInpuPbValue)
     }
-  
+
     db.addWGvalue(this.state.dbs, data).then((result) => {
       // console.log(result);
       this.getData();
@@ -318,18 +318,16 @@ export class WightGainBarchart extends Component {
                     parentFlatList={this}
                   >
 
-                    <Left>
-                      <View style={styles.iconMore}>
 
-                        <Icon
-
-                          name='line-chart'
-                          type='font-awesome'
-                          color='gray'
-                          iconStyle={{ fontSize: 18 }}
-                          onPress={() => console.log('hello')} />
-                      </View>
+                    <Left >
+                      <Icon
+                        name='bar-chart'
+                        type='font-awesome'
+                        color='#009688'
+                        iconStyle={{ fontSize: 20, paddingTop: 15, paddingBottom: 15, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                        onPress={() => console.log('hello')} />
                     </Left>
+
                     <Body style={{ marginLeft: -160 }}>
                       <Text style={{ color: 'gray', fontSize: 12 }}>{item.wgDate}</Text>
                       <Text style={styles.dateText}>{item.wgValue} kg</Text>
@@ -362,7 +360,7 @@ export class WightGainBarchart extends Component {
           {/* </View> */}
 
         </Animatable.View>
-  
+
         <RBSheet
           ref={ref => {
             this.RBSheet = ref;
@@ -406,11 +404,11 @@ export class WightGainBarchart extends Component {
 
 
               {/* <TextInput /> */}
-              <TextInput autoFocus={false} keyboardType='numeric'  onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter weight value" />
+              <TextInput autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter weight value" />
               <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-              onPress={() => this.props.navigation.navigate('PeriodCalandar', {
-                          data: ''
-                        })}
+                onPress={() => this.props.navigation.navigate('PeriodCalandar', {
+                data: ''
+              })}
                 <Text style={styles.buttonText}>Add Weight </Text>
 
 

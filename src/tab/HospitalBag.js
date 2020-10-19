@@ -269,13 +269,13 @@ export class HospitalBag extends Component {
                                             size={85}
                                             rotation={0}
                                             width={5}
-                                            fill={(parseFloat(this.state.babybag_count) / 12) * 100}
+                                            fill={(parseFloat(this.state.babybag_count) / 9) * 100}
                                             tintColor="red"
                                             backgroundColor="#cfd8dc">
                                             {
                                                 (fill) => (
                                                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                                        <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.babybag_count) / 12) * 100).toFixed(0)}%</Text>
+                                                        <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.babybag_count) / 9) * 100).toFixed(0)}%</Text>
                                                     </View>
                                                 )
                                             }
@@ -291,13 +291,13 @@ export class HospitalBag extends Component {
                                             size={85}
                                             rotation={0}
                                             width={5}
-                                            fill={(parseFloat(this.state.lroombag_count) / 12) * 100}
+                                            fill={(parseFloat(this.state.lroombag_count) / 7) * 100}
                                             tintColor="green"
                                             backgroundColor="#cfd8dc">
                                             {
                                                 (fill) => (
                                                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                                      <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.lroombag_count) / 12) * 100).toFixed(0)}%</Text>
+                                                        <Text style={{ fontSize: 20, }}>{((parseFloat(this.state.lroombag_count) / 7) * 100).toFixed(0)}%</Text>
                                                     </View>
                                                 )
                                             }

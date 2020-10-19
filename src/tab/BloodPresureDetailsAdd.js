@@ -86,7 +86,7 @@ export class BloodPresureDetailsAdd extends Component {
             bpValue: parseInt(this.state.TextInpuSystolicbValue),
             bpdstValue: parseInt(this.state.TextInpuDiastolicValue)
         }
-        if (dates != '' && this.state.bpValue != ''&& this.state.bpdstValue != '') {
+        if (dates != '' && this.state.bpValue != '' && this.state.bpdstValue != '') {
             db.addPBvalue(this.state.dbs, data).then((result) => {
                 this.props.navigation.navigate('BloodPresureBarChart');
 
@@ -125,15 +125,16 @@ export class BloodPresureDetailsAdd extends Component {
                             </View>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Icon
+                                    <View style={{ backgroundColor: 'gray', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='bar-chart'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                        />
+                                    </View>
 
-                                        name='bar-chart'
-                                        type='font-awesome'
-                                        color='red'
-                                        iconStyle={{ fontSize: 18, paddingRight: 8 }}
-
-                                    />
-                                    <Text>History</Text>
+                                    <Text style={{ color: 'black', padding: 7 }}>History</Text>
                                 </View>
 
 
@@ -161,7 +162,7 @@ export class BloodPresureDetailsAdd extends Component {
                             <Text style={{ marginVertical: 15 }}> Systolic Value :</Text>
                             <TextInput
                                 keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                                placeholder="Foobar" onEndEditing={this.clearFocus} autoFocus={false}  onChangeText={TextInputValue => this.setState({ TextInpuSystolicbValue: TextInputValue })}  placeholder="Enter Systolic Value"
+                                placeholder="Foobar" onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuSystolicbValue: TextInputValue })} placeholder="Enter Systolic Value"
                             />
                             <Text style={{ marginVertical: 15 }}> Diastolic  Value :</Text>
                             <TextInput
@@ -299,7 +300,7 @@ export class BloodPresureDetailsAdd extends Component {
 
     }, button: {
         backgroundColor: "white",
-        padding: 12,
+        padding: 7,
         borderRadius: 25,
         marginTop: 18,
         width: 120,
