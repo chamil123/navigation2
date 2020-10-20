@@ -216,19 +216,13 @@ export default class Database {
                 tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 1, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
-               
                 tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pNexpdate, "Next period date", 5, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
-                // this.closeDatabase(db);
             }).catch((err) => {
                 console.log(err);
             });
-
-            // }).catch((err) => {
-            //     console.log(err);
-            // });
         });
     }
     addOvulationPeriod(db, pd) {
@@ -263,29 +257,25 @@ export default class Database {
             });
         });
     }
-    // deletePeriod(db, id) {
+    deletePeriod(db, id) {
+      
 
-    // return new Promise((resolve) => {
-    //     // this.initDB().then((db) => {
-    //     db.transaction((tx) => {
-    //         // tx.executeSql('DELETE FROM Period WHERE pId = ?', [id]).then(([tx, results]) => {
-    //         //     console.log(results);
-    //         //     resolve(results);
-    //         // });
-
-    //     }).then((result) => {
-    //         // this.closeDatabase(db);
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     });
-    //     // }).catch((err) => {
-    //     //     console.log(err);
-    //     // });
-    // });
-    // }
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM Period WHERE pId = ?', [id]).then(([tx, results]) => {
+                    console.log(results);
+                    resolve(results);
+                   
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
     deleteOvanpPeriod(db, pCatId) {
 
-        console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK : " + pCatId);
+    
         return new Promise((resolve) => {
 
             db.transaction((tx) => {

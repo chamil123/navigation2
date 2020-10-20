@@ -203,17 +203,22 @@ export class PeriodCalandar extends Component {
                 isLoading: false
             }
         })
-
-        // const start = moment(_today, 'YYYY-MM-DD');
-        // let arrayData = 0;
     }
 
     savePeriod() {
-
         this.setState({
             isLoading: false,
         });
-        this.RBSheet.close();
+        if (this.state.isLoading) {
+            return (
+                <View>
+                    <ActivityIndicator />
+                </View>
+            )
+        } else {
+            this.RBSheet.close();
+        }
+
         var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
         var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
         let data = {
@@ -224,87 +229,81 @@ export class PeriodCalandar extends Component {
         }
         let result = [];
         let pDateandMonth;
-        let pDateandMonthId;
         let availabel = 0;
         let availabelOvl = 0;
-
+        let availabeNext = 0;
         db.listGetCurrntMonthPeriod(this.state.dbs).then((datas) => {
             result = datas;
             var pPeriod_Id = null;
             var pcat_Id = null;
             var p_Id = null;
-
             for (var i = 0; i < result.length; i++) {
-
                 pDateandMonth = result[i].pName,
                     p_Id = result[i].pId,
                     pcat_Id = result[i].pCatId,
                     pPeriod_Id = result[i].pId
-
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>> month eka : : " + pDateandMonth + " / " + pPeriod_Id);
                 if (pDateandMonth >= _today) {
 
 
-
                     if (pcat_Id == 1) {
+                        if (this.state.pName == pDateandMonth) {
+                            availabeNext = 1;
+                            this.unmarkDate(pDateandMonth);
+                            db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
+                                this.setState({
+
+                                    isLoading: false,
+                                });
+                            }).catch((err) => {
+                            })
+                        }
                         availabel = 1
                         let data2 = {
                             _pDateandMonth: this.state.pName,
                             _pPeriod_Id: pPeriod_Id,
                         }
-
-                        console.log("o )))))))))))))))))))))))))))))))))))))))))))) A   : " + pDateandMonth);
                         db.updatePeriod(this.state.dbs, data2).then((result) => {
-
                             this.setState({
                                 // pName: pDateandMonth,
                                 isLoading: false,
                             });
                         }).catch((err) => {
                         })
-
                     } if (pcat_Id == 4) {
                         availabelOvl = 1;
-                        this.unmarkDate(pDateandMonth);
-
-                        // console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  $ > abc  : " + pDateandMonth);
-                        // var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
-                        // if (i < 6) {
-                        //     var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
-                        //     // db.deleteOvanpPeriod(this.state.dbs, pPeriod_Id).then((result) => {
-                        //     // }).catch((err) => {
-                        //     //     this.setState = {
-                        //     //         isLoading: false,
-                        //     //     }
-                        //     // })
-                        //     db.updateOvanpPeriod(this.state.dbs, upnxtOvl, pPeriod_Id).then((result) => {
-                        //     }).catch((err) => {
-                        //         this.setState({
-                        //             isLoading: false,
-                        //         });
-                        //     });
-                        // }
-
 
                     } if (pcat_Id == 5) {
-                        this.unmarkDate(pDateandMonth);
-                        var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
 
+                        var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
                         db.updateOvanpPeriod(this.state.dbs, _nextDate, pPeriod_Id).then((result) => {
                         }).catch((err) => {
                             this.setState({
                                 isLoading: false,
                             });
-                        })
+                        });
+                        if (availabeNext == 1) {
+     
+                            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>> month eka : : " + pDateandMonth + " / " + pPeriod_Id);
+        
+                            this.unmarkDate(pDateandMonth);
+
+                            db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
+                                this.setState({
+
+                                    isLoading: false,
+                                });
+                            }).catch((err) => {
+                            })
+                            // this.loadData();
+                        }
+
                     }
+                    this.unmarkDate(pDateandMonth);
                 }
-                this.unmarkDate(pDateandMonth);
+
             }
-            // this.loadData();
             if (availabel == 1) {
-                // console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  3 > : " + pcat_Id);
-                // if (pcat_Id == 5) {
-                //     console.log("o cat id : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pcat_Id);
-                // }
 
             } else {
 
@@ -312,60 +311,71 @@ export class PeriodCalandar extends Component {
                     this.setState({
                         isLoading: false,
                     });
-                    this.loadData();
+
                 }).catch((err) => {
                     this.setState({
                         isLoading: false,
                     });
                 })
                 if (availabelOvl == 0) {
+                    this.updateOvulationDates(availabelOvl, data, pDateandMonth);
                     db.addOvulationPeriod(this.state.dbs, data).then((result) => {
                         this.setState({
                             isLoading: false,
                         });
-                        this.loadData();
+                        // this.loadData();
                     }).catch((err) => {
                         this.setState({
                             isLoading: false,
                         });
                     })
                 }
+                this.loadData();
             }
 
             if (availabelOvl == 1) {
+                this.updateOvulationDates(availabelOvl, data, pDateandMonth);
 
-                db.gwtOvulationDates(this.state.dbs, data).then((results) => {
-                    var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
-
-                    result = results;
-                    var _pid, _pName;
-                    for (var i = 0; i < result.length; i++) {
-                        _pid = result[i].pId;
-                        _pName = result[i].pName;
-                        console.log(">>>>>>>>>>>>>>>>>>>>>>>console log and : >>>>>>>>OPO As P : " + _pName);
-                        var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
-
-                        db.updateOvanpPeriod(this.state.dbs, upnxtOvl, _pid).then((result) => {
-                        }).catch((err) => {
-                            this.setState({
-                                isLoading: false,
-                            });
-                        });
-                        this.unmarkDate(pDateandMonth);
-
-                    }
-                    this.loadData();
-                    this.setState({
-
-                    });
-                }).catch((err) => {
-                    console.log(err);
-                })
             }
             availabel = 0;
             availabelOvl = 0;
+            availabeNext = 0;
         })
-        // availabel = 0;
+
+    }
+
+    updateOvulationDates(availabelOvl, data, pDateandMonth) {
+        db.gwtOvulationDates(this.state.dbs, data).then((results) => {
+            var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
+            result = results;
+            var _pid, _pName;
+            for (var i = 0; i < result.length; i++) {
+                _pid = result[i].pId;
+                _pName = result[i].pName;
+
+                if (availabelOvl == 1) {
+                    var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
+                    this.unmarkDate(_pName);
+                    db.updateOvanpPeriod(this.state.dbs, upnxtOvl, _pid).then((result) => {
+                    }).catch((err) => {
+                        this.setState({
+                            isLoading: false,
+                        });
+                    });
+
+                } else {
+                    this.unmarkDate(_pName);
+
+                }
+
+            }
+            this.loadData();
+            this.setState({
+
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
     }
     updateTextInput = (text, field) => {
         const state = this.state
@@ -373,12 +383,10 @@ export class PeriodCalandar extends Component {
         this.setState(state);
     }
     unmarkDate(dateUnmark) {
-
-
         let selected = false;
         let markedDates = {}
         let updatedMarkedDates = '';
-        markedDates = { ...markedDates, ...{ selected }, selectedColor: "black" };
+        markedDates = { ...markedDates, ...{ selected } };
         updatedMarkedDates = { ...this.state._markedDates, ...{ [dateUnmark]: markedDates } }
         this.setState({
             isLoading: false,
