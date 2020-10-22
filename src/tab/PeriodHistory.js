@@ -6,6 +6,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Database from '../Database';
 import { Icon } from 'react-native-elements';
+import { ECharts } from "react-native-echarts-wrapper";
+import moment from 'moment' // 2.20.1
 const db = new Database();
 import FlashMessage, { showMessage } from "react-native-flash-message";
 export class PeriodHistory extends Component {
@@ -16,12 +18,38 @@ export class PeriodHistory extends Component {
             _list_bpphistory: [],
 
             dbs: '',
+            data: {
+                title: {
+                    text: 'ECharts demo'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['销量']
+                },
+                series: [{
+
+                    data: [],
+                    // name: 'a',
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'green'
+                    }
+                }]
+                , xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+
+            }
 
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
         })
-
         this.loadDbVarable = this.loadDbVarable.bind(this);
     }
     loadDbVarable(result) {
@@ -29,8 +57,63 @@ export class PeriodHistory extends Component {
             dbs: result,
         });
         this.getData();
+        // this.getDataA();
         // this.viewListData();
     }
+    // getData() {
+    //     const self = this;
+    //     db.PeriodHistory(this.state.dbs).then((datas) => {
+    //         result = datas;
+    //         var pPeriod_Id = null;
+    //         var pcat_Id = null;
+
+    //         for (var i = 0; i < result.length; i++) {
+    //             availabel = 1,
+    //                 pDateandMonth = result[i].pName,
+    //                 pcat_Id = result[i].pCatId,
+    //                 pPeriod_Id = result[i].pId
+
+    //         }
+    //         self.setState({
+    //             isLoading: false,
+
+    //             _list_bpphistory: datas,
+    //         });
+
+    //     }).catch((err) => {
+    //         console.log(err);
+    //     })
+    // }
+    deleteData(id) {
+
+        this.setState({
+            // isLoading: true
+        });
+        db.deletePeriod(this.state.dbs, id).then((result) => {
+
+            this.getData();
+            // this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
+    loadDbVarable(result) {
+        this.setState({
+            dbs: result,
+            isLoading: false,
+        });
+        this.getData();
+
+    }
+    onRef = ref => {
+        if (ref) {
+            this.chart = ref;
+        }
+    };
     getData() {
         const self = this;
         db.PeriodHistory(this.state.dbs).then((datas) => {
@@ -47,31 +130,55 @@ export class PeriodHistory extends Component {
             }
             self.setState({
                 isLoading: false,
-     
+
                 _list_bpphistory: datas,
             });
 
         }).catch((err) => {
             console.log(err);
         })
-    }
-    deleteData(id) {
 
-        this.setState({
-          // isLoading: true
-        });
-        db.deletePeriod(this.state.dbs, id).then((result) => {
-    
-          this.getData();
-          // this.getaAllClickData();
-    
+        let temp2 = [];
+
+        db.getPeriodHistory(this.state.dbs).then((data) => {
+            let result = data;
+            if (result == 0) {
+                this.setState({
+                    isLoading: false,
+                });
+            } else {
+                var temp3 = [];
+                var _monthDate;
+                const dataClone = { ...self.state.data }
+                const end2 = moment('2020-11-21', 'YYYY-MM-DD');
+                const start = moment('2020-10-21', 'YYYY-MM-DD');
+                const range3 = moment.range(start, end2);
+
+                var firstOvDate = range3.snapTo('day');
+                var datess = firstOvDate.diff('days');
+
+                var temp = 0;
+                var phDate = "";
+                for (var i = 0; i < result.length; i++) {
+                    // _monthDate = result[i].bpDate.substring(5, 10);
+                    // temp2.push(parseFloat([result[i].pName]));
+                    // temp3.push([_monthDate]);
+                    phDate = result[i].pName;
+                    temp = phDate;
+                }
+           
+                dataClone.series[0].data = temp2;
+                self.setState({
+                    isLoading: false,
+                    data: dataClone,
+                });
+            }
         }).catch((err) => {
-          console.log(err);
-          this.setState = {
-            // isLoading: false
-          }
+            console.log(err);
         })
-      }
+    }
+
+
     keyExtractor = (item, index) => index.toString()
     render() {
 
@@ -85,13 +192,13 @@ export class PeriodHistory extends Component {
                     style={styles.scrollView}>
 
                     <View>
+
                         <View style={{ backgroundColor: '#fbb146', height: 60, zIndex: -1 }}>
-                        <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period History</Text>
+
+                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period History</Text>
                         </View>
 
                         <View style={styles.breadthPo1}>
-                            {/* <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FIRST YEAR OF LIFE</Text>
-                            <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View> */}
 
                             <FlatList
 
@@ -115,41 +222,27 @@ export class PeriodHistory extends Component {
                                             onPress={() => console.log('hello')} />
                                     </Left>
                                     <Body style={{ marginLeft: -150 }}>
-                                    <Text style={[{ color: 'gray',fontSize: 12},styles.dateText]}>{item.bpValue}Period started date</Text>
+                                        <Text style={[{ color: 'gray', fontSize: 12 }, styles.dateText]}>{item.bpValue}Period started date</Text>
                                         <Text style={{ fontSize: 15 }}>{item.pName}</Text>
-                                      
+
                                     </Body>
                                     <Right>
                                         <View style={styles.iconMore}>
-                                            {/* <Icon
-                                                type='font-awesome'
-                                                color='gray'
-                                                iconStyle={{ fontSize: 18, padding: 8 }}
-                                                name="trash-o" color="gray"
-                                                onPress={() => {
-                                                    this.deleteData(item.pId); showMessage({
 
-                                                        message: "Hello there",
-                                                        description: "successfuly deleted " + `${item.bpDate}`,
-                                                        type: "success",
-                                                    })
-                                                }}
-                                            /> */}
                                         </View>
-                                        {/* <View style={styles.iconMore}>
 
-      <Icon
-        name='angle-right'
-        type='font-awesome'
-        color='gray'
-        onPress={() => console.log('hello')} />
-    </View> */}
                                     </Right>
                                 </ListItem>
                                 }
                             />
+
                         </View>
 
+                    </View>
+                    <View style={{ height: 500 }}>
+                        <ECharts
+                            option={this.state.data} height={300}
+                        />
                     </View>
                 </ScrollView>
 
@@ -216,7 +309,7 @@ export class PeriodHistory extends Component {
         width: '95%',
         borderRadius: 10,
         elevation: 2,
-       // padding: 12,
+        // padding: 12,
         // shadowColor: '#30C1DD',
         // shadowOffset: { width: 0, height: 3 },
         // shadowOpacity: 0.8,

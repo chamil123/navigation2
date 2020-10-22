@@ -258,14 +258,14 @@ export default class Database {
         });
     }
     deletePeriod(db, id) {
-      
+
 
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('DELETE FROM Period WHERE pId = ?', [id]).then(([tx, results]) => {
                     console.log(results);
                     resolve(results);
-                   
+
                 });
             }).then((result) => {
             }).catch((err) => {
@@ -275,7 +275,7 @@ export default class Database {
     }
     deleteOvanpPeriod(db, pCatId) {
 
-    
+
         return new Promise((resolve) => {
 
             db.transaction((tx) => {
@@ -801,6 +801,34 @@ export default class Database {
         });
     }
 
+    getPeriodHistory(db) {
+        return new Promise((resolve) => {
+            const pando = [];
+            db.transaction((tx) => {
+                tx.executeSql('SELECT * FROM Period p WHERE p.pCatId=1', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { pId, pName, pCatId, pDescription } = row;
+                        pando.push({
+                            pId,
+                            pName,
+                            pCatId,
+                            pDescription
+                        });
+                    }
+                    // console.log(products);
+                    resolve(pando);
+                });
+            }).then((result) => {
+                // this.closeDatabase(db);
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }
+
     listWeightGain(db) {
         return new Promise((resolve) => {
 
@@ -1087,7 +1115,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?)', [null, pd.pName, pd.pDescription, 2]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 2,0]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {

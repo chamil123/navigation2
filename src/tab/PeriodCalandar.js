@@ -3,33 +3,25 @@ import { Modal, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollVi
 import { CustomHeader } from '../index';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment' // 2.20.1
+import { Icon } from 'react-native-elements';
 import { IMAGE } from '../constants/image';
-// import SwipeablePanel from 'rn-swipeable-panel';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { TextInput, Card, Title, Paragraph } from 'react-native-paper';
-import { Button } from 'react-native-elements';
-import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import AsyncStorage from '@react-native-community/async-storage';
-import CustomNotification from './CustomPushNotification';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import PushNotification from 'react-native-push-notification';
-// import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
-
 const today = new Date();
 const currentDate = today.getDate();
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 const _maxDate = moment().add(31, 'days').format(_format)
-
 import { extendMoment } from 'moment-range';
 import CustomPushNotification from './CustomPushNotification';
 const moments = extendMoment(moment);
-
 const db = new Database();
 const cn = new CustomPushNotification();
 
@@ -55,7 +47,8 @@ export class PeriodCalandar extends Component {
             _day: currentDate,
             _month_name: monthNames[today.getMonth()],
             _days_count: moment(_today, "YYYY-MM").daysInMonth(),
-            _day_of_month: ''
+            _day_of_month: '',
+            startAngle:'', angleLength:'',
 
         }
         db.initDB().then((result) => {
@@ -147,29 +140,22 @@ export class PeriodCalandar extends Component {
                         firstOvDateDay = _pdate.substring(8, 10);
                     }
 
-
                     if (_pParity_bit == 0) {
-
                         markedDates = { ...markedDates, ...{ selected }, startingDay: true, color: '#50cebb', textColor: 'white', endingDay: false };
                         updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     } else if (_pParity_bit == 4) {
-
                         markedDates = { ...markedDates, ...{ selected }, endingDay: true, color: '#50cebb', textColor: 'white', startingDay: false };
                         updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     }
                     else {
                         markedDates = { ...markedDates, ...{ selected }, startingDay: false, endingDay: false, color: '#70d7c7', textColor: 'white' };
                         updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
-
                     } this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
                         reacl_next_ov_date: firstOvDate.diff('days'),
                         ovulation_date: firstOvDateDay
-
                     });
-
-
                 } if (_pcatId == 5) {
                     let data = {
                         _title: " " + _pDescription + "" + _pdate,
@@ -179,23 +165,17 @@ export class PeriodCalandar extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-
                     const end = moment(_pdate, 'YYYY-MM-DD');
                     const range = moment.range(start, end);
-
                     const range2 = range.snapTo('day');
-
                     markedDates = { ...markedDates, ...{ selected }, startingDay: true, endingDay: true, color: "pink" };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
                         reacl_next_p_date: range2.diff('days'),
-
                     });
-
                 }
-
             }
         }).catch((err) => {
             console.log(err);
@@ -204,7 +184,6 @@ export class PeriodCalandar extends Component {
             }
         })
     }
-
     savePeriod() {
         this.setState({
             isLoading: false,
@@ -218,7 +197,6 @@ export class PeriodCalandar extends Component {
         } else {
             this.RBSheet.close();
         }
-
         var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
         var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
         let data = {
@@ -236,16 +214,11 @@ export class PeriodCalandar extends Component {
             result = datas;
             var pPeriod_Id = null;
             var pcat_Id = null;
-            var p_Id = null;
             for (var i = 0; i < result.length; i++) {
                 pDateandMonth = result[i].pName,
-                    p_Id = result[i].pId,
                     pcat_Id = result[i].pCatId,
                     pPeriod_Id = result[i].pId
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>> month eka : : " + pDateandMonth + " / " + pPeriod_Id);
                 if (pDateandMonth >= _today) {
-
-
                     if (pcat_Id == 1) {
                         if (this.state.pName == pDateandMonth) {
                             availabeNext = 1;
@@ -253,6 +226,12 @@ export class PeriodCalandar extends Component {
                             db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
                                 this.setState({
 
+                                    isLoading: false,
+                                });
+                            }).catch((err) => {
+                            })
+                            db.deleteOvanpPeriod(this.state.dbs, 4).then((result) => {
+                                this.setState({
                                     isLoading: false,
                                 });
                             }).catch((err) => {
@@ -272,9 +251,7 @@ export class PeriodCalandar extends Component {
                         })
                     } if (pcat_Id == 4) {
                         availabelOvl = 1;
-
                     } if (pcat_Id == 5) {
-
                         var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
                         db.updateOvanpPeriod(this.state.dbs, _nextDate, pPeriod_Id).then((result) => {
                         }).catch((err) => {
@@ -283,30 +260,20 @@ export class PeriodCalandar extends Component {
                             });
                         });
                         if (availabeNext == 1) {
-     
-                            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>> month eka : : " + pDateandMonth + " / " + pPeriod_Id);
-        
-                            this.unmarkDate(pDateandMonth);
-
-                            db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
+                            // this.unmarkDate(pDateandMonth);
+                            db.deleteOvanpPeriod(this.state.dbs, pcat_Id).then((result) => {
                                 this.setState({
-
                                     isLoading: false,
                                 });
                             }).catch((err) => {
                             })
-                            // this.loadData();
                         }
-
                     }
                     this.unmarkDate(pDateandMonth);
                 }
-
             }
             if (availabel == 1) {
-
             } else {
-
                 db.adderiod(this.state.dbs, data).then((result) => {
                     this.setState({
                         isLoading: false,
@@ -323,7 +290,6 @@ export class PeriodCalandar extends Component {
                         this.setState({
                             isLoading: false,
                         });
-                        // this.loadData();
                     }).catch((err) => {
                         this.setState({
                             isLoading: false,
@@ -332,18 +298,14 @@ export class PeriodCalandar extends Component {
                 }
                 this.loadData();
             }
-
             if (availabelOvl == 1) {
                 this.updateOvulationDates(availabelOvl, data, pDateandMonth);
-
             }
             availabel = 0;
             availabelOvl = 0;
             availabeNext = 0;
         })
-
     }
-
     updateOvulationDates(availabelOvl, data, pDateandMonth) {
         db.gwtOvulationDates(this.state.dbs, data).then((results) => {
             var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
@@ -365,13 +327,10 @@ export class PeriodCalandar extends Component {
 
                 } else {
                     this.unmarkDate(_pName);
-
                 }
-
             }
             this.loadData();
             this.setState({
-
             });
         }).catch((err) => {
             console.log(err);
@@ -441,14 +400,35 @@ export class PeriodCalandar extends Component {
             const workout = { key: 'workout', color: 'green' };
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+
                     <ScrollView
                         contentInsetAdjustmentBehavior="automatic"
                         style={[styles.scrollView, { marginBottom: -200 }]}>
+
                         <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
-                        <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1, }}>
-                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Calandar</Text>
+                        <View style={styles.brestposition5}></View>
+                        <View style={styles.brestposition6}></View>
+
+                        <View style={{ backgroundColor: '#fbb146', height: 130, zIndex: -1, }}>
+
+                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period Calandar</Text>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodHistory')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130, }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='suitcase'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                        <View style={{ flex: 1, padding: 15, bottom: 80 }}>
+                        <View style={styles.brestposition3}></View>
+                        <View style={styles.brestposition4}></View>
+                        <View style={{ flex: 1, padding: 15, bottom: 40 }}>
 
                             <Card>
                                 {/* <Card.Title title="Card Title" subtitle="Card Subtitle" /> */}
@@ -645,7 +625,7 @@ export class PeriodCalandar extends Component {
                                             </AnimatedCircularProgress>
                                         </View> : <Text></Text>
                                 }
-
+                               
                             </View>
 
                             <RBSheet
@@ -790,5 +770,65 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         alignItems: 'center',
         margin: 5
+    }, brestposition5: {
+        width: 260,
+        height: 260,
+        marginLeft: 280,
+        marginTop: 390,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 175, 0.5)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition6: {
+        width: 140,
+        height: 140,
+        // marginRight: 12,
+        marginTop: 450,
+        marginLeft: 338,
+        backgroundColor: 'rgba(242, 242,242, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }, brestposition3: {
+        width: 260,
+        height: 260,
+        marginLeft: -70,
+        marginTop: 140,
+        flexDirection: 'row-reverse',
+        backgroundColor: 'rgba(255, 224, 178, 0.8)',
+        borderRadius: 130,
+        // overflow: 'hidden',
+        zIndex: -2,
+        position: 'absolute'
+    }, brestposition4: {
+        width: 170,
+        height: 170,
+        // marginRight: 12,
+        marginTop: 182,
+        marginLeft: -32,
+        backgroundColor: 'rgba(243, 242,242, 1)',
+        borderRadius: 110,
+        // overflow: 'hidden',
+        zIndex: -1,
+
+        position: 'absolute'
+    }, buttonh: {
+        backgroundColor: "#AF1E8F",
+        padding: 5,
+        borderRadius: 25,
+        marginTop: 18,
+        width: 120,
+        elevation: 10,
+        shadowColor: '#30C1DD',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 8,
+        marginHorizontal: 14,
+
+
     }
 });

@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   }
 
-
 });
 
 export class RegisterScreen extends Component {
@@ -93,8 +92,6 @@ export class RegisterScreen extends Component {
       TextInputEmail: '',
       TextInputPhoneNumber: '',
       TextInputpassword: '',
-
-
       isLoading: true,
 
       PickerValueHolder: '',
@@ -104,14 +101,12 @@ export class RegisterScreen extends Component {
       // emailError: "",
     }
   }
-
   InputUsers = () => {
     // const emailError = validate("email", this.state.TextInputEmail)
     this.setState({
       // emailError: emailError,
       // passwordError: passwordError
     })
-
     // this.validate({
     //   TextInputName: { required: true},
     //   TextInputEmail: {email: true},
@@ -155,7 +150,6 @@ export class RegisterScreen extends Component {
 
           } else {
             showMessage({
-
               message: "Register Fail",
               description: "" + `${responseJson}`,
               backgroundColor: 'red'
@@ -165,8 +159,6 @@ export class RegisterScreen extends Component {
         }).catch((error) => {
           console.error(error);
         })
-
-
     } else {
       showMessage({
         message: "Please select an option first",
@@ -174,8 +166,6 @@ export class RegisterScreen extends Component {
       })
     }
   }
-
-
   componentDidMount() {
     fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/view_role.php', {
       method: 'get',
@@ -191,9 +181,7 @@ export class RegisterScreen extends Component {
           role_name = responseJson[i].role_name
           console.warn(role_id);
         }
-
         console.log(responseJson);
-
         // var datas=JSON.stringify(responseJson);
         // Alert.alert(datas.id);
         this.setState({
@@ -208,26 +196,17 @@ export class RegisterScreen extends Component {
       }).catch((error) => {
         console.error(error);
       })
-
-
   }
 
   handleChangeOption(itemValue) {
     if (itemValue !== 0) {
       this.setState({ PickerValueHolder: itemValue });
-
     }
   }
   render() {
     let { isLoading } = this.state
 
-    let data = [{
-      value: 'Banana',
-    }, {
-      value: 'Mango',
-    }, {
-      value: 'Pear',
-    }];
+
     if (isLoading) {
       return (
 
@@ -235,7 +214,6 @@ export class RegisterScreen extends Component {
 
       );
     } else {
-
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
@@ -255,7 +233,6 @@ export class RegisterScreen extends Component {
               <Animatable.View animation="fadeInLeft">
                 <View style={{ borderBottomWidth: 0.6, paddingBottom: 5 }}>
                   <Picker
-
                     mode="dropdown"
                     // selectedValue={this.state.datasource[index].packselectedValue}
                     selectedValue={this.state.PickerValueHolder}
@@ -263,7 +240,6 @@ export class RegisterScreen extends Component {
                     // onValueChange={this.handleChangeOption}
                     prompt='Options'
                     onValueChange={
-
                       (itemValue, itemIndex) =>
 
                         this.setState(
@@ -271,8 +247,6 @@ export class RegisterScreen extends Component {
                           (name, index) => {
                           }
                         )
-
-
                     }
                   >
                     <RedPickerItem label={'Please select an option'} value="red" color='red' fontSize='15' value={0} />
@@ -307,17 +281,6 @@ export class RegisterScreen extends Component {
 
             </View>
           </ScrollView>
-
-
-          {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Register!</Text>
-                <TouchableOpacity style={{ marginTop: 20 }}
-                  onPress={() => this.props.navigation.navigate('HomeApp')}
-        
-                >
-                  <Text>Home</Text>
-                </TouchableOpacity>
-              </View> */}
 
         </SafeAreaView>
       );

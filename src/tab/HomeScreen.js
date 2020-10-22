@@ -189,7 +189,7 @@ export class HomeScreen extends Component {
 
             {
               this.state._member_id == 1 ?
-                <View style={{ flex: 1, flexDirection: 'column' }}>
+                <View style={{ flex: 1, flexDirection: 'column',  }}>
                   <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 15 }}>Recommended for you</Text>
                   <ScrollView
 
