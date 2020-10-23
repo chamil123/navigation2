@@ -205,12 +205,12 @@ export class HospitalBag extends Component {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130 }]}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
                                             name='suitcase'
                                             type='font-awesome'
                                             color='red'
-                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
                                     <Text style={{ color: 'white', padding: 7 }}>Baby Bag</Text>
@@ -218,12 +218,12 @@ export class HospitalBag extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
                                             name='shopping-bag'
                                             type='font-awesome'
                                             color='red'
-                                            iconStyle={{ fontSize: 13, color: 'white' }}
+                                            iconStyle={{ fontSize: 13, color: 'gray' }}
                                         />
                                     </View>
                                     <Text style={{ color: 'white', padding: 7 }}>labour room Pack</Text>

@@ -70,7 +70,7 @@ export class EDDCalculator extends Component {
             abd: '../images/baby/1.1.jpg',
             _estimatedDate: '',
             avatar: "",
-            _compltedWeeks: '',
+            _compltedWeeks: 0,
             _lastPeriodDate: '',
             isLoading: true,
             _availabeledd: 0,
@@ -360,7 +360,7 @@ export class EDDCalculator extends Component {
                             <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text>
                         </View>
                         {
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :" + this.state._availabeledd),
+                       
                             this.state._availabeledd == 0 ? <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 150 }]}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 40 }}>
@@ -520,7 +520,7 @@ export class EDDCalculator extends Component {
 
                                                             </View>
 
-                                                            <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks/277).toFixed(2)} height={5} borderRadius={5} width={250} />
+                                                            <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks/277)} height={5} borderRadius={5} width={250} />
                                                             <View>
                                                                 {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
                                                                 <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Last Period Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>{
@@ -575,8 +575,8 @@ export class EDDCalculator extends Component {
                                         </View>
                                         :
                                         <View style={styles.container}>
-                                            <View style={{ height: 145 }}>
-                                                {/* <Text>adasda</Text> */}
+                                            <View style={{ height: 145, }}>
+                                                <Text style={{fontWeight:'normal',fontSize:40,color:'#fbb146'}}>  Congratulations</Text>
                                             </View>
                                         </View>
                                     :
@@ -712,7 +712,8 @@ export class EDDCalculator extends Component {
         flexWrap: 'wrap',
         paddingTop: 20,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        justifyContent:'center',alignItems:'center'
     }, button5: {
         shadowColor: 'rgba(0,0,0, .4)', // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS

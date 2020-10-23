@@ -9,14 +9,23 @@ import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { BarIndicator } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { Avatar } from 'react-native-elements';
 const db = new Database();
 var j = 0;
-const _format = 'YYYY-MM-DD'
+const _format = 'YYYY-MM-DD';
+const _formatTime = 'hh:mm:ss';
 const _today = moment().format(_format)
+const time = moment().format(_formatTime); 
+// var time = new Date().getHours() + ":" + new Date().getMinutes();
+// var sec = new Date().getSeconds(); 
 export class KickCounter extends Component {
     constructor(props) {
         var today = new Date(),
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        var time = moment().format(_formatTime); //To get the Current Hours
+        // var min = today.getMinutes(); //To get the Current Minutes
+        // var sec = today.getSeconds();
         super(props);
         this.state = {
             isLoading: true,
@@ -25,6 +34,11 @@ export class KickCounter extends Component {
             _kick_count: 0,
             increment: 0,
             dbs: '',
+            _first_time:"00:00",
+            // _last_time: new Date().getHours().format('H') + ":" + new Date().getMinutes().format('mma'),
+            _last_time:"00:00",
+            times: moment().format(_formatTime),
+
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -34,8 +48,16 @@ export class KickCounter extends Component {
         this.getaAllClickData = this.getaAllClickData.bind(this);
     }
     componentDidMount() {
-        // this.getData();
-        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LL  : " );
+        this.intervalID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+    tick() {
+        this.setState({
+            times: moment().format(_formatTime),
+        });
+        // times:  moment(new Date().toLocaleString(), 'H:mma'),
     }
     loadDbVarable(result) {
         this.setState({
@@ -54,25 +76,67 @@ export class KickCounter extends Component {
         // this.getaAllClickData();
     }
     getaAllClickData() {
-
         db.listAllKickCount(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
                 _list_kcData: results,
             });
-
-
         }).catch((err) => {
             console.log(err);
         })
-        this.getData();
+
+
+
+        var temp;
+        let data = {
+            kcDate: this.state._current_date.toString(),
+            kcValue: this.state._kick_count,
+            kcTime: time,
+        }
+        db.listKickCount(this.state.dbs, data).then((results) => {
+            result = results;
+            if (result == 0) {
+
+
+            } else {
+
+                var _clickValue;
+                for (var i = 0; i < result.length; i++) {
+                    _clickValue = result[i].kcCount;
+                    temp = _clickValue + this.state.increment;
+                    first_time = result[i].kcFirstTime;
+                    last_time = result[i].kcLastTime;
+
+                }
+                this.setState({
+                    _kick_count: temp,
+                    _first_time: first_time,
+                    _last_time: last_time,
+                });
+                // moment(new Date().toLocaleString(), 'H:mma'),
+                let data = {
+                    kcDate: this.state._current_date.toString(),
+                    kcValue: this.state._kick_count,
+                    kcTime: this.state.times,
+                }
+                db.updateClickCount(this.state.dbs, data).then((result) => {
+                }).catch((err) => {
+                    console.log(err);
+
+                })
+
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
     }
     getData() {
         var temp;
         let data = {
             kcDate: this.state._current_date.toString(),
             kcValue: this.state._kick_count,
+            kcTime: this.state.times,
         }
         db.listKickCount(this.state.dbs, data).then((results) => {
             result = results;
@@ -89,13 +153,20 @@ export class KickCounter extends Component {
                 for (var i = 0; i < result.length; i++) {
                     _clickValue = result[i].kcCount;
                     temp = _clickValue + this.state.increment;
+                    first_time = result[i].kcFirstTime;
+                    last_time = result[i].kcLastTime;
+
                 }
                 this.setState({
                     _kick_count: temp,
+                    _first_time: first_time,
+                    _last_time: last_time,
                 });
+                // moment(new Date().toLocaleString(), 'H:mma'),
                 let data = {
                     kcDate: this.state._current_date.toString(),
                     kcValue: this.state._kick_count,
+                    kcTime: this.state.times,
                 }
                 db.updateClickCount(this.state.dbs, data).then((result) => {
                 }).catch((err) => {
@@ -176,17 +247,17 @@ export class KickCounter extends Component {
 
                             {/* <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text> */}
                             <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Kick counter</Text>
-                            <Text style={{ color: 'white' }}>press on foot after kick</Text>
+                            <Text style={{ color: 'white' }}>Press the foot button every time your baby kick</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130 }]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
                                             name='bar-chart'
                                             type='font-awesome'
-                                            color='red'
-                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
                                     <Text style={{ color: 'white', padding: 7 }}>History</Text>
@@ -225,12 +296,15 @@ export class KickCounter extends Component {
                                     onPress={() => console.log('hello')} />
                                 <Text style={{ paddingLeft: 10 }}>Kicks on {this.state._current_date}</Text>
                             </View>
-                            <Text style={{ fontSize: 22, paddingBottom: 10 }}>{this.state._kick_count}</Text>
+                            {/* <Text style={{ fontSize: 22, paddingBottom: 10 }}>{this.state._kick_count}</Text> */}
                             <AnimatedCircularProgress
                                 size={242}
+                                linecap='round'
                                 rotation={0}
                                 width={8}
-                                 linecap='round' 
+
+
+                                // linecap='round'
                                 padding={10}
                                 fill={(this.state._kick_count / 10) * 100}
                                 tintColor="#f78a2c"
@@ -242,7 +316,7 @@ export class KickCounter extends Component {
                                     (fill) => (
                                         <TouchableOpacity style={styles.button5}
                                             onPress={() => this.saveData()}>
-                                            <Image style={{ width: 85, height: 85, marginLeft: 0, marginTop: 0 }}
+                                            <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
                                                 source={IMAGE.ICON_BABY_FOOT2}
                                                 resizeMode="contain"
                                             />
@@ -250,7 +324,63 @@ export class KickCounter extends Component {
                                     )
                                 }
                             </AnimatedCircularProgress>
+                            <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', borderRightColor: 'gray', borderRightWidth: 1, paddingRight: 40 }}>
+                                    <Text style={{ fontSize: 28, color: 'green', paddingBottom: 10 }}>{this.state._first_time}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>First Time</Text>
+                                </View>
 
+                                <View style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 40 }}>
+                                    <Text style={{ fontSize: 28, color: 'red', paddingBottom: 10 }}>{this.state._last_time}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Last Time</Text>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+                                <View style={{ padding: 20, paddingTop: 35 }}>
+                                    <Avatar
+                                        rounded
+                                        showEditButton
+                                        size={62}
+
+                                        icon={{ name: 'undo', type: 'font-awesome', color: 'white' }}
+                                        containerStyle={{
+                                            //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                                            shadowOffset: { height: 3, width: 8 },
+                                            borderWidth: 1, borderColor: 'white', // IOS
+                                            shadowOpacity: 3, // IOS
+                                            shadowRadius: 5, elevation: 2,
+                                            backgroundColor: '#fbb146',
+
+
+                                        }}
+                                    // onPress={}
+                                    />
+                                </View>
+                                <View style={{ padding: 20 }}>
+                                    <TouchableOpacity style={styles.button6}
+                                    >
+                                        <Text style={{ fontSize: 40 }}>{this.state._kick_count}</Text>
+                                    </TouchableOpacity>
+
+                                </View>
+                                <View style={{ padding: 20, paddingTop: 35 }}>
+                                    <Avatar
+                                        rounded
+                                        showEditButton
+                                        size={62}
+                                        icon={{ name: 'stop', type: 'font-awesome', color: 'white', }}
+                                        containerStyle={{
+                                            //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                                            shadowOffset: { height: 3, width: 8 },
+                                            borderWidth: 1, borderColor: 'white', // IOS
+                                            shadowOpacity: 3, // IOS
+                                            shadowRadius: 5, elevation: 2,
+                                            backgroundColor: 'red'
+                                        }}
+                                    // onPress={}
+                                    />
+                                </View>
+                            </View>
                         </View>
 
                     </ScrollView>
@@ -410,6 +540,19 @@ export class KickCounter extends Component {
         elevation: 5, // Android
         height: 190,
         width: 190,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+    }, button6: {
+        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowOffset: { height: 1, width: 1 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1, //IOS
+        backgroundColor: '#fff',
+        borderRadius: 100,
+        elevation: 5, // Android
+        height: 100,
+        width: 100,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',

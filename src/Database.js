@@ -46,14 +46,13 @@ export default class Database {
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Hospitalbagbaby] ([bId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bName] NVARCHAR(255) NULL, [bStatus] NVARCHAR(10) NULL, [bDate] NVARCHAR(10) NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BloodPresure] ([bpId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bpDate] NVARCHAR(25) NULL, [bpValue] INTEGER NOT NULL, [bpdstValue] INTEGER NOT NULL, [bpsmin] INTEGER NOT NULL, [bpdmin] INTEGER NOT NULL, [bpslow] INTEGER NOT NULL, [bpsideal] INTEGER NOT NULL, [bpsprehigh] INTEGER NOT NULL, [bpshigh] INTEGER NOT NULL, [bpdlow] INTEGER NOT NULL, [bpdideal] INTEGER NOT NULL, [bpdprehigh] INTEGER NOT NULL, [bpdhigh] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [WeightGain] ([wgId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [wgDate] NVARCHAR(25) NULL, [wgValue] INTEGER NOT NULL, [wgmin] INTEGER NOT NULL, [wgmax] INTEGER NOT NULL)');
-                                tx.executeSql('CREATE TABLE IF NOT EXISTS [KickCount] ([kcId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [kcDate] NVARCHAR(25) NULL, [kcCount] INTEGER NOT NULL)');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS [KickCount] ([kcId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [kcDate] NVARCHAR(25) NULL, [kcCount] INTEGER NOT NULL, [kcFirstTime] NVARCHAR(25) NULL, [kcLastTime] NVARCHAR(25) NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyActivity] ([baId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [baDate] NVARCHAR(25) NULL, [baText] NVARCHAR(255) NULL, [baStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [FeedingTime] ([fdId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [fdDate] NVARCHAR(25) NULL,[fdTime] NVARCHAR(25) NULL, [fdText] NVARCHAR(255) NULL, [fdValue] INTEGER NOT NULL, [fdStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Urination] ([uId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [uDate] NVARCHAR(25) NULL,[uTime] NVARCHAR(25) NULL, [uText] NVARCHAR(255) NULL, [uValue] INTEGER NOT NULL, [uStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Elimination] ([eId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [eDate] NVARCHAR(25) NULL,[eTime] NVARCHAR(25) NULL, [eText] NVARCHAR(255) NULL, [eValue] INTEGER NOT NULL, [eStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [WightvsLength] ([wlId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [wlSam] NVARCHAR(11) NULL,[wlMan] NVARCHAR(11) NULL,[wlNw] NVARCHAR(11) NULL,[wlOw] NVARCHAR(11) NULL,[wlhw] NVARCHAR(11) NULL,[wlbaby] NVARCHAR(11) NULL )');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyDetails] ([bId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[bName] NVARCHAR(255) NULL,[bWeight] REAL NOT NULL,[bbDate] NVARCHAR(50), [bStatus] INTEGER NOT NULL)');
-                                // tx.executeSql('CREATE TABLE IF NOT EXISTS [Vaccination] ([vId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[vDays] INTEGER NOT NULL,[vDescription] NVARCHAR(500) NULL, [vStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [LaboRoomPacket] ([lId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [lName] NVARCHAR(255) NULL, [lStatus] NVARCHAR(10) NULL, [lDate] NVARCHAR(10) NULL)');
 
                             }).then(() => {
@@ -65,7 +64,7 @@ export default class Database {
                         resolve(db);
                     })
                         .catch(error => {
-                            console.log(">>>>>>>>>>>>>>>>>>> : " + error);
+                            console.log(error);
                         });
                 })
                 .catch(error => {
@@ -959,9 +958,10 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount) VALUES (?,?)', [kc.kcDate, kc.kcValue]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate, kc.kcValue, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
                     resolve(results);
                 });
+
             }).then((result) => {
                 // this.closeDatabase(db);
             }).catch((err) => {
@@ -975,20 +975,21 @@ export default class Database {
     listKickCount(db, data) {
         return new Promise((resolve) => {
             var kick_count = [];
-            // this.initDB().then((db) => {
             db.transaction((tx) => {
                 tx.executeSql('SELECT * FROM KickCount k WHERE kcDate=?', [data.kcDate]).then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
                             kcCount,
-
+                            kcFirstTime,
+                            kcLastTime,
                         });
                     }
+
                     resolve(kick_count);
                 });
 
@@ -997,10 +998,6 @@ export default class Database {
             }).catch((err) => {
                 console.log(err);
             });
-
-            // }).catch((err) => {
-            //     console.log(err);
-            // });
         });
     }
 
@@ -1009,10 +1006,10 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE KickCount SET kcCount = ?    WHERE kcDate = ?', [data.kcValue, data.kcDate]).then(([tx, results]) => {
+                tx.executeSql('UPDATE KickCount SET kcCount = ?,kcLastTime=?     WHERE kcDate = ?', [data.kcValue, data.kcTime, data.kcDate]).then(([tx, results]) => {
                     resolve(results);
                 });
-
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+data.kcTime);
             }).then((result) => {
                 // this.closeDatabase(db);
             }).catch((err) => {
@@ -1032,12 +1029,13 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
                             kcCount,
-
+                            kcFirstTime,
+                            kcLastTime,
                         });
                     }
                     resolve(kick_count);
@@ -1115,7 +1113,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 2,0]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 2, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1127,7 +1125,7 @@ export default class Database {
             //     console.log(err);
             // });
         });
-    }  updateEDD(db, data) {
+    } updateEDD(db, data) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [data.pName, data.pId]).then(([tx, results]) => {

@@ -414,12 +414,12 @@ export class PeriodCalandar extends Component {
                             <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period Calandar</Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodHistory')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130, }]}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
                                             name='suitcase'
                                             type='font-awesome'
                                             color='red'
-                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
                                     <Text style={{ color: 'white', padding: 7 }}>History</Text>
