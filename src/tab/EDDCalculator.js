@@ -3,11 +3,8 @@ import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Dimensions, Scr
 import { IMAGE } from '../constants/image';
 import * as Progress from 'react-native-progress';
 import { CustomHeader } from '../index';
-
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import StepIndicator from 'react-native-step-indicator';
 import moment from 'moment' // 2.20.1
@@ -17,16 +14,23 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Database from '../Database';
 import *as Animatable from 'react-native-animatable';
 import CalendarStrip from 'react-native-slideable-calendar-strip';
-import { TextInput } from 'react-native-paper';
 const db = new Database();
 import ActionButton from 'react-native-action-button';
 import DatePicker from 'react-native-date-picker';
-const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format)
-
-
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+} from 'react-native-indicators';
+const _format = 'YYYY-MM-DD';
+const _today = moment().format(_format);
 const screenWidth = Dimensions.get("window").width;
-
 const labels = ["1st month", , "3rd month ", "5thmonth", "7th month", "9th month"];
 const customStyles = {
     stepIndicatorSize: 20,
@@ -63,7 +67,13 @@ export class EDDCalculator extends Component {
             dbs: '',
             TextInpuPbValue: '',
             date: new Date(),
-            abd:IMAGE.ICON_BABY_1_WEEK,
+            abd: '../images/baby/1.1.jpg',
+            _estimatedDate: '',
+            avatar: "",
+            _compltedWeeks: '',
+            _lastPeriodDate: '',
+            isLoading: true,
+            _availabeledd: 0,
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -73,40 +83,63 @@ export class EDDCalculator extends Component {
     loadDbVarable(result) {
         this.setState({
             dbs: result,
+            // isLoading: false,
         });
         this.getDDDate();
     }
     getDDDate() {
         const start = moment(_today, 'YYYY-MM-DD');
-
         // db.loadDB();
         let edd = [];
         let plastdate = "";
         let eddDate = "";
         let compltedMonths = "";
+        let compltedWeeks = 0;
+        let _eddDateCount = "";
+        let availabeledd = 0;
         db.getEddDate(this.state.dbs).then((datat) => {
             edd = datat;
             for (var i = 0; i < edd.length; i++) {
                 plastdate = edd[i].pName
-                console.log("dsdssd ((((((((((((((((((((((())))))))))))))))))))))) : " + plastdate);
             }
+
+
             // eddDate = moment(plastdate).add(277, 'day').format('YYYY-MM-DD');
             const end = moment(plastdate, 'YYYY-MM-DD');
             const range = moment.range(start, end);
             const range2 = range.snapTo('day');
             compltedMonths = ((277 - range2.diff('days')) / 30).toFixed(0);
+            compltedWeeks = ((277 - range2.diff('days')) / 7).toFixed(0);
             this.setState({
-                _eddDateCount: range2.diff('days'),
-                _compltedMonths: compltedMonths
+                _eddDateCount:  parseFloat(range2.diff('days')),
+                _compltedMonths: compltedMonths,
+                _estimatedDate: plastdate,
+
+                isLoading: false,
             });
 
+            let lastPdate = moment(plastdate).subtract(277, 'day').format('YYYY-MM-DD');
+            const range3 = moment.range(lastPdate, start);
+            const range4 = range3.snapTo('day');
+
+            for (var i = 0; i < 41; i++) {
+                if (compltedWeeks == i) {
+                    availabeledd = 1;
+                    this.setState({
+                        abd: i,
+                        _compltedWeeks: parseFloat(range4.diff('days')),
+                        _lastPeriodDate: lastPdate,
+                        _availabeledd: availabeledd,
+                        isLoading: false,
+                    });
+                }
+            }
+
         });
+        availabeledd = 0;
+
     }
     componentDidMount() {
-
-
-
-
 
     }
     onPageChange(position) {
@@ -114,15 +147,13 @@ export class EDDCalculator extends Component {
     }
     addEDD() {
         this.RBSheet.close();
-        this.setState({
-            isLoading: false,
-        });
+        // this.setState({
+        //     isLoading: false,
+
+        // });
         var dates = this.state.date;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
         const eddDate = moment(formattedDate).add(277, 'day').format('YYYY-MM-DD');
-
-
-
         let data = {
             pName: eddDate,
             pDescription: 'Estimated Delivery Date',
@@ -130,8 +161,6 @@ export class EDDCalculator extends Component {
         let result = [];
         let _eddIdId;
         let availabeledd = 0;
-
-
         // console.log("edd dATE :::::::::::::::" + eddDate);
         db.getEddDate(this.state.dbs).then((datas) => {
             result = datas;
@@ -140,8 +169,29 @@ export class EDDCalculator extends Component {
                 availabeledd = 1;
 
             }
+
             if (availabeledd == 1) {
 
+
+
+                let dataup = {
+                    pName: eddDate,
+                    pDescription: 'Estimated Delivery Date',
+                    pId: _eddIdId,
+                }
+
+                db.updateEDD(this.state.dbs, dataup).then((result) => {
+
+                    this.setState({
+                        isLoading: false,
+                    });
+                    this.getDDDate();
+                }).catch((err) => {
+                    console.log(err);
+                    this.setState({
+                        isLoading: false,
+                    });
+                })
                 availabeledd = 0;
             } else {
                 db.addEDD(this.state.dbs, data).then((result) => {
@@ -162,13 +212,8 @@ export class EDDCalculator extends Component {
         })
 
 
-
-
-
     }
     updateEdd() {
-        console.log("dsdsdssssssss??????????????????????????????????");
-
         // let result = [];
         // let _eddIdId;
         // let availabeledd = 0;
@@ -191,10 +236,95 @@ export class EDDCalculator extends Component {
         //     }
         //     availabeledd = 0;
         // })
-
-
+    }
+    get avatarImage() {
+        switch (this.state.abd) {
+            case 0:
+                return require('../images/baby/1.1.jpg');
+            case 1:
+                return require('../images/baby/2.jpg');
+            case 2:
+                return require('../images/baby/1.1.jpg');
+            case 3:
+                return require('../images/baby/3.jpg');
+            case 4:
+                return require('../images/baby/4.jpg');
+            case 5:
+                return require('../images/baby/5.jpg');
+            case 6:
+                return require('../images/baby/6.jpg');
+            case 7:
+                return require('../images/baby/7.jpg');
+            case 8:
+                return require('../images/baby/8.jpg');
+            case 9:
+                return require('../images/baby/9.jpg');
+            case 10:
+                return require('../images/baby/10.jpg');
+            case 11:
+                return require('../images/baby/11.jpg');
+            case 12:
+                return require('../images/baby/12.jpg');
+            case 13:
+                return require('../images/baby/13.jpg');
+            case 14:
+                return require('../images/baby/14.jpg');
+            case 15:
+                return require('../images/baby/15.jpg');
+            case 16:
+                return require('../images/baby/16.jpg');
+            case 17:
+                return require('../images/baby/17.jpg');
+            case 18:
+                return require('../images/baby/18.jpg');
+            case 19:
+                return require('../images/baby/19.jpg');
+            case 20:
+                return require('../images/baby/20.jpg');
+            case 21:
+                return require('../images/baby/21.jpg');
+            case 22:
+                return require('../images/baby/22.jpg');
+            case 23:
+                return require('../images/baby/23.jpg');
+            case 24:
+                return require('../images/baby/24.jpg');
+            case 25:
+                return require('../images/baby/25.jpg');
+            case 26:
+                return require('../images/baby/26.jpg');
+            case 27:
+                return require('../images/baby/27.jpg');
+            case 28:
+                return require('../images/baby/28.jpg');
+            case 29:
+                return require('../images/baby/29.jpg');
+            case 30:
+                return require('../images/baby/30.jpg');
+            case 31:
+                return require('../images/baby/31.jpg');
+            case 32:
+                return require('../images/baby/32.jpg');
+            case 33:
+                return require('../images/baby/33.jpg');
+            case 34:
+                return require('../images/baby/34.jpg');
+            case 35:
+                return require('../images/baby/35.jpg');
+            case 36:
+                return require('../images/baby/36.jpg');
+            case 37:
+                return require('../images/baby/37.jpg');
+            case 38:
+                return require('../images/baby/38.jpg');
+            case 39:
+                return require('../images/baby/39.jpg');
+            default:
+                return require('../images/baby/babyDelever.jpg');
+        }
     }
     render() {
+
         const data = [10, 5, 25, 15, 20]
 
         const CUT_OFF = 20
@@ -213,116 +343,120 @@ export class EDDCalculator extends Component {
                 </Text>
             ))
         )
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#fbb146' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+        let { isLoading } = this.state
+        if (isLoading) {
+            return (
+                <BarIndicator color='#fbb146' />
+            );
+        } else {
+            return (
 
-                <View style={styles.header}>
-                    <View style={{ marginTop: 0, marginLeft: 20 }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estimated Date of Delivery (EDD)</Text>
-                        <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text>
+                <SafeAreaView style={{ flex: 1, backgroundColor: '#fbb146' }}>
+                    <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+
+                    <View style={styles.header}>
+                        <View style={{ marginTop: 0, marginLeft: 20 }}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estimated Date of Delivery (EDD)</Text>
+                            <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text>
+                        </View>
+                        {
+                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :" + this.state._availabeledd),
+                            this.state._availabeledd == 0 ? <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 150 }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 40 }}>
+                                        <Icon
+                                            name='plus'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 15, paddingRight: 2, paddingLeft: 2, color: 'gray' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>Add EDD Date</Text>
+                                </View>
+                            </TouchableOpacity> : <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
+                                            <Icon
+                                                name='edit'
+                                                type='font-awesome'
+                                                color='red'
+                                                iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
+                                            />
+                                        </View>
+                                        <Text style={{ color: 'white', padding: 7 }}>Update EDD Date</Text>
+                                    </View>
+                                </TouchableOpacity>
+                        }
+
                     </View>
+                    <View style={styles.footer}>
 
-                </View>
-                <View style={styles.footer}>
-
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        contentInsetAdjustmentBehavior="automatic"
-                        style={styles.scrollView}>
-                        <View style={{ justifyContent: 'center', padding: 0, paddingTop: 25, }}>
-                            <View style={{ backgroundColor: 'white', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
-
-
-                                <CalendarStrip
-
-                                    selectedDate={this.state.selectedDate}
-
-                                    onPressDate={(date) => {
-                                        this.setState({ selectedDate: date });
-
-                                    }}
-                                    onPressGoToday={(today) => {
-                                        this.setState({ selectedDate: today });
-                                    }}
-                                    onSwipeDown={() => {
-                                        // alert('onSwipeDown');
-                                    }}
-
-                                    markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
-                                />
-                            </View>
-
-                            <View style={{ marginTop: 15 }}>
-                                <StepIndicator
-                                    calendarHeaderContainerStyle={{ backgroundColor: 'red' }}
-                                    customStyles={customStyles}
-                                    currentPosition={this.state._compltedMonths}
-                                    stepCount={9}
-                                    labels={labels}
-
-                                /></View>
-
-                            {/* <View style={{ flexDirection: 'row' }}>
-                            
-                                <View style={styles.monthWith}>
-                                    <Image style={styles.monthImageSize}
-                                        source={IMAGE.ICON_1MONTH}
-                                        resizeMode="contain"
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            contentInsetAdjustmentBehavior="automatic"
+                            style={styles.scrollView}>
+                            <View style={{ justifyContent: 'center', padding: 0, paddingTop: 25, }}>
+                                <View style={{ backgroundColor: 'white', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
+                                    <CalendarStrip
+                                        selectedDate={this.state.selectedDate}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                     />
                                 </View>
-                                <View style={styles.monthWith}>
-                                    <Image style={styles.monthImageSize}
-                                        source={IMAGE.ICON_3MONTH}
-                                        resizeMode="contain"
-                                    />
+
+                                <View style={{ marginTop: 15, marginBottom: 60 }}>
+                                    <StepIndicator
+                                        calendarHeaderContainerStyle={{ backgroundColor: 'red' }}
+                                        customStyles={customStyles}
+                                        currentPosition={this.state._compltedMonths}
+                                        stepCount={9}
+                                        labels={labels}
+
+                                    /></View>
+
+                                <View style={{ position: 'absolute', paddingTop: 40, justifyContent: 'center', alignItems: 'center', paddingLeft: 20 }}>
+                                    <WaveIndicator color='#fbb146' size={350} />
                                 </View>
-                                <View style={styles.monthWith}>
-                                    <Image style={styles.monthImageSize}
-                                        source={IMAGE.ICON_5MONTH}
-                                        resizeMode="contain"
-                                    />
-                                </View>
-                                <View style={styles.monthWith}>
-                                    <Image style={styles.monthImageSize}
-                                        source={IMAGE.ICON_7MONTH}
-                                        resizeMode="contain" ss
-                                    />
-                                </View>
-                                <View style={styles.monthWith}>
-                                    <Image style={styles.monthImageSize}
-                                        source={IMAGE.ICON_9MONTH}
-                                        resizeMode="contain"
-                                    />
-                                </View>
-                            </View> */}
-                            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                                <AnimatedCircularProgress
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: -50, }}>
+                                    {/* <AnimatedCircularProgress
                                     size={290}
                                     rotation={0}
                                     width={5}
-                                    fill={(this.state._eddDateCount / 277) * 100}
+                                    fill={0}
 
 
                                     tintColor="#f78a2c"
 
                                     backgroundColor="#cfd8dc">
                                     {
-                                        (fill) => (
+                                        (fill) => ( */}
 
-                                            <TouchableOpacity style={styles.button5}
 
-                                            // onPress={() => console.log('hello')}
+                                    <TouchableOpacity style={styles.button5}
 
-                                            // onPress={() => this.saveData()}
+                                    // onPress={() => console.log('hello')}
 
+                                    // onPress={() => this.saveData()}
+
+                                    >
+                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
+                                            <Image
+
+                                                source={this.avatarImage}
+                                                //  source={this.state.abd}
+                                                style={{ height: 240, width: 240, borderRadius: 150 }}
                                             >
-                                                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                                    <Image source={this.state.abd}
-                                                        style={{ height: 240, width: 240, borderRadius: 150 }}
-                                                    >
-                                                    </Image>
-                                                    {/* {
+                                            </Image>
+                                            {/* {
                                                         this.state._eddDateCount ?
                                                             <Text style={{ fontSize: 70, fontWeight: 'bold' }}>{this.state._eddDateCount}</Text>
                                                             :
@@ -330,18 +464,18 @@ export class EDDCalculator extends Component {
                                                     }
 
                                                     <Text style={{ fontSize: 20, }}>days left</Text> */}
-                                                </View>
+                                        </View>
 
-                                                {/* <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
+                                        {/* <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
                                             source={IMAGE.ICON_BABY_FOOT2}
                                             resizeMode="contain"
                                         /> */}
-                                            </TouchableOpacity>
-                                        )
+                                    </TouchableOpacity>
+                                    {/* )
                                     }
-                                </AnimatedCircularProgress>
-                            </View>
-                            {/* <View style={{ justifyContent: 'center', padding: 50, }}>
+                                </AnimatedCircularProgress> */}
+                                </View>
+                                {/* <View style={{ justifyContent: 'center', padding: 50, }}>
 
                                 <TouchableOpacity style={styles.button} onPress={() => { this.updateEdd(); this.RBSheet.open() }}>
                                  
@@ -349,62 +483,121 @@ export class EDDCalculator extends Component {
                                 </TouchableOpacity>
                             </View> */}
 
-
-
-                            <View style={styles.container}>
+                                {
                                 
-                                <Card style={[styles.periodcard]}>
-                                  
-                                    <View style={{ flexDirection: 'row' }}>
+                                this.state._availabeledd == 1 ?
+                                    this.state._eddDateCount > 0 ?
+                                        <View style={styles.container}>
 
-                                        <View style={{ flexDirection: 'column' }}>
+                                            <Card style={[styles.periodcard]}>
 
-                                            <Text style={{ fontSize: 60, marginBottom: -10, marginTop: -10, color: '#424242' }}>{this.state.reacl_next_p_dateCount}</Text>
-                                            <Text>Days left</Text>
+                                                <View style={{ flexDirection: 'row', paddingTop: 5, paddingLeft: 5, paddingRight: 5 }}>
+
+
+                                                    <View >
+                                                        <View style={{ marginLeft: 8, flexDirection: 'column' }}>
+                                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                                <View style={{ marginTop: 10, marginBottom: -10 }}>
+                                                                    <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Gestural Age</Text>
+                                                                    <View style={{ flexDirection: 'row' }}>
+
+                                                                        <Icon
+                                                                            name='calendar'
+                                                                            type='font-awesome'
+
+                                                                            iconStyle={{ fontSize: 17, paddingRight: 0, paddingLeft: 0, marginTop: 5, color: 'green' }}
+                                                                        />
+
+                                                                        <Text style={{ color: 'green', paddingTop: 0, paddingLeft: 8, fontSize: 20, fontWeight: 'bold' }}>{
+                                                                            this.state._availabeledd == 1 ?
+                                                                                this.state._compltedWeeks : 0
+
+                                                                        } days</Text>
+                                                                    </View>
+                                                                    {/* <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text> */}
+                                                                </View>
+
+
+                                                            </View>
+
+                                                            <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks/277).toFixed(2)} height={5} borderRadius={5} width={250} />
+                                                            <View>
+                                                                {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
+                                                                <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Last Period Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>{
+                                                                    this.state._availabeledd == 1 ?
+                                                                        this.state._lastPeriodDate : 0
+                                                                }</Text></Text>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'column' }}>
+                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 10 }}>Before Due date</Text>
+                                                        <Text style={{ fontSize: 50, marginBottom: -10, marginTop: -10, color: '#424242' }}>{
+                                                            this.state._availabeledd == 1 ?
+                                                                this.state._eddDateCount
+                                                                : 0
+                                                        }</Text>
+                                                        <Text>Days left</Text>
+
+                                                    </View>
+
+                                                </View>
+
+                                                <View style={styles.greenBar}>
+                                                    {/* calendar-alt */}
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                        <View>
+                                                            <Text style={{ color: 'white' }}>Estimated delivery date <Text style={{ color: 'black', fontWeight: 'bold' }}> {
+                                                                this.state._availabeledd == 1 ?
+                                                                    this.state._estimatedDate
+                                                                    : 0
+                                                            }</Text></Text>
+                                                        </View>
+                                                        <View>
+                                                            <View style={{ backgroundColor: 'white', padding: 4, borderRadius: 4, marginRight: 5 }}>
+                                                                <Icon
+                                                                    name='calendar'
+                                                                    type='font-awesome'
+                                                                    color='red'
+                                                                    iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: '#90a4ae' }}
+                                                                />
+                                                            </View>
+
+                                                        </View>
+                                                    </View>
+
+                                                </View>
+
+
+                                            </Card>
+
 
                                         </View>
-                                        <View >
-                                            <View style={{ marginLeft: 8, flexDirection: 'column' }}>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                                        <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Start date</Text>
-                                                        <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text>
-                                                    </View>
-
-                                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0 }}>Next Perod date</Text>
-                                                        <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', textAlign: 'right' }}>{this.state._next_period_date}</Text>
-                                                    </View>
-
-                                                </View>
-
-                                                <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(28) / 100} height={5} borderRadius={5} width={250} />
-                                                <View>
-                                                    <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Ovulation Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>2020-10-15</Text></Text>
-                                                </View>
+                                        :
+                                        <View style={styles.container}>
+                                            <View style={{ height: 145 }}>
+                                                {/* <Text>adasda</Text> */}
                                             </View>
                                         </View>
+                                    :
+                                    <View style={styles.container}>
+                                        <View style={{ height: 145 }}>
+                                            {/* <Text>adasda</Text> */}
+                                        </View>
                                     </View>
+                                }
 
-                                </Card>
 
-                       
+
                             </View>
 
-                        </View>
-                        {/* <View style={{ flex: 1, marginTop: 10, paddingHorizontal: 10, }}>
-                        <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
-
-                    </View> */}
-
-
-                    </ScrollView>
-                    <ActionButton
+                        </ScrollView>
+                        {/* <ActionButton
 
 
                         renderIcon={active => active ? (<Icon iconStyle={{ fontSize: 18, padding: 8, }} type='font-awesome' name="plus" color='white' />) : (<Icon iconStyle={{ fontSize: 18, padding: 8 }} type='font-awesome' name="plus" color='white' />)}
                         onPress={() => this.RBSheet.open()}
-                        buttonColor="red">
+                        buttonColor="red"> */}
                         {/* <ActionButton.Item
                             buttonColor="#1abc9c"
                             title="Add New"
@@ -419,32 +612,32 @@ export class EDDCalculator extends Component {
 
                         </ActionButton.Item> */}
 
-                    </ActionButton>
-                </View>
-                <RBSheet
-                    ref={ref => {
-                        this.RBSheet = ref;
-                    }}
-                    closeOnDragDown={true}
-                    // closeOnPressMask={false}
-                    height={300}
-                    openDuration={400}
-                    customStyles={{
-                        container: {
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderTopRightRadius: 20,
-                            borderTopLeftRadius: 20
-                        }
-                    }}
-                >
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps='handled'
-                        contentInsetAdjustmentBehavior="automatic"
-                        style={styles.scrollView}>
-                        <View style={{ flex: 1, marginBottom: 20 }}>
-                            {/* <CalendarStrip
+                        {/* </ActionButton> */}
+                    </View>
+                    <RBSheet
+                        ref={ref => {
+                            this.RBSheet = ref;
+                        }}
+                        closeOnDragDown={true}
+                        // closeOnPressMask={false}
+                        height={300}
+                        openDuration={400}
+                        customStyles={{
+                            container: {
+                                justifyContent: "center",
+                                alignItems: "center",
+                                borderTopRightRadius: 20,
+                                borderTopLeftRadius: 20
+                            }
+                        }}
+                    >
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            keyboardShouldPersistTaps='handled'
+                            contentInsetAdjustmentBehavior="automatic"
+                            style={styles.scrollView}>
+                            <View style={{ flex: 1, marginBottom: 20 }}>
+                                {/* <CalendarStrip
 
                                 selectedDate={this.state.selectedDate}
                                 onPressDate={(date) => {
@@ -459,26 +652,27 @@ export class EDDCalculator extends Component {
                                 }}
                                 markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                             /> */}
-                            <DatePicker
-                                mode="date"
-                                enableAutoDarkMode={true}
-                                date={this.state.date}
-                                style={{ marginBottom: 10 }}
-                                onDateChange={(date) => { this.setState({ date: date }) }}
-                            />
-                            {/* <TextInput value={this.state.selectedDate} autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="BP value" /> */}
-                            {/* <Text>{this.state.selectedDate}</Text> */}
-                            <TouchableOpacity onPress={() => this.addEDD()} style={styles.button}>
-                                <Text style={styles.buttonText}>Add Edd Date ?</Text>
+                                <DatePicker
+                                    mode="date"
+                                    enableAutoDarkMode={true}
+                                    date={this.state.date}
+                                    style={{ marginBottom: 10 }}
+                                    onDateChange={(date) => { this.setState({ date: date }) }}
+                                />
+                                {/* <TextInput value={this.state.selectedDate} autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="BP value" /> */}
+                                {/* <Text>{this.state.selectedDate}</Text> */}
+                                <TouchableOpacity onPress={() => this.addEDD()} style={styles.button}>
+                                    <Text style={styles.buttonText}>Add Edd Date ?</Text>
 
 
-                            </TouchableOpacity>
+                                </TouchableOpacity>
 
-                        </View>
-                    </ScrollView>
-                </RBSheet>
-            </SafeAreaView>
-        );
+                            </View>
+                        </ScrollView>
+                    </RBSheet>
+                </SafeAreaView>
+            );
+        }
     }
 } const styles = StyleSheet.create({
 
@@ -516,7 +710,7 @@ export class EDDCalculator extends Component {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingTop: 5,
+        paddingTop: 20,
         paddingLeft: 10,
         paddingRight: 10
     }, button5: {
@@ -532,6 +726,8 @@ export class EDDCalculator extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
+        // top: -300,
+
         // borderColor: '#ef5d9a',
         // borderWidth: 4,
     }, monthWith: {
@@ -555,32 +751,41 @@ export class EDDCalculator extends Component {
         color: '#fff',
 
     }, periodcard: {
-        height: 115,
+        height: 145,
         backgroundColor: 'rgba(250, 250, 250, 1)',
         borderRadius: 8,
-        elevation: 1,
+        elevation: 3,
         // shadowColor: 'gray',
-        shadowOffset: { width: 0, height: 0 },
+        shadowOffset: { width: 3, height: 5 },
         // shadowOpacity: 0.2,
         shadowRadius: 8,
         // alignItems: 'center',
-        margin: 5,
-        padding: 15
+        // margin: 5,
+        // padding: 15
 
-    }, itemRow: {
-        borderBottomColor: '#ccc',
+    }, greenBar: {
+        backgroundColor: '#3bde86',
+        height: 45,
+        width: (Dimensions.get("window").width) - 30,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+        top: 5,
+        padding: 10
+        // width: "90%",
+    }, buttonh: {
+        backgroundColor: "#AF1E8F",
+        padding: 5,
+        borderRadius: 25,
         marginTop: 10,
-        borderBottomWidth: 1
-    }, itemImage: {
-        width: '100%',
-        // height: 200,
-        resizeMode: 'cover'
-    }, line: {
-        flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        margin: 5,
-        height: 50
-    },
+        marginLeft: 15,
+        width: 120,
+        elevation: 10,
+        shadowColor: '#30C1DD',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 8,
+        marginHorizontal: 20,
+
+
+    }
 });

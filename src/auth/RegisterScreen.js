@@ -7,9 +7,6 @@ import *as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-community/async-storage';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 // import ValidationComponent from 'react-native-form-validator';
-
-
-
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
   BallIndicator,
@@ -205,13 +202,9 @@ export class RegisterScreen extends Component {
   }
   render() {
     let { isLoading } = this.state
-
-
     if (isLoading) {
       return (
-
         <BarIndicator color='#fbb146' />
-
       );
     } else {
       return (

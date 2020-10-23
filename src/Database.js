@@ -1127,6 +1127,17 @@ export default class Database {
             //     console.log(err);
             // });
         });
+    }  updateEDD(db, data) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [data.pName, data.pId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
     }
     getEddDate(db) {
         return new Promise((resolve) => {
