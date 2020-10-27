@@ -58,6 +58,7 @@ const IMAGE = {
     ICON_ECG: require('../images/heart-rate.png'),
     ICON_BABY_FOOT: require('../images/babyKick23.png'),
     ICON_BABY_FOOT2: require('../images/foot5.png'),
+    ICON_BABY_FOOT3: require('../images/foot5.gif'),
     ICON_BABY_KICK1: require('../images/babykick2.png'),
     ICON_BABY_KICK2: require('../images/prenatal-kicks3.jpg'),
     ICON_FETUS: require('../images/fetus.png'),
@@ -123,6 +124,7 @@ const IMAGE = {
     ICON_BLOOD_PRESURE: require('../images/blooddonation.png'),
     ICON_BREAST_FEEDING: require('../images/feeding.png'),
     ICON_BABY_ACTIVITY_MENU: require('../images/babyActivityGradient.png'),
+    ICON_LOGO_MAIN: require('../images/logoMain.png'),
 
 
     ///////////////////////////////////

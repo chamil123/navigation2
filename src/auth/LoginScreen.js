@@ -1,145 +1,186 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, Image, View, SafeAreaView, TouchableOpacity, StyleSheet,StatusBar,TouchableHighlight } from 'react-native';
+import { Text, ScrollView, Image, View, SafeAreaView, TouchableOpacity, StyleSheet, StatusBar, TouchableHighlight } from 'react-native';
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button } from 'react-native-elements';
 
-
+import *as Animatable from 'react-native-animatable';
 export class LoginScreen extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.checkToken();
   }
-  checkToken=async()=>{
-    const token=await AsyncStorage.getItem('memberNames');
-    if(token){
+  checkToken = async () => {
+    const token = await AsyncStorage.getItem('memberNames');
+    if (token) {
       this.props.navigation.navigate('HomeApp');
-    }else{
+    } else {
       this.props.navigation.navigate('Login2')
     }
   }
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 ,justifyContent: 'center' , alignItems: 'center'}}>
-         <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          {/* <CustomHeader title="Login" isHome={true} navigation={navigation} /> */}
-          <View style={{ flex:1, justifyContent: 'space-around' , alignItems: 'center'}}>
-            <Text style={{ fontSize: 22, fontWeight: "bold", marginTop:50}}> Welcome To 
-            
-            <Text  style={{color:'#ff9100',}}>  App</Text>
+
+
+      <View style={styles.container}>
+          <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#fbb448" />
+        <LinearGradient colors={['#fbb448', '#f78a2c']} style={styles.gradient}>
+   
+                
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}>
+            <View style={{
+              flex: 1, justifyContent: 'center', paddingHorizontal: 15,
+              paddingVertical: 0
+            }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+                <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80, color: 'white' }}> Welcome To
+
+                 <Text style={{ color: 'red', }}>  App</Text>
+                </Text>
+                <Text style={{ fontSize: 16, color: 'black',marginBottom:15 }}>Enjoy the experience</Text>
+
+                <Image style={{ width: 190, height: 220, marginLeft: 0 }}
+                  source={IMAGE.ICON_LOGO_MAIN}
+                  resizeMode="contain"
+
+                />
+
+              </View>
+              <Animatable.View animation="fadeInLeft">
+                {/* <View style={{ borderBottomWidth: 0.6, paddingBottom: 5 }}>
+
+
+                </View> */}
+
+                <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('Login2')}>
+
+                  <LinearGradient colors={['#fff', '#F2F2F2']}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 1, y: 0.9 }}
+                    style={styles.linearGradient}>
+                    <Text style={styles.buttonText}>
+                      Sign in
             </Text>
-            <Text style={{fontSize:14}}>Enjoy the experience</Text>
-         
-            <Image style={{ width: 210, height: 310, marginLeft: 0 }}
-              source={IMAGE.ICON_LOGIN}
-              resizeMode="contain"
+                  </LinearGradient>
+                </TouchableOpacity>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{paddingVertical:15}}>Don't have account? <Text style={{ color: 'white' }}>create new Account</Text> </Text>
+                </View>
 
-            />
-            {/* <Text >Login!</Text>
-            <TouchableOpacity style={{ marginTop: 20 }}
-              onPress={() => this.props.navigation.navigate('Login2')}
+                <Button
+                  title="Sign Up"
+                  type="outline"
 
-            >
-              <Text>Login</Text>
-            </TouchableOpacity> */}
+                  buttonStyle={styles.submitText, { borderRadius: 25, borderColor: 'white', color: '#ccc', padding: 12, borderWidth: 1, }}
+                  onPress={() => this.props.navigation.navigate('Register')}
 
-            <TouchableOpacity style={{ marginTop: 0}}
-              onPress={() => this.props.navigation.navigate('Login2')}
+                />
+              </Animatable.View>
 
-            >
-              <LinearGradient colors={['#fbb146', '#f78a2c']}
-                // '#ffd600',
-                // locations={[1,0.3,0.5]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0.9 }}
-                // locations={[0.3, 0.6,1]} 
-                style={styles.linearGradient}>
-                <Text style={styles.buttonText}>
-                  Sign in
-  </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <Text style={{marginTop:10}}>Don't have account? <Text   style={{color:'#ff9100'}}>create new Account</Text> </Text>
-            <Button
-              title="Sign Up"
-              type="outline"
-              buttonStyle={styles.submitText,{borderRadius:5,borderColor:'#f78a2c',marginTop:10,color:'#ccc',width: 280,borderWidth: 1,}}
-              onPress={() => this.props.navigation.navigate('Register')}
-              
-            />
-            {/* <TouchableHighlight
-                style={styles.submit}
-                // onPress={() => this.submitSuggestion(this.props)}
-                underlayColor='#fff'>
-                  <Text style={styles.submitText}>Submit</Text>
-              </TouchableHighlight>
-             */}
+            </View>
+          </ScrollView>
 
-           
 
-            {/* <TouchableOpacity style={{ marginTop: 20 }}
-              onPress={() => this.props.navigation.navigate('Register')}
 
-            >
-              <LinearGradient colors={['#fbb146', '#f78a2c']}
-                // '#ffd600',
-                // locations={[1,0.3,0.5]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0.9 }}
-                // locations={[0.3, 0.6,1]} 
-                style={styles.linearGradient}>
-                <Text style={styles.buttonText}>
-                  Sign in
-  </Text>
-              </LinearGradient>
-            </TouchableOpacity> */}
-            
-            
+        </LinearGradient>
+      </View>
 
-            
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      //     <SafeAreaView style={{ flex: 1 ,justifyContent: 'center' , alignItems: 'center'}}>
+      //        <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
+      //       <ScrollView
+      //         contentInsetAdjustmentBehavior="automatic"
+      //         style={styles.scrollView}>
+
+      //         <View style={{ flex:1, justifyContent: 'space-around' , alignItems: 'center'}}>
+      //           <Text style={{ fontSize: 22, fontWeight: "bold", marginTop:50}}> Welcome To 
+
+      //           <Text  style={{color:'#ff9100',}}>  App</Text>
+      //           </Text>
+      //           <Text style={{fontSize:14}}>Enjoy the experience</Text>
+
+      //           <Image style={{ width: 210, height: 310, marginLeft: 0 }}
+      //             source={IMAGE.ICON_LOGIN}
+      //             resizeMode="contain"
+
+      //           />
+
+
+      //           <TouchableOpacity style={{ marginTop: 0}}
+      //             onPress={() => this.props.navigation.navigate('Login2')}
+
+      //           >
+      //             <LinearGradient colors={['#fbb146', '#f78a2c']}
+
+      //               start={{ x: 0, y: 1 }}
+      //               end={{ x: 1, y: 0.9 }}
+
+      //               style={styles.linearGradient}>
+      //               <Text style={styles.buttonText}>
+      //                 Sign in
+      // </Text>
+      //             </LinearGradient>
+      //           </TouchableOpacity>
+      //           <Text style={{marginTop:10}}>Don't have account? <Text   style={{color:'#ff9100'}}>create new Account</Text> </Text>
+      //           <Button
+      //             title="Sign Up"
+      //             type="outline"
+      //             buttonStyle={styles.submitText,{borderRadius:5,borderColor:'#f78a2c',marginTop:10,color:'#ccc',width: 280,borderWidth: 1,}}
+      //             onPress={() => this.props.navigation.navigate('Register')}
+
+      //           />
+
+
+
+
+      //         </View>
+      //       </ScrollView>
+      //     </SafeAreaView>
     );
   }
 }
 const styles = StyleSheet.create({
-  linearGradient: {
-    // flex: 1,
-    width: 280,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontFamily: 'Gill Sans',
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
-    backgroundColor: 'transparent',
-  },circleGradient: {
+  circleGradient: {
     margin: 1,
     backgroundColor: "white",
     borderRadius: 5
-  },submit:{
-    marginRight:40,
-    marginLeft:40,
-    marginTop:10,
-},
-submitText:{
-    paddingTop:20,
-    paddingBottom:20,
-    color:'#fff',
-    textAlign:'center',
-    backgroundColor:'#fff',
+  }, submit: {
+    marginRight: 40,
+    marginLeft: 40,
+    marginTop: 10,
+  },
+  submitText: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    color: '#fff',
+    textAlign: 'center',
+    backgroundColor: '#fff',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ccc'
-},
+  },
+  linearGradient: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 25,
+  }, buttonText: {
+    fontSize: 18,
+    fontFamily: 'Gill Sans',
+    textAlign: 'center',
+    margin: 14,
+    color: 'black',
+    backgroundColor: 'transparent',
+  }
+
+
+  , container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+  }
+  
 });

@@ -958,7 +958,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate, kc.kcValue, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate,1, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
                     resolve(results);
                 });
 
@@ -1000,7 +1000,18 @@ export default class Database {
             });
         });
     }
-
+    updateClickCountRfValueZoro(db, data) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE KickCount SET kcCount = ?, kcFirstTime=?,kcLastTime=?     WHERE kcDate = ?', [data.kcValue, data.kcTime,data.kclTime, data.kcDate]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
     updateClickCount(db, data) {
         return new Promise((resolve) => {
 
@@ -1009,7 +1020,7 @@ export default class Database {
                 tx.executeSql('UPDATE KickCount SET kcCount = ?,kcLastTime=?     WHERE kcDate = ?', [data.kcValue, data.kcTime, data.kcDate]).then(([tx, results]) => {
                     resolve(results);
                 });
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+data.kcTime);
+
             }).then((result) => {
                 // this.closeDatabase(db);
             }).catch((err) => {
@@ -1018,6 +1029,18 @@ export default class Database {
             // }).catch((err) => {
             //     console.log(err);
             // });
+        });
+    } refreshClickCount(db, data) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE KickCount SET kcCount = ?,kcFirstTime=? ,kcLastTime=?     WHERE kcDate = ?', [0, '00:00:00', '00:00:00', data.kcDate]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
         });
     }
     listAllKickCount(db) {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, StatusBar, View, Image, SafeAreaView, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import { TextInput, Text, StatusBar, View, Image, SafeAreaView, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
-import { TextInput } from 'react-native-paper';
+// import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
 import Database from '../Database';
 const db = new Database();
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Gill Sans',
         textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
+        margin: 14,
+        color: 'black',
         backgroundColor: 'transparent',
     }
 
@@ -178,52 +178,59 @@ export class Login2Screen extends Component {
             );
         } else {
             return (
-                <SafeAreaView style={{ flex: 1 }}>
-                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
-                    <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-                    <FlashMessage duration={1000} />
-                    <ScrollView
-                        contentInsetAdjustmentBehavior="automatic"
-                        style={styles.scrollView}>
+                <View style={styles.container}>
+                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#fbb448" />
+                    <LinearGradient colors={['#fbb448', '#f78a2c']} style={styles.gradient}>
+                        {/* // <SafeAreaView style={{ flex: 1 }}> */}
+                        {/* <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" /> */}
+                        <CustomHeader bgcolor='#fbb448' title="" navigation={this.props.navigation} bdcolor='#fbb448' />
+                        <FlashMessage duration={1000} />
+                        <ScrollView
+                            contentInsetAdjustmentBehavior="automatic"
+                            style={styles.scrollView}>
 
-                        <View style={{
-                            flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
-                            paddingVertical: 0,
-                        }}>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}>Log in </Text>
-                                <Text style={{ fontSize: 12, marginTop: -2, color: 'grey' }}>Use email to Login</Text>
-                                <Image style={{ width: 210, height: 190, marginLeft: 0 }}
-                                    source={IMAGE.ICON_LOG}
-                                    resizeMode="contain"
-                                />
-                            </View>
-                            <Animatable.View animation="fadeInUp">
-                                <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Username" />
-                                <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 15 }} label="Password" />
+                            <View style={{
+                                flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
+                                paddingVertical: 0,
+                            }}>
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text  style={{ fontSize: 26, fontWeight: "bold", marginTop: 15, color: 'white' }}>Log in </Text>
+                                    <Text style={{ fontSize: 16, color: 'black',marginBottom:25 }}>Use email to Login</Text>
+                                    <Image style={{ width: 210, height: 190, marginLeft: 0 }}
+                                        source={IMAGE.ICON_LOG}
+                                        resizeMode="contain"
+                                    />
+                                </View>
+                                <Animatable.View animation="fadeInUp">
+                                    <Text style={{color:'white',paddingVertical:10,marginLeft:2,marginTop:30}}>User Name :</Text>
+                                    <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false}/>
+                                    <Text style={{color:'white',paddingVertical:10,marginLeft:2}}>Password :</Text>
+                                    <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }}placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
 
-                                <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 60, }} onPress={this.InputUsers}>
+                                    <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 40, }} onPress={this.InputUsers}>
 
-                                    <LinearGradient colors={['#fbb146', '#f78a2c']}
+                                        <LinearGradient colors={['#fff', '#ffeed5']}
 
-                                        start={{ x: 0, y: 1 }}
-                                        end={{ x: 1, y: 0.9 }}
+                                            start={{ x: 0, y: 1 }}
+                                            end={{ x: 1, y: 0.9 }}
 
-                                        style={styles.linearGradient}>
-                                        <Text style={styles.buttonText}>
-                                            Log in
+                                            style={styles.linearGradient}>
+                                            <Text style={styles.buttonText}>
+                                                Log in
   </Text>
-                                    </LinearGradient>
-                                </TouchableOpacity>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
 
-                            </Animatable.View>
-
-
-                        </View>
+                                </Animatable.View>
 
 
-                    </ScrollView>
-                </SafeAreaView>
+                            </View>
+
+
+                        </ScrollView>
+                    </LinearGradient>
+                </View>
+
             );
         }
     }

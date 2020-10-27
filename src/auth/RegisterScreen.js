@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, Alert, StyleSheet, ScrollView, Picker } from 'react-native';
+import { TextInput, StatusBar, Text, View, SafeAreaView, TouchableOpacity, Alert, StyleSheet, ScrollView, Picker } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown-v2';
 import LinearGradient from 'react-native-linear-gradient';
-import { TextInput } from 'react-native-paper';
+// import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-community/async-storage';
 import FlashMessage, { showMessage } from "react-native-flash-message";
@@ -68,13 +68,18 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 25,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 8,
   },
   buttonText: {
     fontSize: 18,
     fontFamily: 'Gill Sans',
     textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
+    margin: 13,
+    color: 'black',
     backgroundColor: 'transparent',
   }
 
@@ -208,74 +213,82 @@ export class RegisterScreen extends Component {
       );
     } else {
       return (
-        <SafeAreaView style={{ flex: 1 }}>
-          <CustomHeader bgcolor='#f2f2f2' title="" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-          <FlashMessage duration={1000} />
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.scrollView}>
-            <View style={{
-              flex: 1, justifyContent: 'center', paddingHorizontal: 15,
-              paddingVertical: 0
-            }}>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
-                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0 }}> Create New Account </Text>
+        <View style={styles.container}>
+          <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#fbb448" />
+          <LinearGradient colors={['#fbb448', '#f78a2c']} style={styles.gradient}>
+            <CustomHeader bgcolor='#fbb448' title="" navigation={this.props.navigation} bdcolor='#fbb448' />
+            <FlashMessage duration={1000} />
+            <ScrollView
+              contentInsetAdjustmentBehavior="automatic"
+              style={styles.scrollView}>
+              <View style={{
+                flex: 1, justifyContent: 'center', paddingHorizontal: 15,
+                paddingVertical: 0
+              }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
+                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0,color:'white' }}> Create New Account </Text>
 
-                <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 20, color: 'grey' }}>Use email to register</Text>
-              </View>
-              <Animatable.View animation="fadeInLeft">
-                <View style={{ borderBottomWidth: 0.6, paddingBottom: 5 }}>
-                  <Picker
-                    mode="dropdown"
-                    // selectedValue={this.state.datasource[index].packselectedValue}
-                    selectedValue={this.state.PickerValueHolder}
-                    // style={{ borderBottomColor: 'red', borderWidth: 1 }}
-                    // onValueChange={this.handleChangeOption}
-                    prompt='Options'
-                    onValueChange={
-                      (itemValue, itemIndex) =>
-
-                        this.setState(
-                          { PickerValueHolder: itemValue },
-                          (name, index) => {
-                          }
-                        )
-                    }
-                  >
-                    <RedPickerItem label={'Please select an option'} value="red" color='red' fontSize='15' value={0} />
-
-                    {this.state.dataSource.map((item, key) => (
-
-                      <Picker.Item label={item.role_name} value={item.id} key={key} />)
-                    )}
-
-                  </Picker>
+                  <Text style={{ fontSize: 14, marginTop: -2, marginBottom: 20, color: 'black' }}>Use email to register</Text>
                 </View>
-                <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" />
-                <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Email address" />
-                <TextInput
-                  onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
-                  keyboardType="numeric"
-                  maxLength={10}
-                  style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobil number" />
-                <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10, }} label="Password" />
-                <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
+                <Animatable.View animation="fadeInLeft">
+                <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>User Role :</Text>
+                  <View style={{ bborderColor: '#F2F2F2', borderWidth: 0.2, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10  }}>
+                  
+                    <Picker
+                      mode="dropdown"
+                      // selectedValue={this.state.datasource[index].packselectedValue}
+                      selectedValue={this.state.PickerValueHolder}
+                      // style={{ borderBottomColor: 'red', borderWidth: 1 }}
+                      // onValueChange={this.handleChangeOption}
+                      prompt='Options'
+                      onValueChange={
+                        (itemValue, itemIndex) =>
 
-                  <LinearGradient colors={['#fbb146', '#f78a2c']}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 1, y: 0.9 }}
-                    style={styles.linearGradient}>
-                    <Text style={styles.buttonText}>
-                      Sign in
+                          this.setState(
+                            { PickerValueHolder: itemValue },
+                            (name, index) => {
+                            }
+                          )
+                      }
+                    >
+                      <RedPickerItem label={'Please select an option'} value="red" color='red' fontSize='15' value={0} />
+
+                      {this.state.dataSource.map((item, key) => (
+
+                        <Picker.Item label={item.role_name} value={item.id} key={key} />)
+                      )}
+
+                    </Picker>
+                  </View>
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>User Name :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false}/>
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Email address :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter Email address" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>Mobil number :</Text>
+                  <TextInput
+                    onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
+                    keyboardType="numeric"
+                    maxLength={10}
+                    style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }}placeholder="Enter Mobil number" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>Password :</Text>
+                  <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false}/>
+                  <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
+
+                    <LinearGradient colors={['#fff', '#ffeed5']}
+                      start={{ x: 0, y: 1 }}
+                      end={{ x: 1, y: 0.9 }}
+                      style={styles.linearGradient}>
+                      <Text style={styles.buttonText}>
+                        Sign in
                 </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </Animatable.View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </Animatable.View>
 
-            </View>
-          </ScrollView>
-
-        </SafeAreaView>
+              </View>
+            </ScrollView>
+          </LinearGradient>
+        </View>
       );
     }
   }

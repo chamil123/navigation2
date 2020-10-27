@@ -10,12 +10,13 @@ import { List, ListItem, Left, Body, Right } from 'native-base';
 import { BarIndicator } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { Avatar } from 'react-native-elements';
+import *as Animatable from 'react-native-animatable';
 const db = new Database();
 var j = 0;
 const _format = 'YYYY-MM-DD';
-const _formatTime = 'hh:mm:ss';
+const _formatTime = 'HH:mm:ss';
 const _today = moment().format(_format)
-const time = moment().format(_formatTime); 
+const time = moment().format(_formatTime);
 // var time = new Date().getHours() + ":" + new Date().getMinutes();
 // var sec = new Date().getSeconds(); 
 export class KickCounter extends Component {
@@ -24,6 +25,8 @@ export class KickCounter extends Component {
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
         var time = moment().format(_formatTime); //To get the Current Hours
+
+
         // var min = today.getMinutes(); //To get the Current Minutes
         // var sec = today.getSeconds();
         super(props);
@@ -34,97 +37,140 @@ export class KickCounter extends Component {
             _kick_count: 0,
             increment: 0,
             dbs: '',
-            _first_time:"00:00",
+            _first_time: "00:00",
             // _last_time: new Date().getHours().format('H') + ":" + new Date().getMinutes().format('mma'),
-            _last_time:"00:00",
+            _last_time: "00:00",
             times: moment().format(_formatTime),
+            _max_hours: '',
 
         }
+        // this.loadDbVarable = this.loadDbVarable.bind(this);
         db.initDB().then((result) => {
             this.loadDbVarable(result);
         })
-        this.loadDbVarable = this.loadDbVarable.bind(this);
-        this.saveData = this.saveData.bind(this);
-        this.getaAllClickData = this.getaAllClickData.bind(this);
+        // this.intervalID = setInterval(
+        //     () => this.tick(),
+        //     1000
+        // );
+
+        // this.getaAllClickData = this.getaAllClickData.bind(this);
     }
     componentDidMount() {
-        this.intervalID = setInterval(
-            () => this.tick(),
-            1000
-        );
+        // this.intervalID = setInterval(
+        //     () => this.tick(),
+        //     1000
+        // );
+
+
     }
-    tick() {
-        this.setState({
-            times: moment().format(_formatTime),
-        });
-        // times:  moment(new Date().toLocaleString(), 'H:mma'),
-    }
+    // tick() {
+    //     this.setState({
+    //         times: moment().format(_formatTime),
+    //     });
+
+    // }
     loadDbVarable(result) {
         this.setState({
             dbs: result,
         });
-
-        this.getaAllClickData();
+        const status = 1;
+        this.getaAllClickData(status);
     }
     saveData() {
-        j = 1;
-        this.setState({
-            increment: j,
-            // isLoading: false,
-        });
-        this.getData();
-        // this.getaAllClickData();
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + moment().format(_formatTime));
+
+        if (this.state._kick_count < 10) {
+            j = 1;
+            this.setState({
+                increment: j,
+                // isLoading: false,
+            });
+            this.getData();
+        } else {
+            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + new Date().getTime());
+        }
+
     }
-    getaAllClickData() {
+    getaAllClickData(status) {
+
         db.listAllKickCount(this.state.dbs).then((results) => {
             result = results;
             this.setState({
                 isLoading: false,
                 _list_kcData: results,
             });
+
         }).catch((err) => {
             console.log(err);
-        })
-
-
-
+        });
         var temp;
         let data = {
             kcDate: this.state._current_date.toString(),
             kcValue: this.state._kick_count,
-            kcTime: time,
+            // kcTime: time,
         }
         db.listKickCount(this.state.dbs, data).then((results) => {
             result = results;
+
             if (result == 0) {
 
 
             } else {
 
                 var _clickValue;
+
                 for (var i = 0; i < result.length; i++) {
                     _clickValue = result[i].kcCount;
-                    temp = _clickValue + this.state.increment;
+
+                    if (status == 1) {
+                        temp = _clickValue + this.state.increment;
+                    } else {
+                        temp = _clickValue;
+                    }
                     first_time = result[i].kcFirstTime;
                     last_time = result[i].kcLastTime;
-
                 }
                 this.setState({
                     _kick_count: temp,
                     _first_time: first_time,
                     _last_time: last_time,
                 });
-                // moment(new Date().toLocaleString(), 'H:mma'),
-                let data = {
-                    kcDate: this.state._current_date.toString(),
-                    kcValue: this.state._kick_count,
-                    kcTime: this.state.times,
-                }
-                db.updateClickCount(this.state.dbs, data).then((result) => {
-                }).catch((err) => {
-                    console.log(err);
+                var range = moment(this.state._first_time, 'HH:mm:ss');
+                // var range =this.state._first_time;
+                var l = new Date().getTime();
 
-                })
+
+                var range2 = (l - range);
+                var hours = (range2 / (1000 * 60 * 60)).toFixed(2);
+
+                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed l : " + l);
+                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed r : " + range);
+                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed nn : " + hours);
+
+
+                if (hours < 12) {
+                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed : " + hours);
+                    let data = {
+                        kcDate: this.state._current_date.toString(),
+                        kcValue: this.state._kick_count,
+                        kcTime: this.state._last_time,
+                    }
+
+                    db.updateClickCount(this.state.dbs, data).then((result) => {
+                    }).catch((err) => {
+                        console.log(err);
+
+                    });
+                    this.setState({
+                        _max_hours: hours,
+                    });
+                } else {
+                    this.setState({
+                        _max_hours: hours,
+                    });
+
+                }
+
 
             }
         }).catch((err) => {
@@ -132,21 +178,27 @@ export class KickCounter extends Component {
         })
     }
     getData() {
+
         var temp;
+        var first_time;
+        var last_time;
+        var status = 1;
         let data = {
             kcDate: this.state._current_date.toString(),
             kcValue: this.state._kick_count,
-            kcTime: this.state.times,
+            kcTime: moment().format(_formatTime),
         }
+
         db.listKickCount(this.state.dbs, data).then((results) => {
             result = results;
             if (result == 0) {
+
                 db.addKickCount(this.state.dbs, data).then((results) => {
 
                 }).catch((err) => {
                     console.log(err);
-                })
-
+                });
+                this.LoadAfterClick();
             } else {
 
                 var _clickValue;
@@ -157,30 +209,96 @@ export class KickCounter extends Component {
                     last_time = result[i].kcLastTime;
 
                 }
-                this.setState({
-                    _kick_count: temp,
-                    _first_time: first_time,
-                    _last_time: last_time,
-                });
-                // moment(new Date().toLocaleString(), 'H:mma'),
-                let data = {
-                    kcDate: this.state._current_date.toString(),
-                    kcValue: this.state._kick_count,
-                    kcTime: this.state.times,
+                var range = moment(this.state._first_time, 'HH:mm:ss');
+
+                var l = new Date().getTime();
+                var range2 = (l - range);
+                var hours;
+                if (this.state._first_time == '00:00:00') {
+                    hours = 0;
+                 
+                } else {
+                    hours = (range2 / (1000 * 60 * 60)).toFixed(2);
+                  
                 }
-                db.updateClickCount(this.state.dbs, data).then((result) => {
-                }).catch((err) => {
-                    console.log(err);
+               
 
-                })
+                if (hours < 12) {
+                    if (_clickValue > 0) {
 
+                        let data = {
+                            kcDate: this.state._current_date.toString(),
+                            kcValue: temp,
+                            kcTime: moment().format(_formatTime),
+                        }
+                        db.updateClickCount(this.state.dbs, data).then((result) => {
+                        }).catch((err) => {
+                            console.log(err);
+
+                        });
+                        this.LoadAfterClick();
+
+                    } else {
+
+                        let data = {
+                            kcDate: this.state._current_date.toString(),
+                            kcValue: temp,
+                            kcTime: moment().format(_formatTime),
+                            kclTime: moment().format(_formatTime),
+                        }
+
+                        db.updateClickCountRfValueZoro(this.state.dbs, data).then((result) => {
+                        }).catch((err) => {
+                            console.log(err);
+
+                        });
+                        this.LoadAfterClick();
+
+                    }
+                } else {
+
+                }
             }
         }).catch((err) => {
             console.log(err);
         })
-        // this.getaAllClickData();
+
+    }
+
+    LoadAfterClick() {
+
+        var temp;
+        let data = {
+            kcDate: this.state._current_date.toString(),
+            kcValue: this.state._kick_count,
+            kcTime: moment().format(_formatTime),
+        }
+        db.listKickCount(this.state.dbs, data).then((results) => {
+            result = results;
+            if (result == 0) {
+
+            } else {
+                var _clickValue;
+                for (var i = 0; i < result.length; i++) {
+                    _clickValue = result[i].kcCount;
+                    temp = _clickValue + this.state.increment;
+
+                    first_time = result[i].kcFirstTime;
+                    last_time = result[i].kcLastTime;
+                }
+
+                this.setState({
+                    _kick_count: _clickValue,
+                    _first_time: first_time,
+                    _last_time: last_time,
+                });
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
     }
     deleteData(id, date) {
+        var status = 1;
         if (_today == date) {
             this.setState({
                 // isLoading: false,
@@ -189,14 +307,13 @@ export class KickCounter extends Component {
 
         }
 
-        // const { navigation } = this.props;
         this.setState({
             // isLoading: true
         });
         db.deleteKicks(this.state.dbs, id).then((result) => {
             console.log(result);
             // this.getData();
-            this.getaAllClickData();
+            this.getaAllClickData(status);
 
         }).catch((err) => {
             console.log(err);
@@ -205,7 +322,26 @@ export class KickCounter extends Component {
             }
         })
     }
+    refresh() {
 
+        var status = 2;
+        let data = {
+            kcDate: this.state._current_date.toString(),
+
+        }
+        db.refreshClickCount(this.state.dbs, data).then((result) => {
+            this.setState({
+                _kick_count: 0,
+                _max_hours: '',
+                // _first_time: '0:00',
+                // _last_time: "0.00",
+            });
+        }).catch((err) => {
+            console.log(err);
+
+        });
+        this.getaAllClickData(status);
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
         const data = [10, 5, 25, 15, 20]
@@ -235,13 +371,13 @@ export class KickCounter extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+
+
+                    <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
                     <View style={styles.brestposition5}></View>
                     <View style={styles.brestposition6}></View>
                     <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View>
-                    <FlashMessage duration={1000} />
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
-
                     <View style={{ backgroundColor: '#fbb146', height: 145, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
 
@@ -250,7 +386,7 @@ export class KickCounter extends Component {
                             <Text style={{ color: 'white' }}>Press the foot button every time your baby kick</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('KickCounterHister')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
@@ -314,12 +450,25 @@ export class KickCounter extends Component {
                             >
                                 {
                                     (fill) => (
+
                                         <TouchableOpacity style={styles.button5}
                                             onPress={() => this.saveData()}>
-                                            <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
-                                                source={IMAGE.ICON_BABY_FOOT2}
-                                                resizeMode="contain"
-                                            />
+                                            {
+                                              
+                                                this.state._max_hours < 12 ?
+                                                    this.state._kick_count < 10 ?
+                                                        <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
+                                                            source={IMAGE.ICON_BABY_FOOT2}
+                                                            resizeMode="contain"
+                                                        /> :
+                                                        <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
+                                                            source={IMAGE.ICON_BABY_FOOT3}
+                                                            resizeMode="contain"
+                                                        />
+                                                    :
+                                                    <Text>Max level exceeded</Text>
+                                            }
+
                                         </TouchableOpacity>
                                     )
                                 }
@@ -353,13 +502,17 @@ export class KickCounter extends Component {
 
 
                                         }}
-                                    // onPress={}
+                                        onPress={() => this.refresh()}
+
                                     />
                                 </View>
                                 <View style={{ padding: 20 }}>
                                     <TouchableOpacity style={styles.button6}
                                     >
-                                        <Text style={{ fontSize: 40 }}>{this.state._kick_count}</Text>
+                                        <Animatable.Text animation="fadeInUp" style={{ fontSize: 40 }}>
+                                            {this.state._kick_count}
+                                        </Animatable.Text>
+                                        {/* <Text style={{ fontSize: 40 }}>{this.state._kick_count}</Text> */}
                                     </TouchableOpacity>
 
                                 </View>
@@ -377,7 +530,7 @@ export class KickCounter extends Component {
                                             shadowRadius: 5, elevation: 2,
                                             backgroundColor: 'red'
                                         }}
-                                    // onPress={}
+                                        onPress={() => this.refresh()}
                                     />
                                 </View>
                             </View>
@@ -587,7 +740,7 @@ export class KickCounter extends Component {
         // marginRight: 12,
         marginTop: 450,
         marginLeft: 338,
-        backgroundColor: 'rgba(242, 242,242, 1)',
+        backgroundColor: 'rgba(255, 255,255, 1)',
         borderRadius: 110,
         // overflow: 'hidden',
         zIndex: -1,
@@ -600,7 +753,7 @@ export class KickCounter extends Component {
         marginLeft: -130,
         marginTop: 140,
         flexDirection: 'row-reverse',
-        backgroundColor: 'rgba(255, 224, 178, 0.2)',
+        backgroundColor: 'rgba(255, 224, 178, 0.3)',
         borderRadius: 130,
         // overflow: 'hidden',
         zIndex: -2,
