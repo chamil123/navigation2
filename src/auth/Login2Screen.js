@@ -23,7 +23,9 @@ import {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff9100'
+    },
+    gradient: {
+        flex: 1,
     },
     header: {
         flex: 2,
@@ -68,6 +70,12 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 25,
+        marginBottom: 20,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.7,
+        shadowRadius: 8,
     },
     buttonText: {
         fontSize: 18,
@@ -194,18 +202,18 @@ export class Login2Screen extends Component {
                                 paddingVertical: 0,
                             }}>
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text  style={{ fontSize: 26, fontWeight: "bold", marginTop: 15, color: 'white' }}>Log in </Text>
-                                    <Text style={{ fontSize: 16, color: 'black',marginBottom:25 }}>Use email to Login</Text>
+                                    <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 15, color: 'white' }}>Log in </Text>
+                                    <Text style={{ fontSize: 16, color: 'black', marginBottom: 25 }}>Use email to Login</Text>
                                     <Image style={{ width: 210, height: 190, marginLeft: 0 }}
                                         source={IMAGE.ICON_LOG}
                                         resizeMode="contain"
                                     />
                                 </View>
                                 <Animatable.View animation="fadeInUp">
-                                    <Text style={{color:'white',paddingVertical:10,marginLeft:2,marginTop:30}}>User Name :</Text>
-                                    <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false}/>
-                                    <Text style={{color:'white',paddingVertical:10,marginLeft:2}}>Password :</Text>
-                                    <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }}placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
+                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 30 }}>User Name :</Text>
+                                    <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
+                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2 }}>Password :</Text>
+                                    <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
 
                                     <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 40, }} onPress={this.InputUsers}>
 

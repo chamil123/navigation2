@@ -45,8 +45,15 @@ export class HealthDietChart extends Component {
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: -10 }}>
                         <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Diet for healthy mother</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
+
+                        <View style={{ height: 100, padding: 10 }}>
+                            <Image source={IMAGE.ICON_DIET_PLAN}
+                                style={{ height: 220, width: 350 }}
+                            >
+                            </Image>
+                        </View>
                     </View>
-                  
+
 
                 </View>
 
@@ -65,7 +72,7 @@ export class HealthDietChart extends Component {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         keyExtractor={this.keyExtractor}
-                        style={{ flexGrow: 1,marginLeft:-10 }}
+                        style={{ flexGrow: 1, marginLeft: -10 }}
                         data={dummyData.data}
                         // renderItem={this.renderPage}
                         onViewableItemsChanged={this.onViewableItemsChanged}
@@ -79,7 +86,7 @@ export class HealthDietChart extends Component {
                                 <Text style={styles.titleMain}>{item.title}</Text>
 
                                 <Image source={item.src}
-                                    style={{ height: 250, width:300 }}
+                                    style={{ height: 250, width: 300 }}
                                     resizeMode="cover"
                                 >
                                 </Image>

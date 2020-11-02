@@ -239,11 +239,11 @@ export class PeriodHistory extends Component {
                         </View>
 
                     </View>
-                    <View style={{ height: 500 }}>
+                    {/* <View style={{ height: 500 }}>
                         <ECharts
                             option={this.state.data} height={300}
                         />
-                    </View>
+                    </View> */}
                 </ScrollView>
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { Modal, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView, Image, ActivityIndicator, Dimensions } from 'react-native';
 import { CustomHeader } from '../index';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment' // 2.20.1
@@ -10,7 +10,7 @@ import { TextInput, Card, Title, Paragraph } from 'react-native-paper';
 import Database from '../Database';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-
+import * as Progress from 'react-native-progress';
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
@@ -36,8 +36,9 @@ export class PeriodCalandar extends Component {
             marked: null,
             pName: '',
             ovulation_date: '',
+            _ovl_date: '',
             next_period_date: '',
-            reacl_next_p_date: '',
+            _reacl_next_p_date: 0,
             reacl_next_ov_date: '',
             isLoading: false,
             _deleteDate: '',
@@ -48,7 +49,9 @@ export class PeriodCalandar extends Component {
             _month_name: monthNames[today.getMonth()],
             _days_count: moment(_today, "YYYY-MM").daysInMonth(),
             _day_of_month: '',
-            startAngle:'', angleLength:'',
+            startAngle: '', angleLength: '',
+            _nextPeriodDate: '',
+            _monthlyPeriod: 0,
 
         }
         db.initDB().then((result) => {
@@ -73,22 +76,22 @@ export class PeriodCalandar extends Component {
     }
 
     loadData() {
-        db.listBabyDetails(this.state.dbs).then((data) => {
-            let result = data;
-            if (result == 0) {
-            } else {
-                let { babybDate } = this.props
-                for (var i = 0; i < result.length; i++) {
-                    babybDate = result[i].bbDate;
-                }
-                this.setState({
-                    isLoading: false,
-                    _babybDate: babybDate,
-                });
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
+        // db.listBabyDetails(this.state.dbs).then((data) => {
+        //     let result = data;
+        //     if (result == 0) {
+        //     } else {
+        //         let { babybDate } = this.props
+        //         for (var i = 0; i < result.length; i++) {
+        //             babybDate = result[i].bbDate;
+        //         }
+        //         this.setState({
+        //             isLoading: false,
+        //             _babybDate: babybDate,
+        //         });
+        //     }
+        // }).catch((err) => {
+        //     console.log(err);
+        // })
 
         let selected = true;
         let markedDates = {}
@@ -100,7 +103,8 @@ export class PeriodCalandar extends Component {
         let _pParity_bit = 0;
         let firstOvDate = '';
         let firstOvDateDay = '';
-
+        let OvDateDay = '';
+        let period_date = 0;
         const start = moment(_today, 'YYYY-MM-DD');
         db.listProduct(this.state.dbs).then((data) => {
             products = data;
@@ -115,12 +119,18 @@ export class PeriodCalandar extends Component {
                 if (_pcatId == 1) {
                     markedDates = { ...markedDates, ...{ selected }, startingDay: true, endingDay: true, color: "red" };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
+
+                    const end2 = moment(_pdate, 'YYYY-MM-DD');
+                    const range3 = moment.range(start, end2);
+                    period_date = range3.snapTo('day');
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
                         pName: _pdate,
                         _day_of_month: _pdate.substring(8, 10),
+                        _monthlyPeriod: parseFloat(period_date.diff('days')),
                     });
+
                 }
                 if (_pcatId == 4) {
 
@@ -138,6 +148,7 @@ export class PeriodCalandar extends Component {
                         const range3 = moment.range(start, end2);
                         firstOvDate = range3.snapTo('day');
                         firstOvDateDay = _pdate.substring(8, 10);
+                        OvDateDay = _pdate;
                     }
 
                     if (_pParity_bit == 0) {
@@ -154,7 +165,8 @@ export class PeriodCalandar extends Component {
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
                         reacl_next_ov_date: firstOvDate.diff('days'),
-                        ovulation_date: firstOvDateDay
+                        ovulation_date: firstOvDateDay,
+                        _ovl_date: OvDateDay,
                     });
                 } if (_pcatId == 5) {
                     let data = {
@@ -173,8 +185,10 @@ export class PeriodCalandar extends Component {
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
-                        reacl_next_p_date: range2.diff('days'),
+                        _reacl_next_p_date: parseFloat(range2.diff('days')),
+                        _nextPeriodDate: _pdate
                     });
+                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+this.state.reacl_next_p_date);
                 }
             }
         }).catch((err) => {
@@ -182,7 +196,8 @@ export class PeriodCalandar extends Component {
             this.setState = {
                 isLoading: false
             }
-        })
+        });
+
     }
     savePeriod() {
         this.setState({
@@ -197,7 +212,7 @@ export class PeriodCalandar extends Component {
         } else {
             this.RBSheet.close();
         }
-        var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
+        var _ovlDate = moment(this.state.pName).add(12, 'day').format('YYYY-MM-DD');
         var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
         let data = {
             pName: this.state.pName,
@@ -210,115 +225,133 @@ export class PeriodCalandar extends Component {
         let availabel = 0;
         let availabelOvl = 0;
         let availabeNext = 0;
+        let nextP = 0;
+        let availableP = 0;
         db.listGetCurrntMonthPeriod(this.state.dbs).then((datas) => {
+
             result = datas;
             var pPeriod_Id = null;
             var pcat_Id = null;
+            // if (datas != '') {
+            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>8888 : ");
             for (var i = 0; i < result.length; i++) {
-                pDateandMonth = result[i].pName,
-                    pcat_Id = result[i].pCatId,
-                    pPeriod_Id = result[i].pId
-                if (pDateandMonth >= _today) {
-                    if (pcat_Id == 1) {
+                pDateandMonth = result[i].pName;
+                pcat_Id = result[i].pCatId;
+                pPeriod_Id = result[i].pId;
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>999  : " + pDateandMonth + " /" + this.state.pName + " / " + pPeriod_Id);
+                if (this.state.pName >= _today) {
+                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>7777 : " + pDateandMonth + " / " + this.state.pName);
+                    if (pDateandMonth >= _today) {
                         if (this.state.pName == pDateandMonth) {
-                            availabeNext = 1;
-                            this.unmarkDate(pDateandMonth);
-                            db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
-                                this.setState({
-
-                                    isLoading: false,
-                                });
-                            }).catch((err) => {
-                            })
-                            db.deleteOvanpPeriod(this.state.dbs, 4).then((result) => {
-                                this.setState({
-                                    isLoading: false,
-                                });
-                            }).catch((err) => {
-                            })
-                        }
-                        availabel = 1
-                        let data2 = {
-                            _pDateandMonth: this.state.pName,
-                            _pPeriod_Id: pPeriod_Id,
-                        }
-                        db.updatePeriod(this.state.dbs, data2).then((result) => {
-                            this.setState({
-                                // pName: pDateandMonth,
-                                isLoading: false,
-                            });
-                        }).catch((err) => {
-                        })
-                    } if (pcat_Id == 4) {
-                        availabelOvl = 1;
-                    } if (pcat_Id == 5) {
-                        var _nextDate = moment(this.state.pName).add(28, 'day').format('YYYY-MM-DD');
-                        db.updateOvanpPeriod(this.state.dbs, _nextDate, pPeriod_Id).then((result) => {
-                        }).catch((err) => {
-                            this.setState({
-                                isLoading: false,
-                            });
-                        });
-                        if (availabeNext == 1) {
-                            // this.unmarkDate(pDateandMonth);
-                            db.deleteOvanpPeriod(this.state.dbs, pcat_Id).then((result) => {
-                                this.setState({
-                                    isLoading: false,
-                                });
-                            }).catch((err) => {
-                            })
+                            if (pcat_Id == 1) {
+                                availableP = 1;
+                                this.unmarkDate(pDateandMonth);
+                                this.deletePeriod(pPeriod_Id);
+                            }
+                        } else {
+                            if (pcat_Id == 1) {
+                                availableP = 1;
+                                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>5555 tsting 2  : " + this.state.pName + " / " + pDateandMonth + " / " + pPeriod_Id);
+                                let data2 = {
+                                    _pDateandMonth: this.state.pName,
+                                    _pPeriod_Id: pPeriod_Id,
+                                }
+                                this.updatePeriod(data2);
+                                this.unmarkDate(pDateandMonth);
+                            }
                         }
                     }
-                    this.unmarkDate(pDateandMonth);
-                }
-            }
-            if (availabel == 1) {
-            } else {
-                db.adderiod(this.state.dbs, data).then((result) => {
-                    this.setState({
-                        isLoading: false,
-                    });
+                } else {
+                    availableP = 1;
+                    if (pcat_Id == 1) {
 
-                }).catch((err) => {
-                    this.setState({
-                        isLoading: false,
-                    });
-                })
-                if (availabelOvl == 0) {
-                    this.updateOvulationDates(availabelOvl, data, pDateandMonth);
-                    db.addOvulationPeriod(this.state.dbs, data).then((result) => {
-                        this.setState({
-                            isLoading: false,
-                        });
-                    }).catch((err) => {
-                        this.setState({
-                            isLoading: false,
-                        });
-                    })
+                        // if (availabel == 0) {
+                        if (this.state.pName == pDateandMonth) {
+                            this.unmarkDate(pDateandMonth);
+                            this.deletePeriod(pPeriod_Id);
+                            // console.log("&&&&&&&&&&&&&&&&&&&&&&&& ; " + pPeriod_Id + " / " + this.state.pName + " / " + pDateandMonth);
+                        } else {
+                            if (availabel == 0) {
+                                this.adPeriod(data);
+                               
+                            }
+                        }
+                        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ; " + pPeriod_Id);
+                        // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ; " + pPeriod_Id);
+                        // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ; " + availabel);
+                        // this.adPeriod(data);
+                        // }
+                    }
+                    availabel = 1;
                 }
-                this.loadData();
             }
-            if (availabelOvl == 1) {
-                this.updateOvulationDates(availabelOvl, data, pDateandMonth);
+            if (availableP == 0) {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>1111  : ");
+                this.adPeriod(data);
             }
+
+
+            // } else {
+            //     this.adPeriod(data);
+
+            // }
             availabel = 0;
-            availabelOvl = 0;
-            availabeNext = 0;
+            availableP = 0;
+            this.loadData();
+        }).catch((err) => {
+
+            this.setState({
+                isLoading: false,
+            });
+        });
+
+
+    }
+    updatePeriod(data2) {
+        db.updatePeriod(this.state.dbs, data2).then((result) => {
+            this.setState({
+                // pName: pDateandMonth,
+                isLoading: false,
+            });
+        }).catch((err) => {
         })
+    }
+    adPeriod(data) {
+        db.adderiod(this.state.dbs, data).then((result) => {
+            this.setState({
+                isLoading: false,
+            });
+
+        }).catch((err) => {
+            this.setState({
+                isLoading: false,
+            });
+        })
+    }
+    deletePeriod(pPeriod_Id) {
+        db.deletePeriod(this.state.dbs, pPeriod_Id).then((result) => {
+            this.setState({
+
+                isLoading: false,
+            });
+        }).catch((err) => {
+        });
     }
     updateOvulationDates(availabelOvl, data, pDateandMonth) {
         db.gwtOvulationDates(this.state.dbs, data).then((results) => {
-            var _ovlDate = moment(this.state.pName).add(14, 'day').format('YYYY-MM-DD');
+            var _ovlDate = moment(this.state.pName).add(12, 'day').format('YYYY-MM-DD');
             result = results;
             var _pid, _pName;
             for (var i = 0; i < result.length; i++) {
                 _pid = result[i].pId;
                 _pName = result[i].pName;
 
+
                 if (availabelOvl == 1) {
+
                     var upnxtOvl = moment(_ovlDate).add(i, 'days').format(_format);
                     this.unmarkDate(_pName);
-                    db.updateOvanpPeriod(this.state.dbs, upnxtOvl, _pid).then((result) => {
+                    db.updateOVLPeriod(this.state.dbs, upnxtOvl, _pid).then((result) => {
                     }).catch((err) => {
                         this.setState({
                             isLoading: false,
@@ -447,12 +480,13 @@ export class PeriodCalandar extends Component {
                                         }}
 
                                         // we use moment.js to give the minimum and maximum dates.
-                                        minDate={_today}
+                                        // minDate={_today}
                                         // maxDate={_maxDate}
                                         // hideArrows={true}
                                         // onDayPress={this.onDaySelect}
                                         // onPress={() => this.RBSheet.open()}
                                         onDayPress={this.onDaySelect}
+
                                         // onDaySelect={()=>this.RBSheet.open()}
                                         // markedDates={{
                                         //     '2020-09-25': {dots: [vacation, massage, workout], selected: true, selectedColor: 'red'},
@@ -513,38 +547,13 @@ export class PeriodCalandar extends Component {
                                     }]} />
                                     <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Next period</Text>
                                 </View>
-                                {/* {
-                                    this.state._role_id == 1 ?
-                                        <View style={{ flexDirection: 'row', paddingRight: 10 }}>
-                                            <View style={[styles.squrecolor, {
-                                                backgroundColor: '#ffd740'
-                                            }]} />
-                                            <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Vaccination</Text>
-                                        </View>
-                                        : <View></View>
-                                } */}
-                            </View>
-                            {/* {
-                                this.state._role_id == 1 ?
-                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10 }}>
 
-                                        <View style={{ flexDirection: 'row', paddingRight: 10 }}>
-                                            <View style={[styles.squrecolor, {
-                                                backgroundColor: '#03a9f4'
-                                            }]} />
-                                            <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Delivary date</Text>
-                                        </View>
-                                    </View>
-                                    : <View></View>
-                            } */}
-                            {/* <Calendar
-                            markedDates={this.state.marked}
-                        // markingType={'multi-dot'}
-                        /> */}
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-                                {/* <Text>dasd: {this.state._day_of_month}</Text> */}
-                                <Text style={{ color: 'grey' }}>Period</Text>
-                                {
+                            </View>
+
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingBottom: 10 }}>
+
+                                {/* <Text style={{ color: 'grey' }}>Period</Text> */}
+                                {/* {
                                     this.state.reacl_next_p_date ?
                                         <Text style={{ fontSize: 40, }}>{this.state.reacl_next_p_date} Days left</Text>
                                         :
@@ -556,12 +565,7 @@ export class PeriodCalandar extends Component {
                                         :
                                         <Text style={{ marginBottom: 10 }}></Text>
                                 }
-                                {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('TestScreeen')} >
-                                <Text>dsdsdsd</Text>
-                            </TouchableOpacity> */}
-                                {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('PeriodAgenda')} >
-                                    <Text>View</Text>
-                                </TouchableOpacity> */}
+
                                 {
                                     this.state.reacl_next_ov_date ?
                                         <View>
@@ -578,9 +582,9 @@ export class PeriodCalandar extends Component {
                                                 style={
                                                     { zIndex: -5, }
                                                 }
-                                                // tintColorSecondary="#ff0000"
+
                                                 backgroundColor="#3d5875"
-                                            // renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="blue" />}
+
                                             >
                                                 {
                                                     (fill) => (
@@ -594,7 +598,7 @@ export class PeriodCalandar extends Component {
                                                             }
                                                             // arcSweepAngle={100}
                                                             tintColor="red"
-                                                        // backgroundColor="white"
+
                                                         >
                                                             {
                                                                 (fill) => (
@@ -624,8 +628,97 @@ export class PeriodCalandar extends Component {
                                             >
                                             </AnimatedCircularProgress>
                                         </View> : <Text></Text>
+                                } */}
+
+                                {
+                                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :"+ this.state._reacl_next_p_date),
+                                    this.state._reacl_next_p_date != 0 ?
+                                        <View style={styles.containerD}>
+
+                                            <Card style={[styles.periodcard]}>
+
+                                                <View style={{ flexDirection: 'row', paddingTop: 5, paddingLeft: 5, paddingRight: 0 }}>
+
+
+                                                    <View >
+                                                        <View style={{ marginLeft: 8, marginRight: 10, flexDirection: 'column' }}>
+                                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                                <View style={{ marginTop: 0, marginBottom: -10 }}>
+                                                                    <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Last Period</Text>
+                                                                    <View style={{ flexDirection: 'row', marginTop: 5 }}>
+
+                                                                        <Icon
+                                                                            name='calendar'
+                                                                            type='font-awesome'
+
+                                                                            iconStyle={{ fontSize: 17, paddingRight: 0, paddingLeft: 0, marginTop: 5, color: 'green' }}
+                                                                        />
+
+                                                                        <Text style={{ color: 'green', paddingTop: 0, paddingLeft: 8, fontSize: 20, fontWeight: 'bold' }}>{this.state.pName}
+                                                                        </Text>
+                                                                    </View>
+                                                                    {/* <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text> */}
+                                                                </View>
+
+
+                                                            </View>
+                                                            {
+                                                                // console.log(">>>>>>>>>>>>>>>>>>**************************** : "+parseInt(this.state._monthlyPeriod)/parseInt(this.state._reacl_next_p_date))
+                                                            }
+                                                            <Progress.Bar style={{ marginTop: 25, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={0} height={5} borderRadius={5} width={250} />
+                                                            <View style={{ marginTop: 5 }}>
+                                                                {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
+                                                                <Text style={{ color: 'black', fontSize: 13, marginLeft: 0, marginTop: 4 }}>Next Period Date : <Text style={{ fontSize: 13, fontWeight: 'bold', color: 'red' }}>
+                                                                    {this.state._nextPeriodDate}
+                                                                </Text></Text>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'column', }}>
+                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 0 }}>Next Period</Text>
+                                                        <Text style={{ fontSize: 70, marginBottom: -10, marginTop: -18, color: '#424242' }}>
+                                                            {this.state._reacl_next_p_date}
+                                                        </Text>
+                                                        <Text style={{ marginTop: -7, fontSize: 18 }}>Days left</Text>
+
+                                                    </View>
+
+                                                </View>
+
+                                                <View style={styles.greenBar}>
+                                                    {/* calendar-alt */}
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                        <View>
+                                                            <Text style={{ color: 'white' }}>Ovulation Start Date <Text style={{ color: 'black', fontWeight: 'bold' }}> {this.state._ovl_date}
+                                                            </Text ></Text>
+                                                        </View>
+                                                        <View>
+                                                            <View style={{ backgroundColor: 'white', padding: 4, borderRadius: 4, marginRight: 5 }}>
+                                                                <Icon
+                                                                    name='calendar'
+                                                                    type='font-awesome'
+                                                                    color='red'
+                                                                    iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: '#90a4ae' }}
+                                                                />
+                                                            </View>
+
+                                                        </View>
+                                                    </View>
+
+                                                </View>
+
+
+                                            </Card>
+
+
+                                        </View> :
+                                        <View>
+                                            <Text></Text>
+                                        </View>
                                 }
-                               
+
+
+
                             </View>
 
                             <RBSheet
@@ -830,5 +923,36 @@ const styles = StyleSheet.create({
         marginHorizontal: 14,
 
 
+    }, periodcard: {
+        height: 145,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: 8,
+        elevation: 3,
+
+        // shadowColor: 'gray',
+        shadowOffset: { width: 3, height: 5 },
+        // shadowOpacity: 0.2,
+        shadowRadius: 8,
+        // alignItems: 'center',
+        // margin: 5,
+        // padding: 15
+
+    }, containerD: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingTop: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        justifyContent: 'center', alignItems: 'center'
+    }, greenBar: {
+        backgroundColor: '#50cebb',
+        height: 45,
+        width: (Dimensions.get("window").width) - 30,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+        top: 5,
+        padding: 10
+        // width: "90%",
     }
 });

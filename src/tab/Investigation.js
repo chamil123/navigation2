@@ -32,12 +32,12 @@ export class Investigation extends Component {
         return (
             <SafeAreaView style={{ flex: 1 ,backgroundColor:'#fff'}}>
 
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="Investigation" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1, }}>
 
                 </View>
                 <View style={styles.footer}>
-                    <Text>Setting!</Text>
+                    {/* <Text>Setting!</Text> */}
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <FlatList
                             style={{ backgroundColor: 'white' }}

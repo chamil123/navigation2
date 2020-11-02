@@ -210,14 +210,29 @@ export default class Database {
     //////////////for period//////////
 
     adderiod(db, pd) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> >>>.......>>>>>> p : " + pd.pName + " /  next : " + pd.pNexpdate);
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pName, pd.pDescription, 1, 0]).then(([tx, results]) => {
+                tx.executeSql('INSERT OR IGNORE  INTO Period (pName,pDescription,pCatId,pParityBit) VALUES ( ?,?,?,?)', [pd.pName, pd.pDescription, 1, 0]).then(([tx, results]) => {
                     resolve(results);
                 });
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, pd.pNexpdate, "Next period date", 5, 0]).then(([tx, results]) => {
+
+              
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
+    addNextPeriod(db, pd) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+
+                tx.executeSql('INSERT OR IGNORE INTO Period (pName,pDescription,pCatId,pParityBit) VALUES (?,?,?,?)', [pd.pNexpdate, "Next period date", 5, 0]).then(([tx, results]) => {
                     resolve(results);
+
                 });
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> >>>.......>>>>>> : " + pd.pName + " /  next : " + pd.pNexpdate);
             }).then((result) => {
             }).catch((err) => {
                 console.log(err);
@@ -229,7 +244,7 @@ export default class Database {
             db.transaction((tx) => {
                 for (var i = 0; i < 5; i++) {
                     const nxtOvl = moment(pd.pOvlDate).add(i, 'days').format(_format);
-                    tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, nxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
+                    tx.executeSql('INSERT OR IGNORE INTO Period (pName,pDescription,pCatId,pParityBit) VALUES (?,?,?,?)', [nxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
                         resolve(results);
                     });
                 }
@@ -246,7 +261,7 @@ export default class Database {
             db.transaction((tx) => {
                 // for (var i = 0; i < 5; i++) {
                 //     const nxtOvl = moment(upnxtOvl).add(i, 'days').format(_format);
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?)', [null, upnxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
+                tx.executeSql('INSERT OR IGNORE INTO Period (pName,pDescription,pCatId,pParityBit) VALUES (?,?,?,?)', [upnxtOvl, "OVL date", 4, i]).then(([tx, results]) => {
                     resolve(results);
                 });
                 // }
@@ -290,7 +305,21 @@ export default class Database {
 
         });
     }
-    updateOvanpPeriod(db, date, pCatId) {
+    updateNextPeriod(db, date, pCatId) {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ db : " + date + " / " + pCatId);
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [date, pCatId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
+    updateOVLPeriod(db, date, pCatId) {
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [date, pCatId]).then(([tx, results]) => {
@@ -305,6 +334,7 @@ export default class Database {
     updatePeriod(db, data) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  : "+data._pDateandMonth+" / "+ data._pPeriod_Id)
                 tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [data._pDateandMonth, data._pPeriod_Id]).then(([tx, results]) => {
                     resolve(results);
                 });
@@ -958,7 +988,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate,1, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate, 1, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
                     resolve(results);
                 });
 
@@ -1003,7 +1033,7 @@ export default class Database {
     updateClickCountRfValueZoro(db, data) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE KickCount SET kcCount = ?, kcFirstTime=?,kcLastTime=?     WHERE kcDate = ?', [data.kcValue, data.kcTime,data.kclTime, data.kcDate]).then(([tx, results]) => {
+                tx.executeSql('UPDATE KickCount SET kcCount = ?, kcFirstTime=?,kcLastTime=?     WHERE kcDate = ?', [data.kcValue, data.kcTime, data.kclTime, data.kcDate]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1080,7 +1110,7 @@ export default class Database {
             var kick_count = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM Period p WHERE p.pCatId IN (1,4,5) ORDER BY pId ASC', []).then(([tx, results]) => {
+                tx.executeSql('SELECT * FROM Period p WHERE p.pCatId IN (1,4,5)  ORDER BY pId ASC', []).then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1089,6 +1119,7 @@ export default class Database {
                             pId,
                             pName,
                             pCatId,
+
 
                         });
                     }

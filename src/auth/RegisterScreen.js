@@ -25,7 +25,9 @@ import { CustomHeader } from '../index';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ff9100'
+  },
+  gradient: {
+    flex: 1,
   },
   header: {
     flex: 2,
@@ -68,7 +70,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 25,
-    elevation: 4,
+    marginBottom: 20,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.7,
@@ -121,52 +124,179 @@ export class RegisterScreen extends Component {
     const { TextInputPhoneNumber } = this.state;
     const { TextInputpassword } = this.state;
     const { PickerValueHolder } = this.state;
-    if (PickerValueHolder !== '') {
-      fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/insert.php', {
-        method: 'post',
-        header: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          member_name: TextInputName,
-          member_email: TextInputEmail,
-          member_mobilenumber: TextInputPhoneNumber,
-          member_password: TextInputpassword,
-          member_role: PickerValueHolder,
-        })
-      }).then((response) => response.json())
-        .then((responseJson) => {
-          this.setState({
-            isLoading: false,
-          }, function () {
 
-          });
-          if (responseJson == "Insert success") {
-            AsyncStorage.setItem('memberNames', TextInputName).then(
-              responseJson => {
-                this.props.navigation.navigate('HomeApp');
-              }
-            );
-            AsyncStorage.setItem('memberId', PickerValueHolder);
 
-          } else {
-            showMessage({
-              message: "Register Fail",
-              description: "" + `${responseJson}`,
-              backgroundColor: 'red'
-            })
-            this.props.navigation.navigate('Register')
-          }
-        }).catch((error) => {
-          console.error(error);
+    if (TextInputName == '' || TextInputEmail == '' || TextInputPhoneNumber == '' || TextInputpassword == '' || PickerValueHolder == '') {
+      if (PickerValueHolder == '') {
+        showMessage({
+          message: "Somefields not filled",
+          backgroundColor: 'red'
         })
+        this.setState({
+          optionError: "Please select an option first",
+          errorFound: "true",
+        })
+      } else {
+        this.setState({
+          optionError: "",
+          errorFound: "",
+        })
+      }
+      if (TextInputpassword == '') {
+        showMessage({
+          message: "Somefields not filled",
+          backgroundColor: 'red'
+        })
+        this.setState({
+          pwError: "Please enter password",
+          errorFound: "true",
+        })
+      } else {
+        this.setState({
+          pwError: "",
+          errorFound: "",
+        })
+      }
+      if (TextInputPhoneNumber == '') {
+        showMessage({
+          message: "Somefields not filled",
+          backgroundColor: 'red'
+        })
+        this.setState({
+          mobileError: "Please enter phone number",
+          errorFound: "true",
+        })
+      } else {
+        this.setState({
+          mobileError: "",
+          errorFound: "",
+        })
+      }
+      if (TextInputEmail == '') {
+        showMessage({
+          message: "Somefields not filled",
+          backgroundColor: 'red'
+        })
+        this.setState({
+          emailError: "Please enter email",
+          errorFound: "true",
+        })
+      } else {
+        this.setState({
+          emailError: "",
+          errorFound: "",
+        })
+      }
+      if (TextInputName == '') {
+        showMessage({
+          message: "Somefields not filled",
+          backgroundColor: 'red'
+        })
+        this.setState({
+          unameError: "Please enter user name",
+          errorFound: "true",
+        })
+      } else {
+        this.setState({
+          unameError: "",
+          errorFound: "",
+        })
+      }
     } else {
-      showMessage({
-        message: "Please select an option first",
-        backgroundColor: 'red'
+      this.setState({
+        unameError: "",
+        optionError: "",
+        emailError: "",
+        mobileError: "",
+        pwError: "",
       })
+
+      let emailValidateregex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      let mobileValidateregex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+      if (emailValidateregex.test(TextInputEmail) == true) {
+        this.setState({
+          emailError: "",
+          errorFound: "",
+        })
+        //email verification success. process continue for further validation
+        if (mobileValidateregex.test(TextInputPhoneNumber) == true) {
+          this.setState({
+            mobileError: "",
+            errorFound: "",
+          })
+          //mobile verification success. process continue for further validation
+
+
+
+
+          //start save data in the server
+          if (this.state.errorFound != "false" && this.state.errorFound == "") {
+        
+            // if (PickerValueHolder !== '') {
+            fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/insert.php', {
+              method: 'post',
+              header: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                member_name: TextInputName,
+                member_email: TextInputEmail,
+                member_mobilenumber: TextInputPhoneNumber,
+                member_password: TextInputpassword,
+                member_role: PickerValueHolder,
+              })
+            }).then((response) => response.json())
+              .then((responseJson) => {
+                this.setState({
+                  isLoading: false,
+                }, function () {
+
+                });
+                if (responseJson == "Insert success") {
+                  AsyncStorage.setItem('memberNames', TextInputName).then(
+                    responseJson => {
+                      this.props.navigation.navigate('HomeApp');
+                    }
+                  );
+                  AsyncStorage.setItem('memberId', PickerValueHolder);
+
+                } else {
+                  showMessage({
+                    message: "Register Fail",
+                    description: "" + `${responseJson}`,
+                    backgroundColor: 'red'
+                  })
+                  this.props.navigation.navigate('Register')
+                }
+              }).catch((error) => {
+                console.error(error);
+              })
+
+
+            this.state.errorFound = "false"
+          }
+
+          //end save data in the server
+        } else {
+          this.setState({
+            mobileError: "Invalid mobile number",
+            errorFound: "true",
+          })
+        }
+
+      } else {
+        this.setState({
+          emailError: "Invalid email",
+          errorFound: "true",
+        })
+      }
     }
+
+
+
+
+
   }
   componentDidMount() {
     fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/view_role.php', {
@@ -226,14 +356,15 @@ export class RegisterScreen extends Component {
                 paddingVertical: 0
               }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0,color:'white' }}> Create New Account </Text>
+                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}> Create Your MyApp Account </Text>
 
-                  <Text style={{ fontSize: 14, marginTop: -2, marginBottom: 20, color: 'black' }}>Use email to register</Text>
+                  <Text style={{ fontSize: 12, marginTop: -2, color: 'black' }}>Please enter below information </Text>
+                  <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 10, color: 'black' }}>to create an account</Text>
                 </View>
                 <Animatable.View animation="fadeInLeft">
-                <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>User Role :</Text>
-                  <View style={{ bborderColor: '#F2F2F2', borderWidth: 0.2, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10  }}>
-                  
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>User Role :</Text>
+                  <View style={{ bborderColor: '#F2F2F2', borderWidth: 0.2, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }}>
+
                     <Picker
                       mode="dropdown"
                       // selectedValue={this.state.datasource[index].packselectedValue}
@@ -260,23 +391,35 @@ export class RegisterScreen extends Component {
 
                     </Picker>
                   </View>
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>User Name :</Text>
-                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false}/>
+                  <Text style={{ color: 'red' }}>{this.state.optionError}</Text>
+
+
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>User Name :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'red' }}>{this.state.unameError}</Text>
+
+
                   <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Email address :</Text>
-                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter Email address" onEndEditing={this.clearFocus} autoFocus={false} />
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>Mobil number :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Email address" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'red' }}>{this.state.emailError}</Text>
+
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Mobil number :</Text>
                   <TextInput
                     onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
                     keyboardType="numeric"
                     maxLength={10}
-                    style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffd595', paddingLeft: 10 }}placeholder="Enter Mobil number" onEndEditing={this.clearFocus} autoFocus={false} />
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2,  }}>Password :</Text>
-                  <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#fff', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false}/>
+                    style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Mobil number" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'red' }}>{this.state.mobileError}</Text>
+
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Password :</Text>
+                  <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'red' }}>{this.state.pwError}</Text>
+
                   <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
 
-                    <LinearGradient colors={['#fff', '#ffeed5']}
-                      start={{ x: 0, y: 1 }}
-                      end={{ x: 1, y: 0.9 }}
+                    <LinearGradient colors={['#fff', '#e2e1e1']}
+                      start={{ x: 1, y: 0 }}
+                      end={{ x: 1, y: 1 }}
                       style={styles.linearGradient}>
                       <Text style={styles.buttonText}>
                         Sign in

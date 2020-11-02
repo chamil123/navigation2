@@ -39,11 +39,12 @@ export class LoginScreen extends Component {
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
                 <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80, color: 'white' }}> Welcome To
 
-                 <Text style={{ color: 'red', }}>  App</Text>
+                
                 </Text>
+                <Text style={{ color: 'red',fontSize: 35, fontWeight: "bold" }}> <Text style={{ color: 'white',fontSize: 35, fontWeight: "normal", }}>My</Text>App</Text>
                 <Text style={{ fontSize: 16, color: 'black',marginBottom:15 }}>Enjoy the experience</Text>
 
-                <Image style={{ width: 190, height: 220, marginLeft: 0 }}
+                <Image style={{ width: 190, height: 220, marginLeft: 0,marginVertical:30 }}
                   source={IMAGE.ICON_LOGO_MAIN}
                   resizeMode="contain"
 
@@ -75,7 +76,7 @@ export class LoginScreen extends Component {
                   title="Sign Up"
                   type="outline"
 
-                  buttonStyle={styles.submitText, { borderRadius: 25, borderColor: 'white', color: '#ccc', padding: 12, borderWidth: 1, }}
+                  buttonStyle={styles.submitText, { borderRadius: 25, borderColor: 'white', color: '#ccc', padding: 12, borderWidth: 1,marginBottom:20 }}
                   onPress={() => this.props.navigation.navigate('Register')}
 
                 />
@@ -166,6 +167,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 25,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 8,
+    
   }, buttonText: {
     fontSize: 18,
     fontFamily: 'Gill Sans',

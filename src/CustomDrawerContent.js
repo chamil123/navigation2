@@ -68,7 +68,7 @@ export class CustomDrawerContent extends Component {
             <View style={styles.SeparatorLine} />
             <Text style={styles.TextStyle}>Profile </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('member')}>
+          {/* <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('member')}>
             <Icon
               name='cog'
               type='font-awesome'
@@ -77,7 +77,7 @@ export class CustomDrawerContent extends Component {
             />
             <View style={styles.SeparatorLine} />
             <Text style={styles.TextStyle}>Settings </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.doLogout()}>
             <Icon
               name='sign-out'
