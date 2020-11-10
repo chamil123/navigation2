@@ -10,7 +10,7 @@ import Database from '../Database';
 // import Icon from 'react-native-vector-icons/Fontisto';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import *as Animatable from 'react-native-animatable';
 
 import CalendarStrip from 'react-native-slideable-calendar-strip';

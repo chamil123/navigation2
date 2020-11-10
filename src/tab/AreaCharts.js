@@ -34,7 +34,7 @@ export class AreaCharts extends Component {
                     }
                 },
                 legend: {
-                    data: ['උග්‍ර අඩු බර', 'මධ්‍යස්ත අඩු බර', 'අඩු බරට අවදානම', 'නියමිත බර', 'අධි බර','ඔබේ  දරුවාගේ බර'],
+                    data: ['උග්‍ර අඩු බර', 'මධ්‍යස්ත අඩු බර', 'අඩු බරට අවදානම', 'නියමිත බර', 'අධි බර', 'ඔබේ  දරුවාගේ බර'],
                 },
                 toolbox: {
                     feature: {
@@ -60,7 +60,7 @@ export class AreaCharts extends Component {
                             }
                         },
                         boundaryGap: true,
-                        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12','13','14','15','16','17','18','19','20','21','22','23','24']
+                        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
                     }
                 ],
                 yAxis: [
@@ -72,88 +72,96 @@ export class AreaCharts extends Component {
                     {
                         name: 'උග්‍ර අඩු බර',
                         type: 'line',
-                       
-                        xAxisIndex:0,
+
+                        xAxisIndex: 0,
                         smooth: true,
                         itemStyle: {
                             normal: {
                                 color: 'red',
-                                opacity: 0.9,
+                                opacity: 0.2,
                                 lineStyle: {
                                     color: 'red',
-                                    opacity: 0.9
+                                    opacity: 0.3
                                 }
                             }
                         },
-                        areaStyle: {  color: '#ef9a9a',},
+                        areaStyle: { color: '#ef9a9a', },
                         data: []
                     },
                     {
                         name: 'මධ්‍යස්ත අඩු බර ',
                         type: 'line',
                         smooth: true,
-                       
+
                         itemStyle: {
                             normal: {
                                 color: '#f57c00',
+                                opacity: 0.2,
+                                color: '#f57c00',
                                 lineStyle: {
                                     color: '#f57c00',
-                                    opacity: 0.9
+                                    opacity: 0.3
                                 }
                             }
                         },
-                        areaStyle: {  color: 'yellow',opacity:0.1},
-                      
+                        areaStyle: { color: 'yellow', opacity: 0.1 },
+
                         data: []
                     },
                     {
                         name: 'අඩු බරට අවදානම',
                         type: 'line',
-                       
+
                         smooth: true,
                         itemStyle: {
                             normal: {
                                 color: 'green',
+                                opacity: 0.2,
+                                color: 'green',
                                 lineStyle: {
                                     color: 'green',
-                                    opacity: 0.9
+                                    opacity: 0.3
                                 }
                             }
                         },
-                        areaStyle: {  color: 'white',opacity:0.2},
+                        areaStyle: { color: 'white', opacity: 0.2 },
                         data: []
                     },
                     {
                         name: 'නියමිත බර',
                         type: 'line',
                         smooth: true,
-                      
+
                         itemStyle: {
                             normal: {
                                 color: 'green',
+                                opacity: 0.2,
+                                color: 'green',
                                 lineStyle: {
-                                   color: 'green',
-                                    opacity: 0.9
+                                    color: 'green',
+                                    opacity: 0.3
                                 }
                             }
                         },
-                        areaStyle: {  color: 'green',opacity:0.05},
+                        areaStyle: { color: 'green', opacity: 0.05 },
                         data: []
                     }, {
                         name: 'අධි බර',
                         type: 'line',
-                        
+
                         smooth: true,
                         itemStyle: {
                             normal: {
                                 color: '#bdbdbd',
+                                opacity: 0.2,
+                                color: '#bdbdbd',
                                 lineStyle: {
                                     color: '#bdbdbd',
-                                    opacity: 0.9
+                                    opacity: 0.3
                                 }
                             }
                         },
-                      
+
                         label: {
                             normal: {
                                 // show: true,
@@ -173,7 +181,7 @@ export class AreaCharts extends Component {
                                 color: 'blue',
                                 lineStyle: {
                                     color: 'blue',
-                                    opacity: 0.9
+                                    //opacity: 1
                                 }
                             }
                         },
@@ -186,8 +194,8 @@ export class AreaCharts extends Component {
 
                         data: []
                     }
-                    
-                    
+
+
                 ]
             }
         }
@@ -198,7 +206,7 @@ export class AreaCharts extends Component {
 
         this.loadDbVarable = this.loadDbVarable.bind(this);
     }
-    
+
     loadDbVarable(result) {
         this.setState({
             dbs: result,
@@ -239,7 +247,7 @@ export class AreaCharts extends Component {
                     temp7.push(parseFloat([result[i].wlhw]));
                     temp8.push(parseFloat([result[i].wlbaby]));
 
-                  
+
 
 
                 }
@@ -290,15 +298,9 @@ export class AreaCharts extends Component {
                         option={this.state.data} height={300}
                     />
 
-                    <ActionButton
-
-
+                    {/* <ActionButton
                         renderIcon={active => active ? (<Icon type='font-awesome' name="home" color='white' />) : (<Icon name="home" color='white' />)}
-
                         buttonColor="#6a1b9a">
-                        {/*Inner options of the action button*/}
-                        {/*Icons here https://infinitered.github.io/ionicons-version-3-search/*/}
-
                         <ActionButton.Item
                             buttonColor="#3498db"
                             title="View History"
@@ -308,7 +310,6 @@ export class AreaCharts extends Component {
                                 color='gray'
                                 iconStyle={{ fontSize: 18, padding: 8 }}
                                 name="history" color="white"
-
                             />
                         </ActionButton.Item>
                         <ActionButton.Item
@@ -320,11 +321,9 @@ export class AreaCharts extends Component {
                                 color='gray'
                                 iconStyle={{ fontSize: 18, padding: 8 }}
                                 name="plus" color="white"
-
                             />
-
                         </ActionButton.Item>
-                    </ActionButton>
+                    </ActionButton> */}
 
                 </SafeAreaView>
             );

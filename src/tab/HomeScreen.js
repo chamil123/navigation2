@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { IMAGE } from '../constants/image';
 import moment from 'moment' // 2.20.1
+import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -40,7 +41,7 @@ export class HomeScreen extends Component {
       isLoading: true,
       reacl_next_p_dateCount: '',
       _next_period_date: '',
-
+      _ovl_date: '',
       pName: '',
     }
     db.initDB().then((result) => {
@@ -97,7 +98,12 @@ export class HomeScreen extends Component {
           });
         }
         if (_pcatId == 4) {
-
+         
+          this.setState({
+            isLoading: false,
+           
+            _ovl_date: _pdate,
+        });
         } if (_pcatId == 5) {
           const end = moment(_pdate, 'YYYY-MM-DD');
           const range = moment.range(start, end);
@@ -107,6 +113,7 @@ export class HomeScreen extends Component {
             isLoading: false,
             reacl_next_p_dateCount: range2.diff('days'),
             _next_period_date: _pdate,
+            
           });
 
         }
@@ -120,8 +127,10 @@ export class HomeScreen extends Component {
     })
 
   }
-
-
+  componentWillUnmount() {
+    // Remove the event listener
+    // this.focusListener.remove();
+  }
 
   async componentDidMount() {
     const myArray = await AsyncStorage.getItem('memberNames');
@@ -387,7 +396,8 @@ export class HomeScreen extends Component {
 
 
                     <Card style={[styles.card]} >
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('ClinicManagement')}>
+                      {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}> */}
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
                           <View style={{ height: 80, padding: 15, backgroundColor: '#f1edfe', borderRadius: 50 }}>
@@ -581,7 +591,7 @@ export class HomeScreen extends Component {
                       </TouchableOpacity>
                     </Card> */}
                     <Card style={styles.card} >
-                      <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('AreaChart', {
+                      <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('AddMesurement', {
                         data: ''
                       })}>
                         <View style={{ alignItems: "center" }} >
@@ -647,41 +657,91 @@ export class HomeScreen extends Component {
 
                     {
                       this.state.reacl_next_p_dateCount ?
-                        <View style={styles.container}>
 
-                          <Card style={[styles.periodcard]}>
 
-                            <View style={{ flexDirection: 'row' }}>
-                              <View style={{ flexDirection: 'column' }}>
-                                <Text style={{ fontSize: 60, marginBottom: -10, marginTop: -10, color: '#424242' }}>{this.state.reacl_next_p_dateCount}</Text>
-                                <Text>Days left</Text>
+                      <View style={styles.containerD}>
 
-                              </View>
+                      <Card style={[styles.periodcard]}>
+
+                          <View style={{ flexDirection: 'row', paddingTop: 5, paddingLeft: 5, paddingRight: 0 }}>
+
+
                               <View >
-                                <View style={{ marginLeft: 8, flexDirection: 'column' }}>
-                                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                      <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Start date</Text>
-                                      <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text>
-                                    </View>
+                                  <View style={{ marginLeft: 8, marginRight: 10, flexDirection: 'column' }}>
+                                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                          <View style={{ marginTop: 0, marginBottom: -10 }}>
+                                              <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Last Period</Text>
+                                              <View style={{ flexDirection: 'row', marginTop: 5 }}>
 
-                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                      <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0 }}>Next Perod date</Text>
-                                      <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', textAlign: 'right' }}>{this.state._next_period_date}</Text>
-                                    </View>
+                                                  <Icon
+                                                      name='calendar'
+                                                      type='font-awesome'
 
+                                                      iconStyle={{ fontSize: 17, paddingRight: 0, paddingLeft: 0, marginTop: 5, color: 'green' }}
+                                                  />
+
+                                                  <Text style={{ color: 'green', paddingTop: 0, paddingLeft: 8, fontSize: 20, fontWeight: 'bold' }}>{this.state.pName}
+                                                  </Text>
+                                              </View>
+                                          
+                                          </View>
+
+
+                                      </View>
+                                      {
+                                          // console.log(">>>>>>>>>>>>>>>>>>**************************** : "+parseInt(this.state._monthlyPeriod)/parseInt(this.state._reacl_next_p_date))
+                                      }
+                                      <Progress.Bar style={{ marginTop: 25, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={1} height={5} borderRadius={5} width={250} />
+                                      <View style={{ marginTop: 5 }}>
+                                     
+                                          <Text style={{ color: 'black', fontSize: 13, marginLeft: 0, marginTop: 4 }}>Next Period Date : <Text style={{ fontSize: 13, fontWeight: 'bold', color: 'red' }}>
+                                            
+                                          </Text>{this.state._next_period_date}</Text>
+                                      </View>
                                   </View>
-
-                                  <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(28 - this.state.reacl_next_p_dateCount) / 100} height={5} borderRadius={5} width={250} />
-                                  <View>
-                                    <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Ovulation Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>2020-10-15</Text></Text>
-                                  </View>
-                                </View>
                               </View>
-                            </View>
+                              <View style={{ flexDirection: 'column', }}>
+                                  <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 0 }}>Next Period</Text>
+                                  <Text style={{ fontSize: 70, marginBottom: -10, marginTop: -18, color: '#424242' }}>
+                                  {this.state.reacl_next_p_dateCount}
+                                  </Text>
+                                  <Text style={{ marginTop: -7, fontSize: 18 }}>Days left</Text>
 
-                          </Card>
-                        </View> :
+                              </View>
+
+                          </View>
+
+                          <View style={styles.greenBar}>
+                           
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                  <View>
+                                      <Text style={{ color: 'white' }}>Ovulation Start Date <Text style={{ color: 'black', fontWeight: 'bold' }}> 
+                                      </Text >{this.state._ovl_date}</Text>
+                                  </View>
+                                  <View>
+                                      <View style={{ backgroundColor: 'white', padding: 4, borderRadius: 4, marginRight: 5 }}>
+                                          <Icon
+                                              name='calendar'
+                                              type='font-awesome'
+                                              color='red'
+                                              iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: '#90a4ae' }}
+                                          />
+                                      </View>
+
+                                  </View>
+                              </View>
+
+                          </View>
+
+
+                      </Card>
+
+
+                  </View>
+
+
+                   
+                         :
                         <View></View>
                     }
 
@@ -702,7 +762,7 @@ export class HomeScreen extends Component {
                               </Image>
                             </View>
 
-                            <Text style={{ marginTop: 0 }}>Calandar</Text>
+                            <Text style={{ marginTop: 0 }}>Period Tracker</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -732,20 +792,20 @@ export class HomeScreen extends Component {
                     </View>
                     <View style={styles.container}>
 
-                      {/* <Card style={[styles.card, { backgroundColor: '#fff' }]} >
-                        <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('Excercise')}>
+                      <Card style={[styles.card, { backgroundColor: '#fff' }]} >
+                        <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('ClinicManagement')}>
                           <View style={{ alignItems: "center" }} >
                             <View style={{ height: 70, padding: 10 }}>
-                              <Image source={IMAGE.ICON_MEDITATION}
+                              <Image source={IMAGE.ICON_CLINICK_MANAGEMENT}
                                 style={{ height: 60, width: 60 }}
                               >
                               </Image>
                             </View>
-                            <Text style={{ marginTop: 0 }}>Exerciise</Text>
+                            <Text style={{ marginTop: 0 }}>Clinic Management</Text>
 
                           </View>
                         </TouchableOpacity>
-                      </Card> */}
+                      </Card>
 
                       <Card style={[styles.card, { backgroundColor: '#fff' }]} >
                         <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('HealthDietChart')}>
@@ -845,20 +905,21 @@ export class HomeScreen extends Component {
     justifyContent: 'center',
     paddingTop: 10, paddingLeft: 10, paddingRight: 10, paddingBottom: 10
   },
-  periodcard: {
-    height: 115,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 8,
-    elevation: 1,
-    // shadowColor: 'gray',
-    shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 0.2,
-    shadowRadius: 8,
-    // alignItems: 'center',
-    margin: 5,
-    padding: 15
+  // periodcard: {
+  //   height: 115,
+  //   backgroundColor: 'rgba(255, 255, 255, 0.9)',
+  //   borderRadius: 8,
+  //   elevation: 1,
+  //   // shadowColor: 'gray',
+  //   shadowOffset: { width: 0, height: 0 },
+  //   // shadowOpacity: 0.2,
+  //   shadowRadius: 8,
+  //   // alignItems: 'center',
+  //   margin: 5,
+  //   padding: 15
 
-  }, brestposition3: {
+  // }, 
+  brestposition3: {
     width: 260,
     height: 260,
     marginLeft: -80,
@@ -905,5 +966,36 @@ export class HomeScreen extends Component {
     zIndex: -1,
 
     position: 'absolute'
-  },
+  }, periodcard: {
+    height: 145,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    elevation: 3,
+
+    // shadowColor: 'gray',
+    shadowOffset: { width: 3, height: 5 },
+    // shadowOpacity: 0.2,
+    shadowRadius: 8,
+    // alignItems: 'center',
+    // margin: 5,
+    // padding: 15
+
+}, containerD: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    justifyContent: 'center', alignItems: 'center'
+}, greenBar: {
+    backgroundColor: '#50cebb',
+    height: 45,
+    width: (Dimensions.get("window").width) - 30,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    top: 5,
+    padding: 10
+    // width: "90%",
+}
 });

@@ -9,16 +9,17 @@ import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
 // import RBSheet from "react-native-raw-bottom-sheet";
-
+// import DatePickerDialog from '@react-native-community/datetimepicker';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
+// import { TextInput } from 'react-native-paper';
 
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
-// import { TextInput } from 'react-native-paper';
+const _formatTime = 'HH:mm:ss';
 
-export class WeightGainDetailsAdd extends Component {
+export class ClinicManagement extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,7 +53,9 @@ export class WeightGainDetailsAdd extends Component {
 
         //To open the dialog
         this.refs.DatePickerDialog.open({
+
             date: DateHolder,
+
         });
 
     }
@@ -84,40 +87,28 @@ export class WeightGainDetailsAdd extends Component {
         var dates = this.state.DateText;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
 
-        this.setState({
-            // isLoading: false,
-
-        });
         let data = {
-            // pId: this.state.pId,
-            wgDate: dates,
-            wgValue: parseInt(this.state.TextInpuPbValue)
-        }
-        if (dates != '' && this.state.wgValue != '') {
-            db.addWGvalue(this.state.dbs, data).then((results) => {
-                //    this.props.navigation.navigate('WightGainBarchart')
-                this.props.navigation.navigate('WightGainBarchart');
-            }).catch((err) => {
-                console.log(err);
-
-            })
-        } else {
-            showMessage({
-                message: "Fields cannot be empty",
-                // description: "Username or password incorrect",
-                backgroundColor: 'red',
-
-            })
-
+            _note: this.state.TextInputNoteValue,
+            _date: dates,
+            pTime:moment().format(_formatTime),
         }
 
+      
+        db.addNote(this.state.dbs, data).then((result) => {
+            this.props.navigation.navigate('PeriodAgenda');
+            
+            // this.props.navigation.goBack();
+            //  goBack();
+        }).catch((err) => {
+
+        })
 
     }
     render() {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -125,29 +116,42 @@ export class WeightGainDetailsAdd extends Component {
                     style={styles.scrollView}>
 
                     {/* <View> */}
-                    <View style={{ backgroundColor: '#fbb146', height: 150, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
                             <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Weight level</Text>
-                            <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Clinic Management</Text>
+                            {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('WightGainBarchart')} style={styles.button}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={{ backgroundColor: 'gray', padding: 10, borderRadius: 35 }}>
-                                    <Icon
-                                        name='bar-chart'
-                                        type='font-awesome'
-                                        color='red'
-                                        iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
-                                    />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('AgendaHistory')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 120 }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='bar-chart'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
                                 </View>
-                                <Text style={{ color: 'black', padding: 7 }}>History</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodAgenda')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
+                                        <Icon
+                                            name='calendar'
+                                            type='font-awesome'
+                                            color='red'
+                                            iconStyle={{ fontSize: 13, color: 'gray' }}
+                                        />
+                                    </View>
+                                    <Text style={{ color: 'white', padding: 7 }}>Calendar</Text>
 
-                            </View>
-
-
-
-                        </TouchableOpacity>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                       
                     </View>
 
                     <View style={styles.breadthPo1}>
@@ -161,15 +165,18 @@ export class WeightGainDetailsAdd extends Component {
                                     this.state.DateText != '' ?
                                         <Text style={styles.datePickerText}>{this.state.DateText}</Text>
                                         :
-                                        <Text style={styles.datePickerText}>{_today}</Text>
+                                <Text style={styles.datePickerText}>{_today}</Text>
                                 }
+
+
                             </View>
 
                         </TouchableOpacity>
-                        <Text style={{ marginVertical: 10 }}> Weight Value </Text>
-                        <TextInput
+                        <Text style={{ marginVertical: 10,marginTop:30 }}> Description </Text>
+                        <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }}placeholder="Enter Description here" />
+                        {/* <TextInput
                             keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                            autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder="Enter Weight Value" />
+                            autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} label="Baby Name" /> */}
                         <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                             {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
                                  */}
@@ -326,7 +333,7 @@ export class WeightGainDetailsAdd extends Component {
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.7,
         shadowRadius: 8,
-        padding: 1,
+        padding: 3,
 
         // marginTop: 40,
         // paddingLeft: 15,
@@ -358,5 +365,19 @@ export class WeightGainDetailsAdd extends Component {
         borderWidth: 0,
         color: '#000',
 
-    },
+    }, buttonh: {
+        backgroundColor: "#AF1E8F",
+        padding: 5,
+        borderRadius: 25,
+        marginTop: 18,
+        width: 120,
+        elevation: 10,
+        shadowColor: '#30C1DD',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 8,
+        marginHorizontal: 20,
+
+
+    }
 });

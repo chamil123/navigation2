@@ -5,6 +5,7 @@ import StepIndicator from 'react-native-step-indicator';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
 import dummyData from './datafoodplan';
+import *as Animatable from 'react-native-animatable';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 const stepIndicatorStyles = {
     stepIndicatorSize: 25,
@@ -40,15 +41,15 @@ export class HealthDietChart extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fbb146' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={styles.header}>
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: -10 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Diet for healthy mother</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Food Phyramid</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
 
                         <View style={{ height: 100, padding: 10 }}>
                             <Image source={IMAGE.ICON_DIET_PLAN}
-                                style={{ height: 220, width: 350 }}
+                                style={{ height: 200, width: 320 }}
                             >
                             </Image>
                         </View>
@@ -57,8 +58,8 @@ export class HealthDietChart extends Component {
 
                 </View>
 
-                <View style={styles.footer}>
-
+                <Animatable.View animation="fadeInUp" style={styles.footer}>
+                {/* <Animatable.View animation="fadeInUp"> */}
                     {/* <View style={styles.container}> */}
                     <View style={styles.stepIndicator}>
                         <StepIndicator
@@ -98,8 +99,8 @@ export class HealthDietChart extends Component {
                         </ListItem>
                         }
                     />
-                    {/* </View> */}
-                </View>
+                    </Animatable.View >
+                {/* </View> */}
             </SafeAreaView>
         );
     }

@@ -88,21 +88,35 @@ export class BreastFeeding extends Component {
 
         this.RBSheet.close();
 
-        let data = {
+        
 
-            bName: this.state.TextInpuBNValue,
-            bWeight: this.state.TextInpuBWValue,
-            bbDate: formattedDate,
-        }
+        db.listBabyDetails(this.state.dbs).then((data) => {
+            let datas = {
 
-        db.babyData(this.state.dbs, data).then((result) => {
+                bName: this.state.TextInpuBNValue,
+                bWeight: this.state.TextInpuBWValue,
+                bbDate: formattedDate,
+            }
+            let result = data;
+            if (result == 0) {
+                db.babyData(this.state.dbs, datas).then((result) => {
+                    this.loadData();
+                }).catch((err) => {
+                })
+            } else {
+                let { bId } = this.props
+                for (var i = 0; i < result.length; i++) {
+                    bId = result[i].bId;
+    
+                }
+                db.babyUpdateData(this.state.dbs, datas,bId).then((result) => {
+                    this.loadData();
+                }).catch((err) => {
+                })
+            }
+        });
 
 
-            this.loadData();
-
-        }).catch((err) => {
-
-        })
     }
     render() {
         let { isLoading } = this.state
@@ -263,7 +277,7 @@ export class BreastFeeding extends Component {
                                             >
                                                 {/* <View style={[styles.card, { flexDirection: 'column', backgroundColor: '#a9dfe9' }]}> */}
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cradle</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cross Cradle</Text>
                                                     <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO22}
@@ -278,8 +292,8 @@ export class BreastFeeding extends Component {
                                             >
                                                 {/* <View style={[styles.card, { flexDirection: 'column', backgroundColor: '#dff19d' }]}> */}
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cradle</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Foodball</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Hold</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO23}
                                                         style={{ height: 140, width: 140, marginLeft: -5, marginTop: 5 }}>
@@ -293,7 +307,7 @@ export class BreastFeeding extends Component {
                                             >
 
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cradle</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Laid Back</Text>
                                                     <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO24}
@@ -308,8 +322,8 @@ export class BreastFeeding extends Component {
                                             >
 
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cradle</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Side</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Lying</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO25}
                                                         style={{ height: 130, width: 170, marginLeft: -40, marginTop: 15 }}>

@@ -108,7 +108,7 @@ export class BloodPresureDetailsAdd extends Component {
     render() {
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
                 <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
@@ -248,17 +248,17 @@ export class BloodPresureDetailsAdd extends Component {
         // borderWidth: 4,
     }, breadthPo1: {
 
-        justifyContent: 'center',
-        alignSelf: 'center',
+        // justifyContent: 'center',
+        // alignSelf: 'center',
         // position: 'absolute',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         // bottom: 100,
         zIndex: 5,
-        width: '95%',
-        borderRadius: 10,
-        elevation: 2,
-        padding: 20,
-        paddingTop: 20,
+        // width: '95%',
+        // borderRadius: 10,
+        // elevation: 2,
+        padding: 18,
+        // paddingTop: 20,
         marginTop: 10,
         // shadowColor: '#30C1DD',
         // shadowOffset: { width: 0, height: 3 },
@@ -312,11 +312,18 @@ export class BloodPresureDetailsAdd extends Component {
         marginHorizontal: 20,
 
     }, linearGradient: {
+
         marginTop: 40,
-        width: 335,
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 25,
+        marginBottom: 20,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.7,
+        shadowRadius: 8,
+        padding:1,
     }, buttonText: {
         fontSize: 18,
         fontFamily: 'Gill Sans',

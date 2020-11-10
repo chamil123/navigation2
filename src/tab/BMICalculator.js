@@ -88,7 +88,7 @@ export class BMICalculator extends Component {
         {/* <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}> */}
-        <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+        <CustomHeader bgcolor='white' title="BMI Calculator" navigation={this.props.navigation} bdcolor='white' />
         {/* <View style={styles.innerCircle} /> */}
         <View style={{ flex: 1 }}>
 

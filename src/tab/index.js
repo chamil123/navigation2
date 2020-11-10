@@ -52,3 +52,5 @@ export * from './WeightGainDetailsAdd';
 export * from './BloodPresureBarChart';
 export * from './BloodPresureDetailsAdd';
 export * from './KickCounterHister';
+export * from './ClinicManagement';
+export * from './AgendaHistory';
