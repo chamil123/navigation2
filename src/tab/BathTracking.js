@@ -1,104 +1,215 @@
 
-import React,{Component} from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput, DrawerLayoutAndroidBase } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, ScrollView, ActivityIndicator, View, TextInput, TouchableHighlight, DrawerLayoutAndroidBase } from 'react-native';
 import { Button } from 'react-native-elements';
+import moment from 'moment' // 2.20.1
+import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
+import { Avatar } from 'react-native-elements';
 import Database from '../Database';
-
 const db = new Database();
+const _formatTime = 'HH:mm:ss';
 
- export class BathTracking extends Component{
-  static navigationOptions = {
-    title: 'Add Product',
-  };
-  constructor() {
-    super();
+// const time = moment().format(_formatTime);
+
+// const handleTimerComplete = () => alert("custom completion function");
+
+const options = {
+  container: {
+    // backgroundColor: '#000',
+    // padding: 5,
+    // borderRadius: 5,
+    // width: 220,
+  },
+  text: {
+    fontSize: 45,
+    color: 'black',
+    marginLeft: 7,
+  }
+};
+
+export class BathTracking extends Component {
+
+  constructor(props) {
+    super(props);
     this.state = {
-      prodId: '',
-      prodName: '',
-      prodDesc: '',
-
-      isLoading: false,
+      timerStart: false,
+      stopwatchStart: false,
+      totalDuration: 90000,
+      timerReset: false,
+      stopwatchReset: false,
+      _times: '',
+      dbs: '',
+      _start_Time: '',
+      _end_time: '',
     };
-  }
-  componentDidMount(){
-      db.loadDB();
-  }
+    db.initDB().then((result) => {
+      this.loadDbVarable(result);
+    })
 
-  updateTextInput = (text, field) => {
-    const state = this.state
-    state[field] = text;
-    this.setState(state);
+    // this.toggleTimer = this.toggleTimer.bind(this);
+    // this.resetTimer = this.resetTimer.bind(this);
+    this.toggleStopwatch = this.toggleStopwatch.bind(this);
+    this.resetStopwatch = this.resetStopwatch.bind(this);
+    this.toggleStartwatch = this.toggleStartwatch.bind(this);
   }
-  
-  saveProduct() {
+  loadDbVarable(result) {
     this.setState({
-      isLoading: true,
+      dbs: result,
     });
-    let data = {
-      prodId: this.state.prodId,
-      prodName: this.state.prodName,
-      prodDesc: this.state.prodDesc
 
+
+  }
+  toggleStartwatch() {
+    var start_Time = this.getFormattedTime();
+    this.setState({
+      stopwatchStart: !this.state.stopwatchStart,
+      stopwatchReset: false,
+      _start_Time: start_Time
+    });
+
+
+
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ;" + start_Time);
+  }
+  toggleStopwatch() {
+    var end_time = this.getFormattedTime();
+    this.setState({
+      // stopwatchStart: !this.state.stopwatchStart,
+      // stopwatchReset: false,
+      stopwatchStart: false,
+      stopwatchReset: true,
+      _end_time: end_time
+    });
+  
+    let data = {
+      date:moment().format("YYYY-MM-DD"),
+      startTime: this.state._start_Time,
+      endtime: end_time
     }
-    db.addProduct(data).then((result) => {
-      console.log(result);
-      this.setState({
-        isLoading: false,
-      });
-    //   this.props.navigation.state.params.onNavigateBack;
-    //   this.props.navigation.goBack();
+    db.addPBathTime(this.state.dbs, data).then((result) => {
+      this.props.navigation.navigate('BathTrackingHistroy');
+
     }).catch((err) => {
       console.log(err);
-      this.setState({
-        isLoading: false,
-      });
+
     })
+
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ;" + this.state._end_time);
   }
+
+  resetStopwatch() {
+    this.setState({
+      stopwatchStart: false,
+      stopwatchReset: true
+    });
+
+  }
+
+  getFormattedTime() {
+    var times = moment().format(_formatTime);
+    // this.setState({ 
+    //   _times:times
+    // });
+    return times;
+  };
+
   render() {
-    if(this.state.isLoading){
-      return(
+    if (this.state.isLoading) {
+      return (
         <View style={styles.activity}>
-          <ActivityIndicator size="large" color="#0000ff"/>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
       )
     }
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.subContainer}>
-          <TextInput
-              placeholder={'Product ID'}
-              value={this.state.prodId}
-              onChangeText={(text) => this.updateTextInput(text, 'prodId')}
-          />
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <Stopwatch laps msecs start={this.state.stopwatchStart}
+            reset={this.state.stopwatchReset}
+            options={options}
+            // getTime={this.getFormattedTime} />
+            getTime={this.getFormattedTime} />
         </View>
-        <View style={styles.subContainer}>
-          <TextInput
-              placeholder={'Product Name'}
-              value={this.state.prodName}
-              onChangeText={(text) => this.updateTextInput(text, 'prodName')}
+        <View>
+          {!this.state.stopwatchStart ?
+            // <TouchableHighlight onPress={this.toggleStopwatch}>
+            //   <Text style={{ fontSize: 30 }}>startd</Text>
+            // </TouchableHighlight>
+            <Avatar
+              rounded
+              showEditButton
+              size={62}
+
+              icon={{ name: 'play', type: 'font-awesome', color: 'white' }}
+              containerStyle={{
+                //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                shadowOffset: { height: 3, width: 8 },
+                borderWidth: 1, borderColor: 'white', // IOS
+                shadowOpacity: 3, // IOS
+                shadowRadius: 5, elevation: 2,
+                backgroundColor: '#388e3c',
+
+
+              }}
+              onPress={this.toggleStartwatch}
+
+            />
+            :
+
+            <Avatar
+              rounded
+              showEditButton
+              size={62}
+              icon={{ name: 'stop', type: 'font-awesome', color: 'white', }}
+              containerStyle={{
+                //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                shadowOffset: { height: 3, width: 8 },
+                borderWidth: 1, borderColor: 'white', // IOS
+                shadowOpacity: 3, // IOS
+                shadowRadius: 5, elevation: 2,
+                backgroundColor: 'red'
+              }}
+              onPress={this.toggleStopwatch}
+            />
+            // <TouchableHighlight onPress={this.toggleStopwatch}>
+            //   <Text style={{ fontSize: 30 }}>stop</Text>
+            // </TouchableHighlight>
+          }
+
+          <Avatar
+            rounded
+            showEditButton
+            size={62}
+            icon={{ name: 'undo', type: 'font-awesome', color: 'white' }}
+            containerStyle={{
+              //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+              shadowOffset: { height: 3, width: 8 },
+              borderWidth: 1, borderColor: 'white', // IOS
+              shadowOpacity: 3, // IOS
+              shadowRadius: 5, elevation: 2,
+              backgroundColor: '#fbb146'
+            }}
+            onPress={this.resetStopwatch}
           />
-        </View>
-        <View style={styles.subContainer}>
-          <TextInput
-              multiline={true}
-              numberOfLines={4}
-              placeholder={'Product Description'}
-              value={this.state.prodDesc}
-              onChangeText={(text) => this.updateTextInput(text, 'prodDesc')}
-          />
-        </View>
-        
-       
-        <View style={styles.button}>
-          <Button
-            large
-            leftIcon={{name: 'save'}}
-            title='Save'
-            onPress={() => this.saveProduct()} />
+          {/* <TouchableHighlight onPress={this.resetStopwatch}>
+            <Text style={{ fontSize: 30 }}>Reset</Text>
+          </TouchableHighlight> */}
+          {/* <Timer totalDuration={this.state.totalDuration} msecs start={this.state.timerStart}
+            reset={this.state.timerReset}
+            options={options}
+            handleFinish={handleTimerComplete}
+            getTime={this.getFormattedTime} /> */}
+          {/* <TouchableHighlight onPress={this.toggleTimer}>
+            <Text style={{ fontSize: 30 }}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this.resetTimer}>
+            <Text style={{ fontSize: 30 }}>Reset</Text>
+          </TouchableHighlight> */}
         </View>
       </ScrollView>
     );
   }
+
 }
 
 const styles = StyleSheet.create({

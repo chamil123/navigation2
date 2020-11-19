@@ -55,6 +55,7 @@ export default class Database {
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyDetails] ([bId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[bName] NVARCHAR(255) NULL,[bWeight] REAL NOT NULL,[bbDate] NVARCHAR(50), [bStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [LaboRoomPacket] ([lId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [lName] NVARCHAR(255) NULL, [lStatus] NVARCHAR(10) NULL, [lDate] NVARCHAR(10) NULL)');
 
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyBathTracking] ([btId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [btDate] NVARCHAR(25) NULL, [btStart] NVARCHAR(25) NULL, [btEnd] NVARCHAR(25) NULL, [btText] NVARCHAR(255) NULL, [btStatus] INTEGER NOT NULL)');
                             }).then(() => {
                                 console.log("Table created successfully");
                             }).catch(error => {
@@ -1903,6 +1904,19 @@ export default class Database {
             });
         });
     }
+    addPBathTime(db, data) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> >>>.......>>>>>> p : " + data.date+" / "+ data.startTime+" / "+ data.endtime);
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('INSERT OR IGNORE  INTO BabyBathTracking (btDate,btStart,btEnd,btText,btStatus) VALUES ( ?,?,?,?,?)', [data.date, data.startTime, data.endtime, "baby bath",0]).then(([tx, results]) => {
+                    resolve(results);
+                });
 
-
+              
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
 }

@@ -368,10 +368,7 @@ export class HomeScreen extends Component {
                     </View>
                   </ScrollView>
 
-
-
-
-                  <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 0 }}>Menu</Text>
+                  <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 5 }}>Before pregnancy</Text>
 
                   <View style={styles.container}>
 

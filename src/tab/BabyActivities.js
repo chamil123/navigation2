@@ -228,7 +228,7 @@ export class BabyActivities extends Component {
                                     </TouchableOpacity>
                                 </Card>
                                 <Card style={[styles.card, { backgroundColor: '#fce6d2' }]} >
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('')}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('BathTracking')}>
                                         <View style={{ alignItems: "center" }} >
                                             <View style={{ height: 45, padding: 10 }}>
                                                 <Image source={IMAGE.ICON_BABY_BOTTLE}
