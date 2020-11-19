@@ -331,6 +331,7 @@ export default class App extends React.Component {
           <StackApp.Screen name="KickCounterHister" component={KickCounterHister} options={navOptionHandler} />
           <StackApp.Screen name="ClinicManagement" component={ClinicManagement} options={navOptionHandler} />
           <StackApp.Screen name="AgendaHistory" component={AgendaHistory} options={navOptionHandler} />
+          <StackApp.Screen name="BathTracking" component={BathTracking} options={navOptionHandler} />
         </StackApp.Navigator>
       </NavigationContainer>
     );

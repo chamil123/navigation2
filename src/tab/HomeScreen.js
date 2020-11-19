@@ -655,7 +655,7 @@ export class HomeScreen extends Component {
                       <Text style={{ fontSize: 25, fontWeight: 'bold', marginLeft: 7, marginTop: 10 }}>Hello {this.state._member_name}</Text>
                     </View>
 
-                    {
+                    {/* {
                       this.state.reacl_next_p_dateCount ?
 
 
@@ -743,7 +743,7 @@ export class HomeScreen extends Component {
                    
                          :
                         <View></View>
-                    }
+                    } */}
 
 
                     <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 10 }}>Menu</Text>

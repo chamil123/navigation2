@@ -69,7 +69,7 @@ export class VerticleYearChart2 extends Component {
 
 
                 if (_pcatId == 3) {
-                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _pDescription + "  /  " + _pdate);
+                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _pDescription + "  /  " + _pdate);
 
                     var babayBirgDay = this.state._babybDate;
                     if (babayBirgDay != "") {

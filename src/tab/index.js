@@ -54,3 +54,4 @@ export * from './BloodPresureDetailsAdd';
 export * from './KickCounterHister';
 export * from './ClinicManagement';
 export * from './AgendaHistory';
+export * from './BathTracking';
