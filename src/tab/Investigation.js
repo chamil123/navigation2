@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Icon from 'react-native-vector-icons/Fontisto';
 import { CustomHeader } from '../index';
@@ -30,9 +30,9 @@ export class Investigation extends Component {
     render() {
 
         return (
-            <SafeAreaView style={{ flex: 1 ,backgroundColor:'#fff'}}>
-
-                <CustomHeader bgcolor='#fbb146' title="Investigation" navigation={this.props.navigation} bdcolor='#fbb146' />
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+                <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#fbb146" />
+                <CustomHeader bgcolor='#fbb146' title="Investigation" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1, }}>
 
                 </View>
@@ -97,9 +97,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-bottom:80,
+        bottom: 80,
         paddingVertical: 20,
-      
+
         //  paddingHorizontal: 20
     }
 });

@@ -424,14 +424,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Gill Sans',
     textAlign: 'center',
-    margin: 5,
+    margin: 13,
     color: '#ffffff',
     backgroundColor: 'transparent',
   }, circleGradient: {
     margin: 1,
     backgroundColor: "white",
     borderRadius: 5
-  }
+  }, linearGradient: {
+  
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 25,
+    marginBottom: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 8,
+},
 
 
 });

@@ -299,7 +299,7 @@ export class PeriodAgenda extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fce4ec' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146'  bcbuttoncolor='#ffc470' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <Agenda
                     testID={testIDs.agenda.CONTAINER}
                     items={this.state.items}

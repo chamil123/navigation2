@@ -197,6 +197,7 @@ export class Login2Screen extends Component {
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
 
+
                             <View style={{
                                 flex: 1, justifyContent: 'space-between', paddingHorizontal: 15,
                                 paddingVertical: 0,
@@ -204,13 +205,18 @@ export class Login2Screen extends Component {
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 15, color: 'white' }}>Log in </Text>
                                     <Text style={{ fontSize: 16, color: 'black', marginBottom: 25 }}>Use email to Login</Text>
-                                    <Image style={{ width: 210, height: 190, marginLeft: 0 }}
-                                        source={IMAGE.ICON_LOG}
-                                        resizeMode="contain"
-                                    />
+                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.1)',padding:25,borderRadius:120}}>
+                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.2)',padding:15,borderRadius:100}}>
+                                        <Image style={{ width: 140, height: 140, marginLeft: 0 }}
+                                            source={IMAGE.ICON_LOG}
+                                            resizeMode="contain"
+                                        />
+                                    </View>
+                                    </View>
+
                                 </View>
                                 <Animatable.View animation="fadeInUp">
-                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 30 }}>User Name :</Text>
+                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 20 }}>User Name :</Text>
                                     <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
                                     <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2 }}>Password :</Text>
                                     <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />

@@ -153,7 +153,7 @@ export class VerticleYearChart2 extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' bcbuttoncolor='#ffc470' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentInsetAdjustmentBehavior="automatic"

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, Image, Text, View, TouchableOpacity, TextInput, DrawerLayoutAndroidBase } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, Image, Text, View, TouchableOpacity, TextInput, DrawerLayoutAndroidBase,StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import Database from '../Database';
 import { IMAGE } from '../constants/image';
@@ -85,10 +85,9 @@ export class BMICalculator extends Component {
     }
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {/* <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}> */}
-        <CustomHeader bgcolor='white' title="BMI Calculator" navigation={this.props.navigation} bdcolor='white' />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
+     
+        <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="BMI Calculator" navigation={this.props.navigation} bdcolor='#F2F2F2' />
         {/* <View style={styles.innerCircle} /> */}
         <View style={{ flex: 1 }}>
 

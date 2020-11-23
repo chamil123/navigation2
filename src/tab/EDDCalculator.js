@@ -372,7 +372,7 @@ export class EDDCalculator extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#fbb146' }}>
-                    <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
 
                     <View style={styles.header}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>

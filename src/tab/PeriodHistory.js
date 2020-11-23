@@ -184,7 +184,7 @@ export class PeriodHistory extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title=""  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}

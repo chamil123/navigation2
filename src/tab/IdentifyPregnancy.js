@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, Image, View, SafeAreaView, ScrollView, TouchableOpacity,StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
-import *as Animatable from 'react-native-animatable';
 import { CustomHeader } from '../index';
 import Icon from 'react-native-vector-icons/Fontisto';
 export class IdentifyPregnancy extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#ffcce8' }}>
-                <CustomHeader bgcolor='#ffcce8' title="Identify Pregnancy" navigation={this.props.navigation} bdcolor='#ffcce8' />
+                <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffcce8" />
+                <CustomHeader bgcolor='#ffcce8' bcbuttoncolor='#fff' title="Identify Pregnancy" navigation={this.props.navigation} bdcolor='#ffcce8' />
                 <View style={styles.header}>
                     <Image style={{ width: 450, height: 260, marginLeft: -40, marginTop: -40 }}
                         source={IMAGE.ICON_IDENTY_PREGNANCY_BACK}
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        
+
     }, cardAvatar: {
         height: 50,
         width: 50,

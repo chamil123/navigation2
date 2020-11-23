@@ -371,9 +371,7 @@ export class KickCounter extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-
-
-                    <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <View style={styles.brestposition5}></View>
                     <View style={styles.brestposition6}></View>
                     <View style={styles.brestposition3}></View>

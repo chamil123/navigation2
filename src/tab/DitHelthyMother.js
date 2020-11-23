@@ -10,7 +10,7 @@ export class DitHelthyMother extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#f2f2f2" />
-        <CustomHeader bgcolor='#f2f2f2' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
+        <CustomHeader bgcolor='#f2f2f2' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#f2f2f2' />
 
         <View style={styles.header}>
           <View style={styles.backgroundImage} >

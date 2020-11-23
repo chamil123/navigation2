@@ -12,6 +12,7 @@ import ActionButton from 'react-native-action-button';
 import Swipeout from 'react-native-swipeout';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import moment from 'moment'; // 2.20.1
 
 // import Echarts from 'native-echarts';
@@ -243,7 +244,23 @@ export class WightGainBarchart extends Component {
     this.getData();
   }
 
+  deleteData(id) {
 
+    this.setState({
+      // isLoading: true
+    });
+    db.deleteWeight(this.state.dbs, id).then((result) => {
+
+      this.getData();
+      // this.getaAllClickData();
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        // isLoading: false
+      }
+    })
+  }
   keyExtractor = (item, index) => index.toString();
   render() {
 
@@ -269,7 +286,9 @@ export class WightGainBarchart extends Component {
     };
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffc15a' }}>
-        <CustomHeader bgcolor='#ffc15a' title="Home detail" navigation={this.props.navigation} bdcolor='#ffc15a' />
+     
+        <CustomHeader bgcolor='#ffc15a' bcbuttoncolor='#fbb448' title="Home detail" navigation={this.props.navigation} bdcolor='#ffc15a' />
+        <FlashMessage duration={1000} />
         <View style={styles.header}>
 
           <ECharts

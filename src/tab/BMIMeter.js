@@ -81,7 +81,7 @@ export class BMIMeter extends Component {
         return (
 
             <SafeAreaView style={{ flex: 1 }}>
-                <CustomHeader bgcolor='white' title="BMI Meter" navigation={this.props.navigation} bdcolor='white' />
+                <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff'  title="BMI Meter" navigation={this.props.navigation} bdcolor='#F2F2F2' />
                 <View style={{ flex: 1 }}>
 
                     <View style={styles.innerCircle} />

@@ -29,7 +29,7 @@ export class BreastFeeding extends Component {
         super(props);
         this.state = {
             TextInpuBNValue: '',
-            TextInpuBWValue: '',
+            // TextInpuBWValue: '',
             _baby_name: '',
             _babybDate: '',
             _babyWeght: '',
@@ -94,7 +94,7 @@ export class BreastFeeding extends Component {
             let datas = {
 
                 bName: this.state.TextInpuBNValue,
-                bWeight: this.state.TextInpuBWValue,
+                // bWeight: this.state.TextInpuBWValue,
                 bbDate: formattedDate,
             }
             let result = data;
@@ -128,7 +128,7 @@ export class BreastFeeding extends Component {
         else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title="Breast Feeding" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <View style={styles.header}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ marginTop: 25, marginLeft: 20 }}>
@@ -146,7 +146,7 @@ export class BreastFeeding extends Component {
                             <View style={{ flexDirection: "column", marginLeft: 40, marginTop: 10 }}>
                                 <Text style={{ fontWeight: 'bold', }}>{this.state._baby_name}</Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth date :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
-                                <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
+                                {/* <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text> */}
                                 {/* <Text style={{ color: 'white', paddingTop: 5 }}>Age: <Text style={{ fontWeight: 'bold', color: 'black' }}> 1 </Text> year</Text> */}
                                 <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
                                     <Text style={styles.buttonText2}>Edit</Text>
@@ -334,16 +334,9 @@ export class BreastFeeding extends Component {
                                         </View>
                                     </ScrollView>
 
-                                    {/* <TouchableOpacity style={styles.button} onPress={() => {this.updateEdd();this.props.navigation.navigate('PeriodCalandar')}}> */}
-                                    {/* <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('BMIMeter')}> */}
-                                    {/* <Text style={styles.buttonText}>Edit EDD  Date</Text>
-                                </TouchableOpacity> */}
                                 </View>
                             </View>
-                            {/* <View style={{ flex: 1, marginTop: 10, paddingHorizontal: 10, }}>
-                        <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
 
-                    </View> */}
 
                             <RBSheet
                                 ref={ref => {
@@ -375,7 +368,7 @@ export class BreastFeeding extends Component {
                                             onDateChange={(date) => { this.setState({ date: date }) }}
                                         />
                                         <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
-                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
+                                        {/* <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" /> */}
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                             <Text style={styles.buttonText}>Save Baby' Data</Text>
@@ -401,35 +394,23 @@ export class BreastFeeding extends Component {
         backgroundColor: "#6a1b9a",
         padding: 10,
         borderRadius: 25,
-        // width:'200',
         width: 150,
-
         marginTop: 15,
         marginLeft: 18,
         marginVertical: 5
     }, footer: {
         flex: 3,
         backgroundColor: 'white',
-
-        // position:'absolute',
         zIndex: -1
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146',
-
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, backgroundImage: {
-        // height: height,
         position: "absolute",
-
         resizeMode: 'cover',
-
-        // resizeMode: 'cover', // or 'stretch'
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -451,8 +432,6 @@ export class BreastFeeding extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderColor: '#ef5d9a',
-        // borderWidth: 4,
     }, monthWith: {
         width: (screenWidth) / 5
     }, monthImageSize: {
@@ -463,36 +442,26 @@ export class BreastFeeding extends Component {
         backgroundColor: "#f78a2c",
         padding: 10,
         borderRadius: 25,
-        // marginTop: 5,
-
         alignItems: 'center',
         justifyContent: 'center',
-        // marginBottom: 30
     },
     button1: {
         backgroundColor: "red",
         padding: 5,
         borderRadius: 25,
-        // marginTop: 5,
         width: 80,
         marginTop: 10,
 
         alignItems: 'center',
         justifyContent: 'center',
-        // marginBottom: 30
     },
     buttonText: {
         fontSize: 15,
         color: '#fff',
-
-
     }, cardHorizontal: {
         height: 120,
         backgroundColor: 'white',
-        // width: 300,
         width: (Dimensions.get("window").width) - 230,
-        // width: "90%",
-        // backgroundColor: "white",
         borderRadius: 35,
         padding: 10,
         elevation: 4,
@@ -500,15 +469,11 @@ export class BreastFeeding extends Component {
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.7,
         shadowRadius: 8,
-        // alignItems: 'center',
-
-
         margin: 5
     }, brestposition: {
         width: 78,
         height: 78,
         marginLeft: 20,
-        //Below lines will help to set the border radius
         borderBottomLeftRadius: 45,
         borderBottomRightRadius: 45,
         borderTopRightRadius: 45,
@@ -518,7 +483,6 @@ export class BreastFeeding extends Component {
         width: 108,
         height: 108,
         marginLeft: 20,
-
         borderRadius: 55,
         overflow: 'hidden',
     }, brestposition3: {
@@ -528,7 +492,6 @@ export class BreastFeeding extends Component {
         marginTop: -10,
         backgroundColor: 'rgba(252, 252, 252, 0.3)',
         borderRadius: 65,
-        // overflow: 'hidden',
         zIndex: -1,
         position: 'absolute'
     }
@@ -539,7 +502,6 @@ export class BreastFeeding extends Component {
         marginTop: -22,
         backgroundColor: 'rgba(252, 252, 252, 0.2)',
         borderRadius: 85,
-        // overflow: 'hidden',
         zIndex: -2,
         position: 'absolute'
     }
@@ -565,16 +527,9 @@ export class BreastFeeding extends Component {
         backgroundColor: "white",
         borderRadius: 15,
         padding: 10,
-        // elevation: 5,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 4 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
         marginLeft: 13,
         overflow: 'hidden',
-
     }, breadthPo1: {
-
         justifyContent: 'center',
         alignSelf: 'center',
         position: 'absolute',
@@ -594,7 +549,6 @@ export class BreastFeeding extends Component {
         backgroundColor: "#ff6d00",
         padding: 12,
         borderRadius: 25,
-        // width:'200',
         width: 300,
         marginTop: 20
     },

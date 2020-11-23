@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch } from 'react-native';
+import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch,StatusBar } from 'react-native';
 
 import { CustomHeader } from '../index';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
@@ -150,8 +150,8 @@ export class LabourRoomPacking extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, }}>
-
-                    <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+                      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
+                    <CustomHeader bgcolor='#F2F2F2' title="labour room bag"  bcbuttoncolor='#fff' navigation={this.props.navigation} bdcolor='#F2F2F2' />
 
                     <View style={styles.header}>
                         <Image style={{ width: 350, height: 260, marginLeft: 0, }}

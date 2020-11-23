@@ -44,7 +44,7 @@ export class AddMesurement extends Component {
 
     let data = {
 
-      _weight: parseInt(this.state.TextInpuPbValue),
+      _weight: parseFloat(this.state.TextInpuPbValue),
       _month: this.state.TextInpuLValue
     }
     db.addGrouthTracker(this.state.dbs, data).then((result) => {
@@ -68,7 +68,7 @@ export class AddMesurement extends Component {
     }
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+        <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
         <ScrollView style={styles.container}>
           <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
             <View style={{ marginTop: 0, marginLeft: 20 }}>

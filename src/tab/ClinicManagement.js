@@ -108,7 +108,7 @@ export class ClinicManagement extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -119,7 +119,7 @@ export class ClinicManagement extends Component {
                     <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
                             <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Clinic Management</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Special Notes</Text>
                             {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>
@@ -188,7 +188,7 @@ export class ClinicManagement extends Component {
 
                                 style={styles.linearGradient}>
                                 <Text style={styles.buttonText}>
-                                    Add weight
+                                    Add Note
 </Text>
                             </LinearGradient>
 

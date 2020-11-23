@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Button, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Button, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList, StatusBar } from 'react-native';
 import { CustomHeader } from '../index';
 import Database from '../Database';
 import { ECharts } from "react-native-echarts-wrapper";
@@ -291,39 +291,14 @@ export class AreaCharts extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1 }}>
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
+                    <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="Grouth Chart" navigation={this.props.navigation} bdcolor='#F2F2F2' />
 
 
                     <ECharts
                         option={this.state.data} height={300}
                     />
 
-                    {/* <ActionButton
-                        renderIcon={active => active ? (<Icon type='font-awesome' name="home" color='white' />) : (<Icon name="home" color='white' />)}
-                        buttonColor="#6a1b9a">
-                        <ActionButton.Item
-                            buttonColor="#3498db"
-                            title="View History"
-                            onPress={() => alert('View history')}>
-                            <Icon
-                                type='font-awesome'
-                                color='gray'
-                                iconStyle={{ fontSize: 18, padding: 8 }}
-                                name="history" color="white"
-                            />
-                        </ActionButton.Item>
-                        <ActionButton.Item
-                            buttonColor="#1abc9c"
-                            title="Add New"
-                            onPress={() => this.props.navigation.navigate('AddMesurement')}>
-                            <Icon
-                                type='font-awesome'
-                                color='gray'
-                                iconStyle={{ fontSize: 18, padding: 8 }}
-                                name="plus" color="white"
-                            />
-                        </ActionButton.Item>
-                    </ActionButton> */}
 
                 </SafeAreaView>
             );

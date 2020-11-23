@@ -520,7 +520,7 @@ export class PeriodCalandar extends Component {
                         contentInsetAdjustmentBehavior="automatic"
                         style={[styles.scrollView, { marginBottom: -200 }]}>
 
-                        <CustomHeader bgcolor='#fbb146' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
+                        <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                         <View style={styles.brestposition5}></View>
                         <View style={styles.brestposition6}></View>
 
@@ -825,11 +825,11 @@ export class PeriodCalandar extends Component {
                                 <View style={{ flex: 1 }}>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: -13 }}>
                                         <Text style={{ color: 'gray', fontSize: 12 }}>{this.state.pName}</Text>
-                                        {/* <TouchableOpacity onPress={() => this.savePeriod()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Period Start ?</Text>
-                                        </TouchableOpacity> */}
+                                        <TouchableOpacity onPress={() => this.savePeriod()} style={styles.button}>
+                                            <Text style={styles.buttonText}>Period ?</Text>
+                                        </TouchableOpacity>
                                     </View>
-
+{/* 
                                     <View style={styles.container}>
                                         <Card style={styles.card} >
                                             <TouchableOpacity onPress={() => this.savePeriod()}>
@@ -849,7 +849,7 @@ export class PeriodCalandar extends Component {
                                         </Card>
                                         <Card style={styles.card} >
                                             <TouchableOpacity onPress={() => { this.props.navigation.navigate('SpecialNotes', { select_date: this.state.pName }); this.RBSheet.close(); }}>
-                                                {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('SpecialNotes'); this.addEDD(); }}> */}
+                                            
                                                 <View style={{ alignItems: "center" }} >
                                                     <View style={{ height: 40, padding: 0 }}>
 
@@ -897,7 +897,7 @@ export class PeriodCalandar extends Component {
                                                 </View>
                                             </TouchableOpacity>
                                         </Card>
-                                    </View>
+                                    </View> */}
                                 </View>
 
                             </RBSheet>
@@ -913,9 +913,10 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 300,
+        width: 330,
+        alignItems:'center',
 
-        marginTop: 5
+        marginTop: 20
     },
     buttonText: {
         fontSize: 15,

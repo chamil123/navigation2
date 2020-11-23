@@ -2,28 +2,24 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
-import *as Animatable from 'react-native-animatable';
-// import { BarChart, Grid } from 'react-native-svg-charts';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
+
 import { LineChart, BarChart } from "react-native-chart-kit";
 import {
     BarIndicator,
 } from 'react-native-indicators';
 const db = new Database();
 var j = 0;
-
+const _formatTime = 'hh:mm:ss';
 const _format = 'YYYY-MM-DD'
 const screenWidth = Dimensions.get("window").width;
 const _today = moment().format(_format)
@@ -33,9 +29,6 @@ export class EliminationChart extends Component {
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ':' + today.getMinutes();
         super(props);
-
-
-
         this.state = {
             isLoading: true,
             selectedDate: new Date(),
@@ -44,7 +37,6 @@ export class EliminationChart extends Component {
             _current_time: time,
             _list_elimination: [],
             dbs: '',
-
             _kick_count: 0,
             increment: 0,
 
@@ -57,15 +49,6 @@ export class EliminationChart extends Component {
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
-                    // {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
-                    // }, {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
-                    // },
                 ]
             }
 
@@ -85,22 +68,32 @@ export class EliminationChart extends Component {
         this.getaAllEliminateData();
     }
     componentDidMount() {
-        // this.getData();
-        // this.getaAllEliminateData();
+
     }
     getData() {
 
         const self = this;
         db.listEliminationCountByDate(this.state.dbs).then((data) => {
+            var temp2 = [];
+            var temp3 = [];
             let result = data;
+            var _monthDate;
+            const dataClone = { ...self.state.data }
             if (result == 0) {
+                dataClone.datasets[0].data = [0];
+                dataClone.labels = ["."];
+        
+                // dataClone.xAxis[0].data = [0,0,0];
+                dataClone.datasets[1].color = ['rgba(242, 242,242, 0.2)'];
+       
+        
+                self.setState({
+                    isLoading: false,
+                    data: dataClone,
 
+                });
             } else {
-                var temp2 = [];
-                var temp3 = [];
 
-                var _monthDate;
-                const dataClone = { ...self.state.data }
                 for (var i = 0; i < result.length; i++) {
                     _monthDate = result[i].eDate.substring(5, 10);
 
@@ -131,12 +124,12 @@ export class EliminationChart extends Component {
         let data = {
             // pId: this.state.pId,
             eDate: _selectedDay.toString(),
-            eTime: this.state._current_time,
+            eTime: moment().format(_formatTime),
             eText: this.state.TextInputdaValue
 
         }
 
-        db.addElimination(this.state.dbs,data).then((result) => {
+        db.addElimination(this.state.dbs, data).then((result) => {
             // console.log(result);
             this.getData();
             this.getaAllEliminateData();
@@ -144,11 +137,8 @@ export class EliminationChart extends Component {
         }).catch((err) => {
             console.log(err);
 
-        })
-
-
+        });
     }
-
     getaAllEliminateData() {
 
         db.listAllElimination(this.state.dbs).then((results) => {
@@ -163,7 +153,23 @@ export class EliminationChart extends Component {
             console.log(err);
         })
     }
+    deleteData(id) {
+       
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteElimination(this.state.dbs, id).then((result) => {
 
+            this.getData();
+            this.getaAllEliminateData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
@@ -172,8 +178,6 @@ export class EliminationChart extends Component {
             datasets: [
                 {
                     data: [50, 30],
-                    // color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-                    // strokeWidth: 2 // optional
                 }
             ],
             legend: ["Rainy Days"] // optional
@@ -199,14 +203,13 @@ export class EliminationChart extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <FlashMessage duration={1000} />
+                    <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
                     }
                         style={{ position: 'absolute', zIndex: 999 }}
                     >
-
-
                     </ActionButton>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
@@ -220,28 +223,10 @@ export class EliminationChart extends Component {
                                 {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>
-
-                        {/* <View style={styles.breadthPo1}> */}
                         <View style={styles.container}>
-
                             <Card style={[styles.card, { backgroundColor: 'white' }]} >
-
                                 <View style={{ alignItems: "center", }} >
-                                    {/* <View style={{ height: 45, padding: 5 }}> */}
-                                    {/* <LineChart
-                                    data={this.state.data}
-                                    width={Dimensions.get("window").width - 20}
-                                    // yAxisLabel={"$"}
-                                    height={175}
-                                    // bezier
-                                    verticalLabelRotation={-10}
-                                    chartConfig={chartConfig}
-                                    style={{
-                                        marginVertical: 0,
-                                        borderRadius: 16
-                                    }}
-                                /> */}
-
+      
                                     <BarChart
                                         style={{ borderRadius: 15 }}
                                         data={this.state.data}
@@ -257,18 +242,9 @@ export class EliminationChart extends Component {
                                         withHorizontalLabels={true}
                                     />
                                     {/* </View> */}
-
-
-
                                 </View>
 
                             </Card>
-
-
-
-
-
-
                         </View>
                         {/* </View> */}
 
@@ -295,7 +271,7 @@ export class EliminationChart extends Component {
 
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                            height: 50, paddingTop: 15,
+                                             paddingTop: 2,
 
                                         }}
                                     >
@@ -315,12 +291,21 @@ export class EliminationChart extends Component {
                                             <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
                                         </Body>
                                         <Right>
-                                            <View style={styles.iconMore}>
+                                            <View style={{padding:10,borderRadius:25}}>
                                                 <Icon
                                                     type='font-awesome'
                                                     color='gray'
                                                     iconStyle={{ fontSize: 18 }}
-                                                    name="trash-o" color="gray" />
+                                                    name="trash-o" color="gray"
+                                                    onPress={() => {
+                                                        this.deleteData(item.eId); showMessage({
+
+                                                            message: "Hello there",
+                                                            description: "successfuly deleted " + `${item.pName}`,
+                                                            type: "success",
+                                                        })
+                                                    }}
+                                                />
                                             </View>
                                         </Right>
                                     </ListItem>
@@ -328,11 +313,8 @@ export class EliminationChart extends Component {
                                 />
                             </SafeAreaView>
                         </View>
-
                         {/* </View> */}
                     </ScrollView>
-
-
                     <RBSheet
                         ref={ref => {
                             this.RBSheet = ref;
@@ -349,7 +331,6 @@ export class EliminationChart extends Component {
                                 borderTopLeftRadius: 20
                             }
                         }}
-
                     >
                         <ScrollView
                             showsVerticalScrollIndicator={false}
@@ -371,15 +352,10 @@ export class EliminationChart extends Component {
                                     }}
                                     markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                 />
-
-
-
                                 {/* <TextInput /> */}
                                 <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter Comment" />
                                 <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                     <Text style={styles.buttonText}>Add </Text>
-
-
                                 </TouchableOpacity>
 
                             </View>
@@ -405,10 +381,7 @@ export class EliminationChart extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
@@ -436,8 +409,7 @@ export class EliminationChart extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderColor: '#ef5d9a',
-        // borderWidth: 4,
+
     }, breadthPo1: {
 
         justifyContent: 'center',
@@ -450,10 +422,7 @@ export class EliminationChart extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -467,10 +436,7 @@ export class EliminationChart extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, card: {
         height: 220,
         // width: (Dimensions.get("window").width / 2) - 20,
@@ -484,8 +450,6 @@ export class EliminationChart extends Component {
         shadowOpacity: 0.5,
         shadowRadius: 5,
         alignItems: 'center',
-
-
         margin: 5
     }, button: {
         backgroundColor: "red",
@@ -493,13 +457,13 @@ export class EliminationChart extends Component {
         borderRadius: 25,
         // width:'200',
         width: 300,
-        alignItems:'center',
-        justifyContent:'center',
+        alignItems: 'center',
+        justifyContent: 'center',
 
         marginTop: 20
     }, buttonText: {
         fontSize: 15,
         color: '#fff',
-  
+
     }
 });

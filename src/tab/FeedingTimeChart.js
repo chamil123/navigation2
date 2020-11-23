@@ -200,7 +200,7 @@ export class FeedingTimeChart extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
                     }

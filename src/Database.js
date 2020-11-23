@@ -287,6 +287,21 @@ export default class Database {
             });
         });
     }
+    deleteElimination(db, id) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM Elimination WHERE eId = ?', [id]).then(([tx, results]) => {
+                    console.log(results);
+                    resolve(results);
+
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    }
+    
     deleteNextPeriod(db) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
@@ -1655,7 +1670,7 @@ export default class Database {
     babyData(db, bd) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?)', [null, bd.bName, bd.bWeight, bd.bbDate, 1]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?)', [null, bd.bName, 0, bd.bbDate, 1]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1905,7 +1920,7 @@ export default class Database {
         });
     }
     addPBathTime(db, data) {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> >>>.......>>>>>> p : " + data.date+" / "+ data.startTime+" / "+ data.endtime);
+      
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('INSERT OR IGNORE  INTO BabyBathTracking (btDate,btStart,btEnd,btText,btStatus) VALUES ( ?,?,?,?,?)', [data.date, data.startTime, data.endtime, "baby bath",0]).then(([tx, results]) => {
@@ -1917,6 +1932,45 @@ export default class Database {
             }).catch((err) => {
                 console.log(err);
             });
+        });
+    }
+    listBathsTimes(db) {
+        return new Promise((resolve) => {
+            const Bath = [];
+            db.transaction((tx) => {
+                tx.executeSql('SELECT b.btId, b.btDate,b.btStart,b.btEnd FROM BabyBathTracking b ORDER BY b.btDate ASC ', []).then(([tx, results]) => {
+                    var len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        const { btId, btDate, btStart, btEnd,  } = row;
+                        Bath.push({
+                            btId,
+                            btDate,
+                            btStart,
+                            btEnd,
+                           
+                           
+                        });
+                    }
+                    resolve(Bath);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }deleteBath(db, id) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM BabyBathTracking WHERE btId = ?', [id]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+         
         });
     }
 }

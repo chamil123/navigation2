@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch } from 'react-native';
+import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch,StatusBar } from 'react-native';
 
 import { CustomHeader } from '../index';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
@@ -15,6 +15,7 @@ import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import { BarIndicator } from 'react-native-indicators';
 import { ECharts } from "react-native-echarts-wrapper";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 
 export class KickCounterHister extends Component {
@@ -170,6 +171,23 @@ export class KickCounterHister extends Component {
         // })
 
     }
+    deleteData(id) {
+
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteKicks(this.state.dbs, id).then((result) => {
+
+            this.getData();
+            // this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
 
@@ -186,8 +204,9 @@ export class KickCounterHister extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
-
-                    <CustomHeader bgcolor='#F2F2F2' title="" navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
+                    <FlashMessage duration={1000} />
+                    <CustomHeader bgcolor='#F2F2F2' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#F2F2F2' />
                     {/* <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View> */}
                     <View style={styles.header}>
@@ -198,13 +217,13 @@ export class KickCounterHister extends Component {
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
                         <View style={styles.brestposition5}></View>
                         <View style={styles.brestposition6}></View>
-                        <View style={{ flexDirection: 'row',justifyContent:'space-between',paddingRight:15 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingRight: 15 }}>
                             <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>History</Text>
                             <Icon
                                 name='bar-chart'
                                 type='font-awesome'
                                 color='gray'
-                                iconStyle={{ fontSize: 15,paddingTop:5  }}
+                                iconStyle={{ fontSize: 15, paddingTop: 5 }}
                                 onPress={() => console.log('hello')} />
                         </View>
 
@@ -263,14 +282,14 @@ export class KickCounterHister extends Component {
                                             color='gray'
                                             iconStyle={{ fontSize: 18 }}
                                             name="trash-o" color="gray"
-                                        // onPress={() => {
-                                        //     this.deleteData(item.wgId); showMessage({
+                                            onPress={() => {
+                                                this.deleteData(item.kcId); showMessage({
 
-                                        //         message: "Hello there",
-                                        //         description: "successfuly deleted " + `${item.wgDate}`,
-                                        //         type: "success",
-                                        //     })
-                                        // }}
+                                                    message: "Hello there",
+                                                    description: "successfuly deleted " + `${item.wgDate}`,
+                                                    type: "success",
+                                                })
+                                            }}
                                         />
                                     </View>
                                 </Right>

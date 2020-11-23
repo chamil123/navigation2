@@ -109,7 +109,7 @@ export class BloodPresureDetailsAdd extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title=""  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -121,7 +121,7 @@ export class BloodPresureDetailsAdd extends Component {
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
                                 <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
-                                <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
+                                {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                             </View>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
                                 <View style={{ flexDirection: 'row' }}>

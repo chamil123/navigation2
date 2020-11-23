@@ -186,7 +186,7 @@ export class HospitalBag extends Component {
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
 
-                    <CustomHeader style={{ zIndex: -5 }} bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader style={{ zIndex: -5 }} bgcolor='#fbb146' bcbuttoncolor='#ffc470' title="" navigation={this.props.navigation} bdcolor='#fbb146' />
                     <View style={styles.brestposition5}></View>
                     <View style={styles.brestposition6}></View>
                     <View style={styles.brestposition3}></View>

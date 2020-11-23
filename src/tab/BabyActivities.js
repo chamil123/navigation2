@@ -162,7 +162,7 @@ export class BabyActivities extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                    <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
 
                     <ScrollView
                         showsVerticalScrollIndicator={false}
@@ -185,9 +185,9 @@ export class BabyActivities extends Component {
                                         data: ''
                                     })}>
                                         <View style={{ alignItems: "center" }} >
-                                            <View style={{ height: 45, padding: 10 }}>
-                                                <Image source={IMAGE.ICON_GROUTH_CHART_1}
-                                                    style={{ height: 30, width: 30 }}
+                                            <View style={{ height: 50, padding: 10 }}>
+                                                <Image source={IMAGE.ICON_FEEDING}
+                                                    style={{ height: 40, width: 40 }}
                                                 >
                                                 </Image>
                                             </View>
@@ -202,9 +202,9 @@ export class BabyActivities extends Component {
                                 <Card style={[styles.card, { backgroundColor: '#cbf2fe' }]} >
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('UrinationTime')}>
                                         <View style={{ alignItems: "center" }} >
-                                            <View style={{ height: 45, padding: 10 }}>
-                                                <Image source={IMAGE.ICON_BABY_BOTTLE}
-                                                    style={{ height: 30, width: 30 }}
+                                            <View style={{ height: 50, padding: 10 }}>
+                                                <Image source={IMAGE.ICON_URINATION}
+                                                    style={{ height: 40, width: 40 }}
                                                 >
                                                 </Image>
                                             </View>
@@ -216,9 +216,9 @@ export class BabyActivities extends Component {
                                 <Card style={[styles.card, { backgroundColor: '#fcd7d3' }]} >
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('EliminationChart')}>
                                         <View style={{ alignItems: "center" }} >
-                                            <View style={{ height: 45, padding: 10 }}>
-                                                <Image source={IMAGE.ICON_BABY_BOTTLE}
-                                                    style={{ height: 30, width: 30 }}
+                                            <View style={{ height: 50, padding: 10 }}>
+                                                <Image source={IMAGE.ICON_ELIMINATION}
+                                                    style={{ height: 40, width: 40 }}
                                                 >
                                                 </Image>
                                             </View>
@@ -230,9 +230,9 @@ export class BabyActivities extends Component {
                                 <Card style={[styles.card, { backgroundColor: '#fce6d2' }]} >
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('BathTracking')}>
                                         <View style={{ alignItems: "center" }} >
-                                            <View style={{ height: 45, padding: 10 }}>
-                                                <Image source={IMAGE.ICON_BABY_BOTTLE}
-                                                    style={{ height: 30, width: 30 }}
+                                            <View style={{ height: 50, padding: 10 }}>
+                                                <Image source={IMAGE.ICON_BATHTIME}
+                                                    style={{ height: 40, width: 40 }}
                                                 >
                                                 </Image>
                                             </View>

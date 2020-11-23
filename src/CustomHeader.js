@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 export class CustomHeader extends Component {
   render() {
-    let { navigation, isHome, title, bgcolor, bdcolor, isPost } = this.props
+    let { navigation, isHome, title, bgcolor, bdcolor, isPost,bcbuttoncolor} = this.props
     return (
       <View style={{ flexDirection: 'row', height: 55, backgroundColor: bgcolor, borderBottomColor: bdcolor, borderBottomWidth: 1 }} >
 
@@ -43,10 +43,10 @@ export class CustomHeader extends Component {
 
                 /> */}
               </TouchableOpacity>
-
+// #ffc470
               :
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 ,backgroundColor:'#ffc470',padding:5,paddingLeft:-5,width:40,borderRadius:15}}
+                style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 ,backgroundColor:bcbuttoncolor,padding:5,paddingLeft:-5,width:40,borderRadius:15}}
                 onPress={() => this.props.navigation.goBack()}
               >
 
@@ -72,7 +72,7 @@ export class CustomHeader extends Component {
 
 
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center' }}>{title}</Text>
+          <Text style={{ textAlign: 'center',color:'black',fontSize:15,fontWeight:'bold' }}>{title}</Text>
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           {

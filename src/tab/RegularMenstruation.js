@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, Image, View, SafeAreaView, ScrollView, TouchableOpacity,StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
 import { CustomHeader } from '../index';
@@ -9,7 +9,8 @@ export class RegularMenstruation extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#ffecb3' }}>
-                <CustomHeader bgcolor='#ffecb3' title="Menstruation" navigation={this.props.navigation} bdcolor='#ffecb3' />
+                  <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F" />
+                <CustomHeader bgcolor='#ffecb3' title="Menstruation"   bcbuttoncolor='#fff' navigation={this.props.navigation} bdcolor='#ffecb3' />
                 <View style={styles.header}>
                     <Image style={{ width: 500, height: 350, marginLeft: -60, marginTop: -20 }}
                         source={IMAGE.ICON_REGULAR_MENSTRUATION_BACK}

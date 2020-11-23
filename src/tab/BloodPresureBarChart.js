@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, ActivityIndicator, View, TextInput, DrawerLayoutAndroidBase, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, ScrollView, ActivityIndicator, View, TextInput, DrawerLayoutAndroidBase, StatusBar, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { CustomHeader } from '../index';
 import Database from '../Database';
@@ -16,6 +16,7 @@ import moment from 'moment'; // 2.20.1
 import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 // import Echarts from 'native-echarts';
 const db = new Database();
@@ -456,7 +457,23 @@ export class BloodPresureBarChart extends Component {
     })
     this.getData();
   }
+  deleteData(id) {
 
+    this.setState({
+      // isLoading: true
+    });
+    db.deleteBlood(this.state.dbs, id).then((result) => {
+
+      this.getData();
+      // this.getaAllClickData();
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        // isLoading: false
+      }
+    })
+  }
 
   keyExtractor = (item, index) => index.toString();
   render() {
@@ -484,9 +501,15 @@ export class BloodPresureBarChart extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-        <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
+        <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
+        <FlashMessage duration={1000} />
+        <CustomHeader bgcolor='white' title="Home detail" bcbuttoncolor='#F2F2F2' navigation={this.props.navigation} bdcolor='white' />
         <View style={styles.header}>
           {/* <View> */}
+          <View style={{ marginTop: 0, marginLeft: 20,marginBottom:10 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blck' }}>Blood presure</Text>
+            {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
+          </View>
           <SegmentedControlTab
             values={["Systolic", "Diastolic"]}
             selectedIndex={this.state.selectedIndex}

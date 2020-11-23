@@ -1,29 +1,29 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, ScrollView, ActivityIndicator, View, TextInput, TouchableHighlight, DrawerLayoutAndroidBase } from 'react-native';
+import { StyleSheet, Text, ScrollView, ActivityIndicator, View, TextInput, TouchableHighlight, DrawerLayoutAndroidBase, FlatList } from 'react-native';
 import { Button } from 'react-native-elements';
 import moment from 'moment' // 2.20.1
+import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
 import { Avatar } from 'react-native-elements';
 import Database from '../Database';
+import { CustomHeader } from '../index';
+import { Icon } from 'react-native-elements';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
-const _formatTime = 'HH:mm:ss';
+const _formatTime = 'hh:mm:ss';
 
 // const time = moment().format(_formatTime);
 
 // const handleTimerComplete = () => alert("custom completion function");
 
 const options = {
-  container: {
-    // backgroundColor: '#000',
-    // padding: 5,
-    // borderRadius: 5,
-    // width: 220,
-  },
+
   text: {
-    fontSize: 45,
+    fontSize: 49,
     color: 'black',
     marginLeft: 7,
+    marginTop:10,
   }
 };
 
@@ -34,20 +34,20 @@ export class BathTracking extends Component {
     this.state = {
       timerStart: false,
       stopwatchStart: false,
-      totalDuration: 90000,
       timerReset: false,
       stopwatchReset: false,
       _times: '',
       dbs: '',
       _start_Time: '',
       _end_time: '',
+      _list_wgData: [],
+
     };
     db.initDB().then((result) => {
       this.loadDbVarable(result);
     })
+    this.loadDbVarable = this.loadDbVarable.bind(this);
 
-    // this.toggleTimer = this.toggleTimer.bind(this);
-    // this.resetTimer = this.resetTimer.bind(this);
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
     this.toggleStartwatch = this.toggleStartwatch.bind(this);
@@ -56,8 +56,7 @@ export class BathTracking extends Component {
     this.setState({
       dbs: result,
     });
-
-
+    this.loadData();
   }
   toggleStartwatch() {
     var start_Time = this.getFormattedTime();
@@ -67,10 +66,98 @@ export class BathTracking extends Component {
       _start_Time: start_Time
     });
 
-
-
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ;" + start_Time);
   }
+  loadData() {
+    let products = [];
+    let _pdate = '';
+    db.listBathsTimes(this.state.dbs).then((data) => {
+      products = data;
+
+      this.setState({
+        isLoading: false,
+        _list_wgData: data,
+
+      });
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        isLoading: false
+      }
+    })
+  }
+  deleteData(id) {
+
+    this.setState({
+      // isLoading: true
+    });
+    db.deleteBath(this.state.dbs, id).then((result) => {
+
+      this.loadData();
+      // this.getaAllClickData();
+
+    }).catch((err) => {
+      console.log(err);
+      this.setState = {
+        // isLoading: false
+      }
+    })
+  }
+  emptyComponent = () => {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+        <Text >oops! There's no data here!</Text>
+      </View>);
+  }
+  renderItem = ({ item }) => {
+
+    return (
+      <ListItem style={{ marginTop: -10, paddingBottom: 5 }}>
+        <Left >
+          <View >
+
+            <Icon
+
+              name='bath'
+              type='font-awesome'
+              color='#009688'
+              iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+              onPress={() => console.log('hello')} />
+          </View>
+        </Left>
+        {/* <Body style={{ marginRight: 40 }}>
+              <Text style={{ fontWeight: "bold" }}>
+                  {item.btStart}
+              </Text>
+          </Body> */}
+        <Body style={{ marginLeft: -120 }}>
+          <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
+          <Text style={{fontSize:15,fontWeight:'bold'}}>{item.btStart}  to {item.btEnd}</Text>
+          <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text>
+        </Body>
+        <Right >
+          <View style={styles.iconMore}>
+            <Icon
+              type='font-awesome'
+              color='gray'
+              iconStyle={{ fontSize: 18, padding: 8 }}
+              name="trash-o" color="gray"
+              onPress={() => {
+                this.deleteData(item.btId); showMessage({
+
+                  message: "Success",
+                  description: "successfuly deleted " + `${item.btDate}`,
+                  type: "success",
+                })
+              }}
+            />
+          </View>
+        </Right >
+
+      </ListItem>
+    );
+
+  };
   toggleStopwatch() {
     var end_time = this.getFormattedTime();
     this.setState({
@@ -80,21 +167,20 @@ export class BathTracking extends Component {
       stopwatchReset: true,
       _end_time: end_time
     });
-  
+
     let data = {
-      date:moment().format("YYYY-MM-DD"),
+      date: moment().format("YYYY-MM-DD"),
       startTime: this.state._start_Time,
       endtime: end_time
     }
     db.addPBathTime(this.state.dbs, data).then((result) => {
-      this.props.navigation.navigate('BathTrackingHistroy');
+      // this.props.navigation.navigate('BathTrackingHistroy');
 
     }).catch((err) => {
       console.log(err);
 
-    })
-
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ;" + this.state._end_time);
+    });
+    this.loadData();
   }
 
   resetStopwatch() {
@@ -107,9 +193,7 @@ export class BathTracking extends Component {
 
   getFormattedTime() {
     var times = moment().format(_formatTime);
-    // this.setState({ 
-    //   _times:times
-    // });
+
     return times;
   };
 
@@ -122,7 +206,17 @@ export class BathTracking extends Component {
       )
     }
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView >
+         <FlashMessage duration={1000} />
+        <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+        
+        <View style={{ backgroundColor: '#fbb146', height: 45, }}>
+          <View style={{ marginTop: 0, marginLeft: 20 }}>
+
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Bath time tracker</Text>
+
+          </View>
+        </View>
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           <Stopwatch laps msecs start={this.state.stopwatchStart}
             reset={this.state.stopwatchReset}
@@ -130,7 +224,7 @@ export class BathTracking extends Component {
             // getTime={this.getFormattedTime} />
             getTime={this.getFormattedTime} />
         </View>
-        <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
           {!this.state.stopwatchStart ?
             // <TouchableHighlight onPress={this.toggleStopwatch}>
             //   <Text style={{ fontSize: 30 }}>startd</Text>
@@ -143,6 +237,7 @@ export class BathTracking extends Component {
               icon={{ name: 'play', type: 'font-awesome', color: 'white' }}
               containerStyle={{
                 //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                marginRight: 70,
                 shadowOffset: { height: 3, width: 8 },
                 borderWidth: 1, borderColor: 'white', // IOS
                 shadowOpacity: 3, // IOS
@@ -163,6 +258,7 @@ export class BathTracking extends Component {
               icon={{ name: 'stop', type: 'font-awesome', color: 'white', }}
               containerStyle={{
                 //  shadowColor: 'rgba(0,0,0, 0.4)', // IOS
+                marginRight: 70,
                 shadowOffset: { height: 3, width: 8 },
                 borderWidth: 1, borderColor: 'white', // IOS
                 shadowOpacity: 3, // IOS
@@ -205,6 +301,24 @@ export class BathTracking extends Component {
           <TouchableHighlight onPress={this.resetTimer}>
             <Text style={{ fontSize: 30 }}>Reset</Text>
           </TouchableHighlight> */}
+
+
+
+        </View>
+        <View style={{marginTop:20,backgroundColor:'white'}} >
+        <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold',paddingLeft:20,paddingTop:10 }}>History</Text>
+
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+
+            style={{ backgroundColor: 'white', marginBottom: 20 }}
+            ListEmptyComponent={this.emptyComponent}
+            keyExtractor={item => item.btStart}
+            renderItem={this.renderItem}
+            // keyExtractor={this.keyExtractor}
+            data={this.state._list_wgData}
+
+          />
         </View>
       </ScrollView>
     );

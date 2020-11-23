@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements'
 import { CustomHeader } from '../index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Database from '../Database';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 export class AgendaHistory extends Component {
     constructor(props) {
@@ -58,13 +59,30 @@ export class AgendaHistory extends Component {
                 isLoading: false
             }
         })
+    } deleteData(id) {
+
+        this.setState({
+            // isLoading: true
+        });
+        db.deletePeriod(this.state.dbs, id).then((result) => {
+
+            this.loadData();
+            // this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
     }
     keyExtractor = (item, index) => index.toString()
     render() {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <FlashMessage duration={1000} />
+                <CustomHeader bgcolor='#fbb146' title="Home detail"  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentInsetAdjustmentBehavior="automatic"
@@ -75,7 +93,7 @@ export class AgendaHistory extends Component {
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
 
                                 <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Special Note History</Text>
-                              
+
                             </View>
                         </View>
 
@@ -132,7 +150,7 @@ export class AgendaHistory extends Component {
                                                 iconStyle={{ fontSize: 18 }}
                                                 name="trash-o" color="gray"
                                                 onPress={() => {
-                                                    this.deleteData(item.wgId); showMessage({
+                                                    this.deleteData(item.pId); showMessage({
 
                                                         message: "Hello there",
                                                         description: "successfuly deleted " + `${item.pName}`,
