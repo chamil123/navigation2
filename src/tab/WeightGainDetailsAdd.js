@@ -81,6 +81,9 @@ export class WeightGainDetailsAdd extends Component {
         });
     }
     saveData() {
+
+        const { TextInpuPbValue } = this.state;
+
         var dates = this.state.DateText;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
 
@@ -93,31 +96,38 @@ export class WeightGainDetailsAdd extends Component {
             wgDate: dates,
             wgValue: parseInt(this.state.TextInpuPbValue)
         }
-        if (dates != '' && this.state.wgValue != '') {
-            db.addWGvalue(this.state.dbs, data).then((results) => {
-                //    this.props.navigation.navigate('WightGainBarchart')
-                this.props.navigation.navigate('WightGainBarchart');
-            }).catch((err) => {
-                console.log(err);
+        if (TextInpuPbValue != "" && dates != "") {
+            if (dates != '' && this.state.wgValue != '') {
+                db.addWGvalue(this.state.dbs, data).then((results) => {
+                    //    this.props.navigation.navigate('WightGainBarchart')
+                    this.props.navigation.navigate('WightGainBarchart');
+                }).catch((err) => {
+                    console.log(err);
 
-            })
+                })
+            } else {
+                showMessage({
+                    message: "Fields cannot be empty",
+                    // description: "Username or password incorrect",
+                    backgroundColor: 'red',
+
+                })
+
+            }
         } else {
             showMessage({
-                message: "Fields cannot be empty",
-                // description: "Username or password incorrect",
-                backgroundColor: 'red',
-
+                message: "Input Fail",
+                description: "Fields can not be empty",
+                backgroundColor: 'red'
             })
-
         }
-
 
     }
     render() {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title="Home detail" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="Weight Gain" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}

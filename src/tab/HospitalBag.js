@@ -195,12 +195,12 @@ export class HospitalBag extends Component {
                         source={require('../images/undraw_pilates_gpdb.png')}
                         style={{ paddingBottom: 0, paddingTop: 0, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
                     > */}
-                    <View style={{ backgroundColor: '#fbb146', height: 165, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <View style={{ backgroundColor: '#fbb146', height: 155, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
 
                             <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
-                            <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to prepair your bag</Text>
+                            {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('HospitalBagBaby')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130 }]}>

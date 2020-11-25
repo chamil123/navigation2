@@ -280,7 +280,7 @@ export class KickCounterHister extends Component {
                                         <Icon
                                             type='font-awesome'
                                             color='gray'
-                                            iconStyle={{ fontSize: 18 }}
+                                            iconStyle={{ fontSize: 18,padding:5 }}
                                             name="trash-o" color="gray"
                                             onPress={() => {
                                                 this.deleteData(item.kcId); showMessage({

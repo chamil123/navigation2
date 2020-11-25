@@ -19,9 +19,10 @@ import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { LineChart, } from "react-native-chart-kit";
 import { BarIndicator, } from 'react-native-indicators';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 var j = 0;
-
+const _formatTime = 'hh:mm:ss';
 const _format = 'YYYY-MM-DD'
 const screenWidth = Dimensions.get("window").width;
 const _today = moment().format(_format)
@@ -44,11 +45,11 @@ export class UrinationTime extends Component {
             _list_Urination_time: [],
             dbs: '',
             data: {
-                labels: ["j"],
+                labels: ["."],
 
                 datasets: [
                     {
-                        data: [1],
+                        data: [0],
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
@@ -83,32 +84,37 @@ export class UrinationTime extends Component {
     listUrinationCountByDate() {
         const self = this;
         db.listUrinationCountByDate(this.state.dbs).then((data) => {
+            var temp2 = [];
+            var temp3 = [];
+            var _monthDate;
             let result = data;
+            const dataClone = { ...self.state.data }
             if (result == 0) {
+                dataClone.datasets[0].data = [0];
+                dataClone.labels = ["."];
+                self.setState({
+                    isLoading: false,
+                    data: dataClone,
 
+                });
             } else {
-                var temp2 = [];
-                var temp3 = [];
+
                 // var temp4 = [];
                 // var temp5 = [];
-                var _monthDate;
-                const dataClone = { ...self.state.data }
+
+
                 for (var i = 0; i < result.length; i++) {
                     _monthDate = result[i].uDate.substring(5, 10);
 
                     temp2.push(parseInt([result[i].countu]));
                     temp3.push([_monthDate]);
-
-
                     //   temp4.push([result[i].bpmin]);
                     //   temp5.push([result[i].bpmax]);
-
                 }
                 dataClone.labels = temp3;
                 dataClone.datasets[0].data = temp2;
                 // dataClone.datasets[1].data = temp4;
                 // dataClone.datasets[2].data = temp5;
-
                 self.setState({
                     isLoading: false,
                     data: dataClone,
@@ -122,14 +128,7 @@ export class UrinationTime extends Component {
 
     }
     componentDidMount() {
-
         // this.getData();
-
-
-
-
-
-
     }
     saveData() {
         this.RBSheet.close();
@@ -139,12 +138,12 @@ export class UrinationTime extends Component {
         let data = {
             // pId: this.state.pId,
             uDate: _selectedDay.toString(),
-            uTime: this.state._current_time,
+            uTime: moment().format(_formatTime),
             uText: this.state.TextInputdaValue
 
         }
 
-        db.addUrination(this.state.dbs,data).then((result) => {
+        db.addUrination(this.state.dbs, data).then((result) => {
             this.listUrinationCountByDate();
             this.getaAllUrinationData();
             // this.getData();
@@ -152,12 +151,26 @@ export class UrinationTime extends Component {
             //   this.props.navigation.goBack();
         }).catch((err) => {
             console.log(err);
-
         })
-
-
     }
+    deleteData(id) {
 
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteUrination(this.state.dbs, id).then((result) => {
+
+            this.getaAllUrinationData();
+            this.listUrinationCountByDate();
+            // this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
     getaAllUrinationData() {
 
         db.listAllUrination(this.state.dbs).then((results) => {
@@ -166,64 +179,17 @@ export class UrinationTime extends Component {
                 isLoading: false,
                 _list_Urination_time: results,
             });
-
-
         }).catch((err) => {
             console.log(err);
         })
     }
-    // getData() {
-    //     var temp;
-    //     let data = {
-    //         kcDate: this.state._current_date.toString(),
-    //         kcValue: this.state._kick_count,
-    //     }
-    //     db.listKickCount(data).then((results) => {
-    //         result = results;
 
-    //         if (result == 0) {
-    //             db.addKickCount(data).then((results) => {
-
-    //             }).catch((err) => {
-    //                 console.log(err);
-    //             })
-
-
-    //         } else {
-    //             var _clickValue;
-    //             for (var i = 0; i < result.length; i++) {
-    //                 _clickValue = result[i].kcCount;
-    //                 temp = _clickValue + this.state.increment;
-    //             }
-
-    //             this.setState({
-    //                 isLoading: false,
-    //                 _kick_count: temp,
-
-    //             });
-
-    //             let data = {
-    //                 kcDate: this.state._current_date.toString(),
-    //                 kcValue: this.state._kick_count,
-    //             }
-
-    //             db.updateClickCount(data).then((result) => {
-    //                 // console.log(result);
-    //                 this.setState({
-    //                     // isLoading: false,
-    //                 });
-
-    //             }).catch((err) => {
-    //                 console.log(err);
-    //                 this.setState({
-    //                     // isLoading: false,
-    //                 });
-    //             })
-    //         }
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     })
-    // }
+    emptyComponent = () => {
+        return (
+          <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+            <Text >oops! There's no data here!</Text>
+          </View>);
+      }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
@@ -258,6 +224,7 @@ export class UrinationTime extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+                    <FlashMessage duration={1000} />
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
@@ -316,6 +283,7 @@ export class UrinationTime extends Component {
                                         shadowRadius: 8,
 
                                     }}
+                                    ListEmptyComponent={this.emptyComponent}
                                     scrollEnabled={false}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_Urination_time}
@@ -324,7 +292,7 @@ export class UrinationTime extends Component {
 
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                            height: 50, paddingTop: 15,
+                                            paddingTop: 10,
 
                                         }}
                                     >
@@ -334,8 +302,8 @@ export class UrinationTime extends Component {
                                                 <Icon
                                                     name='calendar'
                                                     type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
+                                                    color='blue'
+                                                    iconStyle={{ fontSize: 18, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                                     onPress={() => console.log('hello')} />
                                             </View>
                                         </Left>
@@ -348,8 +316,17 @@ export class UrinationTime extends Component {
                                                 <Icon
                                                     type='font-awesome'
                                                     color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
-                                                    name="trash-o" color="gray" />
+                                                    iconStyle={{ fontSize: 18, padding: 8 }}
+                                                    name="trash-o" color="gray"
+                                                    onPress={() => {
+                                                        this.deleteData(item.uId); showMessage({
+
+                                                            message: "Success",
+                                                            description: "successfuly deleted " + `${item.uDate}`,
+                                                            type: "success",
+                                                        })
+                                                    }}
+                                                />
                                             </View>
                                         </Right>
                                     </ListItem>
@@ -402,10 +379,11 @@ export class UrinationTime extends Component {
                                 />
                                 {/* <TextInput /> */}
                                 <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
-                                <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add </Text>
-                                </TouchableOpacity>
-
+                                <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                        <Text style={styles.buttonText}>Add </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </ScrollView>
                     </RBSheet>
@@ -516,7 +494,8 @@ export class UrinationTime extends Component {
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 300,
+        alignItems:'center',
+        width: 340,
 
         marginTop: 20
     }, buttonText: {

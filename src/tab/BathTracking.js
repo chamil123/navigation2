@@ -287,21 +287,7 @@ export class BathTracking extends Component {
             }}
             onPress={this.resetStopwatch}
           />
-          {/* <TouchableHighlight onPress={this.resetStopwatch}>
-            <Text style={{ fontSize: 30 }}>Reset</Text>
-          </TouchableHighlight> */}
-          {/* <Timer totalDuration={this.state.totalDuration} msecs start={this.state.timerStart}
-            reset={this.state.timerReset}
-            options={options}
-            handleFinish={handleTimerComplete}
-            getTime={this.getFormattedTime} /> */}
-          {/* <TouchableHighlight onPress={this.toggleTimer}>
-            <Text style={{ fontSize: 30 }}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this.resetTimer}>
-            <Text style={{ fontSize: 30 }}>Reset</Text>
-          </TouchableHighlight> */}
-
+      
 
 
         </View>

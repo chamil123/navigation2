@@ -85,16 +85,13 @@ export class BreastFeeding extends Component {
     saveData() {
         var dates = this.state.date;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
-
         this.RBSheet.close();
-
-        
 
         db.listBabyDetails(this.state.dbs).then((data) => {
             let datas = {
 
                 bName: this.state.TextInpuBNValue,
-                // bWeight: this.state.TextInpuBWValue,
+                bWeight: this.state.TextInpuBWValue,
                 bbDate: formattedDate,
             }
             let result = data;
@@ -107,15 +104,20 @@ export class BreastFeeding extends Component {
                 let { bId } = this.props
                 for (var i = 0; i < result.length; i++) {
                     bId = result[i].bId;
-    
+
                 }
-                db.babyUpdateData(this.state.dbs, datas,bId).then((result) => {
+                db.babyUpdateData(this.state.dbs, datas, bId).then((result) => {
                     this.loadData();
                 }).catch((err) => {
                 })
             }
         });
-
+        let data = {
+            _weight: parseFloat(this.state.TextInpuBWValue),
+            _month: 0,
+        }
+        db.addGrouthTracker(this.state.dbs, data).then((result) => {
+        });
 
     }
     render() {
@@ -146,7 +148,7 @@ export class BreastFeeding extends Component {
                             <View style={{ flexDirection: "column", marginLeft: 40, marginTop: 10 }}>
                                 <Text style={{ fontWeight: 'bold', }}>{this.state._baby_name}</Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth date :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
-                                {/* <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text> */}
+                                <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
                                 {/* <Text style={{ color: 'white', paddingTop: 5 }}>Age: <Text style={{ fontWeight: 'bold', color: 'black' }}> 1 </Text> year</Text> */}
                                 <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
                                     <Text style={styles.buttonText2}>Edit</Text>
@@ -368,7 +370,7 @@ export class BreastFeeding extends Component {
                                             onDateChange={(date) => { this.setState({ date: date }) }}
                                         />
                                         <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
-                                        {/* <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" /> */}
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                             <Text style={styles.buttonText}>Save Baby' Data</Text>

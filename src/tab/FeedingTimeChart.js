@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
-import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
+import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
-
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
-import { List, ListItem, Left, Body, Right } from 'native-base';
-import *as Animatable from 'react-native-animatable';
-import { BarChart, Grid } from 'react-native-svg-charts';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { LineChart, } from "react-native-chart-kit";
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import { BarIndicator } from 'react-native-indicators';
 const db = new Database();
 var j = 0;
-
+const _formatTime = 'hh:mm:ss';
 const _format = 'YYYY-MM-DD'
 const screenWidth = Dimensions.get("window").width;
 const _today = moment().format(_format)
@@ -39,26 +32,17 @@ export class FeedingTimeChart extends Component {
             TextInputdaValue: '',
             _current_time: time,
             _list_feeding_time: [],
-            dbs:'',
+            dbs: '',
             data: {
-                labels: ["j"],
+                labels: ["."],
 
                 datasets: [
                     {
-                        data: [1],
+                        data: [0],
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
-                    // {
-                    //     data: [5],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
-                    // }
-                    // , {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
-                    // },
+
                 ]
             }
 
@@ -71,18 +55,17 @@ export class FeedingTimeChart extends Component {
         this.loadDbVarable = this.loadDbVarable.bind(this);
 
     }
+    componentDidMount() {
+
+    }
     loadDbVarable(result) {
         this.setState({
             dbs: result,
         });
 
-       
+
         this.getaAllFeedingData();
         this.getData();
-    }
-    componentDidMount() {
-        // this.getData();
-        // this.getaAllFeedingData();
     }
 
     getData() {
@@ -90,14 +73,21 @@ export class FeedingTimeChart extends Component {
         const self = this;
         db.listFeedingCountByDate(this.state.dbs).then((data) => {
             let result = data;
+            var temp2 = [];
+            var temp3 = [];
+
+            var _monthDate;
+            const dataClone = { ...self.state.data }
             if (result == 0) {
+                dataClone.datasets[0].data = [0];
+                dataClone.labels = ["."];
+                self.setState({
+                    isLoading: false,
+                    data: dataClone,
 
+                });
             } else {
-                var temp2 = [];
-                var temp3 = [];
 
-                var _monthDate;
-                const dataClone = { ...self.state.data }
                 for (var i = 0; i < result.length; i++) {
                     _monthDate = result[i].fdDate.substring(5, 10);
 
@@ -129,12 +119,12 @@ export class FeedingTimeChart extends Component {
         let data = {
             // pId: this.state.pId,
             fdDate: _selectedDay.toString(),
-            fdTime: this.state._current_time,
+            fdTime: moment().format(_formatTime),
             fdText: this.state.TextInputdaValue
 
         }
 
-        db.addFeedingTime(this.state.dbs,data).then((result) => {
+        db.addFeedingTime(this.state.dbs, data).then((result) => {
             console.log(result);
             this.getaAllFeedingData();
             this.getData();
@@ -147,13 +137,30 @@ export class FeedingTimeChart extends Component {
 
 
     }
+    deleteData(id) {
 
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteFeeding(this.state.dbs, id).then((result) => {
+
+            this.getData();
+            this.getaAllFeedingData();
+            // this.getaAllClickData();
+
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
     getaAllFeedingData() {
 
         db.listAllFeedingTime(this.state.dbs).then((results) => {
-          
+
             result = results;
-           
+
             this.setState({
                 isLoading: false,
                 _list_feeding_time: results,
@@ -164,20 +171,16 @@ export class FeedingTimeChart extends Component {
             console.log(err);
         })
     }
-
+    emptyComponent = () => {
+        return (
+            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <Text >oops! There's no data here!</Text>
+            </View>);
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
-        // const datas = {
-        //     labels: ["s"],
-        //     datasets: [
-        //         {
-        //             data: [50, 30],
 
-        //         }
-        //     ],
-        //     legend: ["Rainy Days"] // optional
-        // };
         const chartConfig = {
             backgroundGradientFrom: "#ce93d8",
             backgroundGradientFromOpacity: 10,
@@ -200,6 +203,7 @@ export class FeedingTimeChart extends Component {
             return (
 
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+                    <FlashMessage duration={1000} />
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
@@ -258,10 +262,11 @@ export class FeedingTimeChart extends Component {
                                     }}
                                     // scrollEnabled={false}
                                     keyExtractor={this.keyExtractor}
+                                    ListEmptyComponent={this.emptyComponent}
                                     data={this.state._list_feeding_time}
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                            height: 50, paddingTop: 15,
+                                           paddingTop: 15,
                                         }}
                                     >
                                         <Left>
@@ -271,7 +276,7 @@ export class FeedingTimeChart extends Component {
                                                     name='calendar'
                                                     type='font-awesome'
                                                     color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
+                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                                     onPress={() => console.log('hello')} />
                                             </View>
                                         </Left>
@@ -284,8 +289,17 @@ export class FeedingTimeChart extends Component {
                                                 <Icon
                                                     type='font-awesome'
                                                     color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
-                                                    name="trash-o" color="gray" />
+                                                    iconStyle={{ fontSize: 18, padding: 8 }}
+                                                    name="trash-o" color="gray"
+                                                    onPress={() => {
+                                                        this.deleteData(item.fdId); showMessage({
+
+                                                            message: "Success",
+                                                            description: "successfuly deleted " + `${item.fdDate}`,
+                                                            type: "success",
+                                                        })
+                                                    }}
+                                                />
                                             </View>
                                         </Right>
                                     </ListItem>
@@ -333,9 +347,11 @@ export class FeedingTimeChart extends Component {
                                 />
                                 {/* <TextInput /> */}
                                 <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
-                                <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add </Text>
-                                </TouchableOpacity>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                        <Text style={styles.buttonText}>Add </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </ScrollView>
                     </RBSheet>
@@ -359,15 +375,11 @@ export class FeedingTimeChart extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -404,34 +416,22 @@ export class FeedingTimeChart extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, card: {
         height: 175,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
         backgroundColor: "white",
         borderRadius: 15,
-        // padding: 10,
         elevation: 5,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
@@ -439,16 +439,15 @@ export class FeedingTimeChart extends Component {
         shadowRadius: 5,
         alignItems: 'center',
 
-
         margin: 5
     }, button: {
         backgroundColor: "red",
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 300,
-
-        marginTop: 20
+        width: 340,
+        alignItems: 'center',
+        marginTop: 15
     }, buttonText: {
         fontSize: 15,
         color: '#fff',

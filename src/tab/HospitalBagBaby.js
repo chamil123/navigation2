@@ -145,8 +145,8 @@ export class HospitalBagBaby extends Component {
                     <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View>
                     <View style={styles.header}>
-                        <Image style={{ width: 350, height: 260, marginLeft: 0, }}
-                            source={IMAGE.ICON_HOSPITAL_MOM_BAG}
+                        <Image style={{ width: 380, height: 290, marginLeft: 0, }}
+                            source={IMAGE.ICON_BABYBAG}
                             resizeMode="contain"
                         />
                         {/* <TouchableOpacity style={styles.button}>

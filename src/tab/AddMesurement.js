@@ -6,6 +6,7 @@ import Database from '../Database';
 import { CustomHeader } from '../index';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 
 export class AddMesurement extends Component {
@@ -20,13 +21,16 @@ export class AddMesurement extends Component {
       prodDesc: '',
       TextInpuPbValue: '',
       TextInpuLValue: '',
+      dbs: '',
       isLoading: false,
+
     };
     db.initDB().then((result) => {
       this.loadDbVarable(result);
     })
-
     this.loadDbVarable = this.loadDbVarable.bind(this);
+
+
   }
   loadDbVarable(result) {
     this.setState({
@@ -35,28 +39,30 @@ export class AddMesurement extends Component {
     // this.getData();
     // this.viewListData();
   }
-  componentDidMount() {
-
-  }
-
   saveData() {
+    const { TextInpuPbValue } = this.state;
+    const { TextInpuLValue } = this.state;
 
 
     let data = {
-
       _weight: parseFloat(this.state.TextInpuPbValue),
-      _month: this.state.TextInpuLValue
+      _month: parseInt(this.state.TextInpuLValue),
     }
-    db.addGrouthTracker(this.state.dbs, data).then((result) => {
+    if (TextInpuPbValue != '' && TextInpuLValue != '') {
 
-      this.props.navigation.navigate('AreaChart');
-      //   this.getData();
-
-    }).catch((err) => {
-      console.log(err);
-
-    })
-
+      db.addGrouthTracker(this.state.dbs, data).then((result) => {
+        this.props.navigation.navigate('AreaChart');
+        //   this.getData();
+      }).catch((err) => {
+        console.log(err);
+      })
+    } else {
+      showMessage({
+        message: "Input Fail",
+        description: "Fields can not be empty",
+        backgroundColor: 'red'
+      })
+    }
   }
   render() {
     if (this.state.isLoading) {
@@ -68,6 +74,7 @@ export class AddMesurement extends Component {
     }
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <FlashMessage duration={1000} />
         <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
         <ScrollView style={styles.container}>
           <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
@@ -112,10 +119,10 @@ export class AddMesurement extends Component {
             <Text style={{ marginVertical: 8 }}> Weight Value </Text>
             <TextInput
               keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder="Enter Weight value"  />
+              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder="Enter Weight value" />
 
 
-            <Text style={{ marginVertical: 8 ,marginTop:25}}> Month Value </Text>
+            <Text style={{ marginVertical: 8, marginTop: 25 }}> Month Value </Text>
             <TextInput
               keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
               autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuLValue: TextInputValue })} placeholder="Enter Month value" />

@@ -507,7 +507,7 @@ export class BloodPresureBarChart extends Component {
         <View style={styles.header}>
           {/* <View> */}
           <View style={{ marginTop: 0, marginLeft: 20,marginBottom:10 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blck' }}>Blood presure</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Blood presure</Text>
             {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
           </View>
           <SegmentedControlTab

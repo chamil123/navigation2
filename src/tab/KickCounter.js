@@ -42,6 +42,7 @@ export class KickCounter extends Component {
             _last_time: "00:00",
             times: moment().format(_formatTime),
             _max_hours: '',
+            _status: 1,
 
         }
         // this.loadDbVarable = this.loadDbVarable.bind(this);
@@ -79,15 +80,17 @@ export class KickCounter extends Component {
     saveData() {
         // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + moment().format(_formatTime));
 
-        if (this.state._kick_count < 10) {
-            j = 1;
-            this.setState({
-                increment: j,
-                // isLoading: false,
-            });
-            this.getData();
-        } else {
-            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + new Date().getTime());
+        if (this.state._status != 0) {
+            if (this.state._kick_count < 10) {
+                j = 1;
+                this.setState({
+                    increment: j,
+                    // isLoading: false,
+                });
+                this.getData();
+            } else {
+                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + new Date().getTime());
+            }
         }
 
     }
@@ -118,7 +121,7 @@ export class KickCounter extends Component {
             } else {
 
                 var _clickValue;
-
+                var status1;
                 for (var i = 0; i < result.length; i++) {
                     _clickValue = result[i].kcCount;
 
@@ -129,11 +132,13 @@ export class KickCounter extends Component {
                     }
                     first_time = result[i].kcFirstTime;
                     last_time = result[i].kcLastTime;
+                    status1 = result[i].kcStatus;
                 }
                 this.setState({
                     _kick_count: temp,
                     _first_time: first_time,
                     _last_time: last_time,
+                    _status: status1,
                 });
                 var range = moment(this.state._first_time, 'HH:mm:ss');
                 // var range =this.state._first_time;
@@ -183,6 +188,7 @@ export class KickCounter extends Component {
         var first_time;
         var last_time;
         var status = 1;
+        var status1 = 0;
         let data = {
             kcDate: this.state._current_date.toString(),
             kcValue: this.state._kick_count,
@@ -207,6 +213,7 @@ export class KickCounter extends Component {
                     temp = _clickValue + this.state.increment;
                     first_time = result[i].kcFirstTime;
                     last_time = result[i].kcLastTime;
+                    status1 = result[i].kcStatus
 
                 }
                 var range = moment(this.state._first_time, 'HH:mm:ss');
@@ -216,12 +223,12 @@ export class KickCounter extends Component {
                 var hours;
                 if (this.state._first_time == '00:00:00') {
                     hours = 0;
-                 
+
                 } else {
                     hours = (range2 / (1000 * 60 * 60)).toFixed(2);
-                  
+
                 }
-               
+
 
                 if (hours < 12) {
                     if (_clickValue > 0) {
@@ -279,18 +286,20 @@ export class KickCounter extends Component {
 
             } else {
                 var _clickValue;
+                var status1;
                 for (var i = 0; i < result.length; i++) {
                     _clickValue = result[i].kcCount;
                     temp = _clickValue + this.state.increment;
-
                     first_time = result[i].kcFirstTime;
                     last_time = result[i].kcLastTime;
+                    status1 = result[i].kcStatus;
                 }
 
                 this.setState({
                     _kick_count: _clickValue,
                     _first_time: first_time,
                     _last_time: last_time,
+                    _status: status1,
                 });
             }
         }).catch((err) => {
@@ -323,24 +332,37 @@ export class KickCounter extends Component {
         })
     }
     refresh() {
-
         var status = 2;
         let data = {
             kcDate: this.state._current_date.toString(),
-
         }
         db.refreshClickCount(this.state.dbs, data).then((result) => {
             this.setState({
                 _kick_count: 0,
                 _max_hours: '',
+                isLoading :false,
                 // _first_time: '0:00',
                 // _last_time: "0.00",
             });
         }).catch((err) => {
             console.log(err);
-
         });
         this.getaAllClickData(status);
+    }
+    stopKicks() {
+        var status = 1;
+        let data = {
+            kcDate: this.state._current_date.toString(),
+        }
+        db.stopKick(this.state.dbs, data).then((result) => {
+            this.props.navigation.navigate('KickCounterHister')
+            this.setState({
+                isLoading :false,
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+        this.getaAllClickData();
     }
     keyExtractor = (item, index) => index.toString()
     render() {
@@ -397,20 +419,7 @@ export class KickCounter extends Component {
                                     <Text style={{ color: 'white', padding: 7 }}>History</Text>
                                 </View>
                             </TouchableOpacity>
-                            {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: '#90a4ae', padding: 10, borderRadius: 35 }}>
-                                        <Icon
-                                            name='shopping-bag'
-                                            type='font-awesome'
-                                            color='red'
-                                            iconStyle={{ fontSize: 13, color: 'white' }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>Reports</Text>
 
-                                </View>
-                            </TouchableOpacity> */}
                         </View>
                     </View>
                     <ScrollView
@@ -450,21 +459,28 @@ export class KickCounter extends Component {
                                     (fill) => (
 
                                         <TouchableOpacity style={styles.button5}
+
                                             onPress={() => this.saveData()}>
                                             {
-                                              
-                                                this.state._max_hours < 12 ?
-                                                    this.state._kick_count < 10 ?
-                                                        <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
-                                                            source={IMAGE.ICON_BABY_FOOT2}
-                                                            resizeMode="contain"
-                                                        /> :
-                                                        <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
-                                                            source={IMAGE.ICON_BABY_FOOT3}
-                                                            resizeMode="contain"
-                                                        />
+                                               
+                                                this.state._status != 0 ?
+                                                    this.state._max_hours < 12 ?
+                                                        this.state._kick_count < 10 ?
+                                                            <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
+                                                                source={IMAGE.ICON_BABY_FOOT2}
+                                                                resizeMode="contain"
+                                                            /> :
+                                                            <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
+                                                                source={IMAGE.ICON_BABY_FOOT3}
+                                                                resizeMode="contain"
+                                                            />
+                                                        :
+                                                        <Text>Max level exceeded</Text>
                                                     :
-                                                    <Text>Max level exceeded</Text>
+                                                    <Image style={{ width: 95, height: 95, marginLeft: 0, marginTop: 0 }}
+                                                        source={IMAGE.ICON_BABY_FOOT3}
+                                                        resizeMode="contain"
+                                                    />
                                             }
 
                                         </TouchableOpacity>
@@ -528,7 +544,7 @@ export class KickCounter extends Component {
                                             shadowRadius: 5, elevation: 2,
                                             backgroundColor: 'red'
                                         }}
-                                        onPress={() => this.refresh()}
+                                        onPress={() => this.stopKicks()}
                                     />
                                 </View>
                             </View>

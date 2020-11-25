@@ -60,7 +60,7 @@ export class AreaCharts extends Component {
                             }
                         },
                         boundaryGap: true,
-                        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+                        data: ['0','1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
                     }
                 ],
                 yAxis: [
@@ -246,19 +246,13 @@ export class AreaCharts extends Component {
                     temp6.push(parseFloat([result[i].wlOw]));
                     temp7.push(parseFloat([result[i].wlhw]));
                     temp8.push(parseFloat([result[i].wlbaby]));
-
-
-
-
                 }
-
                 dataClone.series[0].data = temp2;
                 dataClone.series[1].data = temp4;
                 dataClone.series[2].data = temp5;
                 dataClone.series[3].data = temp6;
                 dataClone.series[4].data = temp7;
                 dataClone.series[5].data = temp8;
-
                 self.setState({
                     isLoading: false,
                     data: dataClone,
@@ -270,17 +264,7 @@ export class AreaCharts extends Component {
         })
 
     }
-
-
-
     render() {
-
-
-
-
-
-
-
         let { isLoading } = this.state
         if (isLoading) {
             return (
@@ -293,13 +277,9 @@ export class AreaCharts extends Component {
                 <SafeAreaView style={{ flex: 1 }}>
                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
                     <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="Grouth Chart" navigation={this.props.navigation} bdcolor='#F2F2F2' />
-
-
                     <ECharts
                         option={this.state.data} height={300}
                     />
-
-
                 </SafeAreaView>
             );
         }
@@ -312,7 +292,6 @@ export class AreaCharts extends Component {
         paddingTop: 5,
         paddingLeft: 10,
         paddingRight: 10
-
     }, chartContainer: {
         flex: 1
     }, actionButtonIcon: {

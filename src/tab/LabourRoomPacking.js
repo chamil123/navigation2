@@ -154,8 +154,8 @@ export class LabourRoomPacking extends Component {
                     <CustomHeader bgcolor='#F2F2F2' title="labour room bag"  bcbuttoncolor='#fff' navigation={this.props.navigation} bdcolor='#F2F2F2' />
 
                     <View style={styles.header}>
-                        <Image style={{ width: 350, height: 260, marginLeft: 0, }}
-                            source={IMAGE.ICON_HOSPITAL_MOM_BAG}
+                        <Image style={{ width: 400, height: 290, marginLeft: 0, }}
+                            source={IMAGE.ICON_LABOURROOMBAG}
                             resizeMode="contain"
                         />
                         {/* <TouchableOpacity style={styles.button}>

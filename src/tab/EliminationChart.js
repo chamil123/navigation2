@@ -82,11 +82,11 @@ export class EliminationChart extends Component {
             if (result == 0) {
                 dataClone.datasets[0].data = [0];
                 dataClone.labels = ["."];
-        
+
                 // dataClone.xAxis[0].data = [0,0,0];
                 dataClone.datasets[1].color = ['rgba(242, 242,242, 0.2)'];
-       
-        
+
+
                 self.setState({
                     isLoading: false,
                     data: dataClone,
@@ -154,7 +154,7 @@ export class EliminationChart extends Component {
         })
     }
     deleteData(id) {
-       
+
         this.setState({
             // isLoading: true
         });
@@ -170,6 +170,12 @@ export class EliminationChart extends Component {
             }
         })
     }
+    emptyComponent = () => {
+        return (
+          <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+            <Text >oops! There's no data here!</Text>
+          </View>);
+      }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
@@ -226,7 +232,7 @@ export class EliminationChart extends Component {
                         <View style={styles.container}>
                             <Card style={[styles.card, { backgroundColor: 'white' }]} >
                                 <View style={{ alignItems: "center", }} >
-      
+
                                     <BarChart
                                         style={{ borderRadius: 15 }}
                                         data={this.state.data}
@@ -263,6 +269,7 @@ export class EliminationChart extends Component {
                                         shadowRadius: 8,
 
                                     }}
+                                    ListEmptyComponent={this.emptyComponent}
                                     scrollEnabled={false}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_elimination}
@@ -271,7 +278,7 @@ export class EliminationChart extends Component {
 
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                             paddingTop: 2,
+                                            paddingTop: 2,
 
                                         }}
                                     >
@@ -281,8 +288,8 @@ export class EliminationChart extends Component {
                                                 <Icon
                                                     name='calendar'
                                                     type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
+                                                    color='red'
+                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                                     onPress={() => console.log('hello')} />
                                             </View>
                                         </Left>
@@ -291,7 +298,7 @@ export class EliminationChart extends Component {
                                             <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
                                         </Body>
                                         <Right>
-                                            <View style={{padding:10,borderRadius:25}}>
+                                            <View style={{ padding: 10, borderRadius: 25 }}>
                                                 <Icon
                                                     type='font-awesome'
                                                     color='gray'
@@ -336,6 +343,7 @@ export class EliminationChart extends Component {
                             showsVerticalScrollIndicator={false}
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
+                            {/* <View style={{ flex: 1 , alignItems: 'center',  }}> */}
                             <View style={{ flex: 1 }}>
                                 <CalendarStrip
 
@@ -353,10 +361,12 @@ export class EliminationChart extends Component {
                                     markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                 />
                                 {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter Comment" />
-                                <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add </Text>
-                                </TouchableOpacity>
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0,margin:20 }} label="Enter Comment" />
+                                <View style={{ justifyContent: 'center', alignItems: 'center', margin:10}}>
+                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                        <Text style={styles.buttonText}>Add </Text>
+                                    </TouchableOpacity>
+                                </View>
 
                             </View>
                         </ScrollView>
@@ -456,11 +466,11 @@ export class EliminationChart extends Component {
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 300,
+        width: 340,
         alignItems: 'center',
-        justifyContent: 'center',
-
-        marginTop: 20
+        // justifyContent: 'center',
+        marginTop: 0,
+        margin:20,
     }, buttonText: {
         fontSize: 15,
         color: '#fff',

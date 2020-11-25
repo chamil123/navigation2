@@ -46,8 +46,8 @@ export default class Database {
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Hospitalbagbaby] ([bId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bName] NVARCHAR(255) NULL, [bStatus] NVARCHAR(10) NULL, [bDate] NVARCHAR(10) NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [BloodPresure] ([bpId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [bpDate] NVARCHAR(25) NULL, [bpValue] INTEGER NOT NULL, [bpdstValue] INTEGER NOT NULL, [bpsmin] INTEGER NOT NULL, [bpdmin] INTEGER NOT NULL, [bpslow] INTEGER NOT NULL, [bpsideal] INTEGER NOT NULL, [bpsprehigh] INTEGER NOT NULL, [bpshigh] INTEGER NOT NULL, [bpdlow] INTEGER NOT NULL, [bpdideal] INTEGER NOT NULL, [bpdprehigh] INTEGER NOT NULL, [bpdhigh] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [WeightGain] ([wgId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [wgDate] NVARCHAR(25) NULL, [wgValue] INTEGER NOT NULL, [wgmin] INTEGER NOT NULL, [wgmax] INTEGER NOT NULL)');
-                                tx.executeSql('CREATE TABLE IF NOT EXISTS [KickCount] ([kcId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [kcDate] NVARCHAR(25) NULL, [kcCount] INTEGER NOT NULL, [kcFirstTime] NVARCHAR(25) NULL, [kcLastTime] NVARCHAR(25) NULL)');
-                                tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyActivity] ([baId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [baDate] NVARCHAR(25) NULL, [baText] NVARCHAR(255) NULL, [baStatus] INTEGER NOT NULL)');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS [KickCount] ([kcId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [kcDate] NVARCHAR(25) NULL, [kcCount] INTEGER NOT NULL, [kcFirstTime] NVARCHAR(25) NULL, [kcLastTime] NVARCHAR(25) NULL,[kcStatus] INTEGER NOT NULL)');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS [BabyActivity] ([baId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [baDate] NVARCHAR(25) NULL,[baTime] NVARCHAR(25) NULL, [baText] NVARCHAR(255) NULL, [baStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [FeedingTime] ([fdId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [fdDate] NVARCHAR(25) NULL,[fdTime] NVARCHAR(25) NULL, [fdText] NVARCHAR(255) NULL, [fdValue] INTEGER NOT NULL, [fdStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Urination] ([uId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [uDate] NVARCHAR(25) NULL,[uTime] NVARCHAR(25) NULL, [uText] NVARCHAR(255) NULL, [uValue] INTEGER NOT NULL, [uStatus] INTEGER NOT NULL)');
                                 tx.executeSql('CREATE TABLE IF NOT EXISTS [Elimination] ([eId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [eDate] NVARCHAR(25) NULL,[eTime] NVARCHAR(25) NULL, [eText] NVARCHAR(255) NULL, [eValue] INTEGER NOT NULL, [eStatus] INTEGER NOT NULL)');
@@ -214,11 +214,11 @@ export default class Database {
         // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> >>>.......>>>>>> p : " + pd.pName + " /  next : " + pd.pNexpdate);
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT OR IGNORE  INTO Period (pName,pDescription,pCatId,pParityBit,pTime) VALUES ( ?,?,?,?,?)', [pd.pName, pd.pDescription, 1, 0,pd.pTime]).then(([tx, results]) => {
+                tx.executeSql('INSERT OR IGNORE  INTO Period (pName,pDescription,pCatId,pParityBit,pTime) VALUES ( ?,?,?,?,?)', [pd.pName, pd.pDescription, 1, 0, pd.pTime]).then(([tx, results]) => {
                     resolve(results);
                 });
 
-              
+
             }).then((result) => {
             }).catch((err) => {
                 console.log(err);
@@ -233,7 +233,7 @@ export default class Database {
                     resolve(results);
 
                 });
-              
+
             }).then((result) => {
             }).catch((err) => {
                 console.log(err);
@@ -301,7 +301,7 @@ export default class Database {
             });
         });
     }
-    
+
     deleteNextPeriod(db) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
@@ -335,7 +335,7 @@ export default class Database {
         });
     }
     updateNextPeriod(db, date) {
-    
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [date._nextDate, date._pPeriod_Id]).then(([tx, results]) => {
@@ -362,15 +362,15 @@ export default class Database {
                             pCatId,
                         });
                     }
-                  
+
                     resolve(nextP);
                 });
             }).then((result) => {
-              
+
             }).catch((err) => {
                 console.log(err);
             });
-           
+
         });
     }
     updateOVLPeriod(db, date, pCatId) {
@@ -389,7 +389,7 @@ export default class Database {
     updatePeriod(db, data) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
-              
+
                 tx.executeSql('UPDATE Period SET pName = ?   WHERE pId = ?', [data._pDateandMonth, data._pPeriod_Id]).then(([tx, results]) => {
                     resolve(results);
                 });
@@ -437,7 +437,7 @@ export default class Database {
                     });
 
                 }).then((result) => {
-                    this.closeDatabase(db);
+                    // this.closeDatabase(db);
                 }).catch((err) => {
                     //   console.log(err);
                 });
@@ -459,7 +459,7 @@ export default class Database {
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
                         // console.log(`Prr ID: ${row.pId}, Pr Name: ${row.pName}`)
-                        const { pId, pName, pCatId, pDescription, pParityBit,pTime } = row;
+                        const { pId, pName, pCatId, pDescription, pParityBit, pTime } = row;
                         products.push({
                             pId,
                             pName,
@@ -490,7 +490,7 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { pId, pName, pCatId, pDescription, pParityBit,pTime } = row;
+                        const { pId, pName, pCatId, pDescription, pParityBit, pTime } = row;
                         products.push({
                             pId,
                             pName,
@@ -577,7 +577,7 @@ export default class Database {
                         resolve(len);
                     });
                 }).then((result) => {
-                    this.closeDatabase(db);
+                    // this.closeDatabase(db);
                 }).catch((err) => {
                     //    console.log(err);
                 });
@@ -833,7 +833,7 @@ export default class Database {
                 // tx.executeSql('INSERT INTO WightvsLength (wlSam,wlMan,wlNw,wlOw) VALUES (1.7,1.8,2.5,3.3),(2.5,2.6,3.4,4.5),(3.5,3.7,4.6,6),(4.6,5,6,7.8),(5.7,6.18,7.3,9.45),(6.6,7.25,8.5,10.9),(7.5,8.05,9.5,12.4),(8.3,8.9,10.5,13.6),(9.1,9.8,11.55,14.9),(10.2,10.9,12.7,16.4),(11.1,11.95,13.9,17.9),(12,12.9,15.1,19.6),(13,14.1,16.6,21.6),(14.1,15.5,18.2,24)').then(([tx, results]) => {
                 //     resolve(results);
                 // });
-                tx.executeSql('INSERT INTO WightvsLength (wlSam,wlMan,wlNw,wlOw,wlhw) VALUES (2.1,2.5,2.9,4.5,5.1),(3,3.3,3.8,5.8,6.5),(3.8,4.3,4.9,7,8),(4.4,5,5.6,8,9),(5,5.5,6.2,8.7,9.7),(5.4,6,6.7,9.4,10.4),(5.6,6.3,7.1,9.8,11),(6,6.7,7.5,10.3,11.5),(6.2,6.9,7.7,10.65,11.9),(6.4,7.2,8,11,12.3),(6.6,7.4,8.2,11.4,12.65),(6.8,7.6,8.4,11.7,13),(6.9,7.8,8.65,12,13.3),(7.1,7.9,8.8,12.3,13.65),(7.3,8.1,9.05,12.6,14),(7.4,8.3,9.2,12.8,14.3),(7.3,8.45,9.4,13.1,14.6),(7.7,8.6,9.6,13.4,15),(7.8,8.8,9.8,13.65,15.3),(8,8.9,10,14,15.55),(8.1,9.1,10.1,14.2,15.9),(8.2,9.2,10.3,14.5,16.2),(8.4,9.4,10.5,14.75,16.5),(8.5,9.5,10.65,15,16.8),(8.6,9.6,10.8,15.25,17.1)').then(([tx, results]) => {
+                tx.executeSql('INSERT INTO WightvsLength (wlSam,wlMan,wlNw,wlOw,wlhw) VALUES (1.1,1.6,1.9,3.0,3.1),(2.1,2.5,2.9,4.5,5.1),(3,3.35,3.9,5.8,6.5),(3.8,4.3,4.9,7,8),(4.4,5,5.6,8,9),(5,5.5,6.2,8.7,9.7),(5.4,6,6.7,9.4,10.4),(5.7,6.3,7.1,9.8,11),(6,6.7,7.5,10.3,11.5),(6.2,6.9,7.7,10.65,11.9),(6.4,7.2,8,11,12.3),(6.6,7.4,8.2,11.4,12.65),(6.8,7.6,8.4,11.7,13),(6.95,7.8,8.65,12,13.3),(7.1,7.9,8.8,12.3,13.65),(7.3,8.1,9.05,12.6,14),(7.4,8.3,9.2,12.8,14.3),(7.55,8.45,9.4,13.1,14.6),(7.7,8.6,9.6,13.4,15),(7.8,8.8,9.8,13.65,15.3),(8,8.9,10,14,15.55),(8.1,9.1,10.1,14.2,15.9),(8.25,9.2,10.3,14.5,16.2),(8.4,9.4,10.5,14.75,16.5),(8.5,9.5,10.65,15,16.8),(8.6,9.6,10.8,15.25,17.1)').then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1020,7 +1020,7 @@ export default class Database {
                     });
 
                 }).then((result) => {
-                    this.closeDatabase(db);
+                    //  this.closeDatabase(db);
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -1031,9 +1031,10 @@ export default class Database {
     }
 
     addPBvalue(db, pb) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pb.bpValue + "  /  " + pb.bpdstValue + " / " + db);
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pb.bpValue + "  /  " + pb.bpdstValue);
+
                 tx.executeSql('INSERT INTO BloodPresure (bpDate,bpValue,bpdstValue,bpsmin,bpdmin,bpslow,bpsideal,bpsprehigh,bpshigh,bpdlow,bpdideal,bpdprehigh,bpdhigh) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [pb.bpDate, pb.bpValue, pb.bpdstValue, 70, 40, 90, 120, 140, 190, 60, 80, 90, 100]).then(([tx, results]) => {
                     resolve(results);
                 });
@@ -1071,7 +1072,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime) VALUES (?,?,?,?)', [kc.kcDate, 1, kc.kcTime, kc.kcTime]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime,kcStatus) VALUES (?,?,?,?,?)', [kc.kcDate, 1, kc.kcTime, kc.kcTime,1]).then(([tx, results]) => {
                     resolve(results);
                 });
 
@@ -1093,13 +1094,14 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime,kcStatus } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
                             kcCount,
                             kcFirstTime,
                             kcLastTime,
+                            kcStatus
                         });
                     }
 
@@ -1155,6 +1157,18 @@ export default class Database {
                 console.log(err);
             });
         });
+    }stopKick(db, data) {
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE KickCount SET kcStatus = ?     WHERE kcDate = ?', [0, data.kcDate]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
     }
     listAllKickCount(db) {
         return new Promise((resolve) => {
@@ -1165,13 +1179,14 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime,kcStatus } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
                             kcCount,
                             kcFirstTime,
                             kcLastTime,
+                            kcStatus
                         });
                     }
                     resolve(kick_count);
@@ -1250,7 +1265,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?,?)', [null, pd.pName, pd.pDescription, 2, 0,'00:00:00']).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO Period VALUES (?, ?,?,?,?,?)', [null, pd.pName, pd.pDescription, 2, 0, '00:00:00']).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1334,7 +1349,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO BabyActivity (baDate,baText,baStatus) VALUES (?,?,?)', [ba.baDate, ba.baText, 1]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO BabyActivity (baDate,baText,baTime,baStatus) VALUES (?,?,?,?)', [ba.baDate, ba.baText, ba.baTime, 1]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1353,15 +1368,16 @@ export default class Database {
             var kick_count = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM BabyActivity ').then(([tx, results]) => {
+                tx.executeSql("SELECT * FROM BabyActivity").then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { baId, baDate, baText } = row;
+                        const { baId, baDate, baText, baTime } = row;
                         kick_count.push({
                             baId,
                             baDate,
                             baText,
+                            baTime
 
                         });
                     }
@@ -1658,7 +1674,7 @@ export default class Database {
                         resolve(vaccination);
                     });
                 }).then((result) => {
-                    this.closeDatabase(db);
+                    // this.closeDatabase(db);
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -1666,11 +1682,11 @@ export default class Database {
                 console.log(err);
             });
         });
-    } 
+    }
     babyData(db, bd) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?)', [null, bd.bName, 0, bd.bbDate, 1]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?)', [null, bd.bName, bd.bWeight, bd.bbDate, 1]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1679,12 +1695,12 @@ export default class Database {
             });
         });
     }
-    
-    babyUpdateData(db, dates,bId) {
-    
+
+    babyUpdateData(db, dates, bId) {
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE BabyDetails SET bName = ?,bWeight = ?,bbDate = ?   WHERE bId = ?', [dates.bName, dates.bWeight,dates.bbDate,bId]).then(([tx, results]) => {
+                tx.executeSql('UPDATE BabyDetails SET bName = ?,bWeight = ?,bbDate = ?   WHERE bId = ?', [dates.bName, dates.bWeight, dates.bbDate, bId]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1752,7 +1768,7 @@ export default class Database {
                     resolve(weigth_data);
                 });
             }).then((result) => {
-                this.closeDatabase(db);
+                // this.closeDatabase(db);
             }).catch((err) => {
                 console.log(err);
             });
@@ -1833,7 +1849,7 @@ export default class Database {
             // this.initDB().then((db) => {
             db.transaction((tx) => {
                 tx.executeSql('DELETE FROM WeightGain WHERE wgId = ?', [id]).then(([tx, results]) => {
-                    
+
                     resolve(results);
                 });
             }).then((result) => {
@@ -1849,10 +1865,10 @@ export default class Database {
         return new Promise((resolve) => {
             // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;;;;;> : "+data._date+" / "+ data._note);
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO Period (pName,pDescription,pCatId,pParityBit,pTime) VALUES (?, ?,?,?,?)', [ data._date, data._note, 6,0,data.pTime]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO Period (pName,pDescription,pCatId,pParityBit,pTime) VALUES (?, ?,?,?,?)', [data._date, data._note, 6, 0, data.pTime]).then(([tx, results]) => {
                     resolve(results);
                 });
-             
+
             }).then((result) => {
                 // this.closeDatabase(db);
             }).catch((err) => {
@@ -1905,29 +1921,27 @@ export default class Database {
         });
     }
     addGrouthTracker(db, data) {
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE WightvsLength SET wlbaby = ?    WHERE wlId = ?', [data._weight, data._month]).then(([tx, results]) => {
+                tx.executeSql('UPDATE WightvsLength SET wlbaby = ?    WHERE wlId = ?', [data._weight, data._month + 1]).then(([tx, results]) => {
                     resolve(results);
                 });
-
-
             }).then((result) => {
-                // this.closeDatabase(db);
             }).catch((err) => {
                 console.log(err);
             });
         });
     }
     addPBathTime(db, data) {
-      
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT OR IGNORE  INTO BabyBathTracking (btDate,btStart,btEnd,btText,btStatus) VALUES ( ?,?,?,?,?)', [data.date, data.startTime, data.endtime, "baby bath",0]).then(([tx, results]) => {
+                tx.executeSql('INSERT OR IGNORE  INTO BabyBathTracking (btDate,btStart,btEnd,btText,btStatus) VALUES ( ?,?,?,?,?)', [data.date, data.startTime, data.endtime, "baby bath", 0]).then(([tx, results]) => {
                     resolve(results);
                 });
 
-              
+
             }).then((result) => {
             }).catch((err) => {
                 console.log(err);
@@ -1942,14 +1956,14 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { btId, btDate, btStart, btEnd,  } = row;
+                        const { btId, btDate, btStart, btEnd, } = row;
                         Bath.push({
                             btId,
                             btDate,
                             btStart,
                             btEnd,
-                           
-                           
+
+
                         });
                     }
                     resolve(Bath);
@@ -1960,7 +1974,7 @@ export default class Database {
             });
 
         });
-    }deleteBath(db, id) {
+    } deleteBath(db, id) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('DELETE FROM BabyBathTracking WHERE btId = ?', [id]).then(([tx, results]) => {
@@ -1970,7 +1984,52 @@ export default class Database {
             }).catch((err) => {
                 console.log(err);
             });
-         
+
         });
+    }
+    deleteBabyAc(db, id) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM BabyActivity WHERE baId = ?', [id]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+
+    }
+    deleteUrination(db, id) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM Urination WHERE uId = ?', [id]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+
+    }
+    deleteFeeding(db, id) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('DELETE FROM FeedingTime WHERE fdId = ?', [id]).then(([tx, results]) => {
+                    resolve(results);
+                });
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+
     }
 }

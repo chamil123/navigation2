@@ -7,7 +7,6 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 
 import { Icon } from 'react-native-elements';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Button } from 'react-native-elements';
-
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
@@ -18,11 +17,11 @@ import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { BarIndicator, } from 'react-native-indicators';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 var j = 0;
-
+const _formatTime = 'hh:mm:ss';
 const _format = 'YYYY-MM-DD'
-
 const _today = moment().format(_format)
 export class BabyActivities extends Component {
     constructor(props) {
@@ -76,12 +75,13 @@ export class BabyActivities extends Component {
         let data = {
             // pId: this.state.pId,
             baDate: _selectedDay.toString(),
+            baTime: moment().format(_formatTime),
             baText: this.state.TextInputdaValue
         }
 
         // console.log("################ :" + _selectedDay.toString());
         // console.log("^^^^^^^^^^^^^^^^ :" + this.state.TextInputdaValue);
-        db.addBabyActivity(this.state.dbs,data).then((result) => {
+        db.addBabyActivity(this.state.dbs, data).then((result) => {
             console.log(result);
             this.setState({
                 isLoading: false,
@@ -113,45 +113,30 @@ export class BabyActivities extends Component {
             console.log(err);
         })
     }
-    // getData() {
-    //     const self = this;
-    //     db.listBloodPresure().then((data) => {
-    //      let result = data;
-    //       if (result == 0) {
 
-    //       } else {
-    //         var temp2 = [];
-    //         var temp3 = [];
-    //         var temp4 = [];
-    //         var temp5 = [];
-    //         var _monthDate;
-    //         const dataClone = { ...self.state.data }
-    //         for (var i = 0; i < result.length; i++) {
-    //           _monthDate = result[i].bpDate.substring(5, 10);
+    deleteData(id) {
 
-    //           temp2.push([result[i].bpValue]);
-    //           temp3.push([_monthDate]);
-    //           temp4.push([result[i].bpmin]);
-    //           temp5.push([result[i].bpmax]);
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteBabyAc(this.state.dbs, id).then((result) => {
 
-    //         }
-    //         dataClone.labels = temp3;
-    //         dataClone.datasets[0].data = temp2;
-    //         dataClone.datasets[1].data = temp4;
-    //         dataClone.datasets[2].data = temp5;
+            this.getaAllClickData();
+            // this.getaAllClickData();
 
-    //         self.setState({
-    //           isLoading: false,
-    //           data: dataClone,
-    //           _list_bpData: data,
-    //         });
-
-    //       }
-    //     }).catch((err) => {
-    //       console.log(err);
-    //     })
-    //   }
-
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
+    emptyComponent = () => {
+        return (
+            <View style={{ flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'center', alignItems: 'center' }}>
+                <Text >oops! There's no data here!</Text>
+            </View>);
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
@@ -162,6 +147,7 @@ export class BabyActivities extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+                    <FlashMessage duration={1000} />
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
 
                     <ScrollView
@@ -268,6 +254,7 @@ export class BabyActivities extends Component {
                                         shadowRadius: 8,
 
                                     }}
+                                    ListEmptyComponent={this.emptyComponent}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_kcData}
 
@@ -275,7 +262,7 @@ export class BabyActivities extends Component {
 
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                            height: 50, paddingTop: 15,
+                                            paddingTop: 5,
 
                                         }}
                                     >
@@ -285,22 +272,32 @@ export class BabyActivities extends Component {
                                                 <Icon
                                                     name='calendar'
                                                     type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
+                                                    color='#009688'
+                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                                     onPress={() => console.log('hello')} />
                                             </View>
                                         </Left>
                                         <Body style={{ marginLeft: -160 }}>
                                             <Text style={{ color: 'gray', fontSize: 12 }}>{item.baDate}</Text>
                                             <Text style={styles.dateText}>{item.baText} </Text>
+                                            <Text style={{ color: 'gray', fontSize: 12 }}>Time : {item.baTime}</Text>
                                         </Body>
                                         <Right>
                                             <View style={styles.iconMore}>
                                                 <Icon
                                                     type='font-awesome'
                                                     color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
-                                                    name="trash-o" color="gray" />
+                                                    iconStyle={{ fontSize: 18, padding: 8 }}
+                                                    name="trash-o" color="gray"
+                                                    onPress={() => {
+                                                        this.deleteData(item.baId); showMessage({
+
+                                                            message: "Success",
+                                                            description: "successfuly deleted " + `${item.baDate}`,
+                                                            type: "success",
+                                                        })
+                                                    }}
+                                                />
                                             </View>
                                         </Right>
                                     </ListItem>
@@ -362,12 +359,13 @@ export class BabyActivities extends Component {
 
                                 {/* <TextInput /> */}
                                 <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
-                                <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add Activity</Text>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                        <Text style={styles.buttonText}>Add Activity</Text>
 
 
-                                </TouchableOpacity>
-
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </ScrollView>
                     </RBSheet>
@@ -478,8 +476,8 @@ export class BabyActivities extends Component {
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 300,
-
+        width: 340,
+        alignItems: 'center',
         marginTop: 20
     }, buttonText: {
         fontSize: 15,

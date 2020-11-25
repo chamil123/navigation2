@@ -24,7 +24,7 @@ export class ClinicManagement extends Component {
         super(props);
         this.state = {
             DateText: _today,
-
+            TextInputNoteValue: '',
             DateHolder: null,
             TextInpuPbValue: '',
             isLoading: true,
@@ -84,25 +84,33 @@ export class ClinicManagement extends Component {
         });
     }
     saveData() {
+        const { TextInputNoteValue } = this.state;
+
         var dates = this.state.DateText;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
 
         let data = {
             _note: this.state.TextInputNoteValue,
             _date: dates,
-            pTime:moment().format(_formatTime),
+            pTime: moment().format(_formatTime),
         }
 
-      
-        db.addNote(this.state.dbs, data).then((result) => {
-            this.props.navigation.navigate('PeriodAgenda');
-            
-            // this.props.navigation.goBack();
-            //  goBack();
-        }).catch((err) => {
+        if (TextInputNoteValue != "" && dates != "") {
+            db.addNote(this.state.dbs, data).then((result) => {
+                this.props.navigation.navigate('PeriodAgenda');
 
-        })
+                // this.props.navigation.goBack();
+                //  goBack();
+            }).catch((err) => {
 
+            })
+        }else{
+            showMessage({
+                message: "Input Fail",
+                description: "Fields can not be empty",
+                backgroundColor: 'red'
+              })
+        }
     }
     render() {
 
@@ -151,7 +159,7 @@ export class ClinicManagement extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                       
+
                     </View>
 
                     <View style={styles.breadthPo1}>
@@ -165,15 +173,15 @@ export class ClinicManagement extends Component {
                                     this.state.DateText != '' ?
                                         <Text style={styles.datePickerText}>{this.state.DateText}</Text>
                                         :
-                                <Text style={styles.datePickerText}>{_today}</Text>
+                                        <Text style={styles.datePickerText}>{_today}</Text>
                                 }
 
 
                             </View>
 
                         </TouchableOpacity>
-                        <Text style={{ marginVertical: 10,marginTop:30 }}> Description </Text>
-                        <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }}placeholder="Enter Description here" />
+                        <Text style={{ marginVertical: 10, marginTop: 30 }}> Description </Text>
+                        <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }} placeholder="Enter Description here" />
                         {/* <TextInput
                             keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
                             autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} label="Baby Name" /> */}

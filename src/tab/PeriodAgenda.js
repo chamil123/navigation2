@@ -54,27 +54,19 @@ export class PeriodAgenda extends Component {
                     isLoading: false,
                     _babybDate: babybDate,
                 });
-               
+
             }
         }).catch((err) => {
             console.log(err);
         })
 
-        let _ovfdate = "";
-        let _ovfLastdate;
-        let _next_p_date = "";
         let selected = true;
         let selected1 = false;
         let markedDates = {}
         let updatedMarkedDates = '';
-
         let products = [];
-        let period = [];
-        let _plastdate;
-        let _plastcatId;
         let _pdate = '';
         let marked = true;
-        // let i=0;
         let deletedMarkeDates = 0;
         db.listProduct(this.state.dbs).then((data) => {
             products = data;
@@ -84,12 +76,7 @@ export class PeriodAgenda extends Component {
                 _pcatId = products[i].pCatId
                 _pDescription = products[i].pDescription
                 _pTime = products[i].pTime
-
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+_pdate);
-
-
                 if (_pcatId == 1) {
-
                     let data = {
                         _title: " " + _pDescription + "" + _pdate,
                         _bigText: "this is subtitle",
@@ -102,17 +89,14 @@ export class PeriodAgenda extends Component {
                     markedDates = { ...markedDates, ...{ selected }, selectedColor: "red", marked: false };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
-                        // products,
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
                         pName: _pdate,
                     });
-                    // const strTime = "2020-09-24";
                     this.state.items[_pdate] = [];
                     this.state.items[_pdate].push({
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
-                                {/* <Text style={{ color: 'gray' }}>Time : {_pTime}</Text> */}
                                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Period</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{_pDescription}</Text>
                             </View>
@@ -133,31 +117,24 @@ export class PeriodAgenda extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-                    // console.log("cat is is : zcsas asd asd  asd asd  :" + _pdate);
                     markedDates = { ...markedDates, ...{ selected }, selectedColor: "#50cebb", marked: false };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
-                        // pName: nextVaaccination,
-                        // ovulation_date: _ovfdate,
-                        // next_period_date: _next_p_date,
                     });
                     this.state.items[_pdate] = [];
                     this.state.items[_pdate].push({
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
-                                {/* <Text style={{ color: 'gray' }}>Time : {_pTime}</Text> */}
                                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Ovulation</Text>
+                                <Text style={{ fontWeight: 'normal', fontSize: 14 }}>{_pdate}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{_pDescription}</Text>
                             </View>
                             <View style={{ width: 55, height: 55, backgroundColor: '#50cebb', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ fontSize: 30, color: 'white' }}>O</Text>
                             </View>
-
-
                         </View>,
-                        // height: Math.max(50, Math.floor(Math.random() * 150))
                     });
                 } if (_pcatId == 5) {
                     let data = {
@@ -174,25 +151,19 @@ export class PeriodAgenda extends Component {
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
-                        // pName: nextVaaccination,
-                        // ovulation_date: _ovfdate,
-                        // next_period_date: _next_p_date,
                     });
                     this.state.items[_pdate] = [];
                     this.state.items[_pdate].push({
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
-                                {/* <Text style={{ color: 'gray' }}>Time : {_pTime}</Text> */}
                                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Period</Text>
+                                <Text style={{ fontWeight: 'normal', fontSize: 14 }}>{_pdate}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{_pDescription}</Text>
                             </View>
                             <View style={{ width: 55, height: 55, backgroundColor: 'pink', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ fontSize: 30, color: 'white' }}>N</Text>
                             </View>
-
-
                         </View>,
-                        // height: Math.max(50, Math.floor(Math.random() * 150))
                     });
                 } if (_pcatId == 6) {
 
@@ -204,22 +175,14 @@ export class PeriodAgenda extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-
-                    // '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
                     markedDates = { marked: true, dotColor: '#6a1b9a', activeOpacity: 0 };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
-                    // markedDates = { ...markedDates, ...{ marked }, dotColor: "#6a1b9a" };
-                    // updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,
                         _markedDates: updatedMarkedDates,
-                        // pName: nextVaaccination,
-                        // ovulation_date: _ovfdate,
-                        // next_period_date: _next_p_date,
                     });
                     this.state.items[_pdate] = [];
                     this.state.items[_pdate].push({
-                        // name: ' ' + _pDescription,
                         name:
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View style={{ width: 225 }}>
@@ -233,16 +196,13 @@ export class PeriodAgenda extends Component {
 
 
                             </View>,
-                       
+
                     });
                 }
-                 if (_pcatId == 3) {
+                if (_pcatId == 3) {
                     var babayBirgDay = this.state._babybDate;
                     if (babayBirgDay != "") {
-                      
                         let nextVaaccination = moment(babayBirgDay).add(_pdate, 'day').format('YYYY-MM-DD');
-
-                        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+nextVaaccination);
                         let data = {
                             _title: "Yor " + _pDescription + " vacination date is " + nextVaaccination,
                             _bigText: "2 days more ",
@@ -278,11 +238,11 @@ export class PeriodAgenda extends Component {
 
 
                                 </View>,
-                           
+
                         });
                     }
                 }
-               
+
             }
 
 
@@ -299,55 +259,29 @@ export class PeriodAgenda extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fce4ec' }}>
-                <CustomHeader bgcolor='#fbb146'  bcbuttoncolor='#ffc470' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' bcbuttoncolor='#ffc470' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
                 <Agenda
                     testID={testIDs.agenda.CONTAINER}
                     items={this.state.items}
-                    // items={{
-                    //     '2020-05-22': [{ name: 'item 1 - any js object' }],
-                    //     '2020-05-23': [{ name: 'item 2 - any js object', height: 80 }],
-                    //     '2020-11-24': [
-                    //         {
-                    //             name: <View>
-                    //                 <Text>chamil</Text>
-                    //                 <Text>Pathirana</Text>
-                    //             </View>
-                    //         }
-                    //     ],
-                    //     '2020-11-07': [{ name: 'item 3 - any js object' }, { name: 'any js ggggg' }, { name: 'item 4 - chamilpadddd' },]
-                    // }}
                     loadItemsForMonth={this.loadItems.bind(this)}
                     // selected={'2020-09-16'}
                     renderItem={this.renderItem.bind(this)}
                     renderEmptyDate={this.renderEmptyDate.bind(this)}
                     // rowHasChanged={this.rowHasChanged.bind(this)}
                     // markingType={'period'}
-                    // markedDates={{
-                    //     '2020-10-16': {selected: true, marked: true},
-                    //     '2020-10-17': {marked: true},
-                    //     '2020-10-18': {disabled: true}
-                    //   }}
-                    // markedDates={{
-                    //     '2020-10-25': {dots: [vacation, massage, workout], selected: true, selectedColor: 'red'},
-                    //     '2020-10-26': {dots: [massage, workout], disabled: true}
-                    //   }}
-                    //   markingType={'multi-dot'}
-
                     markedDates={this.state._markedDates}
-                    // markingType={'multi-dot'}
-                    // markedDates={{
-                    //    '2017-05-08': {textColor: '#43515c'},
-                    //    '2017-05-09': {textColor: '#43515c'},
-                    //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-                    //    '2017-05-21': {startingDay: true, color: 'blue'},
-                    //    '2017-05-22': {endingDay: true, color: 'gray'},
-                    //    '2017-05-24': {startingDay: true, color: 'gray'},
-                    //    '2017-05-25': {color: 'gray'},
-                    //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-                    // monthFormat={'yyyy'}
-                    // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                    //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                    // hideExtraDays={false}
+                    pastScrollRange={20}
+                    // Max amount of months allowed to scroll to the future. Default = 50
+                    futureScrollRange={20}
+                    // Specify how each item should be rendered in agenda
+                    refreshControl={null}
+                    refreshing={false}
+         
+                    hideKnob={false}
+                // markingType={'multi-dot'}
+                // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+                //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+                // hideExtraDays={false}
                 />
                 <FlashMessage duration={1000} />
             </SafeAreaView>
