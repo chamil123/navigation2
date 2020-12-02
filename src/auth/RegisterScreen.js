@@ -356,7 +356,7 @@ export class RegisterScreen extends Component {
                 paddingVertical: 0
               }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}> Create Your MyApp Account </Text>
+                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}> Create Your You And Me Account </Text>
 
                   <Text style={{ fontSize: 12, marginTop: -2, color: 'black' }}>Please enter below information </Text>
                   <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 10, color: 'black' }}>to create an account</Text>

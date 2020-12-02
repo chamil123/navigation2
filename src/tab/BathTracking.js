@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { StyleSheet, Text, ScrollView, ActivityIndicator, View, TextInput, TouchableHighlight, DrawerLayoutAndroidBase, FlatList } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -10,6 +9,7 @@ import Database from '../Database';
 import { CustomHeader } from '../index';
 import { Icon } from 'react-native-elements';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import Swipeout from 'react-native-swipeout';
 const db = new Database();
 const _formatTime = 'hh:mm:ss';
 
@@ -23,7 +23,7 @@ const options = {
     fontSize: 49,
     color: 'black',
     marginLeft: 7,
-    marginTop:10,
+    marginTop: 10,
   }
 };
 
@@ -110,51 +110,78 @@ export class BathTracking extends Component {
       </View>);
   }
   renderItem = ({ item }) => {
+    const swipeSettings = {
+      autoClose: true,
+      onClose: (secId, rowId, direaction) => {
 
+      }, onOpen: (secId, rowId, direaction) => {
+        
+      },
+      left: [
+        {
+          onPress: () => {
+            this.deleteData(item.btId);
+          },
+          text: 'Delete', type: 'delete',
+        }
+        // ,
+        //  {
+        //   onPress: () => {
+
+        //   },
+        //   text: 'update', type: 'update',backgroundColor:'orange'
+        // }
+      ],
+      // rowId?
+      sectionId: 1
+
+    };
     return (
-      <ListItem style={{ marginTop: -10, paddingBottom: 5 }}>
-        <Left >
-          <View >
+      <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+        <ListItem style={{ marginTop: -10, paddingBottom: 5 }}>
+          <Left >
+            <View >
 
-            <Icon
+              <Icon
 
-              name='bath'
-              type='font-awesome'
-              color='#009688'
-              iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-              onPress={() => console.log('hello')} />
-          </View>
-        </Left>
-        {/* <Body style={{ marginRight: 40 }}>
+                name='bath'
+                type='font-awesome'
+                color='#009688'
+                iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                onPress={() => console.log('hello')} />
+            </View>
+          </Left>
+          {/* <Body style={{ marginRight: 40 }}>
               <Text style={{ fontWeight: "bold" }}>
                   {item.btStart}
               </Text>
           </Body> */}
-        <Body style={{ marginLeft: -120 }}>
-          <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
-          <Text style={{fontSize:15,fontWeight:'bold'}}>{item.btStart}  to {item.btEnd}</Text>
-          <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text>
-        </Body>
-        <Right >
-          <View style={styles.iconMore}>
-            <Icon
-              type='font-awesome'
-              color='gray'
-              iconStyle={{ fontSize: 18, padding: 8 }}
-              name="trash-o" color="gray"
-              onPress={() => {
-                this.deleteData(item.btId); showMessage({
+          <Body style={{ marginLeft: -120 }}>
+            <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{item.btStart}  to {item.btEnd}</Text>
+            <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text>
+          </Body>
+          <Right >
+            <View style={styles.iconMore}>
+              <Icon
+                type='font-awesome'
+                color='gray'
+                iconStyle={{ fontSize: 25, padding: 8 }}
+                name="angle-double-right" color="gray"
+                // onPress={() => {
+                //   this.deleteData(item.btId); showMessage({
 
-                  message: "Success",
-                  description: "successfuly deleted " + `${item.btDate}`,
-                  type: "success",
-                })
-              }}
-            />
-          </View>
-        </Right >
+                //     message: "Success",
+                //     description: "successfuly deleted " + `${item.btDate}`,
+                //     type: "success",
+                //   })
+                // }}
+              />
+            </View>
+          </Right >
 
-      </ListItem>
+        </ListItem>
+      </Swipeout>
     );
 
   };
@@ -198,6 +225,7 @@ export class BathTracking extends Component {
   };
 
   render() {
+
     if (this.state.isLoading) {
       return (
         <View style={styles.activity}>
@@ -207,9 +235,9 @@ export class BathTracking extends Component {
     }
     return (
       <ScrollView >
-         <FlashMessage duration={1000} />
+        <FlashMessage duration={1000} />
         <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
-        
+
         <View style={{ backgroundColor: '#fbb146', height: 45, }}>
           <View style={{ marginTop: 0, marginLeft: 20 }}>
 
@@ -287,12 +315,16 @@ export class BathTracking extends Component {
             }}
             onPress={this.resetStopwatch}
           />
-      
+
 
 
         </View>
-        <View style={{marginTop:20,backgroundColor:'white'}} >
-        <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold',paddingLeft:20,paddingTop:10 }}>History</Text>
+        <View style={{ marginTop: 20, backgroundColor: 'white' }} >
+
+
+
+          
+          <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, paddingTop: 10 }}>History</Text>
 
           <FlatList
             showsHorizontalScrollIndicator={false}

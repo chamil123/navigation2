@@ -98,12 +98,12 @@ export class HomeScreen extends Component {
           });
         }
         if (_pcatId == 4) {
-         
+
           this.setState({
             isLoading: false,
-           
+
             _ovl_date: _pdate,
-        });
+          });
         } if (_pcatId == 5) {
           const end = moment(_pdate, 'YYYY-MM-DD');
           const range = moment.range(start, end);
@@ -113,7 +113,7 @@ export class HomeScreen extends Component {
             isLoading: false,
             reacl_next_p_dateCount: range2.diff('days'),
             _next_period_date: _pdate,
-            
+
           });
 
         }
@@ -198,7 +198,7 @@ export class HomeScreen extends Component {
 
             {
               this.state._member_id == 1 ?
-                <View style={{ flex: 1, flexDirection: 'column',  }}>
+                <View style={{ flex: 1, flexDirection: 'column', }}>
                   <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 15 }}>Recommended for you</Text>
                   <ScrollView
 
@@ -336,13 +336,13 @@ export class HomeScreen extends Component {
 
                         </LinearGradient>
                       </TouchableOpacity>
-          
+
 
                     </View>
                   </ScrollView>
-        
-                  <Text style={{  fontSize: 18, paddingLeft: 15, paddingTop: 5 }}>Before pregnancy</Text>
 
+                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 5 }}>Before pregnancy</Text>
+                  <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
                   <View style={styles.container}>
 
                     <Card style={styles.card} >
@@ -358,7 +358,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, color: 'black',fontWeight:'700' }}> Due Date Calculator</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}> Due Date Calculator</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -367,7 +367,7 @@ export class HomeScreen extends Component {
 
                     <Card style={[styles.card]} >
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClinicManagement')}>
-                      {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}> */}
+                        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}> */}
                         {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
                           <View style={{ height: 80, padding: 15, backgroundColor: '#fee8b6', borderRadius: 50 }}>
@@ -376,7 +376,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black',fontWeight:'700' }}>Clinic Management</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Clinic Management</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -410,12 +410,12 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black',fontWeight:'700' }}>Weight Gain chart</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Weight Gain chart</Text>
 
                         </View>
                       </TouchableOpacity>
                     </Card>
-                  
+
 
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('BloodPresureDetailsAdd')}>
@@ -426,7 +426,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black',fontWeight:'700' }}>Blood presure</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Blood presure</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -444,7 +444,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black',fontWeight:'700' }}>Hospital Bag</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Hospital Bag</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -459,7 +459,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0,fontWeight:'700' }}>Kick Counter</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Kick Counter</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -467,7 +467,7 @@ export class HomeScreen extends Component {
 
                   </View>
 
-                  <Text style={{  fontSize: 15, paddingLeft: 15, paddingTop: 3 }}>After pregnancy</Text>
+                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 3 }}>After pregnancy</Text>
                   <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
 
                   <View style={styles.container}>
@@ -484,7 +484,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0,fontWeight:'700' }}>Breast Feeding</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Breast Feeding</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -501,7 +501,7 @@ export class HomeScreen extends Component {
                               {/* ffe4e1 */}
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0,fontWeight:'700' }}>Vaccination</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Vaccination</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -525,7 +525,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0,fontWeight:'700' }}>Baby Activity</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Baby Activity</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -560,7 +560,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0,fontWeight:'700' }}>Grouth tracker</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Grouth tracker</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -612,6 +612,69 @@ export class HomeScreen extends Component {
                     <View style={styles.container}>
                       <Text style={{ fontSize: 25, fontWeight: 'bold', marginLeft: 7, marginTop: 10 }}>Hello {this.state._member_name}</Text>
                     </View>
+
+                    <ScrollView
+
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <View style={styles.container}>
+
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('IdentifyPregnancy')}>
+                          <LinearGradient style={styles.cardHorizontal} colors={['#FDAD94', '#FC8386']}
+                            start={{ x: 0, y: 1 }}
+                            end={{ x: 1, y: 0.9 }}
+                          >
+
+                            <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
+                              <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+                                <View style={{ flexDirection: 'column' }}>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Identify Pregnancy</Text>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}></Text>
+
+                                </View>
+
+                              </View>
+                              <View style={{ height: 70, marginLeft: -50, paddingTop: 15 }}>
+                                <Image source={IMAGE.ICON_IDENTY_PREGNANCY}
+                                  style={{ height: 124, width: 185 }}>
+                                </Image>
+                              </View>
+
+                            </View>
+                          </LinearGradient>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('RegularMenstruation')}>
+                          <LinearGradient style={styles.cardHorizontal} colors={['#FD88AC', '#FD598B']}
+                            start={{ x: 0, y: 1 }}
+                            end={{ x: 1, y: 0.9 }}
+                          >
+                            <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
+                              <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+                                <View style={{ flexDirection: 'column' }}>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Regular Mensturation</Text>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}>Period</Text>
+
+                                </View>
+
+                              </View>
+                              <View style={{ height: 70, marginLeft: -50, paddingTop: 15 }}>
+                                <Image source={IMAGE.ICON_MENSTRUAION}
+                                  style={{ height: 124, width: 185 }}>
+                                </Image>
+                              </View>
+
+                            </View>
+                          </LinearGradient>
+                        </TouchableOpacity>
+
+
+
+
+
+                      </View>
+                    </ScrollView>
 
                     {/* {
                       this.state.reacl_next_p_dateCount ?
@@ -720,7 +783,7 @@ export class HomeScreen extends Component {
                               </Image>
                             </View>
 
-                            <Text style={{ marginTop: 0,fontWeight:'700' }}>Period Tracker</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Period Tracker</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -738,7 +801,7 @@ export class HomeScreen extends Component {
                               </Image>
                             </View>
 
-                            <Text style={{ marginTop: 0,fontWeight:'700' }}>BMI Calculator</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>BMI Calculator</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -759,7 +822,7 @@ export class HomeScreen extends Component {
                               >
                               </Image>
                             </View>
-                            <Text style={{ marginTop: 0,fontWeight:'700' }}>Special Notes</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Special Notes</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -774,7 +837,7 @@ export class HomeScreen extends Component {
                               >
                               </Image>
                             </View>
-                            <Text style={{ marginTop: 0,fontWeight:'700' }}>Diet plane</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Diet plane</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -800,20 +863,7 @@ export class HomeScreen extends Component {
     backgroundColor: 'white',
     paddingHorizontal: 25,
   },
-  // card: {
-  //     borderWidth: 1,
-  //     padding: 25,
-  //     marginTop: 25,
-  //     shadowColor: "#000",
-  //     shadowOffset: {
-  //         width: 0,
-  //         height: 0,
-  //     },
-  //     shadowOpacity:1,
-  //     shadowRadius: 10,
 
-  //     elevation: 11,
-  // }
   card: {
     height: 115,
     // width: (Dimensions.get("window").width / 2) - 20,
@@ -938,7 +988,7 @@ export class HomeScreen extends Component {
     // margin: 5,
     // padding: 15
 
-}, containerD: {
+  }, containerD: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -946,7 +996,7 @@ export class HomeScreen extends Component {
     paddingLeft: 10,
     paddingRight: 10,
     justifyContent: 'center', alignItems: 'center'
-}, greenBar: {
+  }, greenBar: {
     backgroundColor: '#50cebb',
     height: 45,
     width: (Dimensions.get("window").width) - 30,
@@ -955,5 +1005,5 @@ export class HomeScreen extends Component {
     top: 5,
     padding: 10
     // width: "90%",
-}
+  }
 });

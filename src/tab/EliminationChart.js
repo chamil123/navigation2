@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
-import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
@@ -12,7 +11,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
-
+import Swipeout from 'react-native-swipeout';
 import { LineChart, BarChart } from "react-native-chart-kit";
 import {
     BarIndicator,
@@ -133,6 +132,11 @@ export class EliminationChart extends Component {
             // console.log(result);
             this.getData();
             this.getaAllEliminateData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+
+            });
 
         }).catch((err) => {
             console.log(err);
@@ -172,12 +176,117 @@ export class EliminationChart extends Component {
     }
     emptyComponent = () => {
         return (
-          <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-            <Text >oops! There's no data here!</Text>
-          </View>);
-      }
+            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <Text >oops! There's no data here!</Text>
+            </View>);
+    }
+    renderItem = ({ item }) => {
+        const swipeSettings = {
+          autoClose: true,
+          onClose: (secId, rowId, direaction) => {
+    
+          }, onOpen: (secId, rowId, direaction) => {
+            
+          },
+          left: [
+            {
+              onPress: () => {
+                this.deleteData(item.eId);showMessage({
+                        message: "Hello there",
+                        description: "successfuly deleted " + `${item.eId}`,
+                        type: "success",
+                    })
+              },
+              text: 'Delete', type: 'delete',
+            }
+            ,
+             {
+              onPress: () => {
+    
+              },
+              text: 'update', type: 'update',backgroundColor:'orange'
+            }
+          ],
+          // rowId?
+          sectionId: 1
+    
+        };
+        return (
+            <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+            <ListItem
+                style={{
+                    paddingTop: 2,
+
+                }}
+            >
+                <Left>
+                    <View style={styles.iconMore}>
+
+                        <Icon
+                            name='calendar'
+                            type='font-awesome'
+                            color='red'
+                            iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                            onPress={() => console.log('hello')} />
+                    </View>
+                </Left>
+                <Body style={{ marginLeft: -160 }}>
+                    <Text style={{ color: 'gray', fontSize: 12 }}>{item.eDate}</Text>
+                    <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
+                </Body>
+                <Right>
+                    <View style={{ padding: 10, borderRadius: 25 }}>
+                        <Icon
+                            type='font-awesome'
+                            color='gray'
+                            iconStyle={{ fontSize: 25 }}
+                            name="angle-double-right" color="gray"
+                            onPress={() => {
+                                // this.deleteData(item.eId); showMessage({
+
+                                //     message: "Hello there",
+                                //     description: "successfuly deleted " + `${item.pName}`,
+                                //     type: "success",
+                                // })
+                            }}
+                        />
+                    </View>
+                </Right>
+            </ListItem>
+        </Swipeout>
+        );
+    
+      };
     keyExtractor = (item, index) => index.toString()
     render() {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secId, rowId, direaction) => {
+      
+            }, onOpen: (secId, rowId, direaction) => {
+      
+            },
+            left: [
+              {
+                onPress: () => {
+      
+                },
+                text: 'Update', type: 'update',backgroundColor:'orange'
+              }, {
+                onPress: () => {
+                    this.deleteData(item.eId); showMessage({
+                            message: "Hello there",
+                            description: "successfuly deleted " + `${item.eDate}`,
+                            type: "success",
+                        })
+                },
+                text: 'Delete', type: 'delete'
+              }
+            ],
+            // rowId?
+            sectionId: 1
+      
+          };
         let { isLoading } = this.state
         const datas = {
             labels: ["s"],
@@ -275,48 +384,11 @@ export class EliminationChart extends Component {
                                     data={this.state._list_elimination}
 
                                     // renderItem={this.renderItem}
-
-                                    renderItem={({ item }) => <ListItem
-                                        style={{
-                                            paddingTop: 2,
-
-                                        }}
-                                    >
-                                        <Left>
-                                            <View style={styles.iconMore}>
-
-                                                <Icon
-                                                    name='calendar'
-                                                    type='font-awesome'
-                                                    color='red'
-                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                                                    onPress={() => console.log('hello')} />
-                                            </View>
-                                        </Left>
-                                        <Body style={{ marginLeft: -160 }}>
-                                            <Text style={{ color: 'gray', fontSize: 12 }}>{item.eDate}</Text>
-                                            <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
-                                        </Body>
-                                        <Right>
-                                            <View style={{ padding: 10, borderRadius: 25 }}>
-                                                <Icon
-                                                    type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18 }}
-                                                    name="trash-o" color="gray"
-                                                    onPress={() => {
-                                                        this.deleteData(item.eId); showMessage({
-
-                                                            message: "Hello there",
-                                                            description: "successfuly deleted " + `${item.pName}`,
-                                                            type: "success",
-                                                        })
-                                                    }}
-                                                />
-                                            </View>
-                                        </Right>
-                                    </ListItem>
-                                    }
+                                    renderItem={this.renderItem}
+                                    // renderItem={({ item }) =>
+                                    
+                                       
+                                    // }
                                 />
                             </SafeAreaView>
                         </View>
@@ -361,8 +433,8 @@ export class EliminationChart extends Component {
                                     markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                 />
                                 {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0,margin:20 }} label="Enter Comment" />
-                                <View style={{ justifyContent: 'center', alignItems: 'center', margin:10}}>
+                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
+                                <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                     <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                         <Text style={styles.buttonText}>Add </Text>
                                     </TouchableOpacity>
@@ -470,7 +542,7 @@ export class EliminationChart extends Component {
         alignItems: 'center',
         // justifyContent: 'center',
         marginTop: 0,
-        margin:20,
+        margin: 20,
     }, buttonText: {
         fontSize: 15,
         color: '#fff',

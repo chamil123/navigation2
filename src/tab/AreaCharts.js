@@ -104,7 +104,7 @@ export class AreaCharts extends Component {
                                 }
                             }
                         },
-                        areaStyle: { color: 'yellow', opacity: 0.1 },
+                        areaStyle: { color: 'yellow', opacity: 0.2 },
 
                         data: []
                     },

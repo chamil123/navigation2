@@ -11,11 +11,12 @@ export class Investigation extends Component {
             data: [
                 { "Begin": "Blood grouping and Rh typing", End: "To identify the blood group. Rh status and red cell antibodies." },
                 { "Begin": "Full Blood count", End: "To observe the women’s general blood condition and includes hemoglobin" },
-                { "Begin": "WDRL test ( Venereal disease research laboratory )", End: "For syphilis not all position results indicate active syphilis. Early testing will allowa women to be treated in order prevent infection of the fetus." },
+                { "Begin": "VDRL test ( Venereal disease research laboratory )", End: "For syphilis not all position results indicate active syphilis. Early testing will allowa women to be treated in order prevent infection of the fetus." },
                 { "Begin": "HIV Antibodies", End: "Routine screening to detect HIV infections." },
                 { "Begin": "Urinalysis", End: "To performed at every visit to exclude protein urine." },
                 { "Begin": "Ultrasound", End: "To identify gestational age" },
                 { "Begin": "RBS / PPBS / OGTT", End: "To identify glucose level" },
+         
             ]
 
 

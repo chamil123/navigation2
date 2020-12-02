@@ -124,14 +124,15 @@ const IMAGE = {
     ICON_BLOOD_PRESURE: require('../images/menu/blood2.png'),
     ICON_BREAST_FEEDING: require('../images/feeding.png'),
     ICON_BABY_ACTIVITY_MENU: require('../images/menu/babyactivity.png'),
-    ICON_LOGO_MAIN: require('../images/logoMain.png'),
+    ICON_LOGO_MAIN: require('../images/logoMain2.png'),
     ICON_FEEDING: require('../images/menu/icons8-breastfeeding-96.png'),
     ICON_URINATION: require('../images/menu/icons8-onesies-96.png'),
     ICON_ELIMINATION: require('../images/menu/icons8-nappy-96.png'),
     ICON_BATHTIME: require('../images/menu/icons8-jacuzzi-96.png'),
     ICON_BABYBAG: require('../images/babyBag.png'),
     ICON_LABOURROOMBAG: require('../images/labourRoomBag.png'),
-
+    ICON_LOGO2: require('../images/splashLogo.png'),
+    
     ///////////////////////////////////
     ICON_BABY_WEEK_0: require('../images/baby/2.jpg'),
     ICON_BABY_WEEK_1: require('../images/baby/2.jpg'),

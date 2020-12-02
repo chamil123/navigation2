@@ -13,7 +13,7 @@ import {
   CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda, PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement, PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd, BloodPresureBarChart, BloodPresureDetailsAdd, KickCounterHister, ClinicManagement,AgendaHistory, BathTracking, BathTrackingHistroy
 } from './src/tab';
 import { NotificationsScreen } from './src/drawer';
-import { RegisterScreen, LoginScreen, Login2Screen } from './src/auth';
+import { RegisterScreen, LoginScreen, Login2Screen,SplashScreen } from './src/auth';
 import { FlatList } from 'react-native-gesture-handler';
 import { IMAGE } from './src/constants/image';
 
@@ -278,10 +278,11 @@ export default class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <StackApp.Navigator initialRouteName="Login">
+        <StackApp.Navigator initialRouteName="SplashScreen">
           <StackApp.Screen name="HomeApp" component={DrawerNavigator} options={navOptionHandler} />
           <StackApp.Screen name="Login" component={LoginScreen} options={navOptionHandler} />
           <StackApp.Screen name="Login2" component={Login2Screen} options={navOptionHandler} />
+          <StackApp.Screen name="SplashScreen" component={SplashScreen} options={navOptionHandler} />
           <StackApp.Screen name="Register" component={RegisterScreen} options={navOptionHandler} />
           <StackApp.Screen name="NewPost" component={NewPost} options={navOptionHandler} />
           <StackApp.Screen name="PeriodCalandar" component={PeriodCalandar} options={navOptionHandler} />

@@ -106,7 +106,7 @@ export class EDDCalculator extends Component {
             edd = datat;
             for (var i = 0; i < edd.length; i++) {
                 plastdate = edd[i].pName
-               
+
             }
 
 
@@ -130,7 +130,7 @@ export class EDDCalculator extends Component {
 
             for (var i = 0; i < 41; i++) {
                 if (compltedWeeks == i) {
-                  
+
                     availabeledd = 1;
                     this.setState({
                         abd: i,
@@ -175,7 +175,7 @@ export class EDDCalculator extends Component {
             }
             let result = [];
             let _eddIdId;
-            let availabeledd=0;
+            let availabeledd = 0;
             // console.log("edd dATE :::::::::::::::" + eddDate);
             db.getEddDate(this.state.dbs).then((datas) => {
                 result = datas;
@@ -232,7 +232,7 @@ export class EDDCalculator extends Component {
 
 
     }
-    
+
     updateEdd() {
         // let result = [];
         // let _eddIdId;
@@ -377,12 +377,12 @@ export class EDDCalculator extends Component {
                     <View style={styles.header}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estimated Date of Delivery (EDD)</Text>
-                            <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text>
+                            <Text style={{ color: 'white',marginTop:-3 }}>Pregnancy Due Date Calculator</Text>
                         </View>
                         {
-                        
+
                             this.state._estimatedDate == '' ?
-                                <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 150 }]}>
+                                <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 205 }]}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 40 }}>
                                             <Icon
@@ -392,11 +392,11 @@ export class EDDCalculator extends Component {
                                                 iconStyle={{ fontSize: 15, paddingRight: 2, paddingLeft: 2, color: 'gray' }}
                                             />
                                         </View>
-                                        <Text style={{ color: 'white', padding: 7 }}>Add EDD Date</Text>
+                                        <Text style={{ color: 'white', padding: 7 }}>Enter </Text>
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
+                                <TouchableOpacity onPress={() => this.RBSheet.open()} style={[styles.buttonh, { backgroundColor: 'green', width: 215 }]}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                             <Icon
@@ -406,7 +406,7 @@ export class EDDCalculator extends Component {
                                                 iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                             />
                                         </View>
-                                        <Text style={{ color: 'white', padding: 7 }}>Update EDD Date</Text>
+                                        <Text style={{ color: 'white', padding: 7 }}>Update Last Period Date</Text>
                                     </View>
                                 </TouchableOpacity>
                         }
@@ -435,7 +435,7 @@ export class EDDCalculator extends Component {
                                     />
                                 </View>
 
-                                <View style={{ marginTop: 15, marginBottom: 60 }}>
+                                <View style={{ marginTop: 15, marginBottom: -15 }}>
                                     <StepIndicator
                                         calendarHeaderContainerStyle={{ backgroundColor: 'red' }}
                                         customStyles={customStyles}
@@ -444,68 +444,7 @@ export class EDDCalculator extends Component {
                                         labels={labels}
 
                                     /></View>
-
-                                <View style={{ position: 'absolute', paddingTop: 40, justifyContent: 'center', alignItems: 'center', paddingLeft: 20 }}>
-                                    <WaveIndicator color='#fbb146' size={350} />
-                                </View>
-                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: -50, }}>
-                                    {/* <AnimatedCircularProgress
-                                    size={290}
-                                    rotation={0}
-                                    width={5}
-                                    fill={0}
-
-
-                                    tintColor="#f78a2c"
-
-                                    backgroundColor="#cfd8dc">
-                                    {
-                                        (fill) => ( */}
-
-
-                                    <TouchableOpacity style={styles.button5}
-
-                                    // onPress={() => console.log('hello')}
-
-                                    // onPress={() => this.saveData()}
-
-                                    >
-                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
-                                            <Image
-
-                                                source={this.avatarImage}
-                                                //  source={this.state.abd}
-                                                style={{ height: 240, width: 240, borderRadius: 150 }}
-                                            >
-                                            </Image>
-                                            {/* {
-                                                        this.state._eddDateCount ?
-                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>{this.state._eddDateCount}</Text>
-                                                            :
-                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>0</Text>
-                                                    }
-
-                                                    <Text style={{ fontSize: 20, }}>days left</Text> */}
-                                        </View>
-
-                                        {/* <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
-                                            source={IMAGE.ICON_BABY_FOOT2}
-                                            resizeMode="contain"
-                                        /> */}
-                                    </TouchableOpacity>
-                                    {/* )
-                                    }
-                                </AnimatedCircularProgress> */}
-                                </View>
-                                {/* <View style={{ justifyContent: 'center', padding: 50, }}>
-
-                                <TouchableOpacity style={styles.button} onPress={() => { this.updateEdd(); this.RBSheet.open() }}>
-                                 
-                                    <Text style={styles.buttonText}>Edit EDD  Date</Text>
-                                </TouchableOpacity>
-                            </View> */}
-
+                                    <View >
                                 {
 
                                     this.state._availabeledd == 1 ?
@@ -609,6 +548,69 @@ export class EDDCalculator extends Component {
                                             </View>
                                         </View>
                                 }
+                                </View>
+                                <View style={{ position: 'absolute', paddingTop:330, justifyContent: 'center', alignItems: 'center', paddingLeft: 23 }}>
+                                    <WaveIndicator color='#fbb146' size={350} />
+                                </View>
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10,marginBottom:40 }}>
+                                    {/* <AnimatedCircularProgress
+                                    size={290}
+                                    rotation={0}
+                                    width={5}
+                                    fill={0}
+
+
+                                    tintColor="#f78a2c"
+
+                                    backgroundColor="#cfd8dc">
+                                    {
+                                        (fill) => ( */}
+
+
+                                    <TouchableOpacity style={styles.button5}
+
+                                    // onPress={() => console.log('hello')}
+
+                                    // onPress={() => this.saveData()}
+
+                                    >
+                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
+                                            <Image
+
+                                                source={this.avatarImage}
+                                                //  source={this.state.abd}
+                                                style={{ height: 240, width: 240, borderRadius: 150 }}
+                                            >
+                                            </Image>
+                                            {/* {
+                                                        this.state._eddDateCount ?
+                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>{this.state._eddDateCount}</Text>
+                                                            :
+                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>0</Text>
+                                                    }
+
+                                                    <Text style={{ fontSize: 20, }}>days left</Text> */}
+                                        </View>
+
+                                        {/* <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
+                                            source={IMAGE.ICON_BABY_FOOT2}
+                                            resizeMode="contain"
+                                        /> */}
+                                    </TouchableOpacity>
+                                    {/* )
+                                    }
+                                </AnimatedCircularProgress> */}
+                                </View>
+                                {/* <View style={{ justifyContent: 'center', padding: 50, }}>
+
+                                <TouchableOpacity style={styles.button} onPress={() => { this.updateEdd(); this.RBSheet.open() }}>
+                                 
+                                    <Text style={styles.buttonText}>Edit EDD  Date</Text>
+                                </TouchableOpacity>
+                            </View> */}
+
+
 
 
 
@@ -724,7 +726,8 @@ export class EDDCalculator extends Component {
         //  paddingHorizontal: 20
     }, header: {
         flex: 1,
-        backgroundColor: '#fbb146'
+        backgroundColor: '#fbb146',
+        marginBottom:25,
         // justifyContent: 'center',
         // alignItems: 'center',
     }, backgroundImage: {
@@ -741,7 +744,8 @@ export class EDDCalculator extends Component {
         paddingTop: 20,
         paddingLeft: 10,
         paddingRight: 10,
-        justifyContent: 'center', alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center',
+        width: "100%",
     }, button5: {
         shadowColor: 'rgba(0,0,0, .4)', // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS
@@ -784,13 +788,10 @@ export class EDDCalculator extends Component {
         backgroundColor: 'rgba(250, 250, 250, 1)',
         borderRadius: 8,
         elevation: 3,
-        // shadowColor: 'gray',
         shadowOffset: { width: 3, height: 5 },
-        // shadowOpacity: 0.2,
         shadowRadius: 8,
-        // alignItems: 'center',
-        // margin: 5,
-        // padding: 15
+        width: "100%",
+
 
     }, greenBar: {
         backgroundColor: '#3bde86',

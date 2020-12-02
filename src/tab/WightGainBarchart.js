@@ -263,8 +263,6 @@ export class WightGainBarchart extends Component {
   }
   keyExtractor = (item, index) => index.toString();
   render() {
-
-
     const swipeSettings = {
       autoClose: true,
       onClose: (secId, rowId, direaction) => {

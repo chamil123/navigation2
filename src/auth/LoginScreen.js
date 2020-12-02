@@ -37,11 +37,11 @@ export class LoginScreen extends Component {
               paddingVertical: 0
             }}>
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
-                <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80, color: 'white' }}> Welcome To
+                <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80, color: 'black' }}> Welcome To
 
                 
                 </Text>
-                <Text style={{ color: 'red',fontSize: 35, fontWeight: "bold" }}> <Text style={{ color: 'white',fontSize: 35, fontWeight: "normal", }}>You and</Text>Me</Text>
+                {/* <Text style={{ color: 'red',fontSize: 35, fontWeight: "bold" }}> <Text style={{ color: 'white',fontSize: 35, fontWeight: "normal", }}>You and</Text>Me</Text> */}
                 {/* <Text style={{ fontSize: 16, color: 'black',marginBottom:15 }}>Enjoy the experience</Text> */}
 
                 <Image style={{ width: 190, height: 220, marginLeft: 0,marginVertical:30 }}

@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import *as Animatable from 'react-native-animatable';
-import { BarChart, Grid } from 'react-native-svg-charts';
+
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { BarIndicator, } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import Swipeout from 'react-native-swipeout';
 const db = new Database();
 var j = 0;
 const _formatTime = 'hh:mm:ss';
@@ -28,28 +26,20 @@ export class BabyActivities extends Component {
         var today = new Date(),
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         super(props);
-
-
         this.state = {
             isLoading: true,
             selectedDate: new Date(),
             TextInputdaValue: '',
             _current_date: date,
             _list_kcData: [],
-
             _kick_count: 0,
             increment: 0,
             dbs: '',
-
-
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
         })
-        // this.getData = this.getData.bind(this);
         this.loadDbVarable = this.loadDbVarable.bind(this);
-
-
     }
     loadDbVarable(result) {
         this.setState({
@@ -59,8 +49,6 @@ export class BabyActivities extends Component {
     }
     componentDidMount() {
 
-
-        // this.getaAllClickData();
     }
     saveData() {
         this.RBSheet.close();
@@ -69,26 +57,22 @@ export class BabyActivities extends Component {
 
         this.setState({
             isLoading: false,
-
-
         });
         let data = {
-            // pId: this.state.pId,
+
             baDate: _selectedDay.toString(),
             baTime: moment().format(_formatTime),
             baText: this.state.TextInputdaValue
         }
-
-        // console.log("################ :" + _selectedDay.toString());
-        // console.log("^^^^^^^^^^^^^^^^ :" + this.state.TextInputdaValue);
         db.addBabyActivity(this.state.dbs, data).then((result) => {
             console.log(result);
             this.setState({
                 isLoading: false,
+                TextInputdaValue: '',
+
             });
             this.getaAllClickData();
-            //   this.props.navigation.state.params.onNavigateBack;
-            //   this.props.navigation.goBack();
+
         }).catch((err) => {
             console.log(err);
             this.setState({
@@ -107,15 +91,12 @@ export class BabyActivities extends Component {
                 isLoading: false,
                 _list_kcData: results,
             });
-
-
         }).catch((err) => {
             console.log(err);
         })
     }
 
     deleteData(id) {
-
         this.setState({
             // isLoading: true
         });
@@ -123,7 +104,6 @@ export class BabyActivities extends Component {
 
             this.getaAllClickData();
             // this.getaAllClickData();
-
         }).catch((err) => {
             console.log(err);
             this.setState = {
@@ -139,6 +119,25 @@ export class BabyActivities extends Component {
     }
     keyExtractor = (item, index) => index.toString()
     render() {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secId, rowId, direaction) => {
+
+            }, onOpen: (secId, rowId, direaction) => {
+
+            },
+            right: [
+                {
+                    onPress: () => {
+
+                    },
+                    text: 'Delete', type: 'delete'
+                }
+            ],
+            // rowId?
+            sectionId: 1
+
+        };
         let { isLoading } = this.state
         if (isLoading) {
             return (
@@ -260,47 +259,51 @@ export class BabyActivities extends Component {
 
                                     // renderItem={this.renderItem}
 
-                                    renderItem={({ item }) => <ListItem
-                                        style={{
-                                            paddingTop: 5,
+                                    renderItem={({ item }) =>
+                                        <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+                                            <ListItem
+                                                style={{
+                                                    paddingTop: 5,
 
-                                        }}
-                                    >
-                                        <Left>
-                                            <View style={styles.iconMore}>
+                                                }}
+                                            >
+                                                <Left>
+                                                    <View style={styles.iconMore}>
 
-                                                <Icon
-                                                    name='calendar'
-                                                    type='font-awesome'
-                                                    color='#009688'
-                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                                                    onPress={() => console.log('hello')} />
-                                            </View>
-                                        </Left>
-                                        <Body style={{ marginLeft: -160 }}>
-                                            <Text style={{ color: 'gray', fontSize: 12 }}>{item.baDate}</Text>
-                                            <Text style={styles.dateText}>{item.baText} </Text>
-                                            <Text style={{ color: 'gray', fontSize: 12 }}>Time : {item.baTime}</Text>
-                                        </Body>
-                                        <Right>
-                                            <View style={styles.iconMore}>
-                                                <Icon
-                                                    type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18, padding: 8 }}
-                                                    name="trash-o" color="gray"
-                                                    onPress={() => {
-                                                        this.deleteData(item.baId); showMessage({
+                                                        <Icon
+                                                            name='calendar'
+                                                            type='font-awesome'
+                                                            color='#009688'
+                                                            iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                                            onPress={() => console.log('hello')} />
+                                                    </View>
+                                                </Left>
+                                                <Body style={{ marginLeft: -160 }}>
+                                                    <Text style={{ color: 'gray', fontSize: 12 }}>{item.baDate}</Text>
+                                                    <Text style={styles.dateText}>{item.baText} </Text>
+                                                    <Text style={{ color: 'gray', fontSize: 12 }}>Time : {item.baTime}</Text>
+                                                </Body>
+                                                <Right>
+                                                    <View style={styles.iconMore}>
+                                                        <Icon
+                                                            type='font-awesome'
+                                                            color='gray'
+                                                            iconStyle={{ fontSize: 18, padding: 8 }}
+                                                            name="trash-o" color="gray"
+                                                            onPress={() => {
+                                                                this.deleteData(item.baId); showMessage({
 
-                                                            message: "Success",
-                                                            description: "successfuly deleted " + `${item.baDate}`,
-                                                            type: "success",
-                                                        })
-                                                    }}
-                                                />
-                                            </View>
-                                        </Right>
-                                    </ListItem>
+                                                                    message: "Success",
+                                                                    description: "successfuly deleted " + `${item.baDate}`,
+                                                                    type: "success",
+                                                                })
+                                                            }}
+                                                        />
+                                                    </View>
+                                                </Right>
+                                            </ListItem>
+                                        </Swipeout>
+
                                     }
                                 />
                             </View>

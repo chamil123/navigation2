@@ -125,9 +125,14 @@ export class FeedingTimeChart extends Component {
         }
 
         db.addFeedingTime(this.state.dbs, data).then((result) => {
-            console.log(result);
+
             this.getaAllFeedingData();
             this.getData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+
+            });
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
         }).catch((err) => {
@@ -266,7 +271,7 @@ export class FeedingTimeChart extends Component {
                                     data={this.state._list_feeding_time}
                                     renderItem={({ item }) => <ListItem
                                         style={{
-                                           paddingTop: 15,
+                                            paddingTop: 15,
                                         }}
                                     >
                                         <Left>

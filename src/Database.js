@@ -950,7 +950,7 @@ export default class Database {
             // this.initDB().then((db) => {
             db.transaction((tx) => {
 
-                tx.executeSql('SELECT w.wgId, w.wgDate, w.wgValue,w.wgmin,w.wgmax FROM WeightGain w ORDER BY w.wgId ASC LIMIT 10 ', []).then(([tx, results]) => {
+                tx.executeSql('SELECT w.wgId, w.wgDate, w.wgValue,w.wgmin,w.wgmax FROM WeightGain w ORDER BY w.wgDate ASC LIMIT 10 ', []).then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1368,7 +1368,7 @@ export default class Database {
             var kick_count = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql("SELECT * FROM BabyActivity").then(([tx, results]) => {
+                tx.executeSql("SELECT * FROM BabyActivity ORDER BY baId DESC LIMIT 10").then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1418,7 +1418,7 @@ export default class Database {
             var feeding_time = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM FeedingTime ORDER BY fdDate DESC LIMIT 10').then(([tx, results]) => {
+                tx.executeSql('SELECT * FROM FeedingTime ORDER BY fdId DESC LIMIT 10').then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1499,7 +1499,7 @@ export default class Database {
             var feeding_time = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM Urination ORDER BY uDate DESC LIMIT 10').then(([tx, results]) => {
+                tx.executeSql('SELECT * FROM Urination ORDER BY uId DESC LIMIT 10').then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1586,7 +1586,7 @@ export default class Database {
             var eliminate_time = [];
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM Elimination ORDER BY eDate DESC LIMIT 10').then(([tx, results]) => {
+                tx.executeSql('SELECT * FROM Elimination ORDER BY eId DESC LIMIT 10').then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
@@ -1621,7 +1621,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('SELECT eDate,COUNT(eValue) AS counte FROM Elimination  GROUP BY eDate LIMIT 8 ', []).then(([tx, results]) => {
+                tx.executeSql('SELECT eDate,COUNT(eValue) AS counte FROM Elimination  GROUP BY eDate  ORDER BY eDate DESC LIMIT 8', []).then(([tx, results]) => {
 
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
@@ -1952,7 +1952,7 @@ export default class Database {
         return new Promise((resolve) => {
             const Bath = [];
             db.transaction((tx) => {
-                tx.executeSql('SELECT b.btId, b.btDate,b.btStart,b.btEnd FROM BabyBathTracking b ORDER BY b.btDate ASC ', []).then(([tx, results]) => {
+                tx.executeSql('SELECT b.btId, b.btDate,b.btStart,b.btEnd FROM BabyBathTracking b ORDER BY b.btId ASC ', []).then(([tx, results]) => {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);

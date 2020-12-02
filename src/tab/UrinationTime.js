@@ -149,6 +149,9 @@ export class UrinationTime extends Component {
             // this.getData();
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
+            this.setState({ 
+                TextInputdaValue: '',
+             });
         }).catch((err) => {
             console.log(err);
         })
