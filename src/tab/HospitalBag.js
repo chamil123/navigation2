@@ -334,7 +334,7 @@ render() {
                             // renderItem={this.renderItem}
 
                             renderItem={({ item }) => <ListItem
-                                style={{ height: 60, paddingTop: 30 }}
+                            style={{ height: 60, paddingTop: 20 }}
                                 onPress={() => {
                                     this.getData(item.hId, item.hStatus);
 
@@ -359,7 +359,7 @@ render() {
                                         </Left>
                                 }
 
-                                <Body style={{ marginLeft: -200 }}>
+                                <Body style={{ marginLeft: -180 }}>
 
                                     <Text>{item.hName}</Text>
                                     <Text style={styles.dateText}>{

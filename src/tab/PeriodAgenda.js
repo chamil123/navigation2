@@ -169,7 +169,8 @@ export class PeriodAgenda extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-                    markedDates = { marked: true, dotColor: '#6a1b9a', activeOpacity: 0 };
+                    // markedDates = { ...markedDates, ...{ selected }, selectedColor: "#ffc107", };
+                    markedDates = { marked: true, dotColor: '#6a1b9a', activeOpacity: 0,...{ selected }, selectedColor: "#ffc107", };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,

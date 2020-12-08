@@ -69,19 +69,19 @@ export class BMIMeter extends Component {
                 {
                     name: '业务指标',
                     type: 'gauge',
-                    detail: {formatter: '{value}%'},
-                    data: [{value: 50, name: '完成率'}]
+                    detail: { formatter: '{value}%' },
+                    data: [{ value: 50, name: '完成率' }]
                 }
             ]
         };
         setInterval(function () {
             option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-           // myChart.setOption(option, true);
-        },2000);
+            // myChart.setOption(option, true);
+        }, 2000);
         return (
 
             <SafeAreaView style={{ flex: 1 }}>
-                <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff'  title="BMI Meter" navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="BMI Meter" navigation={this.props.navigation} bdcolor='#F2F2F2' />
                 <View style={{ flex: 1 }}>
 
                     <View style={styles.innerCircle} />
@@ -128,6 +128,37 @@ export class BMIMeter extends Component {
                                 </View>
                             </View>
                         </Card>
+
+                        <View style={{  paddingLeft: 45,paddingRight:45 }}>
+                            <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: 15, height: 15, backgroundColor: '#ffd600', marginRight: 10 }}></View>
+                                    <Text >UnderWeight</Text>
+                                </View>
+                                <Text>0 - 18.5</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: 15, height: 15, backgroundColor: '#1faa00', marginRight: 10 }}></View>
+                                    <Text >Healthy Weight</Text>
+                                </View>
+                                <Text>18.5 - 25</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: 15, height: 15, backgroundColor: '#ff6d00', marginRight: 10 }}></View>
+                                    <Text >Over Weight</Text>
+                                </View>
+                                <Text>25 - 30</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: 15, height: 15, backgroundColor: '#d50000', marginRight: 10 }}></View>
+                                    <Text >Obese</Text>
+                                </View>
+                                <Text>{'>'} 30</Text>
+                            </View>
+                        </View>
 
 
                         {/* </View> */}
@@ -187,8 +218,8 @@ export class BMIMeter extends Component {
 
                         </View>
                         <ECharts
-                        option={option} height={300}
-                    />
+                            option={option} height={300}
+                        />
                     </ScrollView>
                 </Animatable.View>
 

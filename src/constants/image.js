@@ -129,8 +129,8 @@ const IMAGE = {
     ICON_URINATION: require('../images/menu/icons8-onesies-96.png'),
     ICON_ELIMINATION: require('../images/menu/icons8-nappy-96.png'),
     ICON_BATHTIME: require('../images/menu/icons8-jacuzzi-96.png'),
-    ICON_BABYBAG: require('../images/babyBag.png'),
-    ICON_LABOURROOMBAG: require('../images/labourRoomBag.png'),
+    ICON_BABYBAG: require('../images/labourRoomBag.png'),
+    ICON_LABOURROOMBAG: require('../images/babybagback.png'),
     ICON_LOGO2: require('../images/splashLogo.png'),
     
     ///////////////////////////////////

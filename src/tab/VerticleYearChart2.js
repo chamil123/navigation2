@@ -198,8 +198,10 @@ export class VerticleYearChart2 extends Component {
                         <View style={styles.breadthPo2}>
                             <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>SECOND YEAR OF LIFE</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
-                            <Text style={{ paddingTop: 10, }}>12 months- live JE 18 months- OPV and DTP 4th dose</Text>
+                            <Text style={{ paddingTop: 10, }}>12 months- live JE </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._je}</Text>
+                            <Text style={{ paddingTop: 10, }}>18 months- OPV and DTP 4th dose</Text>
+                            <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvdt}</Text>
                         </View>
                         <View style={styles.breadthPo2}>
                             <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>PRE SCHOOL AGE</Text>

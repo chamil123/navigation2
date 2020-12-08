@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 // import DatePickerDialog from '@react-native-community/datetimepicker';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+
+import DateTimePicker from 'react-native-modal-datetime-picker';
 const db = new Database();
 // import { TextInput } from 'react-native-paper';
 
@@ -31,6 +33,7 @@ export class ClinicManagement extends Component {
             date: new Date(),
             dbs: '',
             userName: '',
+            timeb: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -39,6 +42,39 @@ export class ClinicManagement extends Component {
 
 
     }
+    state = {
+        isDateTimePickerVisible: false,
+    };
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+    _handleDatePicked = (timeb) => {
+        var date = new Date(timeb);
+        this.setState({
+            dobDate: date,
+            timeb: moment(timeb).format('HH:mm:ss'),
+        });
+        this._hideDateTimePicker();
+    };
+
+
+    state = {
+        isDatePickerVisible: false,
+    };
+    _showDatePicker = () => this.setState({ isDatePickerVisible: true });
+
+    _hideDatePicker = () => this.setState({ isDatePickerVisible: false });
+
+    _handleDatePicked2 = (date) => {
+       
+        this.setState({
+            // dobDate: date,
+            DateText: moment(date).format('YYYY-MM-DD'),
+        });
+        this._hideDatePicker();
+    };
+
     DatePickerMainFunctionCall = () => {
 
         let DateHolder = this.state.DateHolder;
@@ -89,13 +125,15 @@ export class ClinicManagement extends Component {
         var dates = this.state.DateText;
         var formattedDate = moment(dates).format("YYYY-MM-DD")
 
+        var time = this.state.timeb;
+
         let data = {
             _note: this.state.TextInputNoteValue,
             _date: dates,
-            pTime: moment().format(_formatTime),
+            pTime: time,
         }
 
-        if (TextInputNoteValue != "" && dates != "") {
+        if (TextInputNoteValue != "" && dates != "" && time != "") {
             db.addNote(this.state.dbs, data).then((result) => {
                 this.props.navigation.navigate('PeriodAgenda');
 
@@ -104,12 +142,12 @@ export class ClinicManagement extends Component {
             }).catch((err) => {
 
             })
-        }else{
+        } else {
             showMessage({
                 message: "Input Fail",
                 description: "Fields can not be empty",
                 backgroundColor: 'red'
-              })
+            })
         }
     }
     render() {
@@ -163,11 +201,8 @@ export class ClinicManagement extends Component {
                     </View>
 
                     <View style={styles.breadthPo1}>
-
                         <Text style={{ marginVertical: 10 }} >Select date</Text>
-
-                        <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
-
+                        <TouchableOpacity onPress={this._showDatePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
                                 {
                                     this.state.DateText != '' ?
@@ -175,20 +210,24 @@ export class ClinicManagement extends Component {
                                         :
                                         <Text style={styles.datePickerText}>{_today}</Text>
                                 }
-
-
                             </View>
-
                         </TouchableOpacity>
-                        <Text style={{ marginVertical: 10, marginTop: 30 }}> Description </Text>
+                        <Text style={{ marginVertical: 10, marginTop: 20 }}> Description </Text>
                         <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }} placeholder="Enter Description here" />
-                        {/* <TextInput
-                            keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                            autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} label="Baby Name" /> */}
-                        <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
-                            {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
-                                 */}
 
+                        <Text style={{ marginVertical: 10, marginTop: 20 }} >Select Time</Text>
+                        <TouchableOpacity onPress={this._showDateTimePicker} >
+                            <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
+                                {
+                                    this.state.DateText != '' ?
+                                        <Text style={styles.datePickerText}>{this.state.timeb}</Text>
+                                        :
+                                        <Text style={styles.datePickerText} ></Text>
+                                }
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                             <LinearGradient colors={['#fbb146', '#f78a2c']}
 
                                 start={{ x: 0, y: 1 }}
@@ -197,7 +236,7 @@ export class ClinicManagement extends Component {
                                 style={styles.linearGradient}>
                                 <Text style={styles.buttonText}>
                                     Add Note
-</Text>
+                                </Text>
                             </LinearGradient>
 
 
@@ -207,9 +246,31 @@ export class ClinicManagement extends Component {
                     {/* </View> */}
                 </ScrollView>
 
+
+                <DateTimePicker
+                    mode="time"
+                    locale="en_GB"
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}
+                />
+                {/* <DatePicker
+                    mode="time"
+                    locale="en_GB" // Use "en_GB" here
+                    date={new Date()}
+                /> */}
+
+
                 {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
                 <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
-
+                <DateTimePicker
+                    mode="date"
+                    locale="en_GB"
+                    isVisible={this.state.isDatePickerVisible}
+                    onConfirm={this._handleDatePicked2}
+                    onCancel={this._hideDatePicker}
+                />
+             
             </SafeAreaView>
         );
     }
@@ -221,7 +282,6 @@ export class ClinicManagement extends Component {
         borderRadius: 25,
         // width:'200',
         width: 150,
-
         marginTop: 15,
         marginLeft: 18,
         marginVertical: 5

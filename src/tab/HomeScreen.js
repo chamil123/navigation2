@@ -233,7 +233,7 @@ export class HomeScreen extends Component {
                         </LinearGradient>
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('IdentifyPregnancy')}>
+                      {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('IdentifyPregnancy')}>
                         <LinearGradient style={styles.cardHorizontal} colors={['#FDAD94', '#FC8386']}
                           start={{ x: 0, y: 1 }}
                           end={{ x: 1, y: 0.9 }}
@@ -280,7 +280,7 @@ export class HomeScreen extends Component {
 
                           </View>
                         </LinearGradient>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
 
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('Investigation')}>
                         <LinearGradient style={styles.cardHorizontal} colors={['#b6fb96', '#71f3da']}

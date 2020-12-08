@@ -5,13 +5,10 @@ import { FlatList } from 'react-native-gesture-handler';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
-
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import { Avatar } from 'react-native-elements';
-
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob'
 // import RNFetchBlob from 'react-native-fetch-blob';
@@ -37,11 +34,10 @@ export class MemberProfile extends Component {
       memberNames: '',
       imageSource: null,
       dataa: null,
-      abc: null,
+      abc: '',
 
     }
   }
-
   InputUsers = () => {
     const { TextInputID } = this.state;
     const { TextInputName } = this.state;
@@ -107,7 +103,7 @@ export class MemberProfile extends Component {
           abc = responseJson[i].member_image;
 
         }
-        console.log('source eke value eka vvvvvvvvvvvvvvvvvvvvvv  : ' + abc);
+        // s
         this.setState({
           isLoading: false,
           dataSource: responseJson,
@@ -147,26 +143,30 @@ export class MemberProfile extends Component {
         this.setState({
           isLoading: false,
           imageSource: source,
+          abc: '',
           dataa: imdata
 
         });
-        console.log('image source  = ', this.state.abc);
+        // console.log('image source  = ', this.state.abc);
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : 1"+ response.data)
 
-        // uploadPhoto();
+        this.uploadPhoto();
       }
     });
   };
   async uploadPhoto() {
+   
+    var aaaa = this.state.dataa;
     const myArray = await AsyncStorage.getItem('memberNames');
     RNFetchBlob.fetch('POST', 'https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/upload.php', {
       Authorization: "Bearer access-token",
       otherHeader: "foo",
       'Content-Type': 'multipart/form-data',
     }, [
-      { name: 'image', filename: 'image.png', type: 'image/png', data: this.state.dataa },
+      { name: 'image', filename: 'image.png', type: 'image/png', data: aaaa },
       { name: 'member_id', data: myArray }
     ]).then((resp) => {
-      console.log(resp.text());
+      // console.log(resp.text());
     }).catch((err) => {
       console.log(err);
     });
@@ -187,6 +187,12 @@ export class MemberProfile extends Component {
     // }).catch((err) => {
     //   // ...
     // })
+    this.setState({
+      isLoading: false,
+
+      dataa: ''
+
+    });
   }
   render() {
     let { isLoading } = this.state
@@ -247,15 +253,15 @@ export class MemberProfile extends Component {
             </View>
 
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bottom: 90 }}>
-
+              {/* <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }} style={{ width: 50, height: 50 }} /> */}
               <Avatar
-
                 rounded
                 showEditButton
                 size={150}
-
-                source={this.state.imageSource != null ? this.state.imageSource : require('../images/profiled.png')}
-
+                source={
+                  this.state.abc != '' ? { uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc } :
+                    (this.state.imageSource != null ? this.state.imageSource : require('../images/profiled.png'))
+                }
                 containerStyle={{
                   margin: 10, shadowColor: 'rgba(0,0,0, .4)', // IOS
                   shadowOffset: { height: 3, width: 8 }, borderWidth: 10, borderColor: 'white', // IOS
@@ -268,10 +274,7 @@ export class MemberProfile extends Component {
                 editButton={{
                   name: 'edit'
                 }}
-
               />
-
-
               <View style={{ marginLeft: 0, flexDirection: 'column', marginBottom: -150 }}>
                 <Title style={styles.title} >
 
@@ -285,8 +288,6 @@ export class MemberProfile extends Component {
               flex: 1, justifyContent: 'center', paddingHorizontal: 15,
               paddingVertical: 0,
             }}>
-
-
               <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
               {/* <FlatList
                 data={this.state.dataSource}
@@ -305,8 +306,6 @@ export class MemberProfile extends Component {
                 </ListItem>
                 }>
               </FlatList> */}
-
-
               <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
               <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
               <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
@@ -327,7 +326,7 @@ export class MemberProfile extends Component {
 
               </TouchableOpacity>
 
-              {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={this.uploadPhoto()} >
+              {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={this.uploadPhoto} >
                 <LinearGradient colors={['#fbb146', '#f78a2c']}
                   // '#ffd600',
                   // locations={[1,0.3,0.5]}
@@ -432,7 +431,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 5
   }, linearGradient: {
-  
+
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 25,
@@ -442,7 +441,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.7,
     shadowRadius: 8,
-},
+  },
 
 
 });

@@ -392,7 +392,7 @@ export class EDDCalculator extends Component {
                                                 iconStyle={{ fontSize: 15, paddingRight: 2, paddingLeft: 2, color: 'gray' }}
                                             />
                                         </View>
-                                        <Text style={{ color: 'white', padding: 7 }}>Enter </Text>
+                                        <Text style={{ color: 'white', padding: 7 }}>Add Last Period Date</Text>
                                     </View>
                                 </TouchableOpacity>
                                 :
@@ -794,7 +794,7 @@ export class EDDCalculator extends Component {
 
 
     }, greenBar: {
-        backgroundColor: '#3bde86',
+        backgroundColor: '#50cebb',
         height: 45,
         width: (Dimensions.get("window").width) - 30,
         borderBottomLeftRadius: 8,

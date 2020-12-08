@@ -3,11 +3,13 @@ import { Text, View, SafeAreaView, Image, ImageBackground, TouchableOpacity, Scr
 import { Icon } from 'react-native-elements';
 import { IMAGE } from './constants/image';
 import AsyncStorage from '@react-native-community/async-storage';
+
 export class CustomDrawerContent extends Component {
   constructor(props) {
     super(props)
     this.state = {
       userName: '',
+      abc: '',
     }
   }
   doLogout() {
@@ -23,6 +25,35 @@ export class CustomDrawerContent extends Component {
     this.setState({
       userName: myArray,
     });
+
+    const data = new FormData();
+    data.append("get_about", "true");
+
+    return fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
+      method: 'post',
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        id = "";
+        abc = "";
+
+        for (var i = 0; i < responseJson.length; i++) {
+
+          abc = responseJson[i].member_image;
+
+        }
+        // s
+        this.setState({
+          isLoading: false,
+        
+          abc: abc,
+
+        })
+
+      }).catch((error) => {
+        console.error(error)
+      })
   }
   render() {
     return (
@@ -41,7 +72,8 @@ export class CustomDrawerContent extends Component {
               color='#f78a2c'
               iconStyle={{ fontSize: 60,borderRadius:60 }}
               /> */}
-            <Image source={IMAGE.ICON_MENU_PROFILE}
+                {/* <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }} style={{ width: 50, height: 50 }} /> */}
+            <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }}
               style={{ height: 90, width: 90, borderRadius: 60, }}
             />
             <Text style={{ color: "white", fontSize: 15, marginVertical: 8 }}>{this.state.userName}</Text>
