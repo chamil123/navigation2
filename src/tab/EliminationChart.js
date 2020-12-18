@@ -38,7 +38,9 @@ export class EliminationChart extends Component {
             dbs: '',
             _kick_count: 0,
             increment: 0,
-
+            _updateRbSheet: 0,
+            testing: '',
+            update_date: '',
             data: {
                 labels: ["."],
 
@@ -143,6 +145,43 @@ export class EliminationChart extends Component {
 
         });
     }
+    updateData() {
+        this.RBSheet.close();
+        // const _format = 'YYYY-MM-DD'
+        // const _selectedDay = moment(this.state.selectedDate).format(_format);
+
+        this.setState({
+            isLoading: false,
+            TextInputdaValue: '',
+            _updateRbSheet:0
+
+        });
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+ this.state.TextInputdaValue+"  / "+_selectedDay.toString());
+
+        // let data = {
+        //     // pId: this.state.pId,
+        //     eDate: _selectedDay.toString(),
+        //     eTime: moment().format(_formatTime),
+        //     eText: this.state.TextInputdaValue
+
+        // }
+
+        // db.addElimination(this.state.dbs, data).then((result) => {
+        //     // console.log(result);
+        //     this.getData();
+        //     this.getaAllEliminateData();
+        //     this.setState({
+        //         isLoading: false,
+        //         TextInputdaValue: '',
+        //         _updateRbSheet:0
+
+        //     });
+
+        // }).catch((err) => {
+        //     console.log(err);
+
+        // });
+    }
     getaAllEliminateData() {
 
         db.listAllElimination(this.state.dbs).then((results) => {
@@ -174,6 +213,19 @@ export class EliminationChart extends Component {
             }
         })
     }
+    updateData(id, date, text) {
+        this.setState({
+            isLoading: false,
+            _updateRbSheet: 1,
+            testing: text,
+           
+            update_date:  moment(date, 'YYYY-MM-DD'),
+            // TextInputdaValue:text
+        });
+        this.RBSheet.open();
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + date);
+
+    }
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
@@ -182,111 +234,112 @@ export class EliminationChart extends Component {
     }
     renderItem = ({ item }) => {
         const swipeSettings = {
-          autoClose: true,
-          onClose: (secId, rowId, direaction) => {
-    
-          }, onOpen: (secId, rowId, direaction) => {
-            
-          },
-          left: [
-            {
-              onPress: () => {
-                this.deleteData(item.eId);showMessage({
-                        message: "Hello there",
-                        description: "successfuly deleted " + `${item.eId}`,
-                        type: "success",
-                    })
-              },
-              text: 'Delete', type: 'delete',
-            }
-            ,
-             {
-              onPress: () => {
-    
-              },
-              text: 'update', type: 'update',backgroundColor:'orange'
-            }
-          ],
-          // rowId?
-          sectionId: 1
-    
+            autoClose: true,
+            onClose: (secId, rowId, direaction) => {
+
+            }, onOpen: (secId, rowId, direaction) => {
+
+            },
+            left: [
+                {
+                    onPress: () => {
+                        this.deleteData(item.eId); showMessage({
+                            message: "Hello there",
+                            description: "successfuly deleted " + `${item.eId}`,
+                            type: "success",
+                        })
+                    },
+                    text: 'Delete', type: 'delete',
+                }
+                ,
+                {
+                    onPress: () => {
+                        this.updateData(item.eId, item.eDate, item.eText);
+                    },
+                    text: 'update', type: 'update', backgroundColor: 'orange'
+                }
+            ],
+            // rowId?
+            sectionId: 1
+
         };
         return (
             <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
-            <ListItem
-                style={{
-                    paddingTop: 2,
+                <ListItem
+                    style={{
+                        paddingTop: 2,
 
-                }}
-            >
-                <Left>
-                    <View style={styles.iconMore}>
+                    }}
+                >
+                    <Left>
+                        <View style={styles.iconMore}>
 
-                        <Icon
-                            name='calendar'
-                            type='font-awesome'
-                            color='red'
-                            iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                            onPress={() => console.log('hello')} />
-                    </View>
-                </Left>
-                <Body style={{ marginLeft: -160 }}>
-                    <Text style={{ color: 'gray', fontSize: 12 }}>{item.eDate}</Text>
-                    <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
-                </Body>
-                <Right>
-                    <View style={{ padding: 10, borderRadius: 25 }}>
-                        <Icon
-                            type='font-awesome'
-                            color='gray'
-                            iconStyle={{ fontSize: 25 }}
-                            name="angle-double-right" color="gray"
-                            onPress={() => {
-                                // this.deleteData(item.eId); showMessage({
+                            <Icon
+                                name='calendar'
+                                type='font-awesome'
+                                color='red'
+                                iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                onPress={() => console.log('hello')} />
+                        </View>
+                    </Left>
+                    <Body style={{ marginLeft: -160 }}>
+                        <Text style={{ color: 'gray', fontSize: 12 }}>{item.eDate}</Text>
+                        <Text style={styles.dateText}>{item.eTime} <Text style={{ color: 'gray' }}>{item.eText}</Text></Text>
+                    </Body>
+                    <Right>
+                        <View style={{ padding: 10, borderRadius: 25 }}>
+                            <Icon
+                                type='font-awesome'
+                                color='gray'
+                                iconStyle={{ fontSize: 25 }}
+                                name="angle-double-right" color="gray"
+                                onPress={() => {
+                                    // this.deleteData(item.eId); showMessage({
 
-                                //     message: "Hello there",
-                                //     description: "successfuly deleted " + `${item.pName}`,
-                                //     type: "success",
-                                // })
-                            }}
-                        />
-                    </View>
-                </Right>
-            </ListItem>
-        </Swipeout>
+                                    //     message: "Hello there",
+                                    //     description: "successfuly deleted " + `${item.pName}`,
+                                    //     type: "success",
+                                    // })
+                                }}
+                            />
+                        </View>
+                    </Right>
+                </ListItem>
+            </Swipeout>
         );
-    
-      };
+
+    };
     keyExtractor = (item, index) => index.toString()
     render() {
         const swipeSettings = {
             autoClose: true,
             onClose: (secId, rowId, direaction) => {
-      
+
             }, onOpen: (secId, rowId, direaction) => {
-      
+
             },
             left: [
-              {
-                onPress: () => {
-      
-                },
-                text: 'Update', type: 'update',backgroundColor:'orange'
-              }, {
-                onPress: () => {
-                    this.deleteData(item.eId); showMessage({
+                {
+                    onPress: () => {
+                        this.updateData(item.eId);
+
+                    },
+                    text: 'Update', type: 'update', backgroundColor: 'orange'
+                }, {
+                    onPress: () => {
+                        this.deleteData(item.eId); showMessage({
                             message: "Hello there",
                             description: "successfuly deleted " + `${item.eDate}`,
                             type: "success",
                         })
-                },
-                text: 'Delete', type: 'delete'
-              }
+                    },
+                    text: 'Delete', type: 'delete'
+                }
             ],
             // rowId?
             sectionId: 1
-      
-          };
+
+        };
         let { isLoading } = this.state
         const datas = {
             labels: ["s"],
@@ -385,10 +438,10 @@ export class EliminationChart extends Component {
 
                                     // renderItem={this.renderItem}
                                     renderItem={this.renderItem}
-                                    // renderItem={({ item }) =>
-                                    
-                                       
-                                    // }
+                                // renderItem={({ item }) =>
+
+
+                                // }
                                 />
                             </SafeAreaView>
                         </View>
@@ -416,31 +469,61 @@ export class EliminationChart extends Component {
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
                             {/* <View style={{ flex: 1 , alignItems: 'center',  }}> */}
-                            <View style={{ flex: 1 }}>
-                                <CalendarStrip
+                            {this.state._updateRbSheet == 0 ?
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
 
-                                    selectedDate={this.state.selectedDate}
-                                    onPressDate={(date) => {
-                                        this.setState({ selectedDate: date });
+                                        selectedDate={this.state.selectedDate}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
 
-                                    }}
-                                    onPressGoToday={(today) => {
-                                        this.setState({ selectedDate: today });
-                                    }}
-                                    onSwipeDown={() => {
-                                        // alert('onSwipeDown');
-                                    }}
-                                    markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
-                                />
-                                {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
-                                <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                        <Text style={styles.buttonText}>Add </Text>
-                                    </TouchableOpacity>
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={[]}
+                                    />
+                                    {/* <TextInput /> */}
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                        <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                            <Text style={styles.buttonText}>Add </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View> :
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
+                            
+                                        selectedDate={this.state.update_date}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
+
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={[]}
+                                    // markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                    />
+                                    {/* <TextInput /> */}
+                                    {/* <TextInput autoFocus={false} value={this.state.testing} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput> */}
+                                    <TextInput autoFocus={false} value={this.state.testing} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                        <TouchableOpacity onPress={() => this.updateData()} style={styles.buttonUpdate}>
+                                            <Text style={styles.buttonText}>Update </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
                                 </View>
+                            }
 
-                            </View>
                         </ScrollView>
                     </RBSheet>
                 </SafeAreaView>
@@ -535,6 +618,16 @@ export class EliminationChart extends Component {
         margin: 5
     }, button: {
         backgroundColor: "red",
+        padding: 12,
+        borderRadius: 25,
+        // width:'200',
+        width: 340,
+        alignItems: 'center',
+        // justifyContent: 'center',
+        marginTop: 0,
+        margin: 20,
+    }, buttonUpdate: {
+        backgroundColor: "orange",
         padding: 12,
         borderRadius: 25,
         // width:'200',

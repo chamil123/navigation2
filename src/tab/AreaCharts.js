@@ -60,7 +60,7 @@ export class AreaCharts extends Component {
                             }
                         },
                         boundaryGap: true,
-                        data: ['0','1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+                        data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
                     }
                 ],
                 yAxis: [
@@ -221,47 +221,78 @@ export class AreaCharts extends Component {
         }
     };
     getData() {
-        let temp2 = [];
-        const self = this;
-        db.listWeghtData(this.state.dbs).then((data) => {
+
+        db.listBabyDetails(this.state.dbs).then((data) => {
             let result = data;
             if (result == 0) {
                 this.setState({
                     isLoading: false,
+
                 });
             } else {
-                var temp2 = [];
-                var temp3 = [];
-                var temp4 = [];
-                var temp5 = [];
-                var temp6 = [];
-                var temp7 = [];
-                var temp8 = [];
-                var _monthDate;
-                const dataClone = { ...self.state.data }
+                let { bbGender, } = this.props
                 for (var i = 0; i < result.length; i++) {
-                    temp2.push(parseFloat([result[i].wlSam]));
-                    temp4.push(parseFloat([result[i].wlMan]));
-                    temp5.push(parseFloat([result[i].wlNw]));
-                    temp6.push(parseFloat([result[i].wlOw]));
-                    temp7.push(parseFloat([result[i].wlhw]));
-                    temp8.push(parseFloat([result[i].wlbaby]));
+                    bbGender = result[i].bbGender;
+
                 }
-                dataClone.series[0].data = temp2;
-                dataClone.series[1].data = temp4;
-                dataClone.series[2].data = temp5;
-                dataClone.series[3].data = temp6;
-                dataClone.series[4].data = temp7;
-                dataClone.series[5].data = temp8;
-                self.setState({
-                    isLoading: false,
-                    data: dataClone,
-                });
+                let temp2 = [];
+                const self = this;
+                let dbtable;
+                // WightvsLength
+                if (bbGender == "Girl") {
+                    dbtable = 'Wightgirl';
+                } else if (bbGender == "Boy") {
+                    dbtable = 'WightvsLength';
+                }
+
+                db.listWeghtData(this.state.dbs, dbtable).then((data) => {
+                    let result = data;
+                    if (result == 0) {
+                        this.setState({
+                            isLoading: false,
+                        });
+                    } else {
+                        var temp2 = [];
+                        var temp3 = [];
+                        var temp4 = [];
+                        var temp5 = [];
+                        var temp6 = [];
+                        var temp7 = [];
+                        var temp8 = [];
+                        var _monthDate;
+                        const dataClone = { ...self.state.data }
+                        for (var i = 0; i < result.length; i++) {
+                            temp2.push(parseFloat([result[i].wlSam]));
+                            temp4.push(parseFloat([result[i].wlMan]));
+                            temp5.push(parseFloat([result[i].wlNw]));
+                            temp6.push(parseFloat([result[i].wlOw]));
+                            temp7.push(parseFloat([result[i].wlhw]));
+                            temp8.push(parseFloat([result[i].wlbaby]));
+                        }
+                        dataClone.series[0].data = temp2;
+                        dataClone.series[1].data = temp4;
+                        dataClone.series[2].data = temp5;
+                        dataClone.series[3].data = temp6;
+                        dataClone.series[4].data = temp7;
+                        dataClone.series[5].data = temp8;
+                        self.setState({
+                            isLoading: false,
+                            data: dataClone,
+                        });
+
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
 
             }
         }).catch((err) => {
             console.log(err);
         })
+
+
+
+
 
     }
     render() {
@@ -278,7 +309,7 @@ export class AreaCharts extends Component {
                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
                     <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="Grouth Chart" navigation={this.props.navigation} bdcolor='#F2F2F2' />
                     <ECharts
-                        option={this.state.data} height={300}
+                        option={this.state.data} height={300} 
                     />
                 </SafeAreaView>
             );

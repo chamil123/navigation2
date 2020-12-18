@@ -143,15 +143,15 @@ export class WeightGainDetailsAdd extends Component {
                         </View>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('WightGainBarchart')} style={styles.button}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ backgroundColor: 'gray', padding: 10, borderRadius: 35 }}>
+                                <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                     <Icon
                                         name='bar-chart'
                                         type='font-awesome'
                                         color='red'
-                                        iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                        iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'black' }}
                                     />
                                 </View>
-                                <Text style={{ color: 'black', padding: 7 }}>History</Text>
+                                <Text style={{ color: 'white', padding: 7 }}>History</Text>
 
                             </View>
 
@@ -312,7 +312,7 @@ export class WeightGainDetailsAdd extends Component {
 
 
     }, button: {
-        backgroundColor: "white",
+        backgroundColor: "red",
         padding: 7,
         borderRadius: 25,
         marginTop: 18,

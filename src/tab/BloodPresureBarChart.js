@@ -549,19 +549,19 @@ export class BloodPresureBarChart extends Component {
         </View>
         <Animatable.View style={styles.footer} animation="fadeInLeft">
 
-          <View style={{ padding: 5 }}>
+          <View style={{ padding: 5,marginBottom:30 }}>
             <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>History</Text>
 
             <FlatList
 
-              style={{ backgroundColor: '#ffc15a' }}
+              style={{ backgroundColor: '#ffc15a',marginBottom:20 }}
               keyExtractor={this.keyExtractor}
               ListEmptyComponent={this.emptyComponent}
               data={this.state._list_bpData}
               // renderItem={this.renderItem}
 
               renderItem={({ item }) => <ListItem
-                style={{ height: 50, paddingTop: 15, borderBottomColor: 'white' }}
+                style={{  paddingTop: 8,paddingBottom:8, borderBottomColor: 'white' }}
 
               >
                 <Left >
@@ -569,7 +569,7 @@ export class BloodPresureBarChart extends Component {
                     name='heartbeat'
                     type='font-awesome'
                     color='red'
-                    iconStyle={{ fontSize: 20, paddingTop: 15, paddingBottom: 15, paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffa726', borderRadius: 8, }}
+                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffa726', borderRadius: 8, }}
                     onPress={() => console.log('hello')} />
                 </Left>
 
@@ -683,6 +683,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     // paddingVertical: 30,
     //  paddingHorizontal: 20
+    
   }, header: {
     flex: 3,
     // backgroundColor: '#ffc15a'

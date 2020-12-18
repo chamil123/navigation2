@@ -91,6 +91,7 @@ export class PeriodAgenda extends Component {
                 _pcatId = products[i].pCatId
                 _pDescription = products[i].pDescription
                 _pTime = products[i].pTime
+                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+_pdate)
                 if (_pcatId == 1) {
                     // let data = {
                     //     _title: " " + _pDescription + "" + _pdate,
@@ -170,7 +171,7 @@ export class PeriodAgenda extends Component {
                         cn.testPush(data);
                     }
                     // markedDates = { ...markedDates, ...{ selected }, selectedColor: "#ffc107", };
-                    markedDates = { marked: true, dotColor: '#6a1b9a', activeOpacity: 0,...{ selected }, selectedColor: "#ffc107", };
+                    markedDates = { marked: true, dotColor: '#6a1b9a',  };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,
@@ -188,6 +189,7 @@ export class PeriodAgenda extends Component {
                     var babayBirgDay = this.state._babybDate;
                     if (babayBirgDay != "") {
                         let nextVaaccination = moment(babayBirgDay).add(_pdate, 'day').format('YYYY-MM-DD');
+                  
                         let data = {
                             _title: "Yor " + _pDescription + " vacination date is " + nextVaaccination,
                             _bigText: "2 days more ",

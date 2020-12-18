@@ -8,9 +8,11 @@ import { TextInput } from 'react-native-paper';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Badge } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob'
+import FlashMessage, { showMessage } from "react-native-flash-message";
+
 // import RNFetchBlob from 'react-native-fetch-blob';
 import { BarIndicator } from 'react-native-indicators';
 const options = {
@@ -38,7 +40,7 @@ export class MemberProfile extends Component {
 
     }
   }
-  InputUsers = () => {
+  InputUsers() {
     const { TextInputID } = this.state;
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
@@ -62,12 +64,20 @@ export class MemberProfile extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        Alert.alert(responseJson);
-
-
+        // Alert.alert(responseJson);
+        showMessage({
+          message: "Successfuly Updated ",
+          // description: "successfuly deleted ",
+          type: "success",
+        })
       }).catch((error) => {
         console.error(error);
       })
+    // showMessage({
+    //   message: "Hello there",
+    //   description: "successfuly deleted ",
+    //   type: "success",
+    // });
   }
   async componentDidMount() {
     const myArray = await AsyncStorage.getItem('memberNames');
@@ -155,7 +165,7 @@ export class MemberProfile extends Component {
     });
   };
   async uploadPhoto() {
-   
+
     var aaaa = this.state.dataa;
     const myArray = await AsyncStorage.getItem('memberNames');
     RNFetchBlob.fetch('POST', 'https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/upload.php', {
@@ -204,6 +214,7 @@ export class MemberProfile extends Component {
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <CustomHeader bgcolor='#fbb146' title="Home detail" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
+          <FlashMessage duration={1000} />
           {/* <View style={styles.header}>
 
             <View style={styles.userInfoSection}>
@@ -254,6 +265,8 @@ export class MemberProfile extends Component {
 
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bottom: 90 }}>
               {/* <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }} style={{ width: 50, height: 50 }} /> */}
+
+              
               <Avatar
                 rounded
                 showEditButton
@@ -264,17 +277,22 @@ export class MemberProfile extends Component {
                 }
                 containerStyle={{
                   margin: 10, shadowColor: 'rgba(0,0,0, .4)', // IOS
-                  shadowOffset: { height: 3, width: 8 }, borderWidth: 10, borderColor: 'white', // IOS
+                  shadowOffset: { height: 3, width: 8 }, borderWidth: 6, borderColor: 'white', // IOS
                   shadowOpacity: 3, // IOS
                   shadowRadius: 5, elevation: 8
                 }}
                 onEditPress={() => console.log('edit button pressed')}
                 onLongPress={() => console.log('component long pressed')}
-                onPress={() => this.selectPhoto()}
+                // onPress={() => this.selectPhoto()}
                 editButton={{
                   name: 'edit'
                 }}
-              />
+              showAccessory
+              onAccessoryPress={() =>  this.selectPhoto()}
+              accessory={{ size:33,style: { backgroundColor: 'gray', height: 42,paddingTop:3, width: 42, borderRadius: 25,alignItems:'center',alignContent:'center' } }}
+              >
+              
+              </Avatar>
               <View style={{ marginLeft: 0, flexDirection: 'column', marginBottom: -150 }}>
                 <Title style={styles.title} >
 
@@ -283,7 +301,9 @@ export class MemberProfile extends Component {
                   {this.state.TextInputEmail}
                 </Caption>
               </View>
+
             </View>
+
             <View style={{
               flex: 1, justifyContent: 'center', paddingHorizontal: 15,
               paddingVertical: 0,
@@ -311,7 +331,13 @@ export class MemberProfile extends Component {
               <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
 
               <TextInput autoFocus={false} value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
-              <TouchableOpacity style={{ marginTop: 30 }} onPress={this.InputUsers} >
+              <TouchableOpacity style={{ marginTop: 30 }}
+                onPress={() => {
+                  this.InputUsers();
+                }}
+
+
+              >
                 <LinearGradient colors={['#fbb146', '#f78a2c']}
                   // '#ffd600',
                   // locations={[1,0.3,0.5]}

@@ -176,7 +176,7 @@ export class LabourRoomPacking extends Component {
                             // renderItem={this.renderItem}
 
                             renderItem={({ item }) => <ListItem
-                                style={{ height: 60, paddingTop: 30 }}
+                                style={{  paddingTop: 8,paddingBottom:8 }}
                                 onPress={() => {
                                     this.getData(item.lId, item.lStatus);
 
@@ -189,18 +189,18 @@ export class LabourRoomPacking extends Component {
                                                 name='check-circle'
                                                 type='font-awesome'
                                                 color='#009688'
-                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                iconStyle={{ fontSize: 25, paddingTop:5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </Left> : <Left>
                                             <Icon
                                                 name='check-circle'
                                                 type='font-awesome'
                                                 color='#fff'
-                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
+                                                iconStyle={{ fontSize: 25, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </Left>
                                 }
-                                <Body style={{ marginLeft: -200 }}>
+                                <Body style={{ marginLeft: -180 }}>
 
                                     <Text>{item.lName}</Text>
                                     <Text style={styles.dateText}>{
@@ -208,7 +208,7 @@ export class LabourRoomPacking extends Component {
                                             item.lDate : ''
                                     }</Text>
                                 </Body>
-                                <Right>
+                                <Right style={{paddingHorizontal:5}}>
 
                                     <Switch
                                         disabled={true}

@@ -33,7 +33,10 @@ const _today = moment().format(_format);
 const screenWidth = Dimensions.get("window").width;
 const labels = ["1st month", , "3rd month ", "5thmonth", "7th month", "9th month"];
 
-var minumumDate = moment(_today).subtract(277, 'day').format('YYYY-MM-DD');
+const nineMonth = moment(_today).subtract(9, 'month');
+var minumumDate = moment(nineMonth).subtract(7, 'day').format('YYYY-MM-DD');
+
+// var minumumDate = moment(_today).subtract(277, 'day').format('YYYY-MM-DD');
 
 const customStyles = {
     stepIndicatorSize: 20,
@@ -78,6 +81,7 @@ export class EDDCalculator extends Component {
             _lastPeriodDate: '',
             isLoading: true,
             _availabeledd: 0,
+            _minimumDate: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -112,8 +116,10 @@ export class EDDCalculator extends Component {
 
             // eddDate = moment(plastdate).add(277, 'day').format('YYYY-MM-DD');
             const end = moment(plastdate, 'YYYY-MM-DD');
+
             const range = moment.range(start, end);
             const range2 = range.snapTo('day');
+
             compltedMonths = ((277 - range2.diff('days')) / 30).toFixed(0);
             compltedWeeks = ((277 - range2.diff('days')) / 7).toFixed(0);
             this.setState({
@@ -124,8 +130,13 @@ export class EDDCalculator extends Component {
                 isLoading: false,
             });
 
-            let lastPdate = moment(plastdate).subtract(277, 'day').format('YYYY-MM-DD');
-            const range3 = moment.range(lastPdate, start);
+            const nineMonth = moment(plastdate).subtract(9, 'month');
+            const eddDate = moment(nineMonth).subtract(6, 'day').format('YYYY-MM-DD');
+
+
+            // let lastPdate = moment(plastdate).subtract(277, 'day').format('YYYY-MM-DD');
+
+            const range3 = moment.range(eddDate, start);
             const range4 = range3.snapTo('day');
 
             for (var i = 0; i < 41; i++) {
@@ -135,9 +146,10 @@ export class EDDCalculator extends Component {
                     this.setState({
                         abd: i,
                         _compltedWeeks: parseFloat(range4.diff('days')),
-                        _lastPeriodDate: lastPdate,
+                        _lastPeriodDate: eddDate,
                         _availabeledd: availabeledd,
                         isLoading: false,
+
                     });
                 }
             }
@@ -160,15 +172,15 @@ export class EDDCalculator extends Component {
         // });
         var dates = this.state.date;
 
-        // console.log(">?????????????????????????????????????????? : "+dates);
-        var formattedDate = moment(dates).format("YYYY-MM-DD")
 
+        var formattedDate = moment(dates).format("YYYY-MM-DD");
 
 
         // const minumumDate = moment(_today).subtract(278, 'day').format('YYYY-MM-DD');
 
         if (formattedDate > minumumDate) {
-            const eddDate = moment(formattedDate).add(277, 'day').format('YYYY-MM-DD');
+            const nineMonth = moment(formattedDate).add(9, 'month');
+            const eddDate = moment(nineMonth).add(6, 'day').format('YYYY-MM-DD');
             let data = {
                 pName: eddDate,
                 pDescription: 'Estimated Delivery Date',
@@ -226,7 +238,6 @@ export class EDDCalculator extends Component {
                 availabeledd = 0;
             })
         } else {
-
         }
 
 
@@ -260,7 +271,7 @@ export class EDDCalculator extends Component {
     get avatarImage() {
         switch (this.state.abd) {
             case 0:
-                return require('../images/baby/1.1.jpg');
+                return require('../images/baby/2.jpg');
             case 1:
                 return require('../images/baby/2.jpg');
             case 2:
@@ -377,7 +388,7 @@ export class EDDCalculator extends Component {
                     <View style={styles.header}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estimated Date of Delivery (EDD)</Text>
-                            <Text style={{ color: 'white',marginTop:-3 }}>Pregnancy Due Date Calculator</Text>
+                            <Text style={{ color: 'white', marginTop: -3 }}>Pregnancy Due Date Calculator</Text>
                         </View>
                         {
 
@@ -444,115 +455,115 @@ export class EDDCalculator extends Component {
                                         labels={labels}
 
                                     /></View>
-                                    <View >
-                                {
+                                <View >
+                                    {
 
-                                    this.state._availabeledd == 1 ?
-                                        this.state._eddDateCount > 0 ?
-                                            <View style={styles.container}>
+                                        this.state._availabeledd == 1 ?
+                                            this.state._eddDateCount > 0 ?
+                                                <View style={styles.container}>
 
-                                                <Card style={[styles.periodcard]}>
+                                                    <Card style={[styles.periodcard]}>
 
-                                                    <View style={{ flexDirection: 'row', paddingTop: 5, paddingLeft: 5, paddingRight: 5 }}>
+                                                        <View style={{ flexDirection: 'row', paddingTop: 5, paddingLeft: 5, paddingRight: 5 }}>
 
 
-                                                        <View >
-                                                            <View style={{ marginLeft: 8, flexDirection: 'column' }}>
-                                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                    <View style={{ marginTop: 10, marginBottom: -10 }}>
-                                                                        <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Gestural Age</Text>
-                                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <View >
+                                                                <View style={{ marginLeft: 8, flexDirection: 'column' }}>
+                                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                                        <View style={{ marginTop: 10, marginBottom: -10 }}>
+                                                                            <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Gestural Age</Text>
+                                                                            <View style={{ flexDirection: 'row' }}>
 
-                                                                            <Icon
-                                                                                name='calendar'
-                                                                                type='font-awesome'
+                                                                                <Icon
+                                                                                    name='calendar'
+                                                                                    type='font-awesome'
 
-                                                                                iconStyle={{ fontSize: 17, paddingRight: 0, paddingLeft: 0, marginTop: 5, color: 'green' }}
-                                                                            />
+                                                                                    iconStyle={{ fontSize: 17, paddingRight: 0, paddingLeft: 0, marginTop: 5, color: 'green' }}
+                                                                                />
 
-                                                                            <Text style={{ color: 'green', paddingTop: 0, paddingLeft: 8, fontSize: 20, fontWeight: 'bold' }}>{
-                                                                                this.state._availabeledd == 1 ?
-                                                                                    this.state._compltedWeeks : 0
+                                                                                <Text style={{ color: 'green', paddingTop: 0, paddingLeft: 8, fontSize: 20, fontWeight: 'bold' }}>{
+                                                                                    this.state._availabeledd == 1 ?
+                                                                                        this.state._compltedWeeks : 0
 
-                                                                            } days</Text>
+                                                                                } days</Text>
+                                                                            </View>
+                                                                            {/* <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text> */}
                                                                         </View>
-                                                                        {/* <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold' }}>{this.state.pName}</Text> */}
+
+
                                                                     </View>
 
-
+                                                                    <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks / 277)} height={5} borderRadius={5} width={250} />
+                                                                    <View>
+                                                                        {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
+                                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Last Period Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>{
+                                                                            this.state._availabeledd == 1 ?
+                                                                                this.state._lastPeriodDate : 0
+                                                                        }</Text></Text>
+                                                                    </View>
                                                                 </View>
+                                                            </View>
+                                                            <View style={{ flexDirection: 'column' }}>
+                                                                <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 10 }}>Before Due date</Text>
+                                                                <Text style={{ fontSize: 50, marginBottom: -10, marginTop: -10, color: '#424242' }}>{
+                                                                    this.state._availabeledd == 1 ?
+                                                                        this.state._eddDateCount
+                                                                        : 0
+                                                                }</Text>
+                                                                <Text>Days left</Text>
 
-                                                                <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks / 277)} height={5} borderRadius={5} width={250} />
+                                                            </View>
+
+                                                        </View>
+
+                                                        <View style={styles.greenBar}>
+                                                            {/* calendar-alt */}
+                                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                                 <View>
-                                                                    {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
-                                                                    <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Last Period Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>{
+                                                                    <Text style={{ color: 'white' }}>Estimated delivery date <Text style={{ color: 'black', fontWeight: 'bold' }}> {
                                                                         this.state._availabeledd == 1 ?
-                                                                            this.state._lastPeriodDate : 0
+                                                                            this.state._estimatedDate
+                                                                            : 0
                                                                     }</Text></Text>
                                                                 </View>
-                                                            </View>
-                                                        </View>
-                                                        <View style={{ flexDirection: 'column' }}>
-                                                            <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 10 }}>Before Due date</Text>
-                                                            <Text style={{ fontSize: 50, marginBottom: -10, marginTop: -10, color: '#424242' }}>{
-                                                                this.state._availabeledd == 1 ?
-                                                                    this.state._eddDateCount
-                                                                    : 0
-                                                            }</Text>
-                                                            <Text>Days left</Text>
+                                                                <View>
+                                                                    <View style={{ backgroundColor: 'white', padding: 4, borderRadius: 4, marginRight: 5 }}>
+                                                                        <Icon
+                                                                            name='calendar'
+                                                                            type='font-awesome'
+                                                                            color='red'
+                                                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: '#90a4ae' }}
+                                                                        />
+                                                                    </View>
 
-                                                        </View>
-
-                                                    </View>
-
-                                                    <View style={styles.greenBar}>
-                                                        {/* calendar-alt */}
-                                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                            <View>
-                                                                <Text style={{ color: 'white' }}>Estimated delivery date <Text style={{ color: 'black', fontWeight: 'bold' }}> {
-                                                                    this.state._availabeledd == 1 ?
-                                                                        this.state._estimatedDate
-                                                                        : 0
-                                                                }</Text></Text>
-                                                            </View>
-                                                            <View>
-                                                                <View style={{ backgroundColor: 'white', padding: 4, borderRadius: 4, marginRight: 5 }}>
-                                                                    <Icon
-                                                                        name='calendar'
-                                                                        type='font-awesome'
-                                                                        color='red'
-                                                                        iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: '#90a4ae' }}
-                                                                    />
                                                                 </View>
-
                                                             </View>
+
                                                         </View>
 
+
+                                                    </Card>
+
+
+                                                </View>
+                                                :
+                                                <View style={styles.container}>
+                                                    <View style={{ height: 145, }}>
+                                                        <Text style={{ fontWeight: 'normal', fontSize: 40, color: '#fbb146' }}>  Congratulations</Text>
                                                     </View>
-
-
-                                                </Card>
-
-
-                                            </View>
+                                                </View>
                                             :
                                             <View style={styles.container}>
-                                                <View style={{ height: 145, }}>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 40, color: '#fbb146' }}>  Congratulations</Text>
+                                                <View style={{ height: 145 }}>
+                                                    {/* <Text>adasda</Text> */}
                                                 </View>
                                             </View>
-                                        :
-                                        <View style={styles.container}>
-                                            <View style={{ height: 145 }}>
-                                                {/* <Text>adasda</Text> */}
-                                            </View>
-                                        </View>
-                                }
+                                    }
                                 </View>
-                                <View style={{ position: 'absolute', paddingTop:330, justifyContent: 'center', alignItems: 'center', paddingLeft: 23 }}>
+                                <View style={{ position: 'absolute', paddingTop: 330, justifyContent: 'center', alignItems: 'center', paddingLeft: 23 }}>
                                     <WaveIndicator color='#fbb146' size={350} />
                                 </View>
-                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10,marginBottom:40 }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 40 }}>
                                     {/* <AnimatedCircularProgress
                                     size={290}
                                     rotation={0}
@@ -683,7 +694,7 @@ export class EDDCalculator extends Component {
                                     date={this.state.date}
                                     // minimumDate={_today}
 
-                                    minimumDate={new Date(minumumDate)}
+                                    minimumDate={minumumDate}
                                     maximumDate={new Date(_today)}
                                     // maxDate={"2020-10-20"}
                                     style={{ marginBottom: 10 }}
@@ -727,7 +738,7 @@ export class EDDCalculator extends Component {
     }, header: {
         flex: 1,
         backgroundColor: '#fbb146',
-        marginBottom:25,
+        marginBottom: 25,
         // justifyContent: 'center',
         // alignItems: 'center',
     }, backgroundImage: {

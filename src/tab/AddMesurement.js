@@ -43,26 +43,52 @@ export class AddMesurement extends Component {
     const { TextInpuPbValue } = this.state;
     const { TextInpuLValue } = this.state;
 
+    db.listBabyDetails(this.state.dbs).then((data) => {
+      let result = data;
+      if (result == 0) {
+        this.setState({
+          isLoading: false,
+        });
+      } else {
+        let { bbGender } = this.props
+        for (var i = 0; i < result.length; i++) {
+          bbGender = result[i].bbGender;
+        }
+        let dbtable;
+        if (bbGender == "Girl") {
+          dbtable = 'Wightgirl';
+        } else if (bbGender == "Boy") {
+          dbtable = 'WightvsLength';
+        }
+        let data = {
+          _weight: parseFloat(this.state.TextInpuPbValue),
+          _month: parseInt(this.state.TextInpuLValue),
+          dbName: dbtable
+        }
+        if (TextInpuPbValue != '' && TextInpuLValue != '') {
 
-    let data = {
-      _weight: parseFloat(this.state.TextInpuPbValue),
-      _month: parseInt(this.state.TextInpuLValue),
-    }
-    if (TextInpuPbValue != '' && TextInpuLValue != '') {
+          db.addGrouthTracker(this.state.dbs, data).then((result) => {
+            this.props.navigation.navigate('AreaChart');
+            //   this.getData();
+          }).catch((err) => {
+            console.log(err);
+          })
+        } else {
+          showMessage({
+            message: "Input Fail",
+            description: "Fields can not be empty",
+            backgroundColor: 'red'
+          })
+        }
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
 
-      db.addGrouthTracker(this.state.dbs, data).then((result) => {
-        this.props.navigation.navigate('AreaChart');
-        //   this.getData();
-      }).catch((err) => {
-        console.log(err);
-      })
-    } else {
-      showMessage({
-        message: "Input Fail",
-        description: "Fields can not be empty",
-        backgroundColor: 'red'
-      })
-    }
+
+
+
+
   }
   render() {
     if (this.state.isLoading) {
@@ -80,7 +106,7 @@ export class AddMesurement extends Component {
           <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
             <View style={{ marginTop: 0, marginLeft: 20 }}>
               <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-              <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Weight vs Length chart</Text>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Weight chart</Text>
               {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>

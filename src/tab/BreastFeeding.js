@@ -16,6 +16,7 @@ import Database from '../Database';
 import *as Animatable from 'react-native-animatable';
 import DatePicker from 'react-native-date-picker';
 import { BarIndicator } from 'react-native-indicators';
+import RadioButtonRN from 'radio-buttons-react-native';
 const db = new Database();
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
@@ -36,6 +37,7 @@ export class BreastFeeding extends Component {
             isLoading: true,
             date: new Date(),
             dbs: '',
+            _radiobuttonValue: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -64,11 +66,12 @@ export class BreastFeeding extends Component {
                 this.RBSheet.open();
 
             } else {
-                let { babyName, babybDate, babyWeght } = this.props
+                let { babyName, babybDate, babyWeght, bbGender } = this.props
                 for (var i = 0; i < result.length; i++) {
                     babyName = result[i].bName;
                     babybDate = result[i].bbDate;
                     babyWeght = result[i].bWeight;
+                    bbGender = result[i].bbGender;
                 }
 
                 this.setState({
@@ -76,6 +79,7 @@ export class BreastFeeding extends Component {
                     _baby_name: babyName,
                     _babybDate: babybDate,
                     _babyWeght: babyWeght,
+                    _radiobuttonValue: bbGender,
                 });
             }
         }).catch((err) => {
@@ -93,6 +97,7 @@ export class BreastFeeding extends Component {
                 bName: this.state.TextInpuBNValue,
                 bWeight: this.state.TextInpuBWValue,
                 bbDate: formattedDate,
+                bbGender: this.state._radiobuttonValue,
             }
             let result = data;
             if (result == 0) {
@@ -112,15 +117,33 @@ export class BreastFeeding extends Component {
                 })
             }
         });
+        let dbtable;
+        if (this.state._radiobuttonValue == "Girl") {
+            dbtable = 'Wightgirl';
+        } else if (this.state._radiobuttonValue == "Boy") {
+            dbtable = 'WightvsLength';
+        }
         let data = {
             _weight: parseFloat(this.state.TextInpuBWValue),
             _month: 0,
+            dbName: dbtable
         }
         db.addGrouthTracker(this.state.dbs, data).then((result) => {
         });
 
     }
+    redioaction() {
+
+    }
     render() {
+        const data = [
+            {
+                label: 'Girl'
+            },
+            {
+                label: 'Boy'
+            }
+        ];
         let { isLoading } = this.state
         if (isLoading) {
             return (
@@ -149,7 +172,7 @@ export class BreastFeeding extends Component {
                                 <Text style={{ fontWeight: 'bold', }}>{this.state._baby_name}</Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth date :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
                                 <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
-                                {/* <Text style={{ color: 'white', paddingTop: 5 }}>Age: <Text style={{ fontWeight: 'bold', color: 'black' }}> 1 </Text> year</Text> */}
+                                <Text style={{ color: 'white', paddingTop: 5 }}>Gender : <Text style={{ fontWeight: 'bold', color: 'black' }}>{this.state._radiobuttonValue}  </Text> </Text>
                                 <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
                                     <Text style={styles.buttonText2}>Edit</Text>
                                 </TouchableOpacity>
@@ -249,7 +272,7 @@ export class BreastFeeding extends Component {
                             <View style={{ justifyContent: 'center', padding: 10, marginTop: 40 }}>
 
                                 <View style={{ marginTop: 0, marginLeft: 5, paddingBottom: 2 }}>
-                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Breastfeeding <Text style={{ color: 'gray', fontWeight: 'normal' }}>position</Text></Text>
+                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Breast feeding <Text style={{ color: 'gray', fontWeight: 'normal' }}>position</Text></Text>
                                     <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, width: 45, marginTop: 10 }}></View>
                                     {/* <Text style={{ color: 'gray',fontSize: 12,marginTop:-4 }}>Atachment</Text> */}
                                 </View>
@@ -361,7 +384,7 @@ export class BreastFeeding extends Component {
                                     showsVerticalScrollIndicator={false}
                                     contentInsetAdjustmentBehavior="automatic"
                                     style={styles.scrollView}>
-                                    <View style={{ flex: 1 }}>
+                                    <View style={{ flex: 1, marginBottom: 30 }}>
                                         <Text style={{ paddingBottom: 5 }}>Select Baby's birthday</Text>
                                         <DatePicker
                                             mode="date"
@@ -371,12 +394,22 @@ export class BreastFeeding extends Component {
                                         />
                                         <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
                                         <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
+                                        <View style={{ marginTop: 10 }}>
+                                            <RadioButtonRN
+                                                data={data}
+                                                box={false}
+
+                                                activeColor={'#fbb146'}
+                                                selectedBtn={(e) => this.setState({ _radiobuttonValue: e.label })}
+                                            />
+                                        </View>
+
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
                                             <Text style={styles.buttonText}>Save Baby' Data</Text>
-
-
                                         </TouchableOpacity>
+
+
 
                                     </View>
                                 </ScrollView>

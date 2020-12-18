@@ -13,7 +13,6 @@ import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 // import { TextInput } from 'react-native-paper';
-
 export class BloodPresureDetailsAdd extends Component {
     constructor(props) {
         super(props);
@@ -31,8 +30,6 @@ export class BloodPresureDetailsAdd extends Component {
             this.loadDbVarable(result);
         })
         this.loadDbVarable = this.loadDbVarable.bind(this);
-
-
     }
     async componentDidMount() {
         const myArray = await AsyncStorage.getItem('memberNames');
@@ -48,24 +45,17 @@ export class BloodPresureDetailsAdd extends Component {
         // this.viewListData();
     }
     DatePickerMainFunctionCall = () => {
-
         let DateHolder = this.state.DateHolder;
-
         if (!DateHolder || DateHolder == null) {
-
             DateHolder = new Date();
             this.setState({
                 DateHolder: DateHolder
             });
         }
-
         //To open the dialog
         this.refs.DatePickerDialog.open({
-
             date: DateHolder,
-
         });
-
     }
     onDatePickedFunction = (date) => {
         this.setState({
@@ -99,23 +89,18 @@ export class BloodPresureDetailsAdd extends Component {
                 message: "Fields cannot be empty",
                 // description: "Username or password incorrect",
                 backgroundColor: 'red',
-
             })
-
         }
-
     }
     render() {
-
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title=""  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentInsetAdjustmentBehavior="automatic"
                     style={styles.scrollView}>
-
                     <View>
                         <View style={{ backgroundColor: '#fbb146', height: 150, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
@@ -125,27 +110,21 @@ export class BloodPresureDetailsAdd extends Component {
                             </View>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: 'gray', padding: 10, borderRadius: 35 }}>
+                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
                                             name='bar-chart'
                                             type='font-awesome'
                                             color='red'
-                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'white' }}
+                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'black' }}
                                         />
                                     </View>
-
-                                    <Text style={{ color: 'black', padding: 7 }}>History</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
                                 </View>
-
-
-
                             </TouchableOpacity>
                         </View>
-
                         <View style={styles.breadthPo1}>
                             {/* <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FIRST YEAR OF LIFE</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View> */}
-
                             <Text style={{ marginVertical: 15 }}>Select date</Text>
                             {/* <DatePicker
                                 mode="date"
@@ -172,26 +151,18 @@ export class BloodPresureDetailsAdd extends Component {
                             <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                                 {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
                                  */}
-
                                 <LinearGradient colors={['#fbb146', '#f78a2c']}
-
                                     start={{ x: 0, y: 1 }}
                                     end={{ x: 1, y: 0.9 }}
-
                                     style={styles.linearGradient}>
                                     <Text style={styles.buttonText}>
                                         Add Blood Presure
-</Text>
+                                    </Text>
                                 </LinearGradient>
-
-
                             </TouchableOpacity>
                         </View>
-
                     </View>
                 </ScrollView>
-
-
                 <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
             </SafeAreaView>
         );
@@ -299,7 +270,7 @@ export class BloodPresureDetailsAdd extends Component {
 
 
     }, button: {
-        backgroundColor: "white",
+        backgroundColor: "red",
         padding: 7,
         borderRadius: 25,
         marginTop: 18,
@@ -323,7 +294,7 @@ export class BloodPresureDetailsAdd extends Component {
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.7,
         shadowRadius: 8,
-        padding:1,
+        padding: 1,
     }, buttonText: {
         fontSize: 18,
         fontFamily: 'Gill Sans',

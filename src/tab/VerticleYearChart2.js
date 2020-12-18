@@ -21,7 +21,8 @@ export class VerticleYearChart2 extends Component {
             _opvp: '',
             _opvp2: '',
             _mmr: '',
-            _je: '', _opvdt: '', _mmr2: '', _opvdt5: '', _hpv1: '', _hpv2: '', _atd: '',
+            _je: '', _opvdt: '', _mmr2: '', _opvdt5: '', _hpv1: '', _hpv2: '', _atd: '', _rb_strt: '',
+            _rb_end: ''
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -57,7 +58,7 @@ export class VerticleYearChart2 extends Component {
         let updatedMarkedDates = '';
         let products = [];
         let _pdate = '';
-        let bcg, opv, opvp, opvp2, mmr, je, opvdt, mmr2, opvdt5, hpv1, hpv2, atd = 0;
+        let bcg, opv, opvp, opvp2, mmr, je, opvdt, mmr2, opvdt5, hpv1, hpv2, atd, rb_strt, rb_end = 0;
         db.listProduct(this.state.dbs).then((data) => {
             products = data;
 
@@ -104,8 +105,12 @@ export class VerticleYearChart2 extends Component {
                             hpv2 = nextVaaccination;
                         } if (_pdate == 4015) {
                             atd = nextVaaccination;
+                        } if (_pdate == 5475) {
+                            rb_strt = nextVaaccination;
+                        } if (_pdate == 16060) {
+                            rb_end = nextVaaccination;
                         }
-
+                        // rb_strt,rb_end
 
                         je, opvdt, mmr2, opvdt5, hpv1, hpv2, atd
                         // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + nextVaaccination);
@@ -125,9 +130,10 @@ export class VerticleYearChart2 extends Component {
                             _opvdt5: opvdt5,
                             _hpv1: hpv1,
                             _hpv2: hpv2,
-                            _atd: atd
+                            _atd: atd,
 
-
+                            _rb_strt:rb_strt,
+                            _rb_end:rb_end
                         });
 
                     }
@@ -163,7 +169,7 @@ export class VerticleYearChart2 extends Component {
 
                         <View style={{ backgroundColor: '#fbb146', height: 175, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                               
+
                                 <Text style={{ fontSize: 21, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Vaccination Chart</Text>
                                 {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                             </View>
@@ -217,18 +223,27 @@ export class VerticleYearChart2 extends Component {
                             <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 5 years- OPV and DT 5th dose</Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvdt5}</Text>
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 10 years (grade 6) – HPV 1st dose after 6 months HPV 2nd dose</Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 10 years (grade 6) – HPV 1st dose </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._hpv1}</Text>
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 11 years(grade 7)- aTd (adult tetanus diphtheria) 6th dose</Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> HPV 2nd dose - after 6 months </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._hpv2}</Text>
+
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 11 years(grade 7)- aTd (adult tetanus diphtheria) 6th dose</Text>
+                            <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._atd}</Text>
 
                         </View>
                         <View style={styles.breadthPo2}>
                             <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FEMALES IN THE CHILD BEARING AGE</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
-                            <Text style={{ paddingTop: 10, paddingBottom: 10 }}>15 - 44 Years- Rubella containing vaccine(MMR)</Text>
-                            <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._atd}</Text>
+                            <Text style={{ paddingTop: 10, }}>15 - 44 Years- Rubella containing vaccine(MMR)</Text>
+                            <Text style={{ paddingLeft: 0,  color: 'red', fontWeight: 'bold' }}>{this.state._rb_strt} - {this.state._rb_end}
+                            </Text>
+                            <Text style={{ paddingBottom: 10, paddingTop: 5, color: 'green' }}>
+                                One dose of MMR vaccine should be given to all females between 15 - 44 years of age,
+                                who have not been vaccinated with rubella containing vaccines earlier
+                            </Text>
+                            {/* <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._atd}</Text> */}
 
                         </View>
                     </View>

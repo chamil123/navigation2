@@ -334,7 +334,7 @@ render() {
                             // renderItem={this.renderItem}
 
                             renderItem={({ item }) => <ListItem
-                            style={{ height: 60, paddingTop: 20 }}
+                            style={{ paddingBottom:10,paddingTop:10 }}
                                 onPress={() => {
                                     this.getData(item.hId, item.hStatus);
 
@@ -347,14 +347,14 @@ render() {
                                                 name='check-circle'
                                                 type='font-awesome'
                                                 color='#009688'
-                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                iconStyle={{ fontSize: 25, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, backgroundColor: '#b2dfdb', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </Left> : <Left>
                                             <Icon
                                                 name='check-circle'
                                                 type='font-awesome'
                                                 color='#fff'
-                                                iconStyle={{ fontSize: 25, paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
+                                                iconStyle={{ fontSize: 25, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, backgroundColor: '#eceff1', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </Left>
                                 }

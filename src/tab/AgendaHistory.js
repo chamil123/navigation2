@@ -4,7 +4,7 @@ import { IMAGE } from '../constants/image';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Icon } from 'react-native-elements'
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+
 import Database from '../Database';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
@@ -121,11 +121,19 @@ export class AgendaHistory extends Component {
 
                                 renderItem={({ item }) => <ListItem
                                     style={{
-                                        paddingTop: 5,
+                                        paddingTop: 8,paddingBottom:8
 
                                     }}
                                 >
-                                    <Left>
+                                     <Left >
+                                            <Icon
+                                                name='file-text'
+                                                type='font-awesome'
+                                                color='#009688'
+                                                iconStyle={{ fontSize: 18, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, backgroundColor: '#b2dfdb', borderRadius: 8, }}
+                                                onPress={() => console.log('hello')} />
+                                        </Left>
+                                    {/* <Left>
                                         <View style={styles.iconMore}>
 
                                             <Icon
@@ -136,7 +144,7 @@ export class AgendaHistory extends Component {
                                                 iconStyle={{ fontSize: 18, paddingTop: 8, paddingBottom: 8, paddingLeft: 11, paddingRight: 11, backgroundColor: '#f3e5f5', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </View>
-                                    </Left>
+                                    </Left> */}
                                     <Body style={{ marginLeft: -140 }}>
                                         <Text style={{ color: 'gray', fontSize: 12 }}>{item.pTime}</Text>
                                         <Text style={styles.dateText}>{item.pName}</Text>
