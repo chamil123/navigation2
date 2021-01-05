@@ -2,22 +2,18 @@ import React, { Component } from 'react';
 import { TextInput, Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { CustomHeader } from '../index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-// import DatePicker from 'react-native-date-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
-// import RBSheet from "react-native-raw-bottom-sheet";
 
-import { DatePickerDialog } from 'react-native-datepicker-dialog';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
 
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
-// import { TextInput } from 'react-native-paper';
-
 export class WeightGainDetailsAdd extends Component {
     constructor(props) {
         super(props);
@@ -38,6 +34,26 @@ export class WeightGainDetailsAdd extends Component {
 
 
     }
+
+    state = {
+        isDatePickerVisible: false,
+    };
+    _showDatePicker = () => this.setState({ isDatePickerVisible: true });
+
+    _hideDatePicker = () => this.setState({ isDatePickerVisible: false });
+
+    _handleDatePicked2 = (date) => {
+
+        this.setState({
+            // dobDate: date,
+            DateText: moment(date).format('YYYY-MM-DD'),
+        });
+        this._hideDatePicker();
+    };
+
+
+
+
     DatePickerMainFunctionCall = () => {
 
         let DateHolder = this.state.DateHolder;
@@ -164,8 +180,7 @@ export class WeightGainDetailsAdd extends Component {
 
                         <Text style={{ marginVertical: 10 }} >Select date</Text>
 
-                        <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
-
+                        <TouchableOpacity onPress={this._showDatePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
                                 {
                                     this.state.DateText != '' ?
@@ -174,8 +189,8 @@ export class WeightGainDetailsAdd extends Component {
                                         <Text style={styles.datePickerText}>{_today}</Text>
                                 }
                             </View>
-
                         </TouchableOpacity>
+
                         <Text style={{ marginVertical: 10 }}> Weight Value </Text>
                         <TextInput
                             keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
@@ -202,9 +217,13 @@ export class WeightGainDetailsAdd extends Component {
                     {/* </View> */}
                 </ScrollView>
 
-                {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
-                <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
-
+                <DateTimePicker
+                    mode="date"
+                    locale="en_GB"
+                    isVisible={this.state.isDatePickerVisible}
+                    onConfirm={this._handleDatePicked2}
+                    onCancel={this._hideDatePicker}
+                />
             </SafeAreaView>
         );
     }

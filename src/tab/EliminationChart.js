@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBac
 import { CustomHeader } from '../index';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
-import FlashMessage, { showMessage } from "react-native-flash-message";
+import { LineChart, BarChart } from "react-native-chart-kit";
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
@@ -11,8 +11,10 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
-import { LineChart, BarChart } from "react-native-chart-kit";
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {
     BarIndicator,
 } from 'react-native-indicators';
@@ -41,6 +43,7 @@ export class EliminationChart extends Component {
             _updateRbSheet: 0,
             testing: '',
             update_date: '',
+            _updateId: '',
             data: {
                 labels: ["."],
 
@@ -68,9 +71,7 @@ export class EliminationChart extends Component {
         this.getData();
         this.getaAllEliminateData();
     }
-    componentDidMount() {
 
-    }
     getData() {
 
         const self = this;
@@ -145,42 +146,31 @@ export class EliminationChart extends Component {
 
         });
     }
-    updateData() {
+    updateListData() {
         this.RBSheet.close();
-        // const _format = 'YYYY-MM-DD'
-        // const _selectedDay = moment(this.state.selectedDate).format(_format);
+        const _format = 'YYYY-MM-DD'
+        const _selectedDay = moment(this.state.selectedDate).format(_format);
+        let data = {
+            eId: this.state._updateId,
+            eDate: _selectedDay.toString(),
+            eTime: moment().format(_formatTime),
+            eText: this.state.TextInputdaValue
 
-        this.setState({
-            isLoading: false,
-            TextInputdaValue: '',
-            _updateRbSheet:0
+        }
+        db.updateElimination(this.state.dbs, data).then((result) => {
+            this.getData();
+            this.getaAllEliminateData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+                _updateRbSheet: 0,
+                _updateId: '',
+            });
+
+        }).catch((err) => {
+            console.log(err);
 
         });
-        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+ this.state.TextInputdaValue+"  / "+_selectedDay.toString());
-
-        // let data = {
-        //     // pId: this.state.pId,
-        //     eDate: _selectedDay.toString(),
-        //     eTime: moment().format(_formatTime),
-        //     eText: this.state.TextInputdaValue
-
-        // }
-
-        // db.addElimination(this.state.dbs, data).then((result) => {
-        //     // console.log(result);
-        //     this.getData();
-        //     this.getaAllEliminateData();
-        //     this.setState({
-        //         isLoading: false,
-        //         TextInputdaValue: '',
-        //         _updateRbSheet:0
-
-        //     });
-
-        // }).catch((err) => {
-        //     console.log(err);
-
-        // });
     }
     getaAllEliminateData() {
 
@@ -190,13 +180,13 @@ export class EliminationChart extends Component {
                 isLoading: false,
                 _list_elimination: results,
             });
-
-
         }).catch((err) => {
             console.log(err);
         })
     }
-    deleteData(id) {
+    deleteData = (id) => {
+
+      
 
         this.setState({
             // isLoading: true
@@ -209,21 +199,23 @@ export class EliminationChart extends Component {
         }).catch((err) => {
             console.log(err);
             this.setState = {
-                // isLoading: false
+                isLoading: false
             }
-        })
+        });
+        showMessage({
+            message: "Simple message",
+            type: "info",
+        });
     }
     updateData(id, date, text) {
         this.setState({
             isLoading: false,
             _updateRbSheet: 1,
-            testing: text,
-           
-            update_date:  moment(date, 'YYYY-MM-DD'),
-            // TextInputdaValue:text
+            TextInputdaValue: text,
+            _updateId: id,
+            update_date: moment(date, 'YYYY-MM-DD'),
         });
         this.RBSheet.open();
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + date);
 
     }
     emptyComponent = () => {
@@ -243,11 +235,16 @@ export class EliminationChart extends Component {
             left: [
                 {
                     onPress: () => {
-                        this.deleteData(item.eId); showMessage({
+                        showMessage({
                             message: "Hello there",
-                            description: "successfuly deleted " + `${item.eId}`,
+                            description: "successfuly deleted ",
                             type: "success",
+                            hideOnPress: false,
                         })
+                        this.deleteData(item.eId)
+                        // Alert.alert("sfssadadad");
+
+
                     },
                     text: 'Delete', type: 'delete',
                 }
@@ -267,18 +264,18 @@ export class EliminationChart extends Component {
             <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
                 <ListItem
                     style={{
-                        paddingTop: 2,
+                        paddingTop: 5,
 
                     }}
                 >
                     <Left>
-                        <View style={styles.iconMore}>
+                        <View >
 
                             <Icon
-                                name='calendar'
-                                type='font-awesome'
-                                color='red'
-                                iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                 name='check-circle'
+                                 type='font-awesome'
+                                 color='#009688'
+                                iconStyle={{ fontSize: 16, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                 onPress={() => console.log('hello')} />
                         </View>
                     </Left>
@@ -291,15 +288,10 @@ export class EliminationChart extends Component {
                             <Icon
                                 type='font-awesome'
                                 color='gray'
-                                iconStyle={{ fontSize: 25 }}
+                                iconStyle={{ fontSize: 22 }}
                                 name="angle-double-right" color="gray"
                                 onPress={() => {
-                                    // this.deleteData(item.eId); showMessage({
 
-                                    //     message: "Hello there",
-                                    //     description: "successfuly deleted " + `${item.pName}`,
-                                    //     type: "success",
-                                    // })
                                 }}
                             />
                         </View>
@@ -311,38 +303,10 @@ export class EliminationChart extends Component {
     };
     keyExtractor = (item, index) => index.toString()
     render() {
-        const swipeSettings = {
-            autoClose: true,
-            onClose: (secId, rowId, direaction) => {
-
-            }, onOpen: (secId, rowId, direaction) => {
-
-            },
-            left: [
-                {
-                    onPress: () => {
-                        this.updateData(item.eId);
-
-                    },
-                    text: 'Update', type: 'update', backgroundColor: 'orange'
-                }, {
-                    onPress: () => {
-                        this.deleteData(item.eId); showMessage({
-                            message: "Hello there",
-                            description: "successfuly deleted " + `${item.eDate}`,
-                            type: "success",
-                        })
-                    },
-                    text: 'Delete', type: 'delete'
-                }
-            ],
-            // rowId?
-            sectionId: 1
-
-        };
+      
         let { isLoading } = this.state
         const datas = {
-            labels: ["s"],
+            labels: ["."],
             datasets: [
                 {
                     data: [50, 30],
@@ -371,7 +335,7 @@ export class EliminationChart extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                    <FlashMessage duration={1000} />
+  
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
@@ -379,18 +343,17 @@ export class EliminationChart extends Component {
                         style={{ position: 'absolute', zIndex: 999 }}
                     >
                     </ActionButton>
+
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentInsetAdjustmentBehavior="automatic"
                         style={styles.scrollView}>
-
-                        {/* <View> */}
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Elimination time</Text>
-                                {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>
+                      
                         <View style={styles.container}>
                             <Card style={[styles.card, { backgroundColor: 'white' }]} >
                                 <View style={{ alignItems: "center", }} >
@@ -402,21 +365,19 @@ export class EliminationChart extends Component {
                                         height={220}
                                         //   yAxisLabel="$"
                                         chartConfig={chartConfig}
-                                        //verticalLabelRotation={30}
                                         showValuesOnTopOfBars={true}
                                         showBarTops={true}
                                         withInnerLines={true}
                                         fromZero={true}
                                         withHorizontalLabels={true}
                                     />
-                                    {/* </View> */}
                                 </View>
 
                             </Card>
                         </View>
-                        {/* </View> */}
 
                         <View style={{ flex: 1, paddingHorizontal: 10, marginTop: -50 }}>
+                        <FlashMessage duration={1000} />
                             <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
                             <SafeAreaView style={{ flex: 1 }}>
                                 <FlatList
@@ -435,17 +396,12 @@ export class EliminationChart extends Component {
                                     scrollEnabled={false}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_elimination}
-
-                                    // renderItem={this.renderItem}
                                     renderItem={this.renderItem}
-                                // renderItem={({ item }) =>
 
-
-                                // }
                                 />
                             </SafeAreaView>
                         </View>
-                        {/* </View> */}
+
                     </ScrollView>
                     <RBSheet
                         ref={ref => {
@@ -468,7 +424,7 @@ export class EliminationChart extends Component {
                             showsVerticalScrollIndicator={false}
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
-                            {/* <View style={{ flex: 1 , alignItems: 'center',  }}> */}
+
                             {this.state._updateRbSheet == 0 ?
                                 <View style={{ flex: 1 }}>
                                     <CalendarStrip
@@ -486,7 +442,6 @@ export class EliminationChart extends Component {
                                         }}
                                         markedDate={[]}
                                     />
-                                    {/* <TextInput /> */}
                                     <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
@@ -497,7 +452,7 @@ export class EliminationChart extends Component {
                                 </View> :
                                 <View style={{ flex: 1 }}>
                                     <CalendarStrip
-                            
+
                                         selectedDate={this.state.update_date}
                                         onPressDate={(date) => {
                                             this.setState({ selectedDate: date });
@@ -510,13 +465,10 @@ export class EliminationChart extends Component {
                                             // alert('onSwipeDown');
                                         }}
                                         markedDate={[]}
-                                    // markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                     />
-                                    {/* <TextInput /> */}
-                                    {/* <TextInput autoFocus={false} value={this.state.testing} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput> */}
-                                    <TextInput autoFocus={false} value={this.state.testing} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
+                                    <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                                        <TouchableOpacity onPress={() => this.updateData()} style={styles.buttonUpdate}>
+                                        <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
                                             <Text style={styles.buttonText}>Update </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -550,8 +502,6 @@ export class EliminationChart extends Component {
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -592,11 +542,8 @@ export class EliminationChart extends Component {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
@@ -604,11 +551,8 @@ export class EliminationChart extends Component {
 
     }, card: {
         height: 220,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
         backgroundColor: "white",
         borderRadius: 15,
-        // padding: 10,
         elevation: 5,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
@@ -620,10 +564,8 @@ export class EliminationChart extends Component {
         backgroundColor: "red",
         padding: 12,
         borderRadius: 25,
-        // width:'200',
-        width: 340,
+        width: '95%',
         alignItems: 'center',
-        // justifyContent: 'center',
         marginTop: 0,
         margin: 20,
     }, buttonUpdate: {
@@ -631,9 +573,8 @@ export class EliminationChart extends Component {
         padding: 12,
         borderRadius: 25,
         // width:'200',
-        width: 340,
+        width: '95%',
         alignItems: 'center',
-        // justifyContent: 'center',
         marginTop: 0,
         margin: 20,
     }, buttonText: {

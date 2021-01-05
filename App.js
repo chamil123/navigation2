@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CustomHeader, CustomDrawerContent } from './src';
 import {
   HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, ProductScreen2, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
-  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda, PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement, PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd, BloodPresureBarChart, BloodPresureDetailsAdd, KickCounterHister, ClinicManagement,AgendaHistory, BathTracking, BathTrackingHistroy
+  CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda, PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement, PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd, BloodPresureBarChart, BloodPresureDetailsAdd, KickCounterHister, ClinicManagement,AgendaHistory, BathTracking, BathTrackingHistroy,ProfileImageView
 } from './src/tab';
 import { NotificationsScreen } from './src/drawer';
 import { RegisterScreen, LoginScreen, Login2Screen,SplashScreen } from './src/auth';
@@ -334,6 +334,8 @@ export default class App extends React.Component {
           <StackApp.Screen name="AgendaHistory" component={AgendaHistory} options={navOptionHandler} />
           <StackApp.Screen name="BathTracking" component={BathTracking} options={navOptionHandler} />
           <StackApp.Screen name="BathTrackingHistroy" component={BathTrackingHistroy} options={navOptionHandler} />
+          <StackApp.Screen name="ProfileImageView" component={ProfileImageView} options={navOptionHandler} />
+          
         </StackApp.Navigator>
       </NavigationContainer>
     );

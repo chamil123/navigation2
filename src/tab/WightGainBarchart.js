@@ -285,7 +285,7 @@ export class WightGainBarchart extends Component {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffc15a' }}>
      
-        <CustomHeader bgcolor='#ffc15a' bcbuttoncolor='#fbb448' title="Home detail" navigation={this.props.navigation} bdcolor='#ffc15a' />
+        <CustomHeader bgcolor='#ffc15a' bcbuttoncolor='#fbb448' title="Weight Gain chart" navigation={this.props.navigation} bdcolor='#ffc15a' />
         <FlashMessage duration={1000} />
         <View style={styles.header}>
 
@@ -316,6 +316,7 @@ export class WightGainBarchart extends Component {
                 shadowOffset: { width: 0, height: 3 },
                 shadowOpacity: 0.7,
                 shadowRadius: 8,
+                marginBottom:50,
 
               }}
               ListEmptyComponent={this.emptyComponent}

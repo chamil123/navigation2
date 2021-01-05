@@ -233,7 +233,7 @@ export class RegisterScreen extends Component {
           if (this.state.errorFound != "false" && this.state.errorFound == "") {
         
             // if (PickerValueHolder !== '') {
-            fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/insert.php', {
+            fetch('http://youandmenest.com/tr_reactnative/insert.php', {
               method: 'post',
               header: {
                 'Accept': 'application/json',
@@ -299,7 +299,7 @@ export class RegisterScreen extends Component {
 
   }
   componentDidMount() {
-    fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/view_role.php', {
+    fetch('http://youandmenest.com/tr_reactnative/view_role.php', {
       method: 'get',
       header: {
         'Accept': 'application/json',

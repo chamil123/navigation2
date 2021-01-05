@@ -34,7 +34,7 @@ const screenWidth = Dimensions.get("window").width;
 const labels = ["1st month", , "3rd month ", "5thmonth", "7th month", "9th month"];
 
 const nineMonth = moment(_today).subtract(9, 'month');
-var minumumDate = moment(nineMonth).subtract(7, 'day').format('YYYY-MM-DD');
+const minumumDate = moment(nineMonth).subtract(7, 'day').format('YYYY-MM-DD');
 
 // var minumumDate = moment(_today).subtract(277, 'day').format('YYYY-MM-DD');
 
@@ -81,7 +81,7 @@ export class EDDCalculator extends Component {
             _lastPeriodDate: '',
             isLoading: true,
             _availabeledd: 0,
-            _minimumDate: '',
+            // _minimumDate: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -244,30 +244,7 @@ export class EDDCalculator extends Component {
 
     }
 
-    updateEdd() {
-        // let result = [];
-        // let _eddIdId;
-        // let availabeledd = 0;
-        // db.getEddDate(this.state.dbs).then((datas) => {
-        //     result = datas;
-        //     for (var i = 0; i < result.length; i++) {
-        //         _eddIdId = result[i].pId
-        //         availabeledd = 1;
-
-        //     }
-        //     if (availabeledd == 1) {
-
-        //         db.deletePeriod(_eddIdId).then((result) => {
-
-
-        //         }).catch((err) => {
-        //         })
-
-        //         availabeledd = 0;
-        //     }
-        //     availabeledd = 0;
-        // })
-    }
+ 
     get avatarImage() {
         switch (this.state.abd) {
             case 0:
@@ -386,7 +363,7 @@ export class EDDCalculator extends Component {
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
 
                     <View style={styles.header}>
-                        <View style={{ marginTop: 0, marginLeft: 20 }}>
+                        <View style={{ marginTop: 0, marginLeft: 20, }}>
                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estimated Date of Delivery (EDD)</Text>
                             <Text style={{ color: 'white', marginTop: -3 }}>Pregnancy Due Date Calculator</Text>
                         </View>
@@ -493,7 +470,7 @@ export class EDDCalculator extends Component {
 
                                                                     </View>
 
-                                                                    <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks / 277)} height={5} borderRadius={5} width={250} />
+                                                                    <Progress.Bar style={{ marginTop: 20, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={(this.state._compltedWeeks / 277)} height={5} borderRadius={5} width={230} />
                                                                     <View>
                                                                         {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
                                                                         <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 4 }}>Last Period Date : <Text style={{ fontSize: 12, fontSize: 12, fontWeight: 'bold', color: 'black' }}>{
@@ -564,25 +541,12 @@ export class EDDCalculator extends Component {
                                     <WaveIndicator color='#fbb146' size={350} />
                                 </View>
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 40 }}>
-                                    {/* <AnimatedCircularProgress
-                                    size={290}
-                                    rotation={0}
-                                    width={5}
-                                    fill={0}
-
-
-                                    tintColor="#f78a2c"
-
-                                    backgroundColor="#cfd8dc">
-                                    {
-                                        (fill) => ( */}
+                                 
 
 
                                     <TouchableOpacity style={styles.button5}
 
-                                    // onPress={() => console.log('hello')}
-
-                                    // onPress={() => this.saveData()}
+                               
 
                                     >
                                         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -594,32 +558,16 @@ export class EDDCalculator extends Component {
                                                 style={{ height: 240, width: 240, borderRadius: 150 }}
                                             >
                                             </Image>
-                                            {/* {
-                                                        this.state._eddDateCount ?
-                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>{this.state._eddDateCount}</Text>
-                                                            :
-                                                            <Text style={{ fontSize: 70, fontWeight: 'bold' }}>0</Text>
-                                                    }
-
-                                                    <Text style={{ fontSize: 20, }}>days left</Text> */}
+                                       
                                         </View>
 
-                                        {/* <Image style={{ width: 75, height: 75, marginLeft: 0, marginTop: 0 }}
-                                            source={IMAGE.ICON_BABY_FOOT2}
-                                            resizeMode="contain"
-                                        /> */}
+                                    
                                     </TouchableOpacity>
                                     {/* )
                                     }
                                 </AnimatedCircularProgress> */}
                                 </View>
-                                {/* <View style={{ justifyContent: 'center', padding: 50, }}>
-
-                                <TouchableOpacity style={styles.button} onPress={() => { this.updateEdd(); this.RBSheet.open() }}>
-                                 
-                                    <Text style={styles.buttonText}>Edit EDD  Date</Text>
-                                </TouchableOpacity>
-                            </View> */}
+                           
 
 
 
@@ -628,27 +576,7 @@ export class EDDCalculator extends Component {
                             </View>
 
                         </ScrollView>
-                        {/* <ActionButton
-
-
-                        renderIcon={active => active ? (<Icon iconStyle={{ fontSize: 18, padding: 8, }} type='font-awesome' name="plus" color='white' />) : (<Icon iconStyle={{ fontSize: 18, padding: 8 }} type='font-awesome' name="plus" color='white' />)}
-                        onPress={() => this.RBSheet.open()}
-                        buttonColor="red"> */}
-                        {/* <ActionButton.Item
-                            buttonColor="#1abc9c"
-                            title="Add New"
-                            onPress={() => this.props.navigation.navigate('AddMesurement')}>
-                            <Icon
-                                type='font-awesome'
-                                color='gray'
-                                iconStyle={{ fontSize: 18, padding: 8 }}
-                                name="plus" color="white"
-
-                            />
-
-                        </ActionButton.Item> */}
-
-                        {/* </ActionButton> */}
+              
                     </View>
                     <RBSheet
                         ref={ref => {
@@ -694,7 +622,7 @@ export class EDDCalculator extends Component {
                                     date={this.state.date}
                                     // minimumDate={_today}
 
-                                    minimumDate={minumumDate}
+                                    minimumDate={new Date(minumumDate)}
                                     maximumDate={new Date(_today)}
                                     // maxDate={"2020-10-20"}
                                     style={{ marginBottom: 10 }}
@@ -738,7 +666,7 @@ export class EDDCalculator extends Component {
     }, header: {
         flex: 1,
         backgroundColor: '#fbb146',
-        marginBottom: 25,
+        marginBottom: 40,
         // justifyContent: 'center',
         // alignItems: 'center',
     }, backgroundImage: {

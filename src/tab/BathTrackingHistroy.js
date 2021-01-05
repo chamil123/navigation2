@@ -78,7 +78,7 @@ export class BathTrackingHistroy extends Component {
                 <Body style={{ marginLeft: -120 }}>
                     <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
                     <Text style={styles.dateText}>{item.btStart}  to {item.btEnd}</Text>
-                    <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text>
+                    {/* <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text> */}
                 </Body>
                 <Right >
                     <View style={styles.iconMore}>

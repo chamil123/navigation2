@@ -5,9 +5,11 @@ import { IMAGE } from '../constants/image';
 import LinearGradient from 'react-native-linear-gradient';
 // import { TextInput } from 'react-native-paper';
 import *as Animatable from 'react-native-animatable';
+import { Button } from 'react-native-elements';
 import Database from '../Database';
 const db = new Database();
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import {
     BallIndicator,
@@ -134,7 +136,7 @@ export class Login2Screen extends Component {
         const { TextInputName } = this.state;
         const { TextInputpassword } = this.state;
 
-        fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/loginCheck.php', {
+        fetch('http://youandmenest.com/tr_reactnative/loginCheck.php', {
             method: 'post',
             header: {
                 'Accept': 'application/json',
@@ -205,23 +207,32 @@ export class Login2Screen extends Component {
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 15, color: 'white' }}>Log in </Text>
                                     <Text style={{ fontSize: 16, color: 'black', marginBottom: 25 }}>Use email to Login</Text>
-                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.1)',padding:25,borderRadius:120}}>
-                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.2)',padding:15,borderRadius:100}}>
-                                        <Image style={{ width: 140, height: 140, marginLeft: 0 }}
-                                            source={IMAGE.ICON_LOG}
-                                            resizeMode="contain"
-                                        />
+                                    <View style={{ backgroundColor: 'rgba(252, 252, 252, 0.1)', padding: 20, borderRadius: 150 }}>
+                                        <View style={{ backgroundColor: 'rgba(252, 252, 252, 0.2)', padding: 15, borderRadius: 120 }}>
+                                            <View style={{ backgroundColor: 'rgba(252, 252, 252, 0.9)', padding: 10, borderRadius: 100 }}>
+                                                <Image style={{ width: 150, height: 150, marginLeft: 0 }}
+                                                    source={IMAGE.ICON_LOGO_MAIN}
+                                                    resizeMode="contain"
+                                                />
+                                            </View>
+                                        </View>
                                     </View>
-                                    </View>
-
                                 </View>
                                 <Animatable.View animation="fadeInUp">
-                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 20 }}>User Name :</Text>
-                                    <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
-                                    <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2 }}>Password :</Text>
-                                    <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
+                                    <Text style={{ color: '#fff', paddingVertical: 5, marginLeft: 2, marginTop: 30 }}>User Name :</Text>
+                                    <View style={{ alignItems: 'center', flexDirection: 'row', borderColor: 'gray', borderWidth: 0.5, borderRadius: 25, backgroundColor: '#F2F2F2', paddingLeft: 10 }}>
+                                        <Icon name="email" size={20} style={{ color: 'gray', paddingRight: 5 }} />
+                                        <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ width: '85%' }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
+                                    </View>
 
-                                    <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 40, }} onPress={this.InputUsers}>
+                                    {/* <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 20 }}>User Name :</Text>
+                                    <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} /> */}
+                                    <Text style={{ color: '#fff', paddingVertical: 5, marginLeft: 2, marginTop: 10 }}>Password :</Text>
+                                    <View style={{ alignItems: 'center', flexDirection: 'row', borderColor: 'gray', borderWidth: 0.5, borderRadius: 25, backgroundColor: '#F2F2F2', paddingLeft: 10 }}>
+                                        <Icon name="briefcase" size={20} style={{ color: 'gray', paddingRight: 5 }} />
+                                        <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ width: '85%' }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
+                                    </View>
+                                    {/* <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 40, }} onPress={this.InputUsers}>
 
                                         <LinearGradient colors={['#fff', '#ffeed5']}
 
@@ -233,7 +244,32 @@ export class Login2Screen extends Component {
                                                 Log in
   </Text>
                                         </LinearGradient>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
+                                    <View style={{ marginBottom: 20, marginTop: 20 }}>
+                                        {/* <Button
+                                            title="Sign In"
+                                            type="Solid"
+                                            raised={true}
+                                            titleStyle={{ color: 'black' }}
+                                            buttonStyle={{
+                                                backgroundColor: 'white',
+                                                borderRadius: 25,
+                                                borderColor: 'white',
+                                                color: 'black', padding: 12,
+                                            }}
+                                            onPress={this.InputUsers}
+
+                                        /> */}
+                                        <Button
+                                            title="Sign In"
+                                            type="outline"
+                                            titleStyle={{ color: 'white' }}
+                                            buttonStyle={{ borderRadius: 25, borderColor: 'white', color: 'white', padding: 12, borderWidth: 1, marginBottom: 20, marginTop: 15 }}
+                                            onPress={this.InputUsers}
+
+                                        />
+                                    </View>
+
 
                                 </Animatable.View>
 

@@ -115,12 +115,17 @@ export class BathTracking extends Component {
       onClose: (secId, rowId, direaction) => {
 
       }, onOpen: (secId, rowId, direaction) => {
-        
+
       },
       left: [
         {
           onPress: () => {
-            this.deleteData(item.btId);
+            this.deleteData(item.btId); showMessage({
+              message: "Hello there",
+              description: "successfuly deleted ",
+              type: "success",
+              hideOnPress: false,
+            })
           },
           text: 'Delete', type: 'delete',
         }
@@ -143,8 +148,7 @@ export class BathTracking extends Component {
             <View >
 
               <Icon
-
-                name='bath'
+                name='check-circle'
                 type='font-awesome'
                 color='#009688'
                 iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
@@ -159,7 +163,7 @@ export class BathTracking extends Component {
           <Body style={{ marginLeft: -120 }}>
             <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{item.btStart}  to {item.btEnd}</Text>
-            <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text>
+            {/* <Text style={{ color: 'gray', fontSize: 12 }}>bath</Text> */}
           </Body>
           <Right >
             <View style={styles.iconMore}>
@@ -168,14 +172,14 @@ export class BathTracking extends Component {
                 color='gray'
                 iconStyle={{ fontSize: 25, padding: 8 }}
                 name="angle-double-right" color="gray"
-                // onPress={() => {
-                //   this.deleteData(item.btId); showMessage({
+              // onPress={() => {
+              //   this.deleteData(item.btId); showMessage({
 
-                //     message: "Success",
-                //     description: "successfuly deleted " + `${item.btDate}`,
-                //     type: "success",
-                //   })
-                // }}
+              //     message: "Success",
+              //     description: "successfuly deleted " + `${item.btDate}`,
+              //     type: "success",
+              //   })
+              // }}
               />
             </View>
           </Right >
@@ -323,7 +327,7 @@ export class BathTracking extends Component {
 
 
 
-          
+
           <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, paddingTop: 10 }}>History</Text>
 
           <FlatList

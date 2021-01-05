@@ -37,18 +37,23 @@ export class LoginScreen extends Component {
               paddingVertical: 0
             }}>
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
-                <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80, color: 'black' }}> Welcome To
+                <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 80,marginBottom:10, color: 'black' }}> Welcome To
 
                 
                 </Text>
                 {/* <Text style={{ color: 'red',fontSize: 35, fontWeight: "bold" }}> <Text style={{ color: 'white',fontSize: 35, fontWeight: "normal", }}>You and</Text>Me</Text> */}
                 {/* <Text style={{ fontSize: 16, color: 'black',marginBottom:15 }}>Enjoy the experience</Text> */}
 
-                <Image style={{ width: 190, height: 220, marginLeft: 0,marginVertical:30 }}
-                  source={IMAGE.ICON_LOGO_MAIN}
-                  resizeMode="contain"
-
-                />
+                <View style={{backgroundColor: 'rgba(252, 252, 252, 0.1)',padding:20,borderRadius:150}}>
+                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.2)',padding:15,borderRadius:120}}>
+                                    <View style={{backgroundColor: 'rgba(252, 252, 252, 0.9)',padding:10,borderRadius:100}}>
+                                        <Image style={{ width: 140, height: 140, marginLeft: 0 }}
+                                            source={IMAGE.ICON_LOGO_MAIN}
+                                            resizeMode="contain"
+                                        />
+                                    </View>
+                                    </View>
+                                    </View>
 
               </View>
               <Animatable.View animation="fadeInLeft">

@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, Image, ImageBackground, TouchableOpacity, Scr
 import { Icon } from 'react-native-elements';
 import { IMAGE } from './constants/image';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { Avatar, Badge } from 'react-native-elements';
 export class CustomDrawerContent extends Component {
   constructor(props) {
     super(props)
@@ -29,7 +29,7 @@ export class CustomDrawerContent extends Component {
     const data = new FormData();
     data.append("get_about", "true");
 
-    return fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
+    return fetch('http://youandmenest.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
       method: 'post',
       body: data,
     })
@@ -66,16 +66,28 @@ export class CustomDrawerContent extends Component {
             source={require('./images/undraw_pilates_gpdb.png')}
             style={{ width: 300, paddingLeft: 30, paddingBottom: 10, paddingTop: 80, backgroundColor: '#fbb146' }}
           >
-            {/* <Icon
-              name='user'
-              type='font-awesome'
-              color='#f78a2c'
-              iconStyle={{ fontSize: 60,borderRadius:60 }}
-              /> */}
-                {/* <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }} style={{ width: 50, height: 50 }} /> */}
-            <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }}
+             
+             <Avatar
+                rounded
+                showEditButton
+                size={90}
+                source={ { uri: "http://youandmenest.com/tr_reactnative/" + this.state.abc } 
+                }
+              
+                onEditPress={() => console.log('edit button pressed')}
+                onLongPress={() => console.log('component long pressed')}
+                onPress={() => this.props.navigation.navigate('ProfileImageView')}
+                editButton={{
+                  name: 'edit'
+                }}
+            
+              >
+              
+              </Avatar>
+
+            {/* <Image onPress={() => this.props.navigation.navigate('ProfileImageView')} source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }}
               style={{ height: 90, width: 90, borderRadius: 60, }}
-            />
+            /> */}
             <Text style={{ color: "white", fontSize: 15, marginVertical: 8 }}>{this.state.userName}</Text>
           </ImageBackground>
 

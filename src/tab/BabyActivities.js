@@ -34,6 +34,9 @@ export class BabyActivities extends Component {
             _list_kcData: [],
             _kick_count: 0,
             increment: 0,
+            update_date: '',
+            _updateRbSheet: 0,
+            _updateId: '',
             dbs: '',
         }
         db.initDB().then((result) => {
@@ -82,7 +85,32 @@ export class BabyActivities extends Component {
 
 
     }
+    updateListData() {
+        this.RBSheet.close();
+        const _format = 'YYYY-MM-DD'
+        const _selectedDay = moment(this.state.selectedDate).format(_format);
+        let data = {
+            baId: this.state._updateId,
+            baDate: _selectedDay.toString(),
+            baTime: moment().format(_formatTime),
+            baText: this.state.TextInputdaValue
 
+        }
+        db.updateBabyActivity(this.state.dbs, data).then((result) => {
+     
+            this.getaAllClickData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+                _updateRbSheet: 0,
+                _updateId: '',
+            });
+
+        }).catch((err) => {
+            console.log(err);
+
+        });
+    }
     getaAllClickData() {
 
         db.listAllBabyActivity(this.state.dbs).then((results) => {
@@ -117,8 +145,8 @@ export class BabyActivities extends Component {
                 <Text >oops! There's no data here!</Text>
             </View>);
     }
-    keyExtractor = (item, index) => index.toString()
-    render() {
+
+    renderItem = ({ item }) => {
         const swipeSettings = {
             autoClose: true,
             onClose: (secId, rowId, direaction) => {
@@ -126,18 +154,103 @@ export class BabyActivities extends Component {
             }, onOpen: (secId, rowId, direaction) => {
 
             },
-            right: [
+            left: [
                 {
                     onPress: () => {
+                        showMessage({
+                            message: "Hello there",
+                            description: "successfuly deleted ",
+                            type: "success",
+                            hideOnPress: false,
+                        })
+                        this.deleteData(item.baId)
+                        // Alert.alert("sfssadadad");
+
 
                     },
-                    text: 'Delete', type: 'delete'
+                    text: 'Delete', type: 'delete',
+                }
+                ,
+                {
+                    onPress: () => {
+                        this.updateData(item.baId, item.baDate, item.baText);
+                    },
+                    text: 'update', type: 'update', backgroundColor: 'orange'
                 }
             ],
             // rowId?
             sectionId: 1
 
         };
+        return (
+            <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+                <ListItem
+                    style={{
+                        paddingTop: 5,
+
+                    }}
+                >
+                    <Left>
+                        <View style={styles.iconMore}>
+
+                            <Icon
+                                name='calendar'
+                                type='font-awesome'
+                                color='#009688'
+                                iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                onPress={() => console.log('hello')} />
+                        </View>
+                    </Left>
+                    <Body style={{ marginLeft: -160 }}>
+                        <Text style={{ color: 'gray', fontSize: 12 }}>{item.baDate}</Text>
+                        <Text style={styles.dateText}>{item.baText} </Text>
+                        <Text style={{ color: 'gray', fontSize: 12 }}>Time : {item.baTime}</Text>
+                    </Body>
+                    <Right>
+                        <View style={styles.iconMore}>
+                        <Icon
+                                type='font-awesome'
+                                color='gray'
+                                iconStyle={{ fontSize: 22 }}
+                                name="angle-double-right" color="gray"
+                                onPress={() => {
+
+                                }}
+                            />
+                        </View>
+                    </Right>
+                </ListItem>
+            </Swipeout>
+        );
+
+    };
+
+    deleteData = (id) => {
+        this.setState({
+            // isLoading: true
+        });
+        db.deleteBabyAc(this.state.dbs, id).then((result) => {
+            this.getaAllClickData();
+        }).catch((err) => {
+            console.log(err);
+            this.setState = {
+                // isLoading: false
+            }
+        })
+    }
+    updateData(id, date, text) {
+        this.setState({
+            isLoading: false,
+            _updateRbSheet: 1,
+            TextInputdaValue: text,
+            _updateId: id,
+            update_date: moment(date, 'YYYY-MM-DD'),
+        });
+        this.RBSheet.open();
+    }
+    keyExtractor = (item, index) => index.toString()
+    render() {
+
         let { isLoading } = this.state
         if (isLoading) {
             return (
@@ -256,55 +369,7 @@ export class BabyActivities extends Component {
                                     ListEmptyComponent={this.emptyComponent}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_kcData}
-
-                                    // renderItem={this.renderItem}
-
-                                    renderItem={({ item }) =>
-                                        <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
-                                            <ListItem
-                                                style={{
-                                                    paddingTop: 5,
-
-                                                }}
-                                            >
-                                                <Left>
-                                                    <View style={styles.iconMore}>
-
-                                                        <Icon
-                                                            name='calendar'
-                                                            type='font-awesome'
-                                                            color='#009688'
-                                                            iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                                                            onPress={() => console.log('hello')} />
-                                                    </View>
-                                                </Left>
-                                                <Body style={{ marginLeft: -160 }}>
-                                                    <Text style={{ color: 'gray', fontSize: 12 }}>{item.baDate}</Text>
-                                                    <Text style={styles.dateText}>{item.baText} </Text>
-                                                    <Text style={{ color: 'gray', fontSize: 12 }}>Time : {item.baTime}</Text>
-                                                </Body>
-                                                <Right>
-                                                    <View style={styles.iconMore}>
-                                                        <Icon
-                                                            type='font-awesome'
-                                                            color='gray'
-                                                            iconStyle={{ fontSize: 18, padding: 8 }}
-                                                            name="trash-o" color="gray"
-                                                            onPress={() => {
-                                                                this.deleteData(item.baId); showMessage({
-
-                                                                    message: "Success",
-                                                                    description: "successfuly deleted " + `${item.baDate}`,
-                                                                    type: "success",
-                                                                })
-                                                            }}
-                                                        />
-                                                    </View>
-                                                </Right>
-                                            </ListItem>
-                                        </Swipeout>
-
-                                    }
+                                    renderItem={this.renderItem}
                                 />
                             </View>
 
@@ -341,35 +406,65 @@ export class BabyActivities extends Component {
                             showsVerticalScrollIndicator={false}
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
-                            <View style={{ flex: 1 }}>
-                                <CalendarStrip
+                            {
+                                this.state._updateRbSheet == 0 ?
+                                    <View style={{ flex: 1 }}>
+                                        <CalendarStrip
 
-                                    selectedDate={this.state.selectedDate}
-                                    onPressDate={(date) => {
-                                        this.setState({ selectedDate: date });
+                                            selectedDate={this.state.selectedDate}
+                                            onPressDate={(date) => {
+                                                this.setState({ selectedDate: date });
 
-                                    }}
-                                    onPressGoToday={(today) => {
-                                        this.setState({ selectedDate: today });
-                                    }}
-                                    onSwipeDown={() => {
-                                        // alert('onSwipeDown');
-                                    }}
-                                    markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
-                                />
-
-
-
-                                {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
-                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                        <Text style={styles.buttonText}>Add Activity</Text>
+                                            }}
+                                            onPressGoToday={(today) => {
+                                                this.setState({ selectedDate: today });
+                                            }}
+                                            onSwipeDown={() => {
+                                                // alert('onSwipeDown');
+                                            }}
+                                            markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                        />
 
 
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+
+                                        {/* <TextInput /> */}
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
+                                        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                            <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                                <Text style={styles.buttonText}>Add Activity</Text>
+
+
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View> :
+                                    <View style={{ flex: 1 }}>
+                                        <CalendarStrip
+                                            selectedDate={this.state.update_date}
+                                          
+                                            onPressDate={(date) => {
+                                                this.setState({ selectedDate: date });
+
+                                            }}
+                                            onPressGoToday={(today) => {
+                                                this.setState({ selectedDate: today });
+                                            }}
+                                            onSwipeDown={() => {
+                                                // alert('onSwipeDown');
+                                            }}
+                                            markedDate={[]}
+                                        />
+
+                                        {/* <TextInput /> */}
+                                        <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
+                                        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                            <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
+                                                <Text style={styles.buttonText}>Update Activity</Text>
+
+
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                            }
                         </ScrollView>
                     </RBSheet>
                 </SafeAreaView>
@@ -485,5 +580,14 @@ export class BabyActivities extends Component {
     }, buttonText: {
         fontSize: 15,
         color: '#fff',
+    }, buttonUpdate: {
+        backgroundColor: "orange",
+        padding: 12,
+        borderRadius: 25,
+        // width:'200',
+        width: '95%',
+        alignItems: 'center',
+        marginTop: 0,
+        margin: 20,
     }
 });

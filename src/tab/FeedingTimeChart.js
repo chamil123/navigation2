@@ -12,6 +12,7 @@ import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import { LineChart, } from "react-native-chart-kit";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import Swipeout from 'react-native-swipeout';
 import { BarIndicator } from 'react-native-indicators';
 const db = new Database();
 var j = 0;
@@ -33,6 +34,8 @@ export class FeedingTimeChart extends Component {
             _current_time: time,
             _list_feeding_time: [],
             dbs: '',
+            _updateRbSheet: 0,
+            _updateId: '',
             data: {
                 labels: ["."],
 
@@ -142,6 +145,33 @@ export class FeedingTimeChart extends Component {
 
 
     }
+
+    updateListData() {
+        this.RBSheet.close();
+        const _format = 'YYYY-MM-DD'
+        const _selectedDay = moment(this.state.selectedDate).format(_format);
+        let data = {
+            fdId: this.state._updateId,
+            fdDate: _selectedDay.toString(),
+            fdTime: moment().format(_formatTime),
+            fdText: this.state.TextInputdaValue
+
+        }
+        db.updateFeeding(this.state.dbs, data).then((result) => {
+            this.getaAllFeedingData();
+            this.getData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+                _updateRbSheet: 0,
+                _updateId: '',
+            });
+
+        }).catch((err) => {
+            console.log(err);
+
+        });
+    }
     deleteData(id) {
 
         this.setState({
@@ -181,6 +211,93 @@ export class FeedingTimeChart extends Component {
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
                 <Text >oops! There's no data here!</Text>
             </View>);
+    }
+    renderItem = ({ item }) => {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secId, rowId, direaction) => {
+
+            }, onOpen: (secId, rowId, direaction) => {
+
+            },
+            left: [
+                {
+                    onPress: () => {
+                        showMessage({
+                            message: "Hello there",
+                            description: "successfuly deleted ",
+                            type: "success",
+                            hideOnPress: false,
+                        })
+                        this.deleteData(item.fdId)
+                        // Alert.alert("sfssadadad");
+
+
+                    },
+                    text: 'Delete', type: 'delete',
+                }
+                ,
+                {
+                    onPress: () => {
+                        this.updateData(item.fdId, item.fdDate, item.fdText);
+                    },
+                    text: 'update', type: 'update', backgroundColor: 'orange'
+                }
+            ],
+            // rowId?
+            sectionId: 1
+
+        };
+        return (
+            <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+                <ListItem
+                    style={{
+                        paddingTop: 15,
+                    }}
+                >
+                    <Left>
+                        <View style={styles.iconMore}>
+
+                            <Icon
+                                 name='check-circle'
+                                 type='font-awesome'
+                                 color='#009688'
+                                iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                onPress={() => console.log('hello')} />
+                        </View>
+                    </Left>
+                    <Body style={{ marginLeft: -160 }}>
+                        <Text style={{ color: 'gray', fontSize: 12 }}>{item.fdDate}</Text>
+                        <Text style={styles.dateText}>{item.fdTime} <Text style={{ color: 'gray' }}>{item.fdText}</Text></Text>
+                    </Body>
+                    <Right>
+                        <View style={styles.iconMore}>
+                        <Icon
+                                type='font-awesome'
+                                color='gray'
+                                iconStyle={{ fontSize: 22 }}
+                                name="angle-double-right" color="gray"
+                                onPress={() => {
+
+                                }}
+                            />
+                        </View>
+                    </Right>
+                </ListItem>
+            </Swipeout>
+        );
+
+    };
+    updateData(id, date, text) {
+        this.setState({
+            isLoading: false,
+            _updateRbSheet: 1,
+            TextInputdaValue: text,
+            _updateId: id,
+            update_date: moment(date, 'YYYY-MM-DD'),
+        });
+        this.RBSheet.open();
+
     }
     keyExtractor = (item, index) => index.toString()
     render() {
@@ -269,46 +386,8 @@ export class FeedingTimeChart extends Component {
                                     keyExtractor={this.keyExtractor}
                                     ListEmptyComponent={this.emptyComponent}
                                     data={this.state._list_feeding_time}
-                                    renderItem={({ item }) => <ListItem
-                                        style={{
-                                            paddingTop: 15,
-                                        }}
-                                    >
-                                        <Left>
-                                            <View style={styles.iconMore}>
+                                    renderItem={this.renderItem}
 
-                                                <Icon
-                                                    name='calendar'
-                                                    type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                                                    onPress={() => console.log('hello')} />
-                                            </View>
-                                        </Left>
-                                        <Body style={{ marginLeft: -160 }}>
-                                            <Text style={{ color: 'gray', fontSize: 12 }}>{item.fdDate}</Text>
-                                            <Text style={styles.dateText}>{item.fdTime} <Text style={{ color: 'gray' }}>{item.fdText}</Text></Text>
-                                        </Body>
-                                        <Right>
-                                            <View style={styles.iconMore}>
-                                                <Icon
-                                                    type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18, padding: 8 }}
-                                                    name="trash-o" color="gray"
-                                                    onPress={() => {
-                                                        this.deleteData(item.fdId); showMessage({
-
-                                                            message: "Success",
-                                                            description: "successfuly deleted " + `${item.fdDate}`,
-                                                            type: "success",
-                                                        })
-                                                    }}
-                                                />
-                                            </View>
-                                        </Right>
-                                    </ListItem>
-                                    }
                                 />
                             </SafeAreaView>
                         </View>
@@ -334,30 +413,56 @@ export class FeedingTimeChart extends Component {
                             showsVerticalScrollIndicator={false}
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
-                            <View style={{ flex: 1 }}>
-                                <CalendarStrip
+                            {this.state._updateRbSheet == 0 ?
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
 
-                                    selectedDate={this.state.selectedDate}
-                                    onPressDate={(date) => {
-                                        this.setState({ selectedDate: date });
+                                        selectedDate={this.state.selectedDate}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
 
-                                    }}
-                                    onPressGoToday={(today) => {
-                                        this.setState({ selectedDate: today });
-                                    }}
-                                    onSwipeDown={() => {
-                                        // alert('onSwipeDown');
-                                    }}
-                                    markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
-                                />
-                                {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
-                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                        <Text style={styles.buttonText}>Add </Text>
-                                    </TouchableOpacity>
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                    />
+                                    {/* <TextInput /> */}
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                        <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                            <Text style={styles.buttonText}>Add </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View> :
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
+
+                                        selectedDate={this.state.update_date}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
+
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                    />
+                                    {/* <TextInput /> */}
+                                    <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                        <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
+                                            <Text style={styles.buttonText}>Update </Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                            </View>
+                            }
                         </ScrollView>
                     </RBSheet>
                 </SafeAreaView>
@@ -456,5 +561,14 @@ export class FeedingTimeChart extends Component {
     }, buttonText: {
         fontSize: 15,
         color: '#fff',
+    }, buttonUpdate: {
+        backgroundColor: "orange",
+        padding: 12,
+        borderRadius: 25,
+        // width:'200',
+        width: '95%',
+        alignItems: 'center',
+        marginTop: 0,
+        margin: 20,
     }
 });

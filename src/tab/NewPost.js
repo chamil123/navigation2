@@ -47,7 +47,7 @@ export class NewPost extends Component {
         const { TextInputPost } = this.state;
         // Alert.alert("hello");
 
-        fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/addpost.php', {
+        fetch('http://youandmenest.com/tr_reactnative/addpost.php', {
             method: 'post',
             header: {
                 'Accept': 'application/json',

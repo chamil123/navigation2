@@ -506,7 +506,7 @@ export class BloodPresureBarChart extends Component {
         <CustomHeader bgcolor='white' title="Home detail" bcbuttoncolor='#F2F2F2' navigation={this.props.navigation} bdcolor='white' />
         <View style={styles.header}>
           {/* <View> */}
-          <View style={{ marginTop: 0, marginLeft: 20,marginBottom:10 }}>
+          <View style={{ marginTop: 0, marginLeft: 20, marginBottom: 10 }}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Blood presure</Text>
             {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
           </View>
@@ -549,19 +549,19 @@ export class BloodPresureBarChart extends Component {
         </View>
         <Animatable.View style={styles.footer} animation="fadeInLeft">
 
-          <View style={{ padding: 5,marginBottom:30 }}>
+          <View style={{ padding: 5, marginBottom: 30 }}>
             <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>History</Text>
 
             <FlatList
 
-              style={{ backgroundColor: '#ffc15a',marginBottom:20 }}
+              style={{ backgroundColor: '#ffc15a', marginBottom: 20 }}
               keyExtractor={this.keyExtractor}
               ListEmptyComponent={this.emptyComponent}
               data={this.state._list_bpData}
               // renderItem={this.renderItem}
 
               renderItem={({ item }) => <ListItem
-                style={{  paddingTop: 8,paddingBottom:8, borderBottomColor: 'white' }}
+                style={{ paddingTop: 8, paddingBottom: 8, borderBottomColor: 'white' }}
 
               >
                 <Left >
@@ -683,7 +683,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     // paddingVertical: 30,
     //  paddingHorizontal: 20
-    
+
   }, header: {
     flex: 3,
     // backgroundColor: '#ffc15a'

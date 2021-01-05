@@ -20,6 +20,7 @@ import { TextInput } from 'react-native-paper';
 import { LineChart, } from "react-native-chart-kit";
 import { BarIndicator, } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import Swipeout from 'react-native-swipeout';
 const db = new Database();
 var j = 0;
 const _formatTime = 'hh:mm:ss';
@@ -43,6 +44,9 @@ export class UrinationTime extends Component {
             TextInputdaValue: '',
             _current_time: time,
             _list_Urination_time: [],
+            _updateRbSheet: 0,
+            _updateId: '',
+            update_date: '',
             dbs: '',
             data: {
                 labels: ["."],
@@ -149,9 +153,9 @@ export class UrinationTime extends Component {
             // this.getData();
             //   this.props.navigation.state.params.onNavigateBack;
             //   this.props.navigation.goBack();
-            this.setState({ 
+            this.setState({
                 TextInputdaValue: '',
-             });
+            });
         }).catch((err) => {
             console.log(err);
         })
@@ -174,6 +178,43 @@ export class UrinationTime extends Component {
             }
         })
     }
+    updateData(id, date, text) {
+
+        this.setState({
+            isLoading: false,
+            _updateRbSheet: 1,
+            TextInputdaValue: text,
+            _updateId: id,
+            update_date: moment(date, 'YYYY-MM-DD'),
+        });
+        this.RBSheet.open();
+    }
+    updateListData() {
+        this.RBSheet.close();
+        const _format = 'YYYY-MM-DD'
+        const _selectedDay = moment(this.state.selectedDate).format(_format);
+        let data = {
+            uId: this.state._updateId,
+            uDate: _selectedDay.toString(),
+            uTime: moment().format(_formatTime),
+            uText: this.state.TextInputdaValue
+
+        }
+        db.updateUrination(this.state.dbs, data).then((result) => {
+            this.listUrinationCountByDate();
+            this.getaAllUrinationData();
+            this.setState({
+                isLoading: false,
+                TextInputdaValue: '',
+                _updateRbSheet: 0,
+                _updateId: '',
+            });
+
+        }).catch((err) => {
+            console.log(err);
+
+        });
+    }
     getaAllUrinationData() {
 
         db.listAllUrination(this.state.dbs).then((results) => {
@@ -187,12 +228,96 @@ export class UrinationTime extends Component {
         })
     }
 
+    renderItem = ({ item }) => {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secId, rowId, direaction) => {
+
+            }, onOpen: (secId, rowId, direaction) => {
+
+            },
+            left: [
+                {
+                    onPress: () => {
+                        this.deleteData(item.uId); 
+                        showMessage({
+                            message: "Hello there",
+                            description: "successfuly deleted ",
+                            type: "success",
+                            hideOnPress: false,
+                        })
+                    },
+                    text: 'Delete', type: 'delete',
+                }
+                ,
+                {
+                    onPress: () => {
+                        this.updateData(item.uId, item.uDate, item.uText);
+                        showMessage({
+                            message: "Hello there",
+                            description: "successfuly Updated ",
+                            type: "success",
+                            hideOnPress: false,
+                        })
+                    },
+                    text: 'update', type: 'update', backgroundColor: 'orange'
+                }
+            ],
+            // rowId?
+            sectionId: 1
+
+        };
+        return (
+            <Swipeout {...swipeSettings} style={{ backgroundColor: 'white' }}>
+                <ListItem
+                    style={{
+                        paddingTop: 10,
+
+                    }}
+                >
+                    <Left>
+                        <View style={styles.iconMore}>
+
+                            <Icon
+                                 name='check-circle'
+                                 type='font-awesome'
+                                 color='#009688'
+                                iconStyle={{ fontSize: 18, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
+                                onPress={() => console.log('hello')} />
+                        </View>
+                    </Left>
+                    <Body style={{ marginLeft: -160 }}>
+                        <Text style={{ color: 'gray', fontSize: 12 }}>{item.uDate}</Text>
+                        <Text style={styles.dateText}>{item.uTime} <Text style={{ color: 'gray' }}>{item.uText}</Text></Text>
+                    </Body>
+                    <Right>
+                        <View style={styles.iconMore}>
+                            
+                        <Icon
+                                type='font-awesome'
+                                color='gray'
+                                iconStyle={{ fontSize: 22 }}
+                                name="angle-double-right" color="gray"
+                                onPress={() => {
+
+                                }}
+                            />
+                        </View>
+                    </Right>
+                </ListItem>
+            </Swipeout>
+        );
+
+    };
+
+
+
     emptyComponent = () => {
         return (
-          <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-            <Text >oops! There's no data here!</Text>
-          </View>);
-      }
+            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <Text >oops! There's no data here!</Text>
+            </View>);
+    }
     keyExtractor = (item, index) => index.toString()
     render() {
         let { isLoading } = this.state
@@ -231,6 +356,7 @@ export class UrinationTime extends Component {
                     <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <ActionButton buttonColor="#f78a2c" onPress={() =>
                         this.RBSheet.open()
+                        
                     }
                         style={{ position: 'absolute', zIndex: 999 }}
                     >
@@ -290,50 +416,10 @@ export class UrinationTime extends Component {
                                     scrollEnabled={false}
                                     keyExtractor={this.keyExtractor}
                                     data={this.state._list_Urination_time}
+                                    renderItem={this.renderItem}
+                                // renderItem={this.renderItem}
 
-                                    // renderItem={this.renderItem}
 
-                                    renderItem={({ item }) => <ListItem
-                                        style={{
-                                            paddingTop: 10,
-
-                                        }}
-                                    >
-                                        <Left>
-                                            <View style={styles.iconMore}>
-
-                                                <Icon
-                                                    name='calendar'
-                                                    type='font-awesome'
-                                                    color='blue'
-                                                    iconStyle={{ fontSize: 18, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
-                                                    onPress={() => console.log('hello')} />
-                                            </View>
-                                        </Left>
-                                        <Body style={{ marginLeft: -160 }}>
-                                            <Text style={{ color: 'gray', fontSize: 12 }}>{item.uDate}</Text>
-                                            <Text style={styles.dateText}>{item.uTime} <Text style={{ color: 'gray' }}>{item.uText}</Text></Text>
-                                        </Body>
-                                        <Right>
-                                            <View style={styles.iconMore}>
-                                                <Icon
-                                                    type='font-awesome'
-                                                    color='gray'
-                                                    iconStyle={{ fontSize: 18, padding: 8 }}
-                                                    name="trash-o" color="gray"
-                                                    onPress={() => {
-                                                        this.deleteData(item.uId); showMessage({
-
-                                                            message: "Success",
-                                                            description: "successfuly deleted " + `${item.uDate}`,
-                                                            type: "success",
-                                                        })
-                                                    }}
-                                                />
-                                            </View>
-                                        </Right>
-                                    </ListItem>
-                                    }
                                 />
                             </SafeAreaView>
                         </View>
@@ -364,30 +450,66 @@ export class UrinationTime extends Component {
                             showsVerticalScrollIndicator={false}
                             contentInsetAdjustmentBehavior="automatic"
                             style={styles.scrollView}>
-                            <View style={{ flex: 1 }}>
-                                <CalendarStrip
+                            {this.state._updateRbSheet == 0 ?
 
-                                    selectedDate={this.state.selectedDate}
-                                    onPressDate={(date) => {
-                                        this.setState({ selectedDate: date });
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
 
-                                    }}
-                                    onPressGoToday={(today) => {
-                                        this.setState({ selectedDate: today });
-                                    }}
-                                    onSwipeDown={() => {
-                                        // alert('onSwipeDown');
-                                    }}
-                                    markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
-                                />
-                                {/* <TextInput /> */}
-                                <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
-                                <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                                    <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                        <Text style={styles.buttonText}>Add </Text>
-                                    </TouchableOpacity>
+                                        selectedDate={this.state.selectedDate}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
+
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                    />
+                                    {/* <TextInput /> */}
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                        <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
+                                            <Text style={styles.buttonText}>Add </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View> :
+                                <View style={{ flex: 1 }}>
+                                    <CalendarStrip
+                                        selectedDate={this.state.update_date}
+                                        // selectedDate={this.state.selectedDate}
+                                        onPressDate={(date) => {
+                                            this.setState({ selectedDate: date });
+
+                                        }}
+                                        onPressGoToday={(today) => {
+                                            this.setState({ selectedDate: today });
+                                        }}
+                                        onSwipeDown={() => {
+                                            // alert('onSwipeDown');
+                                        }}
+                                        markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
+                                    />
+
+                                    <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', margin: 20 }} label="Enter comment" />
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                                        <TouchableOpacity
+                                        onPress={() => {
+                                            this.updateListData();
+                                            showMessage({
+                                                message: "Success",
+                                                description: "successfuly deleted ",
+                                                type: "success",
+                                            });
+                                        }
+                                        } style={styles.buttonUpdate}>
+                                            <Text style={styles.buttonText}>Update </Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                            </View>
+                            }
                         </ScrollView>
                     </RBSheet>
                 </SafeAreaView>
@@ -496,13 +618,22 @@ export class UrinationTime extends Component {
         backgroundColor: "red",
         padding: 12,
         borderRadius: 25,
-        // width:'200',
-        alignItems:'center',
-        width: 340,
+        width: '95%',
+        alignItems: 'center',
+        // width: 340,
 
         marginTop: 20
     }, buttonText: {
         fontSize: 15,
         color: '#fff',
+    }, buttonUpdate: {
+        backgroundColor: "orange",
+        padding: 12,
+        borderRadius: 25,
+        // width:'200',
+        width: '95%',
+        alignItems: 'center',
+        marginTop: 0,
+        margin: 10,
     }
 });

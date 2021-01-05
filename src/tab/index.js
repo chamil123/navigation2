@@ -56,3 +56,4 @@ export * from './ClinicManagement';
 export * from './AgendaHistory';
 export * from './BathTracking';
 export * from './BathTrackingHistroy';
+export * from './ProfileImageView';

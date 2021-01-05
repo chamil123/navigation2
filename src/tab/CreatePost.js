@@ -195,7 +195,7 @@ export class CreatePost extends Component {
         )
     }
     getData = async () => {
-        const apiURL = "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/posts.php"
+        const apiURL = "http://youandmenest.com/tr_reactnative/posts.php"
         fetch(apiURL).then((res) => res.json())
             .then((resJson) => {
                 this.setState({

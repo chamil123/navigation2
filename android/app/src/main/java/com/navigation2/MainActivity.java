@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "navigation2";
+    return "youandme";
   }
   @Override
 public void onActivityResult(int requestCode, int resultCode, Intent data) {

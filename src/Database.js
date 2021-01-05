@@ -1034,7 +1034,7 @@ export default class Database {
     }
 
     addPBvalue(db, pb) {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + pb.bpValue + "  /  " + pb.bpdstValue + " / " + db);
+     
         return new Promise((resolve) => {
             db.transaction((tx) => {
 
@@ -1075,7 +1075,7 @@ export default class Database {
 
             // this.initDB().then((db) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime,kcStatus) VALUES (?,?,?,?,?)', [kc.kcDate, 1, kc.kcTime, kc.kcTime,1]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO KickCount (kcDate,kcCount,kcFirstTime,kcLastTime,kcStatus) VALUES (?,?,?,?,?)', [kc.kcDate, 1, kc.kcTime, kc.kcTime, 1]).then(([tx, results]) => {
                     resolve(results);
                 });
 
@@ -1097,7 +1097,7 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime,kcStatus } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime, kcStatus } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
@@ -1160,7 +1160,7 @@ export default class Database {
                 console.log(err);
             });
         });
-    }stopKick(db, data) {
+    } stopKick(db, data) {
         return new Promise((resolve) => {
             db.transaction((tx) => {
                 tx.executeSql('UPDATE KickCount SET kcStatus = ?     WHERE kcDate = ?', [0, data.kcDate]).then(([tx, results]) => {
@@ -1182,7 +1182,7 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime,kcStatus } = row;
+                        const { kcId, kcDate, kcCount, kcFirstTime, kcLastTime, kcStatus } = row;
                         kick_count.push({
                             kcId,
                             kcDate,
@@ -1366,6 +1366,22 @@ export default class Database {
             // });
         });
     }
+    updateBabyActivity(db, e) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE BabyActivity SET baDate = ?,baTime = ?,baText = ?   WHERE baId = ?', [e.baDate, e.baTime, e.baText,e.baId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+               
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }
     listAllBabyActivity(db) {
         return new Promise((resolve) => {
             var kick_count = [];
@@ -1397,7 +1413,24 @@ export default class Database {
             //     console.log(err);
             // });
         });
-    } addFeedingTime(db, fd) {
+    } 
+    updateFeeding(db, e) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE FeedingTime SET fdDate = ?,fdTime = ?,fdText = ?   WHERE fdId = ?', [e.fdDate, e.fdTime, e.fdText,e.fdId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+               
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }
+    addFeedingTime(db, fd) {
         return new Promise((resolve) => {
 
             // this.initDB().then((db) => {
@@ -1497,7 +1530,9 @@ export default class Database {
             //     console.log(err);
             // });
         });
-    } listAllUrination(db) {
+    }
+    
+    listAllUrination(db) {
         return new Promise((resolve) => {
             var feeding_time = [];
             // this.initDB().then((db) => {
@@ -1584,7 +1619,42 @@ export default class Database {
             //     console.log(err);
             // });
         });
-    } listAllElimination(db) {
+    }
+    updateElimination(db, e) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+                tx.executeSql('UPDATE Elimination SET eDate = ?,eTime = ?,eText = ?   WHERE eId = ?', [e.eDate, e.eTime, e.eText,e.eId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+               
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }
+    updateUrination(db, e) {
+
+        return new Promise((resolve) => {
+            db.transaction((tx) => {
+              
+
+                tx.executeSql('UPDATE Urination SET uDate = ?,uTime = ?,uText = ?   WHERE uId = ?', [e.uDate, e.uTime, e.uText,e.uId]).then(([tx, results]) => {
+                    resolve(results);
+                });
+
+               
+            }).then((result) => {
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        });
+    }
+    listAllElimination(db) {
         return new Promise((resolve) => {
             var eliminate_time = [];
             // this.initDB().then((db) => {
@@ -1687,9 +1757,10 @@ export default class Database {
         });
     }
     babyData(db, bd) {
+
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?,?)', [null, bd.bName, bd.bWeight, bd.bbDate,bd.bbGender, 1]).then(([tx, results]) => {
+                tx.executeSql('INSERT INTO BabyDetails VALUES (?, ?,?,?,?,?)', [null, bd.bName, bd.bWeight, bd.bbDate,  1,bd.bbGender,]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1703,7 +1774,7 @@ export default class Database {
 
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE BabyDetails SET bName = ?,bWeight = ?,bbDate = ?,bbGender=?   WHERE bId = ?', [dates.bName, dates.bWeight, dates.bbDate,dates.bbGender, bId]).then(([tx, results]) => {
+                tx.executeSql('UPDATE BabyDetails SET bName = ?,bWeight = ?,bbDate = ?,bbGender=?   WHERE bId = ?', [dates.bName, dates.bWeight, dates.bbDate, dates.bbGender, bId]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
@@ -1721,7 +1792,7 @@ export default class Database {
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
-                        const { bId, bName, bWeight, bbDate,bbGender } = row;
+                        const { bId, bName, bWeight, bbDate, bbGender } = row;
                         baby_data.push({
                             bId,
                             bName,
@@ -1742,14 +1813,14 @@ export default class Database {
             // });
         });
     }
-    listWeghtData(db,dbtable) {
+    listWeghtData(db, dbtable) {
         return new Promise((resolve) => {
 
             const weigth_data = [];
 
 
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM '+dbtable+' wl', []).then(([tx, results]) => {
+                tx.executeSql('SELECT * FROM ' + dbtable + ' wl', []).then(([tx, results]) => {
 
                     var len = results.rows.length;
                     for (let i = 0; i < len; i++) {
@@ -1928,7 +1999,7 @@ export default class Database {
 
         return new Promise((resolve) => {
             db.transaction((tx) => {
-                tx.executeSql('UPDATE '+data.dbName+' SET wlbaby = ?    WHERE wlId = ?', [data._weight, data._month + 1]).then(([tx, results]) => {
+                tx.executeSql('UPDATE ' + data.dbName + ' SET wlbaby = ?    WHERE wlId = ?', [data._weight, data._month + 1]).then(([tx, results]) => {
                     resolve(results);
                 });
             }).then((result) => {
