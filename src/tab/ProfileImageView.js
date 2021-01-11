@@ -28,7 +28,7 @@ export class ProfileImageView extends Component {
         const data = new FormData();
         data.append("get_about", "true");
 
-        return fetch('http://youandmenest.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
+        return fetch('https://youandmenest.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
             method: 'post',
             body: data,
         })
@@ -116,7 +116,7 @@ export class ProfileImageView extends Component {
                         imageWidth={420}
                         imageHeight={420}>
                         <Image style={{ height: 400 }}
-                            source={{ uri: "http://youandmenest.com/tr_reactnative/" + this.state.abc }} />
+                            source={{ uri: "https://youandmenest.com/tr_reactnative/" + this.state.abc }} />
                     </ImageZoom>
                 </View>
             </View>

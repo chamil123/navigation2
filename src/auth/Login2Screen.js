@@ -128,15 +128,12 @@ export class Login2Screen extends Component {
         }).catch((err) => {
             console.log(err);
         })
-
-
-
     }
     InputUsers = () => {
         const { TextInputName } = this.state;
         const { TextInputpassword } = this.state;
-
-        fetch('http://youandmenest.com/tr_reactnative/loginCheck.php', {
+        
+        fetch('https://youandmenest.com/tr_reactnative/loginCheck.php', {
             method: 'post',
             header: {
                 'Accept': 'application/json',

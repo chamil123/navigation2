@@ -47,7 +47,7 @@ export class MemberProfile extends Component {
     const { TextInputPhoneNumber } = this.state;
     const { TextInputpassword } = this.state;
     const { TextInputAddress } = this.state;
-    fetch('http://youandmenest.com/tr_reactnative/updateUser.php', {
+    fetch('https://youandmenest.com/tr_reactnative/updateUser.php', {
       method: 'post',
       header: {
         'Accept': 'application/json',
@@ -85,7 +85,7 @@ export class MemberProfile extends Component {
     const data = new FormData();
     data.append("get_about", "true");
 
-    return fetch('http://youandmenest.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
+    return fetch('https://youandmenest.com/tr_reactnative/get_user_by_id.php?mname=' + myArray, {
       method: 'post',
       body: data,
     })
@@ -168,7 +168,7 @@ export class MemberProfile extends Component {
 
     var aaaa = this.state.dataa;
     const myArray = await AsyncStorage.getItem('memberNames');
-    RNFetchBlob.fetch('POST', 'http://youandmenest.com/tr_reactnative/upload.php', {
+    RNFetchBlob.fetch('POST', 'https://youandmenest.com/tr_reactnative/upload.php', {
       Authorization: "Bearer access-token",
       otherHeader: "foo",
       'Content-Type': 'multipart/form-data',
@@ -272,7 +272,7 @@ export class MemberProfile extends Component {
                 showEditButton
                 size={150}
                 source={
-                  this.state.abc != '' ? { uri: "http://youandmenest.com/tr_reactnative/" + this.state.abc } :
+                  this.state.abc != '' ? { uri: "https://youandmenest.com/tr_reactnative/" + this.state.abc } :
                     (this.state.imageSource != null ? this.state.imageSource : require('../images/profiled.png'))
                 }
                 containerStyle={{
