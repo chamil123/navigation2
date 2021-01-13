@@ -111,7 +111,7 @@ export class WeightChart extends Component {
 
                     // temp2.push([result[i].wlSam]);
                     datas.push(result[i].wlSam);
-                    console.log(">>>>>>>>>>>>>>>>>>>>>>"+result[i].wlSam);
+                   
 
                 }
                 // dataClone.labels = temp3;

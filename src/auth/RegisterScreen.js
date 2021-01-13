@@ -112,13 +112,7 @@ export class RegisterScreen extends Component {
       // emailError: emailError,
       // passwordError: passwordError
     })
-    // this.validate({
-    //   TextInputName: { required: true},
-    //   TextInputEmail: {email: true},
-    //   TextInputPhoneNumber: {numbers: true},
-    //   PickerValueHolder:{required: true},
-    //   // date: {date: 'YYYY-MM-DD'}
-    // });
+ 
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
     const { TextInputPhoneNumber } = this.state;
@@ -314,8 +308,7 @@ export class RegisterScreen extends Component {
           console.warn(role_id);
         }
         console.log(responseJson);
-        // var datas=JSON.stringify(responseJson);
-        // Alert.alert(datas.id);
+
         this.setState({
           isLoading: false,
           dataSource: responseJson,
@@ -356,7 +349,7 @@ export class RegisterScreen extends Component {
                 paddingVertical: 0
               }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}> Create Your You And Me Account </Text>
+                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}>Create Your You And Me Account </Text>
 
                   <Text style={{ fontSize: 12, marginTop: -2, color: 'black' }}>Please enter below information </Text>
                   <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 10, color: 'black' }}>to create an account</Text>
@@ -422,7 +415,7 @@ export class RegisterScreen extends Component {
                       end={{ x: 1, y: 1 }}
                       style={styles.linearGradient}>
                       <Text style={styles.buttonText}>
-                        Sign in
+                        Sign Up
                 </Text>
                     </LinearGradient>
                   </TouchableOpacity>

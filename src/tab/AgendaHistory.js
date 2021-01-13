@@ -41,12 +41,6 @@ export class AgendaHistory extends Component {
         db.listNotes(this.state.dbs).then((data) => {
             products = data;
 
-            // for (var i = 0; i < products.length; i++) {
-            //     _pdate = products[i].pName
-
-            //     // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _pdate);
-
-            // }
             this.setState({
                 isLoading: false,
                 _list_wgData: data,
@@ -82,7 +76,7 @@ export class AgendaHistory extends Component {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
                 <FlashMessage duration={1000} />
-                <CustomHeader bgcolor='#fbb146' title="Home detail"  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title=""  bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentInsetAdjustmentBehavior="automatic"
@@ -104,13 +98,7 @@ export class AgendaHistory extends Component {
                             <FlatList
 
                                 style={{
-                                    // backgroundColor: 'white', marginVertical: 0,
-                                    //  borderRadius: 16,
-                                    // elevation: 2,
-                                    // shadowColor: '#000',
-                                    // shadowOffset: { width: 0, height: 3 },
-                                    // shadowOpacity: 0.7,
-                                    // shadowRadius: 8,
+                       
 
                                 }}
                                 ListEmptyComponent={this.emptyComponent}
@@ -133,18 +121,7 @@ export class AgendaHistory extends Component {
                                                 iconStyle={{ fontSize: 18, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, backgroundColor: '#b2dfdb', borderRadius: 8, }}
                                                 onPress={() => console.log('hello')} />
                                         </Left>
-                                    {/* <Left>
-                                        <View style={styles.iconMore}>
-
-                                            <Icon
-
-                                                name='paste'
-                                                type='font-awesome'
-                                                color='#6a1b9a'
-                                                iconStyle={{ fontSize: 18, paddingTop: 8, paddingBottom: 8, paddingLeft: 11, paddingRight: 11, backgroundColor: '#f3e5f5', borderRadius: 8, }}
-                                                onPress={() => console.log('hello')} />
-                                        </View>
-                                    </Left> */}
+                                
                                     <Body style={{ marginLeft: -140 }}>
                                         <Text style={{ color: 'gray', fontSize: 12 }}>{item.pTime}</Text>
                                         <Text style={styles.dateText}>{item.pName}</Text>
@@ -198,15 +175,11 @@ export class AgendaHistory extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+    
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -227,13 +200,10 @@ export class AgendaHistory extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderColor: '#ef5d9a',
-        // borderWidth: 4,
     }, breadthPo1: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
         bottom: 80,
         zIndex: 5,
@@ -241,26 +211,16 @@ export class AgendaHistory extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
     }
 });

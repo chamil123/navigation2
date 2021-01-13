@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
-
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
-import *as Animatable from 'react-native-animatable';
-import { BarChart, Grid } from 'react-native-svg-charts';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
@@ -30,11 +24,6 @@ const _today = moment().format(_format)
 export class UrinationTime extends Component {
     constructor(props) {
         var today = new Date(),
-
-            //  hours = today.getHours(), //Current Hours
-            //  min = today.getMinutes(), //Current Minutes
-            //  sec = today.getSeconds(), //Current Seconds
-
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ':' + today.getMinutes();
         super(props);
@@ -57,15 +46,7 @@ export class UrinationTime extends Component {
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
-                    // {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
-                    // }, {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
-                    // },
+                   
                 ]
             }
 
@@ -103,22 +84,15 @@ export class UrinationTime extends Component {
                 });
             } else {
 
-                // var temp4 = [];
-                // var temp5 = [];
-
-
                 for (var i = 0; i < result.length; i++) {
                     _monthDate = result[i].uDate.substring(5, 10);
 
                     temp2.push(parseInt([result[i].countu]));
                     temp3.push([_monthDate]);
-                    //   temp4.push([result[i].bpmin]);
-                    //   temp5.push([result[i].bpmax]);
+
                 }
                 dataClone.labels = temp3;
                 dataClone.datasets[0].data = temp2;
-                // dataClone.datasets[1].data = temp4;
-                // dataClone.datasets[2].data = temp5;
                 self.setState({
                     isLoading: false,
                     data: dataClone,
@@ -150,9 +124,6 @@ export class UrinationTime extends Component {
         db.addUrination(this.state.dbs, data).then((result) => {
             this.listUrinationCountByDate();
             this.getaAllUrinationData();
-            // this.getData();
-            //   this.props.navigation.state.params.onNavigateBack;
-            //   this.props.navigation.goBack();
             this.setState({
                 TextInputdaValue: '',
             });
@@ -326,8 +297,7 @@ export class UrinationTime extends Component {
             datasets: [
                 {
                     data: [50, 30],
-                    // color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-                    // strokeWidth: 2 // optional
+
                 }
             ],
             legend: ["Rainy Days"] // optional
@@ -367,7 +337,7 @@ export class UrinationTime extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}> Urination chart</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}> Urination Chart</Text>
                                 {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>
@@ -532,15 +502,11 @@ export class UrinationTime extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -577,10 +543,7 @@ export class UrinationTime extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -594,14 +557,10 @@ export class UrinationTime extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, card: {
         height: 175,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
+ 
         backgroundColor: "white",
         borderRadius: 15,
         // padding: 10,

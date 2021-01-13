@@ -26,9 +26,6 @@ export class KickCounter extends Component {
 
         var time = moment().format(_formatTime); //To get the Current Hours
 
-
-        // var min = today.getMinutes(); //To get the Current Minutes
-        // var sec = today.getSeconds();
         super(props);
         this.state = {
             isLoading: true,
@@ -49,27 +46,12 @@ export class KickCounter extends Component {
         db.initDB().then((result) => {
             this.loadDbVarable(result);
         })
-        // this.intervalID = setInterval(
-        //     () => this.tick(),
-        //     1000
-        // );
 
-        // this.getaAllClickData = this.getaAllClickData.bind(this);
     }
     componentDidMount() {
-        // this.intervalID = setInterval(
-        //     () => this.tick(),
-        //     1000
-        // );
-
-
+   
     }
-    // tick() {
-    //     this.setState({
-    //         times: moment().format(_formatTime),
-    //     });
-
-    // }
+  
     loadDbVarable(result) {
         this.setState({
             dbs: result,
@@ -78,7 +60,6 @@ export class KickCounter extends Component {
         this.getaAllClickData(status);
     }
     saveData() {
-        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + moment().format(_formatTime));
 
         if (this.state._status != 0) {
             if (this.state._kick_count < 10) {
@@ -89,7 +70,7 @@ export class KickCounter extends Component {
                 });
                 this.getData();
             } else {
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed dddd: " + new Date().getTime());
+            
             }
         }
 
@@ -148,13 +129,8 @@ export class KickCounter extends Component {
                 var range2 = (l - range);
                 var hours = (range2 / (1000 * 60 * 60)).toFixed(2);
 
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed l : " + l);
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed r : " + range);
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed nn : " + hours);
-
-
                 if (hours < 12) {
-                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. level exeed : " + hours);
+                   
                     let data = {
                         kcDate: this.state._current_date.toString(),
                         kcValue: this.state._kick_count,
@@ -552,118 +528,7 @@ export class KickCounter extends Component {
 
                     </ScrollView>
 
-                    {/* <View style={styles.header}>
-                        <View style={{ marginTop: 0, marginLeft: 20 }}>
-                            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Kick counter</Text>
-                            <Text style={{ color: 'white' }}>press on foot after kick</Text>
-                        </View>
-
-                    </View> */}
-                    {/* <View style={styles.footer}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon
-
-                                    name='calendar'
-                                    type='font-awesome'
-                                    color='gray'
-                                    iconStyle={{ fontSize: 13, paddingTop: 3 }}
-                                    onPress={() => console.log('hello')} />
-                                <Text style={{ paddingLeft: 10 }}>Kicks on {this.state._current_date}</Text>
-                            </View>
-                            <Text style={{ fontSize: 22, paddingBottom: 10 }}>{this.state._kick_count}</Text>
-                            <AnimatedCircularProgress
-                                size={232}
-                                rotation={0}
-                                width={6}
-                                padding={10}
-                                fill={(this.state._kick_count / 10) * 100}
-                                tintColor="#f78a2c"
-                                backgroundColor="#cfd8dc"
-                             
-                              
-                                >
-                                {
-                                    (fill) => (
-                                        <TouchableOpacity style={styles.button5}
-                                            onPress={() => this.saveData()}>
-                                            <Image style={{ width: 85, height: 85, marginLeft: 0, marginTop: 0 }}
-                                                source={IMAGE.ICON_BABY_FOOT2}
-                                                resizeMode="contain"
-                                            />
-                                        </TouchableOpacity>
-                                    )
-                                }
-                            </AnimatedCircularProgress>
-                            
-                        </View>
-                        <View style={{bottom:150,left:120}}>
-                  
-                        </View>
-                        <View style={{ flex: 1, marginTop: 10, paddingHorizontal: 10, }}>
-                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
-                            <FlatList
-
-                                style={{
-                                    backgroundColor: 'white', marginVertical: 0,
-                                    elevation: 2,
-                                    shadowColor: '#000',
-                                    shadowOffset: { width: 0, height: 3 },
-                                    shadowOpacity: 0.7,
-                                    shadowRadius: 8,
-                                }}
-                                keyExtractor={this.keyExtractor}
-                                data={this.state._list_kcData}
-                                renderItem={({ item }) => <ListItem
-                                    style={{
-                                        height: 50, paddingTop: 15,
-                                    }} >
-                                    <Left>
-                                        <View style={styles.iconMore}>
-                                            <Icon
-                                                name='calendar'
-                                                type='font-awesome'
-                                                color='gray'
-                                                iconStyle={{ fontSize: 18 }}
-
-                                            //   Alert.alert("dsfsdf"+value)
-                                            // onPress={() => console.log(">>>>>>>>>>>>>>>>>>>")}
-                                            // onPress={() => showMessage({
-                                            //     message: "Hello World",
-                                            //     description: "This is our second message",
-                                            //     type: "success",
-                                            //   })} 
-                                            />
-                                        </View>
-                                    </Left>
-                                    <Body style={{ marginLeft: -160 }}>
-                                        <Text style={{ color: 'gray', fontSize: 12 }}>{item.kcDate}</Text>
-                                        <Text style={styles.dateText}><Text style={{ color: 'gray', fontSize: 12 }}>Kick count is :</Text> {item.kcCount} </Text>
-                                    </Body>
-                                    <Right>
-                                        <View style={styles.iconMore}>
-                                            <Icon
-                                                type='font-awesome'
-                                                color='gray'
-                                                iconStyle={{ fontSize: 18, padding: 8 }}
-                                                name="trash-o" color="gray"
-                                                onPress={() => {
-                                                    this.deleteData(item.kcId, item.kcDate,); showMessage({
-
-                                                        message: "Hello there",
-                                                        description: "successfuly deleted "+ `${item.kcDate}`,
-                                                        type: "success",
-                                                    })
-                                                }}
-                                            />
-                                        </View>
-                                    </Right>
-                                </ListItem>
-                                }
-                            />
-
-                        </View>
-                    </View> */}
+              
 
                 </SafeAreaView>
             );

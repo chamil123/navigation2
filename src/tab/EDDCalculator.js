@@ -36,8 +36,6 @@ const labels = ["1st month", , "3rd month ", "5thmonth", "7th month", "9th month
 const nineMonth = moment(_today).subtract(9, 'month');
 const minumumDate = moment(nineMonth).subtract(7, 'day').format('YYYY-MM-DD');
 
-// var minumumDate = moment(_today).subtract(277, 'day').format('YYYY-MM-DD');
-
 const customStyles = {
     stepIndicatorSize: 20,
     currentStepIndicatorSize: 25,

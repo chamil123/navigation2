@@ -1,13 +1,11 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, Image, Text, View, TouchableOpacity, TextInput, DrawerLayoutAndroidBase,StatusBar } from 'react-native';
-import { Button } from 'react-native-elements';
 import Database from '../Database';
 import { IMAGE } from '../constants/image';
 import Slider from "react-native-slider";
 import { CustomHeader } from '../index';
 import AsyncStorage from '@react-native-community/async-storage';
-// import Slider from '@react-native-community/slider';
 const db = new Database();
 
 export class BMICalculator extends Component {
@@ -51,8 +49,7 @@ export class BMICalculator extends Component {
       this.setState({
         isLoading: false,
       });
-      //   this.props.navigation.state.params.onNavigateBack;
-      //   this.props.navigation.goBack();
+
     }).catch((err) => {
       console.log(err);
       this.setState({
@@ -66,7 +63,7 @@ export class BMICalculator extends Component {
     const height = this.state.value / 100;
     const weight = this.state.weight;
     const _Bmi_val = (weight / (height * height)).toFixed(2);
-    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _Bmi_val);
+
     try {
       const items = [['bmi_value', _Bmi_val], ['height', ""+height.toFixed(2)], ['weight', ""+weight.toFixed(2)]]
       await AsyncStorage.multiSet(items, () => { });
@@ -93,12 +90,6 @@ export class BMICalculator extends Component {
 
           <View style={{ flex: 1, justifyContent: 'flex-end', paddingLeft: 20, paddingEnd: 20 }}>
 
-            {/* <Image style={{flex: 1, width: 100, height: 400,alignSelf: "center",alignItems:'center' , justifyContent: 'center',marginTop:70}}
-                        source={IMAGE.ICON_FEMALE}
-                        resizeMode="stretch"
-                       
-
-                    /> */}
 
             <Image style={{ width: this.state.weight + 100, height: this.state.value + 150, alignSelf: "center", }}
               source={IMAGE.ICON_FEMALE}
@@ -142,27 +133,11 @@ export class BMICalculator extends Component {
               {/* BMI:{this.state.weight.toFixed(2)*this.state.value.toFixed(0)} */}
             </Text>
 
-            {/* <Slider
-            style={{ width: 300, height: 60 }}
-            minimumValue={0}
-            maximumValue={1}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-          /> */}
-
           </View>
 
 
-          {/* <TouchableOpacity
-        style={{width:'100%',height:40,backgroundColor:'red', 
-        alignItems:'center',justifyContent:'center'}}
-        >
-        <Text style={{color:'white', fontSize: 16}}>Bottom Button</Text>
-        </TouchableOpacity>
-        </View> */}
 
-
-          {/* </ScrollView> */}
+      
 
         </View>
         {/* </ScrollView> */}

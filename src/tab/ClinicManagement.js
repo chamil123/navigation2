@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import { TextInput, Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { CustomHeader } from '../index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-// import DatePicker from 'react-native-date-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
-// import RBSheet from "react-native-raw-bottom-sheet";
-// import DatePickerDialog from '@react-native-community/datetimepicker';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 const db = new Database();
-// import { TextInput } from 'react-native-paper';
-
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 const _formatTime = 'HH:mm:ss';
@@ -201,7 +196,7 @@ export class ClinicManagement extends Component {
                     </View>
 
                     <View style={styles.breadthPo1}>
-                        <Text style={{ marginVertical: 10 }} >Select date</Text>
+                        <Text style={{ marginVertical: 10 }} >Select Date</Text>
                         <TouchableOpacity onPress={this._showDatePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
                                 {
@@ -254,14 +249,6 @@ export class ClinicManagement extends Component {
                     onConfirm={this._handleDatePicked}
                     onCancel={this._hideDateTimePicker}
                 />
-                {/* <DatePicker
-                    mode="time"
-                    locale="en_GB" // Use "en_GB" here
-                    date={new Date()}
-                /> */}
-
-
-                {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
                 <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
                 <DateTimePicker
                     mode="date"
@@ -289,18 +276,12 @@ export class ClinicManagement extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146',
         borderBottomStartRadius: 30,
-        //    borderBottomLeftRadius: 30,
-        // borderBottomRightRadius: 30,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+  
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -325,22 +306,10 @@ export class ClinicManagement extends Component {
         // borderWidth: 4,
     }, breadthPo1: {
 
-        // justifyContent: 'center',
-        // alignSelf: 'center',
-        // position: 'absolute',
-        // backgroundColor: 'white',
-        // bottom: 100,
         zIndex: 5,
-        // width: '95%',
-        // borderRadius: 10,
-        // elevation: 2,
         padding: 18,
-        // paddingTop: 20,
         marginTop: 10,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -354,10 +323,7 @@ export class ClinicManagement extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+   
     }, button1: {
         backgroundColor: "red",
         padding: 5,
@@ -402,11 +368,6 @@ export class ClinicManagement extends Component {
         shadowOpacity: 0.7,
         shadowRadius: 8,
         padding: 3,
-
-        // marginTop: 40,
-        // paddingLeft: 15,
-        // paddingRight: 15,
-        // borderRadius: 25,
     }, buttonText: {
         fontSize: 18,
         fontFamily: 'Gill Sans',

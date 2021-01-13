@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Text, LogBox, View, SafeAreaView, Button, ScrollView, TouchableOpacity, Dimensions, StyleSheet, Alert } from 'react-native';
-import PureChart from 'react-native-pure-chart';
 import { CustomHeader } from '../index';
-import LinearGradient from 'react-native-linear-gradient';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 // console.disableYellowBox=true;
 LogBox.ignoreAllLogs(true);
@@ -10,9 +8,6 @@ LogBox.ignoreAllLogs(true);
 import { LineChart, } from "react-native-chart-kit";
 import Database from '../Database';
 import ActionButton from 'react-native-action-button';
-
-import DialogInput from 'react-native-dialog-input';
-import Modal, { ModalFooter, ModalButton, ModalContent } from 'react-native-modals';
 
 import {
   MaterialDialog,
@@ -48,9 +43,6 @@ export class MatirializeDialog extends Component {
       singlePickerSelectedItem: undefined,
       scrolledSinglePickerVisible: false,
       scrolledSinglePickerSelectedItem: undefined,
-
-
-
       visible: true,
       isLoading: true,
       dataSource: 10,
@@ -82,45 +74,9 @@ export class MatirializeDialog extends Component {
   }
   componentDidMount() {
     this.getData();
-    // const self = this;
-    // return fetch('https://api.mockaroo.com/api/12a7ead0?count=20&key=8ba88000')
-    //   .then(response => response.json())
-    //   .then(responseJson => {
-    //     const dataClone = { ...self.state.data }
-    //     const values = responseJson.map(value => value.Weight);
-
-    //     dataClone.datasets[0].data = values;
-
-    //     console.log("))))))))) : "+values);
-
-    //     self.setState({
-    //       //isLoading: false,
-    //       data: dataClone,
-    //     });
-
-
-    //     console.log(JSON.stringify(responseJson))
-    //     var temp = [];
-    //     for (var i = 0; i < responseJson.length; i++) {
-    //       console.log(responseJson[i].Weight)
-    //       temp.push(responseJson[i].Weight)
-    //       temp.push(responseJson[i].Weight)
-    //     }
-
-    //     this.setState({
-    //       dataSource: temp
-    //     })
-    //     console.log("^^^^^^ :" + this.state.data);
-
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+ 
   }
 
-  // componentDidMount() {
-  // this.getData();
-  // }
   getData() {
     const self = this;
     db.listBloodPresure().then((data) => {
@@ -145,30 +101,10 @@ export class MatirializeDialog extends Component {
         const dataClone = { ...self.state.data }
         for (var i = 0; i < result.length; i++) {
 
-          // dataClone.datasets[0].data = result[i].bpValue;
-          // const values = responseJson.map(value =>result[i].bpValue);
-
-          //  dataClone.datasets[0].data = parseInt(result[i].bpValue);
-          // console.log(">>>> ()()() ### : " + result[i].bpValue)
-          // {
-          //   x: xValue,
-          //   y: yValue1
-          // }
-
-
-          // console.log(">>>>((((())))) ### : " + this.state.data)
-
           temp2.push([result[i].bpValue]);
           temp3.push([result[i].bpDate]);
           temp4.push([result[i].bpId]);
 
-          // temp2.push("{" + result[i].x + ":'" + result[i].bpDate + "'," + result[i].y + ":" + result[i].bpValue + "}")
-
-          // this.setState({
-          //   dataSource: temp2,
-          //   //  data: dataClone.datasets[0].data,
-          // })
-          // console.log("@@@@ : " + result[i].x);
         }
         dataClone.labels = temp3;
         dataClone.datasets[0].data = temp2;
@@ -179,10 +115,6 @@ export class MatirializeDialog extends Component {
           data: dataClone,
         });
 
-        console.log("$$$$ : " + temp3);
-        // console.log("@@@@ >>>> dasdadasdasd:fff " + this.state.dataSource);
-
-        //  this.viewListData();
       }
     }).catch((err) => {
       console.log(err);
@@ -210,42 +142,13 @@ export class MatirializeDialog extends Component {
       barPercentage: 0.5,
       useShadowColorFromDataset: false // optional
     };
-    // let sampleData = [
 
-    //   {
-    //     seriesName: 'series2',
-    //     data= [
-    //       {
-    //         x: '2020-10-20',
-    //         y: [50]
-    //       },
-
-
-    //     ],
-    //     color: 'red'
-    //   }
-    // ]
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='white' />
-
-
-          {/* <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.linerGradient}
-          colors={['#fff', '#fff', '#fff']}
-        >
-          <View style={styles.line}></View>
-          <View style={[styles.line,{top:120,left:-100}]}></View>
-          <View style={[styles.line,{top:140,left:0}]}></View>
-        </LinearGradient> */}
-
-
-          {/* <CustomHeader bgcolor='white' title="Settinfgs" isHome={true} navigation={this.props.navigation}  bdcolor='#f2f2f2'/> */}
 
 
           <View style={{ flex: 1, }}>
@@ -270,25 +173,7 @@ export class MatirializeDialog extends Component {
               </TouchableOpacity>
             </Card>
 
-            {/* <PureChart
-              data={[
-                {
-                  x: '2020-07-25',
-                  y: 50
-                }
-              ]}
-
-              type='line' width={'100%'} height={200} /> */}
-            {/* <PureChart data={sampleData} type="line" /> */}
-
-            {/* 
-          <Text>Setting!</Text>
-          <TouchableOpacity style={{ marginTop: 20 }}
-            onPress={() => this.props.navigation.navigate('SettingDetail')}
-
-          >
-            <Text>Go Settings Details</Text>
-          </TouchableOpacity> */}
+           
             <Text>Previous data</Text>
             <Card style={styles.cardHorizontal1} >
               <Text>dasdasda</Text>
@@ -613,52 +498,7 @@ export class MatirializeDialog extends Component {
           </ActionButton.Item> */}
 
           </ActionButton>
-          {/* <DialogInput
-          dialogIsVisible={this.state.dialogIsVisible}
-          closeDialogInput={() => this.setState({ dialogIsVisible: false })}
-          submitInput={(textValue) => console.warn(textValue)}
-          outerContainerStyle={{ backgroundColor: 'rgba(0,0,0, 0.75)' }}
-          containerStyle={{ backgroundColor: 'rgba(255,0,0, 0.2)', borderColor: 'red', borderWidth: 5 }}
-          titleStyle={{ color: 'white' }}
-          title="This is the title"
-          subTitleStyle={{ color: 'white' }}
-          subtitle="This is the subtitle"
-          placeholderInput="This is the text inside placeholder..."
-          placeholderTextColor="black"
-          textInputStyle={{ borderColor: 'black', borderWidth: 2 }}
-          secureTextEntry={false}
-          buttonsStyle={{ borderColor: 'white' }}
-          textCancelStyle={{ color: 'white' }}
-          submitTextStyle={{ color: 'white', fontStyle: 'italic' }}
-          cancelButtonText="CANCEL"
-          submitButtonText="CONFIRM" */}
-          {/* /> */}
 
-          {/* <MaterialDialog
-            title="Use Google's Location Service?"
-            visible={this.state.visible}
-            onOk={() => this.setState({ visible: false })}
-            onCancel={() => this.setState({ visible: false })}>
-   
-          </MaterialDialog>; */}
-
-          {/* 
-<Modal
-    visible={this.state.visible}
-    swipeDirection={['up', 'down']} // can be string or an array
-    swipeThreshold={200} // default 100
-    onSwipeOut={(event) => {
-      this.setState({ visible: false });
-    }}
-  >
-    <ModalContent>
-     <Text>sdfsdfsdf
-
-     </Text>
-    </ModalContent>
-  </Modal> */}
-
-        
         </View>
       </SafeAreaView>
 

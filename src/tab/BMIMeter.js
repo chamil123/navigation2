@@ -161,58 +161,7 @@ export class BMIMeter extends Component {
                         </View>
 
 
-                        {/* </View> */}
-
-                        {/* <TextInput placeholder="Speedometer Value" style={styles.textInput} onChangeText={this.onChange} /> */}
-                        {/* <RNSpeedometer
-                            value={Number.parseInt(this.state._bmiVal)}
-                            //value for Speedometer
-                            size={300}
-                            //Size of Speedometer
-                            minValue={0}
-                            //Min value for Speedometer
-                            maxValue={40}
-                            
-                            //Max value for Speedometer
-                            allowedDecimals={0}
-                            //Decimals value allowed or not
-                            labels={[
-                                {
-                                    // minValue:0,
-                                    minValue:0,
-                                
-                                    maxValue:2,
-                                    name: 'Low Risk',
-                                    labelColor: '#ff2900',
-                                    activeBarColor: '#ffd600',
-                                
-                                    
-                                },
-                                {
-                                    minValue:2,
-                                    maxValue:15,
-                                    name: 'Medium Risk',
-                                    labelColor: '#f4ab44',
-                                    activeBarColor: '#1faa00',
-                                },
-                                {
-                                    minValue:15,
-                                    maxValue:35,
-                                    name: 'High Risk',
-                                    labelColor: '#00ff6b',
-                                    activeBarColor: '#ff6d00',
-                                },
-                                {
-                                    minValue:35,
-                                    maxValue:40,
-                                    name: 'Observe Risk',
-                                    labelColor: '#00ff6b',
-                                    activeBarColor: '#d50000',
-                                
-                                },
-                            ]}
-                        //Labels for the different steps of Speedometer
-                        /> */}
+                     
                         <View style={{ marginTop: 40, padding: 10 }}>
 
 
@@ -245,12 +194,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     },
     innerCircle: {
         borderRadius: 35,
@@ -278,16 +225,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#c8e6c9',
         position: 'absolute',
     }, card: {
-        // height: 250,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
+
         backgroundColor: "white",
         borderRadius: 25,
 
         padding: 10,
         elevation: 4,
         shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.5,
         shadowRadius: 5,
         alignItems: 'center',

@@ -70,8 +70,6 @@ export class VerticleYearChart2 extends Component {
 
 
                 if (_pcatId == 3) {
-                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + _pDescription + "  /  " + _pdate);
-
                     var babayBirgDay = this.state._babybDate;
                     if (babayBirgDay != "") {
 
@@ -113,9 +111,7 @@ export class VerticleYearChart2 extends Component {
                         // rb_strt,rb_end
 
                         je, opvdt, mmr2, opvdt5, hpv1, hpv2, atd
-                        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + nextVaaccination);
-
-
+       
                         this.setState({
                             isLoading: false,
                             _bcg: bcg,
@@ -152,8 +148,6 @@ export class VerticleYearChart2 extends Component {
             }
         })
 
-        // const start = moment(_today, 'YYYY-MM-DD');
-        // let arrayData = 0;
     }
     render() {
 
@@ -270,15 +264,11 @@ export class VerticleYearChart2 extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+   
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -313,26 +303,17 @@ export class VerticleYearChart2 extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+ 
     }
 });

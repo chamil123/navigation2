@@ -2,12 +2,8 @@ import React, { Component, useState } from 'react';
 import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch,StatusBar } from 'react-native';
 
 import { CustomHeader } from '../index';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import moment from 'moment' // 2.20.1
+
 import { Icon } from 'react-native-elements';
-import RBSheet from "react-native-raw-bottom-sheet";
-import { TextInput, Card, Title, Paragraph } from 'react-native-paper';
-import { Button } from 'react-native-elements';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
@@ -227,27 +223,7 @@ export class LabourRoomPacking extends Component {
                 </SafeAreaView>
             );
         }
-        // <SafeAreaView style={{ flex: 1, }}>
-        //     <ScrollView
-        //         contentInsetAdjustmentBehavior="automatic"
-        //         style={styles.scrollView}>
-        //         <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-        //         <View style={{ flex: 1, padding: 10 }}>
-
-        //             <TouchableOpacity onPress={() => this.savePeriod()} style={styles.button}>
-        //                 <Text style={styles.buttonText}>Period Start ?</Text>
-
-
-        //             </TouchableOpacity>
-        //         </View>
-
-        //         <View style={{ flex: 1 }}>
-
-
-        //         </View>
-        //     </ScrollView>
-        // </SafeAreaView>
-
+      
     }
 }
 const styles = StyleSheet.create({

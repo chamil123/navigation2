@@ -36,11 +36,7 @@ export class AreaCharts extends Component {
                 legend: {
                     data: ['උග්‍ර අඩු බර', 'මධ්‍යස්ත අඩු බර', 'අඩු බරට අවදානම', 'නියමිත බර', 'අධි බර', 'ඔබේ  දරුවාගේ බර'],
                 },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
+              
                 grid: {
                     left: '3%',
                     right: '4%',

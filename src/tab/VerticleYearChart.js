@@ -43,7 +43,7 @@ export class VerticleYearChart extends Component {
                 <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={styles.header}>
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: -10 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Diet for healthy mother</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Diet For Healthy Mother</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
                     </View>
                     <View style={{ flexDirection: 'row-reverse',marginHorizontal:20,zIndex:5,top:22}}>

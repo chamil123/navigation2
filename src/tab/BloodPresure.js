@@ -2,25 +2,18 @@ import React, { Component } from 'react';
 import {
   Text, LogBox, View, SafeAreaView, Button, ScrollView, TouchableOpacity, Dimensions, StyleSheet, Alert, FlatList, Image
 } from 'react-native';
-import PureChart from 'react-native-pure-chart';
 import { CustomHeader } from '../index';
-import LinearGradient from 'react-native-linear-gradient';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 // console.disableYellowBox=true;
 LogBox.ignoreAllLogs(true);
-
 import { List, ListItem, Left, Body, Right } from 'native-base';
-
 import { LineChart, } from "react-native-chart-kit";
 import Database from '../Database';
 import ActionButton from 'react-native-action-button';
-
 import RBSheet from "react-native-raw-bottom-sheet";
-
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import { TextInput } from 'react-native-paper';
 import moment from 'moment' // 2.20.1
-import { IMAGE } from '../constants/image';
 import { Icon } from 'react-native-elements';
 import { BarIndicator } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
@@ -29,28 +22,6 @@ const db = new Database();
 const w = Dimensions.get("window").width;
 const screenWidth = Dimensions.get("window").width;
 
-// const [date, setDate] = useState(new Date(1598051730000));
-// const [mode, setMode] = useState('date');
-// const [show, setShow] = useState(false);
-
-// const onChange = (event, selectedDate) => {
-//   const currentDate = selectedDate || date;
-//   setShow(Platform.OS === 'ios');
-//   setDate(currentDate);
-// };
-
-// const showMode = (currentMode) => {
-//   setShow(true);
-//   setMode(currentMode);
-// };
-
-// const showDatepicker = () => {
-//   showMode('date');
-// };
-
-// const showTimepicker = () => {
-//   showMode('time');
-// };
 export class BloodPresure extends Component {
 
 
@@ -102,47 +73,7 @@ export class BloodPresure extends Component {
     this.getData();
     // this.viewListData();
   }
-  componentDidMount() {
-    // this.getData();
-    // const self = this;
-    // return fetch('https://api.mockaroo.com/api/12a7ead0?count=20&key=8ba88000')
-    //   .then(response => response.json())
-    //   .then(responseJson => {
-    //     const dataClone = { ...self.state.data }
-    //     const values = responseJson.map(value => value.Weight);
 
-    //     dataClone.datasets[0].data = values;
-
-    //     console.log("))))))))) : "+values);
-
-    //     self.setState({
-    //       //isLoading: false,
-    //       data: dataClone,
-    //     });
-
-
-    //     console.log(JSON.stringify(responseJson))
-    //     var temp = [];
-    //     for (var i = 0; i < responseJson.length; i++) {
-    //       console.log(responseJson[i].Weight)
-    //       temp.push(responseJson[i].Weight)
-    //       temp.push(responseJson[i].Weight)
-    //     }
-
-    //     this.setState({
-    //       dataSource: temp
-    //     })
-    //     console.log("^^^^^^ :" + this.state.data);
-
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
-  }
-
-  // componentDidMount() {
-  // this.getData();
-  // }
   getData() {
 
     const self = this;
@@ -155,10 +86,7 @@ export class BloodPresure extends Component {
           _list_bpData: '',
 
         });
-        // db.addItemOfBloodPresure().then((result) => {
-        // }).catch((err) => {
-        //   console.log(err);
-        // })
+    
       } else {
         var temp2 = [];
         var temp3 = [];
@@ -198,21 +126,13 @@ export class BloodPresure extends Component {
     const _format = 'YYYY-MM-DD'
     const _selectedDay = moment(this.state.selectedDate).format(_format);
 
-    // this.setState({
-    //   isLoading: false,
-
-
-    // });
     let data = {
       // pId: this.state.pId,
       bpDate: _selectedDay.toString(),
       bpValue: parseInt(this.state.TextInpuPbValue)
     }
     db.addPBvalue(this.state.dbs, data).then((result) => {
-
       this.getData();
-      //   this.props.navigation.state.params.onNavigateBack;
-      //   this.props.navigation.goBack();
     }).catch((err) => {
       console.log(err);
 
@@ -251,17 +171,7 @@ export class BloodPresure extends Component {
       );
     }
     else {
-      // const data = {
-      //   labels: ["s"],
-      //   datasets: [
-      //     {
-      //       data: [50],
-      //       // color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      //       // strokeWidth: 2 // optional
-      //     }
-      //   ],
-      //   legend: ["Rainy Days"] // optional
-      // };
+    
       const chartConfig = {
         backgroundGradientFrom: "#ffb74d",
         backgroundGradientFromOpacity: 10,
@@ -325,13 +235,7 @@ export class BloodPresure extends Component {
               </View>
             </View>
             <Text style={{ paddingLeft: 10, fontWeight: 'bold', paddingTop: 10, fontSize: 14 }}>Previous data</Text>
-            {/* <Card style={styles.cardHorizontal1} >
-              <Text>dasdasda</Text>
-
-
-            </Card> */}
-            {/* <Card>
-            <View > */}
+        
             <View style={{ padding: 10, }} >
 
               <FlatList
@@ -376,22 +280,14 @@ export class BloodPresure extends Component {
                         }}
                       />
                     </View>
-                    {/* <View style={styles.iconMore}>
-
-                      <Icon
-                        name='angle-right'
-                        type='font-awesome'
-                        color='gray'
-                        onPress={() => console.log('hello')} />
-                    </View> */}
+                 
                   </Right>
                 </ListItem>
                 }
               />
 
             </View>
-            {/* </View>
-          </Card> */}
+
           </View>
           <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
             {/* Rest of the app comes ABOVE the action button component !*/}
@@ -400,9 +296,7 @@ export class BloodPresure extends Component {
             }
               style={{ position: 'absolute', zIndex: 999 }}
             >
-              {/* <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </ActionButton.Item> */}
+
             </ActionButton>
           </View>
           <RBSheet

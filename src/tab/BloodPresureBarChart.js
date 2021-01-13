@@ -8,17 +8,12 @@ import { ECharts } from "react-native-echarts-wrapper";
 import *as Animatable from 'react-native-animatable';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Icon } from 'react-native-elements';
-import ActionButton from 'react-native-action-button';
-import Swipeout from 'react-native-swipeout';
+
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import moment from 'moment'; // 2.20.1
-import { IMAGE } from '../constants/image';
-import LinearGradient from 'react-native-linear-gradient';
-import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import SegmentedControlTab from "react-native-segmented-control-tab";
-// import Echarts from 'native-echarts';
 const db = new Database();
 var swipeoutBtns = [
   {
@@ -59,6 +54,7 @@ export class BloodPresureBarChart extends Component {
         //   text: 'Systolic',
 
         // },
+        
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -71,11 +67,7 @@ export class BloodPresureBarChart extends Component {
         legend: {
           data: ['High', 'Pre-High', 'Ideal', 'Low']
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
+        
         grid: {
           // left: '3%',
           // right: '4%',
@@ -213,11 +205,7 @@ export class BloodPresureBarChart extends Component {
         legend: {
           data: ['High', 'Pre-High', 'Ideal', 'Low']
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
+       
         grid: {
           // left: '3%',
           // right: '4%',
@@ -537,14 +525,7 @@ export class BloodPresureBarChart extends Component {
             // height={300}
             />
           }
-          {/* </View> */}
-
-
-          {/* <Swipeout right={swipeoutBtns}>
-            <View>
-              <Text>Swipe me left</Text>
-            </View>
-          </Swipeout> */}
+ 
 
         </View>
         <Animatable.View style={styles.footer} animation="fadeInLeft">
@@ -681,14 +662,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffc15a',
     // borderTopLeftRadius: 30,
     borderTopRightRadius: 50,
-    // paddingVertical: 30,
-    //  paddingHorizontal: 20
 
   }, header: {
     flex: 3,
-    // backgroundColor: '#ffc15a'
-    // justifyContent: 'center',
-    // alignItems: 'center',
   }, container: {
     flex: 1,
     flexDirection: 'row',

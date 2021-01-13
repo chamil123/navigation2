@@ -65,26 +65,6 @@ export class Investigation extends Component {
                         />
                     </View>
 
-                    {/* <FlatList
-
-                        style={{ backgroundColor: 'white' }}
-                        keyExtractor={this.keyExtractor}
-                        data={this.state._list_Data}
-                        // renderItem={this.renderItem}
-
-                        renderItem={({ item }) => <ListItem
-                            style={{ paddingTop: 15 }}
-
-                        >
-
-                            <Body style={{ marginLeft: -150 }}>
-                                <Text style={{ color: 'gray', fontSize: 12 }}>{item.Begin}</Text>
-                                <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
-                            </Body>
-
-                        </ListItem>
-                        }
-                    /> */}
                 </View>
 
             </SafeAreaView>

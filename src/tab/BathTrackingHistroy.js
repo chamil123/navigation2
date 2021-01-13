@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
-import { IMAGE } from '../constants/image';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Icon } from 'react-native-elements'
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Database from '../Database';
 const db = new Database();
 export class BathTrackingHistroy extends Component {
@@ -40,7 +38,7 @@ export class BathTrackingHistroy extends Component {
         let _pdate = '';
         db.listBathsTimes(this.state.dbs).then((data) => {
             products = data;
-            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : " + data);
+         
             this.setState({
                 isLoading: false,
                 _list_wgData: data,
@@ -70,11 +68,7 @@ export class BathTrackingHistroy extends Component {
                             onPress={() => console.log('hello')} />
                     </View>
                 </Left>
-                {/* <Body style={{ marginRight: 40 }}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {item.btStart}
-                    </Text>
-                </Body> */}
+             
                 <Body style={{ marginLeft: -120 }}>
                     <Text style={{ color: 'gray', fontSize: 12 }}>{item.btDate}</Text>
                     <Text style={styles.dateText}>{item.btStart}  to {item.btEnd}</Text>
@@ -110,10 +104,7 @@ export class BathTrackingHistroy extends Component {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
                 <CustomHeader bgcolor='#fbb146' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
-                {/* <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentInsetAdjustmentBehavior="automatic"
-                    style={styles.scrollView}> */}
+            
 
                 <View>
                     <View style={{ backgroundColor: '#fbb146', height: 120,  }}>
@@ -143,10 +134,6 @@ export class BathTrackingHistroy extends Component {
                     </View>
 
                 </View>
-                {/* </ScrollView> */}
-
-
-
             </SafeAreaView>
         );
     }
@@ -166,15 +153,10 @@ export class BathTrackingHistroy extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -195,13 +177,10 @@ export class BathTrackingHistroy extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderColor: '#ef5d9a',
-        // borderWidth: 4,
     }, breadthPo1: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
         bottom: 80,
         zIndex: 5,
@@ -210,27 +189,17 @@ export class BathTrackingHistroy extends Component {
         elevation: 2,
         padding: 12,
 
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
     }, breadthPo2: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+ 
     }, headerStyle: {
         flex: 1,
         height: 40,

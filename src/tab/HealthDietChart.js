@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, ListView, Image } from 'react-native';
-import PushNotification from 'react-native-push-notification';
 import StepIndicator from 'react-native-step-indicator';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
@@ -59,8 +58,7 @@ export class HealthDietChart extends Component {
                 </View>
 
                 <Animatable.View animation="fadeInUp" style={styles.footer}>
-                {/* <Animatable.View animation="fadeInUp"> */}
-                    {/* <View style={styles.container}> */}
+      
                     <View style={styles.stepIndicator}>
                         <StepIndicator
                             customStyles={stepIndicatorStyles}
@@ -92,9 +90,7 @@ export class HealthDietChart extends Component {
                                 >
                                 </Image>
                                 <Text style={styles.title}>{item.body}</Text>
-                                {/* <Text style={styles.body}>{item.content}</Text>
-                                <Text style={styles.body}>{item.content}</Text> */}
-
+                             
                             </View>
                         </ListItem>
                         }

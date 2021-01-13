@@ -30,20 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingHorizontal: 25,
     },
-    // card: {
-    //     borderWidth: 1,
-    //     padding: 25,
-    //     marginTop: 25,
-    //     shadowColor: "#000",
-    //     shadowOffset: {
-    //         width: 0,
-    //         height: 0,
-    //     },
-    //     shadowOpacity:1,
-    //     shadowRadius: 10,
-
-    //     elevation: 11,
-    // }
+  
     card: {
         height: 115,
         // width: (Dimensions.get("window").width / 2) - 20,

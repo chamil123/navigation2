@@ -339,7 +339,7 @@ export class FeedingTimeChart extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Feeding time</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Feeding Time</Text>
                                 {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>

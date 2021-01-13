@@ -23,9 +23,6 @@ const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 
 const cn = new CustomPushNotification();
-// const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
-// const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
-// const workout = {key:'workout', color: 'green'};
 
 export class PeriodAgenda extends Component {
     initialState = {
@@ -91,16 +88,9 @@ export class PeriodAgenda extends Component {
                 _pcatId = products[i].pCatId
                 _pDescription = products[i].pDescription
                 _pTime = products[i].pTime
-                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+_pdate)
+              
                 if (_pcatId == 1) {
-                    // let data = {
-                    //     _title: " " + _pDescription + "" + _pdate,
-                    //     _bigText: "this is subtitle",
-                    // }
-                    // let nestPeriod = moment(_pdate).subtract(2, 'day').format('YYYY-MM-DD');
-                    // if (_today == nestPeriod) {
-                    //     cn.testPush(data);
-                    // }
+                 
 
                     markedDates = { ...markedDates, ...{ selected }, selectedColor: "red", marked: false };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
@@ -170,7 +160,7 @@ export class PeriodAgenda extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-                    // markedDates = { ...markedDates, ...{ selected }, selectedColor: "#ffc107", };
+                 
                     markedDates = { marked: true, dotColor: '#6a1b9a',  };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
@@ -302,20 +292,12 @@ export class PeriodAgenda extends Component {
                 }
             }
 
-            // this.state.tmpArray.map((item, key) => (
-
-
-
-
-            // ));
 
         }).catch((err) => {
             console.log(err);
            
         })
 
-        // const start = moment(_today, 'YYYY-MM-DD');
-        // let arrayData = 0;
     }
     render() {
         let { isLoading } = this.state
@@ -346,28 +328,9 @@ export class PeriodAgenda extends Component {
                         refreshing={false}
 
                         hideKnob={false}
-                        // markingType={'multi-dot'}
-                        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                        // hideExtraDays={false}
-
-                        // Callback that gets called when items for a certain month should be loaded (month became visible)
-
-                        // Callback that fires when the calendar is opened or closed
-                        // onCalendarToggled={(calendarOpened) => { console.log(calendarOpened) }}
-                        // Callback that gets called on day press
-                        // onDayPress={(day) => { console.log('day pressed') }}
-                        // // Callback that gets called when day changes while scrolling agenda list
-                        // onDayChange={(day) => { console.log('day changed') }}
+                      
 
                         onRefresh={() => console.log('refreshing...')}
-
-                    // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
-
-
-                    // Agenda container style
-                    // style={{}}
-
 
                     />
                     <FlashMessage duration={1000} />
@@ -381,29 +344,7 @@ export class PeriodAgenda extends Component {
     }
     loadItems(day) {
 
-        // setTimeout(() => {
-        //   for (let i = 1; i < 2; i++) {
-        // const time = day.timestamp + 2 * 24 * 60 * 60 * 1000;
-        // // const strTime = this.timeToString(time);
-        // const strTime = "2020-09-23";
-        // console.log("dsdsdsdsdsdsd : " + this.timeToString(time));
-        // if (!this.state.items[strTime]) {
-        // this.state.items[strTime] = [];
-        // const numItems = Math.floor(Math.random() * 3 + 1);
-        //   for (let j = 0; j < numItems; j++) {
-        // this.state.items[strTime].push({
-        //     name: 'Item for ' + strTime + ' #',
-        //     height: Math.max(50, Math.floor(Math.random() * 150))
-        // });
-        //   }
-        // }
-        //   }
-        //   const newItems = {};
-        //   Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-        //   this.setState({
-        //     items: newItems
-        //   });
-        // }, 1000);
+
     }
 
     renderItem(item) {
@@ -411,15 +352,7 @@ export class PeriodAgenda extends Component {
             <TouchableOpacity
                 testID={testIDs.agenda.ITEM}
                 style={[styles.item]}
-            // onPress={() => Alert.alert(item.name)}
-            // onPress={({ value, dataset, }) =>
-            //     //   Alert.alert("dsfsdf"+value)
-            //     showMessage({
-            //         message: `${item.name}`,
-            //         description: "You selected this value",
-            //         backgroundColor: '#f06292'
-            //     })
-            // }
+           
             >
                 <Text>{item.name}</Text>
             </TouchableOpacity>

@@ -101,15 +101,11 @@ export class SpecialNotes extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -144,10 +140,7 @@ export class SpecialNotes extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -161,10 +154,7 @@ export class SpecialNotes extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+  
     }, button: {
         backgroundColor: "#f78a2c",
         padding: 10,

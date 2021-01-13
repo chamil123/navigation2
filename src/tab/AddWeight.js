@@ -45,30 +45,8 @@ export class AddWeight extends Component {
                             // selectedDayBackgroundColor: 'white',
                             selectedDayTextColor: 'white',
                         }}
-                        // style={{
-                        //     borderWidth: 1,
-                        //     borderColor: 'gray',
-                        //     height: 150
-                        //   }}
-                        // we use moment.js to give the minimum and maximum dates.
-                        //minDate={_today}
-                        // maxDate={_maxDate}
+                
 
-
-                        // hideArrows={true}
-
-                        // onDayPress={this.onDaySelect}
-                        // onPress={() => this.RBSheet.open()}
-                      //  onDayPress={this.onDaySelect}
-
-                        // onDaySelect={()=>this.RBSheet.open()}
-
-                        // markedDates={{
-                        //     '2020-08-25': { selected: true, selectedColor: 'green' },
-                        //     '2020-08-26': { selected: true, selectedColor: 'red' }
-                        // }}
-
-                        // markingType='multi-period'
                         selectedDate={this.state.selectedDate}
                         onPressDate={(date) => {
                           this.setState({ selectedDate: date });

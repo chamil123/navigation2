@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Icon } from 'react-native-elements';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -11,8 +10,6 @@ import { Button } from 'react-native-elements';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
 import { List, ListItem, Left, Body, Right } from 'native-base';
-import *as Animatable from 'react-native-animatable';
-// import { BarChart, Grid } from 'react-native-svg-charts';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import ActionButton from 'react-native-action-button';
@@ -27,10 +24,6 @@ const _today = moment().format(_format)
 export class SleepingTimeChart extends Component {
     constructor(props) {
         var today = new Date(),
-
-            //  hours = today.getHours(), //Current Hours
-            //  min = today.getMinutes(), //Current Minutes
-            //  sec = today.getSeconds(), //Current Seconds
 
             date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ':' + today.getMinutes();
@@ -58,15 +51,7 @@ export class SleepingTimeChart extends Component {
                         // strokeWidth: 2,
                         color: (opacity = 1) => `rgba(230,230,230,${opacity})`, // optional
                     },
-                    // {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
-                    // }, {
-                    //     data: [1],
-                    //     strokeWidth: 2,
-                    //     color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
-                    // },
+
                 ]
             }
 
@@ -89,10 +74,7 @@ export class SleepingTimeChart extends Component {
         db.listEliminationCountByDate().then((data) => {
             let result = data;
             if (result == 0) {
-                // db.addItemOfBloodPresure().then((result) => {
-                // }).catch((err) => {
-                //   console.log(err);
-                // })
+    
             } else {
                 var temp2 = [];
                 var temp3 = [];
@@ -137,8 +119,7 @@ export class SleepingTimeChart extends Component {
             console.log(result);
       
             this.getData();
-            //   this.props.navigation.state.params.onNavigateBack;
-            //   this.props.navigation.goBack();
+
         }).catch((err) => {
             console.log(err);
            
@@ -161,58 +142,7 @@ export class SleepingTimeChart extends Component {
             console.log(err);
         })
     }
-    // getData() {
-    //     var temp;
-    //     let data = {
-    //         kcDate: this.state._current_date.toString(),
-    //         kcValue: this.state._kick_count,
-    //     }
-    //     db.listKickCount(data).then((results) => {
-    //         result = results;
 
-    //         if (result == 0) {
-    //             db.addKickCount(data).then((results) => {
-
-    //             }).catch((err) => {
-    //                 console.log(err);
-    //             })
-
-
-    //         } else {
-    //             var _clickValue;
-    //             for (var i = 0; i < result.length; i++) {
-    //                 _clickValue = result[i].kcCount;
-    //                 temp = _clickValue + this.state.increment;
-    //             }
-
-    //             this.setState({
-    //                 isLoading: false,
-    //                 _kick_count: temp,
-
-    //             });
-
-    //             let data = {
-    //                 kcDate: this.state._current_date.toString(),
-    //                 kcValue: this.state._kick_count,
-    //             }
-
-    //             db.updateClickCount(data).then((result) => {
-    //                 // console.log(result);
-    //                 this.setState({
-    //                     // isLoading: false,
-    //                 });
-
-    //             }).catch((err) => {
-    //                 console.log(err);
-    //                 this.setState({
-    //                     // isLoading: false,
-    //                 });
-    //             })
-    //         }
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     })
-    // }
     keyExtractor = (item, index) => index.toString()
     render() {
         const datas = {
@@ -227,18 +157,6 @@ export class SleepingTimeChart extends Component {
             legend: ["Rainy Days"] // optional
         };
         const chartConfig = {
-            // backgroundGradientFrom: '#c62828',
-            // backgroundGradientFromOpacity: 0,
-            // backgroundGradientTo: '#ad1457',
-            // backgroundGradientToOpacity: 0.5,
-            // color: () => '#333', // THIS
-            // strokeWidth: 2,
-            // barPercentage: 0.5,
-            // propsForLabels: {
-            //   fontSize: '10',
-            // },
-            // fillShadowGradient: '#FF493B', // THIS
-            // fillShadowGradientOpacity: 1, // THIS
 
             backgroundGradientFrom: "#d50000",
             backgroundGradientFromOpacity: 10,
@@ -282,20 +200,7 @@ export class SleepingTimeChart extends Component {
                         <Card style={[styles.card, { backgroundColor: 'white' }]} >
 
                             <View style={{ alignItems: "center", }} >
-                                {/* <View style={{ height: 45, padding: 5 }}> */}
-                                {/* <LineChart
-                                    data={this.state.data}
-                                    width={Dimensions.get("window").width - 20}
-                                    // yAxisLabel={"$"}
-                                    height={175}
-                                    // bezier
-                                    verticalLabelRotation={-10}
-                                    chartConfig={chartConfig}
-                                    style={{
-                                        marginVertical: 0,
-                                        borderRadius: 16
-                                    }}
-                                /> */}
+                             
 
                                 <BarChart
                                     style={{ borderRadius: 10 }}
@@ -459,10 +364,7 @@ export class SleepingTimeChart extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+    
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
@@ -521,14 +423,10 @@ export class SleepingTimeChart extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, card: {
         height: 220,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
+
         backgroundColor: "white",
         borderRadius: 15,
         // padding: 10,

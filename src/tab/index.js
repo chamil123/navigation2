@@ -9,7 +9,6 @@ export * from './MemberProfile';
 export * from './MenuScreen';
 export * from './PeriodCalandar';
 export * from './TestScreeen';
-export * from './ProductScreen2';
 export * from './HospitalBag';
 export * from './HospitalBagBaby';
 export * from './BMICalculator';

@@ -5,9 +5,6 @@ import { CustomHeader } from '../index';
 import Unorderedlist from 'react-native-unordered-list';
 import Steps from 'react-native-step-indicator';
 
-
-// import Steps from 'react-native-steps';
-
 import ViewPager from '@react-native-community/viewpager';
 
 const PAGES = ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 5', 'Page 5'];
@@ -148,8 +145,8 @@ export class MealPlan extends Component {
                                                 style={{ height: 290, width: 350 }}>
                                             </Image>
                                             <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Milk 250 ml or 1 glass</Text></Unorderedlist>
-                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>  Biscuit 2 pcs</Text></Unorderedlist>
-                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>  Apple or Orange</Text></Unorderedlist>
+                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Biscuit 2 pcs</Text></Unorderedlist>
+                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Apple or Orange</Text></Unorderedlist>
                                         </View>
                                     </ScrollView>
                                 </View>
@@ -180,7 +177,7 @@ export class MealPlan extends Component {
                                                     <Image source={IMAGE.ICON_EVENING}
                                                         style={{ height: 340, width: 390 }}>
                                                     </Image>
-                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>Biscuits 2 pcs</Text></Unorderedlist>
+                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Biscuits 2 pcs</Text></Unorderedlist>
                                                     <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Fruits on choice </Text>
                                                     </Unorderedlist>
                                                 </View>
@@ -200,8 +197,8 @@ export class MealPlan extends Component {
                                                         </Image>
                                                         <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Cooked rice 3 cup</Text></Unorderedlist>
                                                         <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Meat or fish 3 pcs </Text></Unorderedlist>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>  Cooked dhal 2 cup </Text></Unorderedlist>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>  Vegetable 1 cup </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Cooked dhal 2 cup </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Vegetable 1 cup </Text></Unorderedlist>
                                                     </View>
                                                 </ScrollView>
                                             </View>
@@ -256,23 +253,14 @@ const styles = StyleSheet.create({
     }, footer: {
         flex: 6,
         backgroundColor: '#f3f3f3',
-        // zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 3,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
-        //  flexDirection: 'row',
-        //  flexWrap: 'wrap',
-        // paddingTop: 5,
-        //  paddingLeft: 10,
-        // paddingRight: 10
+
     }, button5: {
         shadowColor: 'rgba(0,0,0, .4)', // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS
@@ -300,10 +288,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: {width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -312,15 +297,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: {width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+
     }, header: {
         flex: 0,
     }, footer: {

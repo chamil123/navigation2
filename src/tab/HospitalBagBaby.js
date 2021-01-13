@@ -149,9 +149,7 @@ export class HospitalBagBaby extends Component {
                             source={IMAGE.ICON_BABYBAG}
                             resizeMode="contain"
                         />
-                        {/* <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Prepare baby bag</Text>
-                    </TouchableOpacity> */}
+              
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
                         <View style={styles.brestposition5}></View>
@@ -222,26 +220,7 @@ export class HospitalBagBaby extends Component {
                 </SafeAreaView>
             );
         }
-        // <SafeAreaView style={{ flex: 1, }}>
-        //     <ScrollView
-        //         contentInsetAdjustmentBehavior="automatic"
-        //         style={styles.scrollView}>
-        //         <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-        //         <View style={{ flex: 1, padding: 10 }}>
 
-        //             <TouchableOpacity onPress={() => this.savePeriod()} style={styles.button}>
-        //                 <Text style={styles.buttonText}>Period Start ?</Text>
-
-
-        //             </TouchableOpacity>
-        //         </View>
-
-        //         <View style={{ flex: 1 }}>
-
-
-        //         </View>
-        //     </ScrollView>
-        // </SafeAreaView>
 
     }
 }

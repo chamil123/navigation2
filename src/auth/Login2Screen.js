@@ -216,10 +216,10 @@ export class Login2Screen extends Component {
                                     </View>
                                 </View>
                                 <Animatable.View animation="fadeInUp">
-                                    <Text style={{ color: '#fff', paddingVertical: 5, marginLeft: 2, marginTop: 30 }}>User Name :</Text>
+                                    <Text style={{ color: '#fff', paddingVertical: 5, marginLeft: 2, marginTop: 30 }}>Email Address :</Text>
                                     <View style={{ alignItems: 'center', flexDirection: 'row', borderColor: 'gray', borderWidth: 0.5, borderRadius: 25, backgroundColor: '#F2F2F2', paddingLeft: 10 }}>
                                         <Icon name="email" size={20} style={{ color: 'gray', paddingRight: 5 }} />
-                                        <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ width: '85%' }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
+                                        <TextInput blurOnSubmit onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ width: '85%' }} placeholder="Enter Email Address" onEndEditing={this.clearFocus} autoFocus={false} />
                                     </View>
 
                                     {/* <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, marginTop: 20 }}>User Name :</Text>
@@ -229,34 +229,9 @@ export class Login2Screen extends Component {
                                         <Icon name="briefcase" size={20} style={{ color: 'gray', paddingRight: 5 }} />
                                         <TextInput blurOnSubmit secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ width: '85%' }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
                                     </View>
-                                    {/* <TouchableOpacity activeOpacity={1.0} ref="touchableOpacity" style={{ marginTop: 40, }} onPress={this.InputUsers}>
-
-                                        <LinearGradient colors={['#fff', '#ffeed5']}
-
-                                            start={{ x: 0, y: 1 }}
-                                            end={{ x: 1, y: 0.9 }}
-
-                                            style={styles.linearGradient}>
-                                            <Text style={styles.buttonText}>
-                                                Log in
-  </Text>
-                                        </LinearGradient>
-                                    </TouchableOpacity> */}
+                                  
                                     <View style={{ marginBottom: 20, marginTop: 20 }}>
-                                        {/* <Button
-                                            title="Sign In"
-                                            type="Solid"
-                                            raised={true}
-                                            titleStyle={{ color: 'black' }}
-                                            buttonStyle={{
-                                                backgroundColor: 'white',
-                                                borderRadius: 25,
-                                                borderColor: 'white',
-                                                color: 'black', padding: 12,
-                                            }}
-                                            onPress={this.InputUsers}
-
-                                        /> */}
+                                     
                                         <Button
                                             title="Sign In"
                                             type="outline"

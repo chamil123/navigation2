@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { CustomHeader, CustomDrawerContent } from './src';
 import {
-  HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, ProductScreen2, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
+  HomeScreen, HomeScreenDetail, SettingsScreen, SettingsScreenDetail, CreatePost, NewPost, NotificationScreen, MemberProfile, MenuScreen, PeriodCalandar, TestScreeen, HospitalBag, HospitalBagBaby, BMICalculator, BMIMeter, IdentifyPregnancy, RegularMenstruation, BloodPresure, MatirializeDialog, Investigation, Excercise, DitHelthyMother, WeightGain, AddWeight, KickCounter, EDDCalculator,
   CalandarData, BreastFeeding, VerticleYearChart, VerticleYearChart2, BabyActivities, FeedingTimeChart, UrinationTime, EliminationChart, SleepingTimeChart, TestMail, WeightChart, HealthDietChart, LabourRoomPacking, MealPlan, PeriodAgenda, PeriodHistory, SpecialNotes, TestChart, AreaCharts, AddMesurement, PrograssCircular, FoodPhyramid, WightGainBarchart, WeightGainDetailsAdd, BloodPresureBarChart, BloodPresureDetailsAdd, KickCounterHister, ClinicManagement,AgendaHistory, BathTracking, BathTrackingHistroy,ProfileImageView
 } from './src/tab';
 import { NotificationsScreen } from './src/drawer';
@@ -287,7 +287,6 @@ export default class App extends React.Component {
           <StackApp.Screen name="NewPost" component={NewPost} options={navOptionHandler} />
           <StackApp.Screen name="PeriodCalandar" component={PeriodCalandar} options={navOptionHandler} />
           <StackApp.Screen name="TestScreeen" component={TestScreeen} options={navOptionHandler} />
-          <StackApp.Screen name="ProductScreen2" component={ProductScreen2} options={navOptionHandler} />
           <StackApp.Screen name="HospitalBag" component={HospitalBag} options={navOptionHandler} />
           <StackApp.Screen name="HospitalBagBaby" component={HospitalBagBaby} options={navOptionHandler} />
           <StackApp.Screen name="BMICalculator" component={BMICalculator} options={navOptionHandler} />

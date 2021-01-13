@@ -41,9 +41,7 @@ export class LoginScreen extends Component {
 
                 
                 </Text>
-                {/* <Text style={{ color: 'red',fontSize: 35, fontWeight: "bold" }}> <Text style={{ color: 'white',fontSize: 35, fontWeight: "normal", }}>You and</Text>Me</Text> */}
-                {/* <Text style={{ fontSize: 16, color: 'black',marginBottom:15 }}>Enjoy the experience</Text> */}
-
+             
                 <View style={{backgroundColor: 'rgba(252, 252, 252, 0.1)',padding:20,borderRadius:150}}>
                                     <View style={{backgroundColor: 'rgba(252, 252, 252, 0.2)',padding:15,borderRadius:120}}>
                                     <View style={{backgroundColor: 'rgba(252, 252, 252, 0.9)',padding:10,borderRadius:100}}>
@@ -57,10 +55,7 @@ export class LoginScreen extends Component {
 
               </View>
               <Animatable.View animation="fadeInLeft">
-                {/* <View style={{ borderBottomWidth: 0.6, paddingBottom: 5 }}>
-
-
-                </View> */}
+            
 
                 <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('Login2')}>
 
@@ -80,7 +75,7 @@ export class LoginScreen extends Component {
                 <Button
                   title="Sign Up"
                   type="outline"
-
+                  titleStyle={{ color: 'white' }}
                   buttonStyle={styles.submitText, { borderRadius: 25, borderColor: 'white', color: '#ccc', padding: 12, borderWidth: 1,marginBottom:20 }}
                   onPress={() => this.props.navigation.navigate('Register')}
 
@@ -95,56 +90,7 @@ export class LoginScreen extends Component {
         </LinearGradient>
       </View>
 
-      //     <SafeAreaView style={{ flex: 1 ,justifyContent: 'center' , alignItems: 'center'}}>
-      //        <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#f2f2f2" />
-      //       <ScrollView
-      //         contentInsetAdjustmentBehavior="automatic"
-      //         style={styles.scrollView}>
-
-      //         <View style={{ flex:1, justifyContent: 'space-around' , alignItems: 'center'}}>
-      //           <Text style={{ fontSize: 22, fontWeight: "bold", marginTop:50}}> Welcome To 
-
-      //           <Text  style={{color:'#ff9100',}}>  App</Text>
-      //           </Text>
-      //           <Text style={{fontSize:14}}>Enjoy the experience</Text>
-
-      //           <Image style={{ width: 210, height: 310, marginLeft: 0 }}
-      //             source={IMAGE.ICON_LOGIN}
-      //             resizeMode="contain"
-
-      //           />
-
-
-      //           <TouchableOpacity style={{ marginTop: 0}}
-      //             onPress={() => this.props.navigation.navigate('Login2')}
-
-      //           >
-      //             <LinearGradient colors={['#fbb146', '#f78a2c']}
-
-      //               start={{ x: 0, y: 1 }}
-      //               end={{ x: 1, y: 0.9 }}
-
-      //               style={styles.linearGradient}>
-      //               <Text style={styles.buttonText}>
-      //                 Sign in
-      // </Text>
-      //             </LinearGradient>
-      //           </TouchableOpacity>
-      //           <Text style={{marginTop:10}}>Don't have account? <Text   style={{color:'#ff9100'}}>create new Account</Text> </Text>
-      //           <Button
-      //             title="Sign Up"
-      //             type="outline"
-      //             buttonStyle={styles.submitText,{borderRadius:5,borderColor:'#f78a2c',marginTop:10,color:'#ccc',width: 280,borderWidth: 1,}}
-      //             onPress={() => this.props.navigation.navigate('Register')}
-
-      //           />
-
-
-
-
-      //         </View>
-      //       </ScrollView>
-      //     </SafeAreaView>
+    
     );
   }
 }

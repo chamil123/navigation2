@@ -13,10 +13,6 @@ import Swipeout from 'react-native-swipeout';
 const db = new Database();
 const _formatTime = 'hh:mm:ss';
 
-// const time = moment().format(_formatTime);
-
-// const handleTimerComplete = () => alert("custom completion function");
-
 const options = {
 
   text: {
@@ -129,13 +125,7 @@ export class BathTracking extends Component {
           },
           text: 'Delete', type: 'delete',
         }
-        // ,
-        //  {
-        //   onPress: () => {
-
-        //   },
-        //   text: 'update', type: 'update',backgroundColor:'orange'
-        // }
+  
       ],
       // rowId?
       sectionId: 1
@@ -172,14 +162,7 @@ export class BathTracking extends Component {
                 color='gray'
                 iconStyle={{ fontSize: 25, padding: 8 }}
                 name="angle-double-right" color="gray"
-              // onPress={() => {
-              //   this.deleteData(item.btId); showMessage({
-
-              //     message: "Success",
-              //     description: "successfuly deleted " + `${item.btDate}`,
-              //     type: "success",
-              //   })
-              // }}
+        
               />
             </View>
           </Right >
@@ -245,7 +228,7 @@ export class BathTracking extends Component {
         <View style={{ backgroundColor: '#fbb146', height: 45, }}>
           <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Bath time tracker</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Bath Time Tracker</Text>
 
           </View>
         </View>
@@ -299,9 +282,7 @@ export class BathTracking extends Component {
               }}
               onPress={this.toggleStopwatch}
             />
-            // <TouchableHighlight onPress={this.toggleStopwatch}>
-            //   <Text style={{ fontSize: 30 }}>stop</Text>
-            // </TouchableHighlight>
+  
           }
 
           <Avatar

@@ -4,9 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { IMAGE } from '../constants/image';
 import moment from 'moment' // 2.20.1
-import { Icon } from 'react-native-elements';
 import Database from '../Database';
-import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   BallIndicator,
@@ -178,11 +176,8 @@ export class HomeScreen extends Component {
 
       );
     } else {
-      // const miniCardStyle = {
-      //   padding: 5, margin: 5, elevation: 3,
-      // };
+
       return (
-        // <Text>sdasdasdasd</Text>
 
         <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.brestposition5}></View>
@@ -192,10 +187,6 @@ export class HomeScreen extends Component {
           <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fbb146" />
           <CustomHeader bgcolor='#fbb146' title="Main Menu" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
           <ScrollView style={styles.scrollContainer}>
-
-            {/* <CustomHeader bgcolor='white' title="Home" isHome={true} navigation={this.props.navigation}   bdcolor='#f2f2f2'/> */}
-
-
             {
               this.state._member_id == 1 ?
                 <View style={{ flex: 1, flexDirection: 'column', }}>
@@ -294,7 +285,7 @@ export class HomeScreen extends Component {
                     </View>
                   </ScrollView>
 
-                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 5 }}>Before pregnancy</Text>
+                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 5 }}> Pregnancy Period</Text>
                   <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
                   <View style={styles.container}>
 
@@ -320,8 +311,6 @@ export class HomeScreen extends Component {
 
                     <Card style={[styles.card]} >
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClinicManagement')}>
-                        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodCalandar')}> */}
-                        {/* <TouchableOpacity  onPress={() => this.props.navigation.navigate('HealthDietChart')}> */}
                         <View style={[{ alignItems: "center" }, styles.touchableopacity]} >
                           <View style={{ height: 80, padding: 15, backgroundColor: '#fee8b6', borderRadius: 50 }}>
                             <Image source={IMAGE.ICON_CLINICK_MANAGEMENT}
@@ -482,7 +471,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Grouth tracker</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Growth tracker</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -666,8 +655,6 @@ export class HomeScreen extends Component {
 
   card: {
     height: 115,
-    // width: (Dimensions.get("window").width / 2) - 20,
-    // width: "45%",
     backgroundColor: 'rgba(255, 255, 255,1)',
     borderRadius: 15,
     // padding: 10,

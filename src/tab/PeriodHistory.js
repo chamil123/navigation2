@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
 import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Database from '../Database';
 import { Icon } from 'react-native-elements';
-import { ECharts } from "react-native-echarts-wrapper";
-import moment from 'moment' // 2.20.1
+
 const db = new Database();
 import FlashMessage, { showMessage } from "react-native-flash-message";
 export class PeriodHistory extends Component {

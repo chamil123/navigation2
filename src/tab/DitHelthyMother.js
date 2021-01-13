@@ -23,15 +23,7 @@ export class DitHelthyMother extends Component {
                 <Text>Pregnancy exercise</Text>
               </View>
             </ImageBackground>
-            {/* <Image style={{ width: 250, height: 270, marginLeft: 10, }}
-              source={IMAGE.ICON_EXCERCISE}
-              resizeMode="contain"
-            /> */}
-            {/* <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Prepare baby bag</Text>
-
-
-                    </TouchableOpacity> */}
+          
           </View>
         </View>
         <View style={styles.footer}>
@@ -113,12 +105,10 @@ export class DitHelthyMother extends Component {
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    // paddingVertical: 30,
-    //  paddingHorizontal: 20
+
   }, header: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+
   }, backgroundImage: {
     // height: height,
     position: "absolute",
@@ -135,8 +125,7 @@ export class DitHelthyMother extends Component {
     paddingRight: 10
   }, card: {
     height: 185,
-    // width: (Dimensions.get("window").width / 2) - 20,
-    // width: "45%",
+
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,

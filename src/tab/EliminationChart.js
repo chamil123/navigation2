@@ -350,7 +350,7 @@ export class EliminationChart extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Elimination time</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Elimination Time</Text>
                             </View>
                         </View>
                       

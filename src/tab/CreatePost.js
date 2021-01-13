@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { Alert, FlatList, Text, ScrollView, Image, View, SafeAreaView, ListView, TouchableOpacity, ActivityIndicator, TouchableHighlight, StyleSheet, TextInput } from 'react-native';
 import { IMAGE } from '../constants/image';
-import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-import { List, ListItem, Left, Body, Right } from 'native-base';
-
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-// import { ActivityIndicator } from 'react-native-paper';
-
 
 const styles = StyleSheet.create({
     TextInputStyleClass: {
@@ -82,12 +77,7 @@ handleLoadMore = () => {
 }
 
 export class CreatePost extends Component {
-    // constructor() {
-    //     super()
-    //     this.state = {
-    //         dataSource: []
-    //     }
-    // }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -112,22 +102,7 @@ export class CreatePost extends Component {
 
     componentDidMount() {
         this.setState({ isLoading: true }, this.getData)
-        // this.getData()
-        // return fetch('https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/posts.php')
-        //     .then((response) => response.json())
-        //     .then((responseJson) => {
-
-        //         this.setState({
-        //             dataSource: responseJson
-
-        //         }, function () { })
-        //         // Alert.alert(
-        //         //     " data",
-        //         //     " data - " + this.state.dataSource
-        //         // )
-        //     }).catch((error) => {
-        //         console.error(error)
-        //     })
+     
 
     }
 

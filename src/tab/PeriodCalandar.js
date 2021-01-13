@@ -77,22 +77,7 @@ export class PeriodCalandar extends Component {
     }
 
     loadData() {
-        // db.listBabyDetails(this.state.dbs).then((data) => {
-        //     let result = data;
-        //     if (result == 0) {
-        //     } else {
-        //         let { babybDate } = this.props
-        //         for (var i = 0; i < result.length; i++) {
-        //             babybDate = result[i].bbDate;
-        //         }
-        //         this.setState({
-        //             isLoading: false,
-        //             _babybDate: babybDate,
-        //         });
-        //     }
-        // }).catch((err) => {
-        //     console.log(err);
-        // })
+     
 
         let selected = true;
         let markedDates = {}
@@ -189,7 +174,7 @@ export class PeriodCalandar extends Component {
                         _reacl_next_p_date: parseFloat(range2.diff('days')),
                         _nextPeriodDate: _pdate
                     });
-                    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+this.state.reacl_next_p_date);
+                 
                 }
             }
         }).catch((err) => {

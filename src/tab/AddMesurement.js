@@ -110,19 +110,7 @@ export class AddMesurement extends Component {
               {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>
-              {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('AgendaHistory')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 120 }]}>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
-                    <Icon
-                      name='bar-chart'
-                      type='font-awesome'
-                      color='red'
-                      iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
-                    />
-                  </View>
-                  <Text style={{ color: 'white', padding: 7 }}>History</Text>
-                </View>
-              </TouchableOpacity> */}
+            
               <TouchableOpacity onPress={() => this.props.navigation.navigate('AreaChart')} style={[styles.buttonh, { backgroundColor: 'green', width: 140 }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
@@ -170,13 +158,7 @@ export class AddMesurement extends Component {
 
 
             </TouchableOpacity>
-            {/* <View style={styles.button}>
-            <Button
-              large
-              leftIcon={{ name: 'save' }}
-              title='Save'
-              onPress={() => this.saveData()} />
-          </View> */}
+  
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -212,10 +194,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 20,
     marginTop: 10,
-    // shadowColor: '#30C1DD',
-    // shadowOffset: { width: 0, height: 3 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 5,
+
   }, linearGradient: {
     marginTop: 30,
     paddingLeft: 15,

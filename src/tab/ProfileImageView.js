@@ -79,8 +79,7 @@ export class ProfileImageView extends Component {
             this.setState({
                 isLoading: false,
             });
-            //   this.props.navigation.state.params.onNavigateBack;
-            //   this.props.navigation.goBack();
+
         }).catch((err) => {
             console.log(err);
             this.setState({

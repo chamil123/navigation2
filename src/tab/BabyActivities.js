@@ -270,12 +270,11 @@ export class BabyActivities extends Component {
                         <View>
                             <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                                 <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Baby activity</Text>
-                                    {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Baby Activity</Text>
+                               
                                 </View>
                             </View>
 
-                            {/* <View style={styles.breadthPo1}> */}
                             <View style={styles.container}>
 
                                 <Card style={[styles.card, { backgroundColor: '#d5cdfe' }]} >
@@ -487,15 +486,9 @@ export class BabyActivities extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146'
-        // justifyContent: 'center',
-        // alignItems: 'center',
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -518,8 +511,6 @@ export class BabyActivities extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderColor: '#ef5d9a',
-        // borderWidth: 4,
     }, breadthPo1: {
 
         justifyContent: 'center',
@@ -532,10 +523,7 @@ export class BabyActivities extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+    
     }, breadthPo2: {
 
         justifyContent: 'center',
@@ -549,14 +537,9 @@ export class BabyActivities extends Component {
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
+    
     }, card: {
         height: 90,
-        // width: (Dimensions.get("window").width / 2) - 20,
-        // width: "45%",
         backgroundColor: "white",
         borderRadius: 15,
         padding: 10,

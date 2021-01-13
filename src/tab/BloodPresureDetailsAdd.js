@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, TouchableWithoutFeedback, TouchableNativeFeedback, Alert, FlatList } from 'react-native';
-import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import DatePicker from 'react-native-date-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
@@ -12,7 +9,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
-// import { TextInput } from 'react-native-paper';
 export class BloodPresureDetailsAdd extends Component {
     constructor(props) {
         super(props);
@@ -41,8 +37,7 @@ export class BloodPresureDetailsAdd extends Component {
         this.setState({
             dbs: result,
         });
-        // this.getData();
-        // this.viewListData();
+
     }
     DatePickerMainFunctionCall = () => {
         let DateHolder = this.state.DateHolder;
@@ -123,16 +118,9 @@ export class BloodPresureDetailsAdd extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.breadthPo1}>
-                            {/* <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FIRST YEAR OF LIFE</Text>
-                            <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View> */}
+                    
                             <Text style={{ marginVertical: 15 }}>Select date</Text>
-                            {/* <DatePicker
-                                mode="date"
-                                androidVariant="iosClone"
-                                enableAutoDarkMode={true}
-                                date={this.state.date}
-                                onDateChange={(date) => { this.setState({ date: date }) }}
-                            /> */}
+                     
                             <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
                                 <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }} placeholder="Select Date">
                                     <Text style={styles.datePickerText}>{this.state.DateText}</Text>
@@ -183,18 +171,12 @@ export class BloodPresureDetailsAdd extends Component {
         flex: 6,
         backgroundColor: '#f3f3f3',
         zIndex: -1
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
+
     }, header: {
         flex: 2,
         backgroundColor: '#fbb146',
         borderBottomStartRadius: 30,
-        //    borderBottomLeftRadius: 30,
-        // borderBottomRightRadius: 30,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     }, container: {
         flex: 1,
         flexDirection: 'row',
@@ -218,40 +200,19 @@ export class BloodPresureDetailsAdd extends Component {
         // borderColor: '#ef5d9a',
         // borderWidth: 4,
     }, breadthPo1: {
-
-        // justifyContent: 'center',
-        // alignSelf: 'center',
-        // position: 'absolute',
-        // backgroundColor: 'white',
-        // bottom: 100,
         zIndex: 5,
-        // width: '95%',
-        // borderRadius: 10,
-        // elevation: 2,
         padding: 18,
-        // paddingTop: 20,
         marginTop: 10,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
     }, breadthPo2: {
 
         justifyContent: 'center',
         alignSelf: 'center',
-        // position: 'absolute',
         backgroundColor: 'white',
-        // bottom: -190,
         marginBottom: 10,
-        // zIndex: 5,
         width: '95%',
         borderRadius: 10,
         elevation: 2,
         padding: 12,
-        // shadowColor: '#30C1DD',
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 5,
     }, button1: {
         backgroundColor: "red",
         padding: 5,

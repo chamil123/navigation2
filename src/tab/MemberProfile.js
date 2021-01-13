@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, Image, View, SafeAreaView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Caption, Title, Paragraph } from 'react-native-paper';
-import { FlatList } from 'react-native-gesture-handler';
-import { List, ListItem, Left, Body, Right } from 'native-base';
+
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import { CustomHeader } from '../index';
@@ -73,11 +72,7 @@ export class MemberProfile extends Component {
       }).catch((error) => {
         console.error(error);
       })
-    // showMessage({
-    //   message: "Hello there",
-    //   description: "successfuly deleted ",
-    //   type: "success",
-    // });
+ 
   }
   async componentDidMount() {
     const myArray = await AsyncStorage.getItem('memberNames');
@@ -145,11 +140,6 @@ export class MemberProfile extends Component {
         const source = { uri: response.uri };
         const imdata = response.data;
 
-
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
         this.setState({
           isLoading: false,
           imageSource: source,
@@ -157,9 +147,7 @@ export class MemberProfile extends Component {
           dataa: imdata
 
         });
-        // console.log('image source  = ', this.state.abc);
-        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : 1"+ response.data)
-
+       
         this.uploadPhoto();
       }
     });
@@ -180,23 +168,7 @@ export class MemberProfile extends Component {
     }).catch((err) => {
       console.log(err);
     });
-    // RNFetchBlob.fetch('POST', 'https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/upload.php', {
-    //   Authorization: "Bearer access-token",
-    //   otherHeader: "foo",
-    //   'Content-Type': 'multipart/form-data',
-    // }, [
-
-    //   { name: 'image', filename: 'image.png', type: 'image/png', data: this.state.dataa },
-    //   // part file from storage
-    //   // { name : 'avatar-foo', filename : 'avatar-foo.png', type:'image/foo', data: RNFetchBlob.wrap(path_to_a_file)},
-    //   // // elements without property `filename` will be sent as plain text
-    //   // { name : 'name', data : 'user'},
-
-    // ]).then((resp) => {
-    //   // ...
-    // }).catch((err) => {
-    //   // ...
-    // })
+    
     this.setState({
       isLoading: false,
 
@@ -215,42 +187,7 @@ export class MemberProfile extends Component {
         <SafeAreaView style={{ flex: 1 }}>
           <CustomHeader bgcolor='#fbb146' title="Home detail" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
           <FlashMessage duration={1000} />
-          {/* <View style={styles.header}>
-
-            <View style={styles.userInfoSection}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
-
-                <Avatar
-
-                  rounded
-                  showEditButton
-                  size={130}
-
-                  source={this.state.imageSource != null ? this.state.imageSource : require('../images/person.png')}
-
-                  containerStyle={{ margin: 10 }}
-                  onEditPress={() => console.log('edit button pressed')}
-                  onLongPress={() => console.log('component long pressed')}
-                  onPress={() => this.selectPhoto()}
-                  editButton={{
-                    name: 'edit'
-                  }}
-
-                />
-
-
-                <View style={{ marginLeft: 0, flexDirection: 'column', marginTop: -30 }}>
-                  <Title style={styles.title} >
-
-                  </Title>
-                  <Caption style={styles.caption}>
-                    {this.state.TextInputEmail}
-                  </Caption>
-                </View>
-              </View>
-            </View>
-
-          </View> */}
+     
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior="automatic"
@@ -258,13 +195,11 @@ export class MemberProfile extends Component {
           >
             <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
               <View style={{ marginTop: 0, marginLeft: 20 }}>
-                {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Baby activity</Text> */}
-                {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
+             
               </View>
             </View>
 
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bottom: 90 }}>
-              {/* <Image source={{ uri: "https://cyrenaic-pounds.000webhostapp.com/tr_reactnative/" + this.state.abc }} style={{ width: 50, height: 50 }} /> */}
 
               
               <Avatar
@@ -309,23 +244,7 @@ export class MemberProfile extends Component {
               paddingVertical: 0,
             }}>
               <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
-              {/* <FlatList
-                data={this.state.dataSource}
-                ItemSeparatorComponent={this.FlatListItemSeparator}
-                renderItem={({ item }) => <ListItem >
-  
-                  <Body>
-                    <Text>Name</Text>
-                
-                  </Body>
-                  <Right>
-                    <TouchableOpacity onPress={this.Action_click(this)}>
-                      <Text   >edits</Text>
-                    </TouchableOpacity>
-                  </Right>
-                </ListItem>
-                }>
-              </FlatList> */}
+             
               <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
               <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
               <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
@@ -352,20 +271,6 @@ export class MemberProfile extends Component {
 
               </TouchableOpacity>
 
-              {/* <TouchableOpacity style={{ marginTop: 30 }} onPress={this.uploadPhoto} >
-                <LinearGradient colors={['#fbb146', '#f78a2c']}
-                  // '#ffd600',
-                  // locations={[1,0.3,0.5]}
-                  start={{ x: 0, y: 1 }}
-                  end={{ x: 1, y: 0.9 }}
-                  // locations={[0.3, 0.6,1]} 
-                  style={styles.linearGradient}>
-                  <Text style={styles.buttonText}>
-                    Upload
-    </Text>
-                </LinearGradient>
-
-              </TouchableOpacity> */}
 
             </View>
           </ScrollView>

@@ -2,14 +2,8 @@ import React, { Component, useState } from 'react';
 import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch,StatusBar } from 'react-native';
 
 import { CustomHeader } from '../index';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import moment from 'moment' // 2.20.1
 
-import RBSheet from "react-native-raw-bottom-sheet";
-import { TextInput, Card, Title, Paragraph } from 'react-native-paper';
-import { Button } from 'react-native-elements';
 import { List, ListItem, Left, Body, Right } from 'native-base';
-import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
@@ -31,7 +25,7 @@ export class KickCounterHister extends Component {
             data: {
                 backgroundColor: '#F2F2F2',
                 title: {
-                    text: 'kick Counter History'
+                    text: '   Kick Counter History'
                 },
                 tooltip: {},
                 legend: {
@@ -131,44 +125,6 @@ export class KickCounterHister extends Component {
         });
 
 
-        // let temp2 = [];
-        // const self = this;
-        // db.listBloodPresure(this.state.dbs).then((data) => {
-        //     let result = data;
-        //     if (result == 0) {
-
-        //         this.setState({
-        //             isLoading: false,
-
-        //         });
-
-        //     } else {
-
-        //         var temp3 = [];
-        //         var _monthDate;
-        //         const dataClone = { ...self.state.data }
-        //         for (var i = 0; i < result.length; i++) {
-        //             _monthDate = result[i].bpDate.substring(5, 10);
-        //             temp2.push(parseFloat([result[i].bpValue]));
-        //             temp3.push([_monthDate]);
-
-
-        //         }
-
-        //         console.log("sdasdadasd : " + temp2);
-        //         // dataClone.xAxis.data = temp3;
-
-        //         dataClone.series[0].data = temp2;
-        //         // dataClone.series[0].type = "bar";
-        //         self.setState({
-        //             isLoading: false,
-        //             data: dataClone,
-        //         });
-
-        //     }
-        // }).catch((err) => {
-        //     console.log(err);
-        // })
 
     }
     deleteData(id) {
@@ -254,7 +210,7 @@ export class KickCounterHister extends Component {
                                 </Left>
 
 
-                                <Body style={{ marginLeft: -190 }}>
+                                <Body style={{ marginLeft: -170 }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'column' }}>
                                             <Text>{item.kcDate}</Text>
@@ -304,26 +260,7 @@ export class KickCounterHister extends Component {
                 </SafeAreaView>
             );
         }
-        // <SafeAreaView style={{ flex: 1, }}>
-        //     <ScrollView
-        //         contentInsetAdjustmentBehavior="automatic"
-        //         style={styles.scrollView}>
-        //         <CustomHeader bgcolor='white' title="Home detail" navigation={this.props.navigation} bdcolor='#f2f2f2' />
-        //         <View style={{ flex: 1, padding: 10 }}>
-
-        //             <TouchableOpacity onPress={() => this.savePeriod()} style={styles.button}>
-        //                 <Text style={styles.buttonText}>Period Start ?</Text>
-
-
-        //             </TouchableOpacity>
-        //         </View>
-
-        //         <View style={{ flex: 1 }}>
-
-
-        //         </View>
-        //     </ScrollView>
-        // </SafeAreaView>
+     
 
     }
 }
