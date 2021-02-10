@@ -16,6 +16,8 @@ import { TextInput } from 'react-native-paper';
 import { BarIndicator, } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 var j = 0;
 const _formatTime = 'hh:mm:ss';
@@ -38,6 +40,7 @@ export class BabyActivities extends Component {
             _updateRbSheet: 0,
             _updateId: '',
             dbs: '',
+            lan: ''
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -50,9 +53,11 @@ export class BabyActivities extends Component {
         });
         this.getaAllClickData();
     }
-    componentDidMount() {
-
-    }
+    async componentDidMount() {
+        this.setState({
+          lan: await AsyncStorage.getItem('lang'),
+        });
+      }
     saveData() {
         this.RBSheet.close();
         const _format = 'YYYY-MM-DD'
@@ -142,7 +147,7 @@ export class BabyActivities extends Component {
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'center', alignItems: 'center' }}>
-                <Text >oops! There's no data here!</Text>
+                <Text >{i18n.t('babyactivity.oops')}y</Text>
             </View>);
     }
 
@@ -270,7 +275,7 @@ export class BabyActivities extends Component {
                         <View>
                             <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                                 <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Baby Activity</Text>
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>{i18n.t('babyactivity.heading')}</Text>
                                
                                 </View>
                             </View>
@@ -289,7 +294,7 @@ export class BabyActivities extends Component {
                                                 </Image>
                                             </View>
 
-                                            <Text style={{ marginTop: 0, fontSize: 12 }}>Feeding </Text>
+                                            <Text style={{ marginTop: 0, fontSize: 12 }}>{i18n.t('babyactivity.feeding')} </Text>
 
                                         </View>
                                     </TouchableOpacity>
@@ -305,7 +310,7 @@ export class BabyActivities extends Component {
                                                 >
                                                 </Image>
                                             </View>
-                                            <Text style={{ marginTop: 0, fontSize: 12 }}>Urination</Text>
+                                            <Text style={{ marginTop: 0, fontSize: 12,textAlign:'center' }}>{i18n.t('babyactivity.urine')}</Text>
 
                                         </View>
                                     </TouchableOpacity>
@@ -319,7 +324,7 @@ export class BabyActivities extends Component {
                                                 >
                                                 </Image>
                                             </View>
-                                            <Text style={{ marginTop: 0, fontSize: 12 }}>Elimination</Text>
+                                            <Text style={{ marginTop: 0, fontSize: 12,textAlign:'center' }}>{i18n.t('babyactivity.elimi')}</Text>
 
                                         </View>
                                     </TouchableOpacity>
@@ -333,7 +338,7 @@ export class BabyActivities extends Component {
                                                 >
                                                 </Image>
                                             </View>
-                                            <Text style={{ marginTop: 0, fontSize: 12 }}>Bath time</Text>
+                                            <Text style={{ marginTop: 0, fontSize: 12 }}>{i18n.t('babyactivity.bath')}</Text>
 
                                         </View>
                                     </TouchableOpacity>
@@ -352,7 +357,7 @@ export class BabyActivities extends Component {
                                     >
                                     </Image>
                                 </View>
-                                <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History of activities</Text>
+                                <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>{i18n.t('babyactivity.historyact')}</Text>
                                 <FlatList
 
                                     style={{

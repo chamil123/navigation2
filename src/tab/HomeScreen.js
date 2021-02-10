@@ -6,6 +6,7 @@ import { IMAGE } from '../constants/image';
 import moment from 'moment' // 2.20.1
 import Database from '../Database';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import {
   BallIndicator,
   BarIndicator,
@@ -41,6 +42,7 @@ export class HomeScreen extends Component {
       _next_period_date: '',
       _ovl_date: '',
       pName: '',
+      lan: '',
     }
     db.initDB().then((result) => {
       this.loadDbVarable(result);
@@ -125,12 +127,14 @@ export class HomeScreen extends Component {
     })
 
   }
-  componentWillUnmount() {
-    // Remove the event listener
-    // this.focusListener.remove();
-  }
+  
 
   async componentDidMount() {
+    this.setState({
+      lan: await AsyncStorage.getItem('lang'),
+    });
+
+
     const myArray = await AsyncStorage.getItem('memberNames');
     const role_id = await AsyncStorage.getItem('memberId');
     db.initDB();
@@ -155,7 +159,7 @@ export class HomeScreen extends Component {
           // dataSource: responseJson,
           _member_id: role_id,
           _member_name: myArray,
-
+       
 
         }, function () {
 
@@ -165,6 +169,7 @@ export class HomeScreen extends Component {
       }).catch((error) => {
         console.error(error)
       })
+     
 
   }
   render() {
@@ -185,12 +190,12 @@ export class HomeScreen extends Component {
           <View style={styles.brestposition3}></View>
           <View style={styles.brestposition4}></View>
           <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fbb146" />
-          <CustomHeader bgcolor='#fbb146' title="Main Menu" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
+          <CustomHeader bgcolor='#fbb146' title={i18n.t('MainMenu.mainmenu')} isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
           <ScrollView style={styles.scrollContainer}>
             {
               this.state._member_id == 1 ?
                 <View style={{ flex: 1, flexDirection: 'column', }}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 15 }}>Recommended for you</Text>
+                  <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 15 }}>{i18n.t('MainMenu.recommended')}</Text>
                   <ScrollView
 
                     horizontal={true}
@@ -208,13 +213,13 @@ export class HomeScreen extends Component {
                           <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
                             <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                               <View style={{ flexDirection: 'column' }}>
-                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Normal Healthy</Text>
-                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}>Diet</Text>
+                                <Text style={{ marginTop: 5, fontSize: 15, fontWeight: "bold", }}>{i18n.t('MainMenu.healthidiet')}</Text>
+                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}>{i18n.t('MainMenu.diet2')}</Text>
 
                               </View>
-                              <Text style={{ paddingTop: 65, fontSize: 12 }}>Food piramid</Text>
+                              <Text style={{ paddingTop: 65, fontSize: 12 }}>{i18n.t('food.hedding')}</Text>
                             </View>
-                            <View style={{ height: 70, marginLeft: -20, paddingTop: 15 }}>
+                            <View style={{ height: 70, marginLeft: -60, paddingTop: 15 }}>
                               <Image source={IMAGE.ICON_DIET_PLAN}
                                 style={{ height: 120, width: 190 }}>
                               </Image>
@@ -224,7 +229,7 @@ export class HomeScreen extends Component {
                         </LinearGradient>
                       </TouchableOpacity>
 
-                    
+
 
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('Investigation')}>
                         <LinearGradient style={styles.cardHorizontal} colors={['#b6fb96', '#71f3da']}
@@ -235,7 +240,7 @@ export class HomeScreen extends Component {
                           <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
                             <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                               <View style={{ flexDirection: 'column' }}>
-                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Investigation</Text>
+                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>{i18n.t('MainMenu.invest')}</Text>
 
                               </View>
 
@@ -263,7 +268,7 @@ export class HomeScreen extends Component {
                           <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
                             <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                               <View style={{ flexDirection: 'column' }}>
-                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Excercise</Text>
+                                <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>{i18n.t('MainMenu.excer')}</Text>
 
                               </View>
 
@@ -285,7 +290,7 @@ export class HomeScreen extends Component {
                     </View>
                   </ScrollView>
 
-                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 5 }}> Pregnancy Period</Text>
+                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 5 }}> {i18n.t('MainMenu.pregnancyp')}</Text>
                   <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
                   <View style={styles.container}>
 
@@ -302,7 +307,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}> Due Date Calculator</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700',textAlign: 'center' }}> {i18n.t('MainMenu.edd')} </Text>
 
                         </View>
                       </TouchableOpacity>
@@ -318,12 +323,12 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Clinic Management</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700',textAlign: 'center' }}>{i18n.t('MainMenu.clinic')}</Text>
 
                         </View>
                       </TouchableOpacity>
                     </Card>
-                  
+
 
                   </View>
                   <View style={styles.container}>
@@ -337,7 +342,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Weight Gain chart</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700',textAlign: 'center' }}>{i18n.t('MainMenu.weightgain')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -353,7 +358,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Blood presure</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700',textAlign: 'center' }}>{i18n.t('MainMenu.blood')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -371,7 +376,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>Hospital Bag</Text>
+                          <Text style={{ marginTop: 0, color: 'black', fontWeight: '700' }}>{i18n.t('MainMenu.bag')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -386,7 +391,7 @@ export class HomeScreen extends Component {
                             >
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Kick Counter</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700',textAlign: 'center' }}>{i18n.t('MainMenu.kick')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -394,7 +399,7 @@ export class HomeScreen extends Component {
 
                   </View>
 
-                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 3 }}>After pregnancy</Text>
+                  <Text style={{ fontSize: 15, paddingLeft: 15, paddingTop: 3 }}>{i18n.t('MainMenu.after')}</Text>
                   <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
 
                   <View style={styles.container}>
@@ -411,7 +416,7 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Breast Feeding</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.breast')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -428,7 +433,7 @@ export class HomeScreen extends Component {
                               {/* ffe4e1 */}
                             </Image>
                           </View>
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Vaccination</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.vacc')}</Text>
 
                         </View>
                       </TouchableOpacity>
@@ -452,13 +457,13 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Baby Activity</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.babyac')}</Text>
 
                         </View>
                       </TouchableOpacity>
                     </Card>
 
-           
+
                     <Card style={styles.card} >
                       <TouchableOpacity style={styles.touchableopacity} onPress={() => this.props.navigation.navigate('AddMesurement', {
                         data: ''
@@ -471,12 +476,12 @@ export class HomeScreen extends Component {
                             </Image>
                           </View>
 
-                          <Text style={{ marginTop: 0, fontWeight: '700' }}>Growth tracker</Text>
+                          <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.growth')}</Text>
 
                         </View>
                       </TouchableOpacity>
                     </Card>
-                   
+
                   </View>
 
                   <View style={styles.container}>
@@ -489,7 +494,7 @@ export class HomeScreen extends Component {
                 : this.state._member_id == 2 ?
                   <View>
                     <View style={styles.container}>
-                      <Text style={{ fontSize: 25, fontWeight: 'bold', marginLeft: 7, marginTop: 10 }}>Hello {this.state._member_name}</Text>
+                      <Text style={{ fontSize: 25, fontWeight: 'bold', marginLeft: 7, marginTop: 10 }}>{i18n.t('MainMenu.hellow')} {this.state._member_name}</Text>
                     </View>
 
                     <ScrollView
@@ -508,7 +513,7 @@ export class HomeScreen extends Component {
                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
                               <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'column' }}>
-                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Identify Pregnancy</Text>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>{i18n.t('MainMenu.idetify_preg')} </Text>
                                   <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}></Text>
 
                                 </View>
@@ -516,7 +521,7 @@ export class HomeScreen extends Component {
                               </View>
                               <View style={{ height: 70, marginLeft: -50, paddingTop: 15 }}>
                                 <Image source={IMAGE.ICON_IDENTY_PREGNANCY}
-                                  style={{ height: 124, width: 185 }}>
+                                  style={{ height: 120, width: 175}}>
                                 </Image>
                               </View>
 
@@ -532,8 +537,8 @@ export class HomeScreen extends Component {
                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }} >
                               <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'column' }}>
-                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>Regular Mensturation</Text>
-                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}>Period</Text>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", }}>{i18n.t('MainMenu.regualr_mn')}</Text>
+                                  <Text style={{ marginTop: 5, fontSize: 16, fontWeight: "bold", marginTop: -3 }}>{i18n.t('MainMenu.regualr_pr')}</Text>
 
                                 </View>
 
@@ -556,7 +561,7 @@ export class HomeScreen extends Component {
                     </ScrollView>
 
 
-                    <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 10 }}>Menu</Text>
+                    <Text style={{ fontWeight: "bold", fontSize: 18, paddingLeft: 15, paddingTop: 10 }}>{i18n.t('MainMenu.menu')}</Text>
                     <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, marginHorizontal: 16, width: 45, marginTop: 8 }}></View>
                     <View style={styles.container}>
 
@@ -572,7 +577,7 @@ export class HomeScreen extends Component {
                               </Image>
                             </View>
 
-                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Period Tracker</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.period')}</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -590,7 +595,7 @@ export class HomeScreen extends Component {
                               </Image>
                             </View>
 
-                            <Text style={{ marginTop: 0, fontWeight: '700' }}>BMI Calculator</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.bmi')}</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -611,7 +616,7 @@ export class HomeScreen extends Component {
                               >
                               </Image>
                             </View>
-                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Special Notes</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.notes')}</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -626,7 +631,7 @@ export class HomeScreen extends Component {
                               >
                               </Image>
                             </View>
-                            <Text style={{ marginTop: 0, fontWeight: '700' }}>Diet plane</Text>
+                            <Text style={{ marginTop: 0, fontWeight: '700' }}>{i18n.t('MainMenu.diet')}</Text>
 
                           </View>
                         </TouchableOpacity>
@@ -654,7 +659,7 @@ export class HomeScreen extends Component {
   },
 
   card: {
-    height: 115,
+    height: 130,
     backgroundColor: 'rgba(255, 255, 255,1)',
     borderRadius: 15,
     // padding: 10,
@@ -700,7 +705,7 @@ export class HomeScreen extends Component {
     justifyContent: 'center',
     paddingTop: 10, paddingLeft: 10, paddingRight: 10, paddingBottom: 10
   },
- 
+
   brestposition3: {
     width: 260,
     height: 260,
@@ -758,7 +763,7 @@ export class HomeScreen extends Component {
     shadowOffset: { width: 3, height: 5 },
     // shadowOpacity: 0.2,
     shadowRadius: 8,
- 
+
   }, containerD: {
     flex: 1,
     flexDirection: 'row',

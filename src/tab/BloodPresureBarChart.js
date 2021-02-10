@@ -14,6 +14,8 @@ import CalendarStrip from 'react-native-slideable-calendar-strip';
 import moment from 'moment'; // 2.20.1
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import SegmentedControlTab from "react-native-segmented-control-tab";
+import i18n from 'i18n-js';
+import AsyncStorage from '@react-native-community/async-storage';
 const db = new Database();
 var swipeoutBtns = [
   {
@@ -48,6 +50,7 @@ export class BloodPresureBarChart extends Component {
       dbs: '',
       isLoading: false,
       basicOkCancelVisible: false,
+      lan: '',
       data: {
         colors: ['#4cabce', '#d50000', '#003366'],
         // title: {
@@ -65,7 +68,7 @@ export class BloodPresureBarChart extends Component {
           }
         },
         legend: {
-          data: ['High', 'Pre-High', 'Ideal', 'Low']
+          data: [i18n.t('blood.high'), i18n.t('blood.Pre'), i18n.t('blood.ideal'), i18n.t('blood.low')]
         },
         
         grid: {
@@ -89,7 +92,7 @@ export class BloodPresureBarChart extends Component {
         ],
         series: [
           {
-            name: 'High',
+            name: i18n.t('blood.high'),
             type: 'line',
             // stack: '总量',
             label: {
@@ -112,7 +115,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Pre-High',
+            name: i18n.t('blood.Pre'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -129,7 +132,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Ideal',
+            name: i18n.t('blood.ideal'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -146,7 +149,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Low',
+            name:i18n.t('blood.low'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -180,7 +183,7 @@ export class BloodPresureBarChart extends Component {
           },
 
           {
-            name: 'Your Value',
+            name: i18n.t('blood.your'),
             type: 'bar',
             data: [],
           }
@@ -203,7 +206,7 @@ export class BloodPresureBarChart extends Component {
           }
         },
         legend: {
-          data: ['High', 'Pre-High', 'Ideal', 'Low']
+          data: [i18n.t('blood.high'), i18n.t('blood.Pre'), i18n.t('blood.ideal'), i18n.t('blood.low')]
         },
        
         grid: {
@@ -227,7 +230,7 @@ export class BloodPresureBarChart extends Component {
         ],
         series: [
           {
-            name: 'High',
+            name: i18n.t('blood.high'),
             type: 'line',
             // stack: '总量',
             label: {
@@ -250,7 +253,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Pre-High',
+            name: i18n.t('blood.Pre'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -267,7 +270,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Ideal',
+            name:i18n.t('blood.ideal'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -284,7 +287,7 @@ export class BloodPresureBarChart extends Component {
             data: []
           },
           {
-            name: 'Low',
+            name: i18n.t('blood.low'),
             type: 'line',
             // stack: '总量',
             itemStyle: {
@@ -318,7 +321,7 @@ export class BloodPresureBarChart extends Component {
           },
 
           {
-            name: 'Your Value',
+            name: i18n.t('blood.your'),
             type: 'bar',
             data: [],
           }
@@ -330,6 +333,13 @@ export class BloodPresureBarChart extends Component {
     })
     this.loadDbVarable = this.loadDbVarable.bind(this);
   }
+  async componentDidMount() {
+ 
+    this.setState({
+        
+        lan: await AsyncStorage.getItem('lang'),
+    });
+}
   handleIndexChange = index => {
     this.setState({
       ...this.state,
@@ -491,15 +501,15 @@ export class BloodPresureBarChart extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
         <FlashMessage duration={1000} />
-        <CustomHeader bgcolor='white' title="Home detail" bcbuttoncolor='#F2F2F2' navigation={this.props.navigation} bdcolor='white' />
+        <CustomHeader bgcolor='white' title={i18n.t('blood.bldchart')} bcbuttoncolor='#F2F2F2' navigation={this.props.navigation} bdcolor='white' />
         <View style={styles.header}>
           {/* <View> */}
           <View style={{ marginTop: 0, marginLeft: 20, marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Blood presure</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>{i18n.t('blood.chartheadding')}</Text>
             {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
           </View>
           <SegmentedControlTab
-            values={["Systolic", "Diastolic"]}
+            values={[i18n.t('blood.syst'), i18n.t('blood.dias')]}
             selectedIndex={this.state.selectedIndex}
             onTabPress={this.handleIndexChange}
 
@@ -531,7 +541,7 @@ export class BloodPresureBarChart extends Component {
         <Animatable.View style={styles.footer} animation="fadeInLeft">
 
           <View style={{ padding: 5, marginBottom: 30 }}>
-            <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>History</Text>
+            <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>{i18n.t('blood.buttonhis')}</Text>
 
             <FlatList
 
@@ -558,7 +568,7 @@ export class BloodPresureBarChart extends Component {
                   <Text style={{ color: 'white', fontSize: 13 }}>{item.bpDate}</Text>
 
                   <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 2 }}>Systolic </Text>
+                    <Text style={{ color: '#fff', fontSize: 12, marginTop: 2 }}> Systolic </Text>
                     <Text style={styles.dateText}>{item.bpValue} mm hg</Text>
                     <Text style={{ color: '#fff', fontSize: 12, marginTop: 3 }}> Diastolic</Text>
                     <Text style={styles.dateText}> {item.bpdstValue} mm hg</Text>

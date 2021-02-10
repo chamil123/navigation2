@@ -6,6 +6,8 @@ import { CustomHeader } from '../index';
 import moment from 'moment' // 2.20.1
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import CustomPushNotification from './CustomPushNotification';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import {
     BallIndicator,
     BarIndicator,
@@ -16,7 +18,7 @@ import {
     SkypeIndicator,
     UIActivityIndicator,
     WaveIndicator,
-  } from 'react-native-indicators';
+} from 'react-native-indicators';
 const db = new Database();
 const testIDs = require('../testIDs');
 const _format = 'YYYY-MM-DD'
@@ -39,6 +41,7 @@ export class PeriodAgenda extends Component {
             dbs: '',
             _babybDate: '',
             isLoading: true,
+            lan: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -52,7 +55,12 @@ export class PeriodAgenda extends Component {
         });
         this.loadData();
     }
-
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
+      
+    }
     loadData() {
         db.listBabyDetails(this.state.dbs).then((data) => {
             let result = data;
@@ -88,9 +96,9 @@ export class PeriodAgenda extends Component {
                 _pcatId = products[i].pCatId
                 _pDescription = products[i].pDescription
                 _pTime = products[i].pTime
-              
+
                 if (_pcatId == 1) {
-                 
+
 
                     markedDates = { ...markedDates, ...{ selected }, selectedColor: "red", marked: false };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
@@ -160,8 +168,8 @@ export class PeriodAgenda extends Component {
                     if (_today == nestPeriod) {
                         cn.testPush(data);
                     }
-                 
-                    markedDates = { marked: true, dotColor: '#6a1b9a',  };
+
+                    markedDates = { marked: true, dotColor: '#6a1b9a', };
                     updatedMarkedDates = { ...this.state._markedDates, ...{ [_pdate]: markedDates } }
                     this.setState({
                         isLoading: false,
@@ -179,7 +187,7 @@ export class PeriodAgenda extends Component {
                     var babayBirgDay = this.state._babybDate;
                     if (babayBirgDay != "") {
                         let nextVaaccination = moment(babayBirgDay).add(_pdate, 'day').format('YYYY-MM-DD');
-                  
+
                         let data = {
                             _title: "Yor " + _pDescription + " vacination date is " + nextVaaccination,
                             _bigText: "2 days more ",
@@ -220,7 +228,13 @@ export class PeriodAgenda extends Component {
 
                                 <View style={{ width: 225 }}>
                                     <Text style={{ color: 'gray' }}>Time : {this.state.tmpArray[i].time}</Text>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Special Note </Text>
+                                    {
+                                        this.state.lan== "fr" ?
+                                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>ඇතුලත් කරන්න </Text>
+                                        :
+                                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Special Note  </Text>
+                                    }
+                                    
                                     <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
                                 </View>
                                 <View style={{ width: 55, height: 55, backgroundColor: '#6a1b9a', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
@@ -264,7 +278,7 @@ export class PeriodAgenda extends Component {
                     this.state.items[this.state.tmpArray[i].date].push({
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Ovulation</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{i18n.t('period_calan.ovulation')}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 14 }}>{this.state.tmpArray[i].date}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
                             </View>
@@ -278,7 +292,7 @@ export class PeriodAgenda extends Component {
                     this.state.items[this.state.tmpArray[i].date].push({
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Period</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{i18n.t('period_calan.period')}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
                             </View>
                             <View style={{ width: 55, height: 55, backgroundColor: 'red', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
@@ -295,7 +309,7 @@ export class PeriodAgenda extends Component {
 
         }).catch((err) => {
             console.log(err);
-           
+
         })
 
     }
@@ -308,7 +322,7 @@ export class PeriodAgenda extends Component {
         } else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#fce4ec' }}>
-                    <CustomHeader bgcolor='#fbb146' bcbuttoncolor='#ffc470' title="Home detail" navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' bcbuttoncolor='#ffc470' title={i18n.t('special_notes.subheadding')} navigation={this.props.navigation} bdcolor='#fbb146' />
                     <Agenda
                         testID={testIDs.agenda.CONTAINER}
                         items={this.state.items}
@@ -328,7 +342,7 @@ export class PeriodAgenda extends Component {
                         refreshing={false}
 
                         hideKnob={false}
-                      
+
 
                         onRefresh={() => console.log('refreshing...')}
 
@@ -338,10 +352,7 @@ export class PeriodAgenda extends Component {
             );
         }
     }
-    componentDidMount() {
-        // const strTime = "2020-09-24";
-        // this.state.items[strTime] = [];
-    }
+   
     loadItems(day) {
 
 
@@ -352,7 +363,7 @@ export class PeriodAgenda extends Component {
             <TouchableOpacity
                 testID={testIDs.agenda.ITEM}
                 style={[styles.item]}
-           
+
             >
                 <Text>{item.name}</Text>
             </TouchableOpacity>

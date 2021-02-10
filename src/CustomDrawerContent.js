@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, Image, ImageBackground, TouchableOpacity, Scr
 import { Icon } from 'react-native-elements';
 import { IMAGE } from './constants/image';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import { Avatar, Badge } from 'react-native-elements';
 export class CustomDrawerContent extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export class CustomDrawerContent extends Component {
     this.state = {
       userName: '',
       abc: '',
+      lan: '',
     }
   }
   doLogout() {
@@ -24,6 +26,7 @@ export class CustomDrawerContent extends Component {
     const myArray = await AsyncStorage.getItem('memberNames');
     this.setState({
       userName: myArray,
+      lan: await AsyncStorage.getItem('lang'),
     });
 
     const data = new FormData();
@@ -100,7 +103,7 @@ export class CustomDrawerContent extends Component {
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 25 }}
             />
             <View style={styles.SeparatorLine} />
-            <Text style={styles.TextStyle}>Home </Text>
+            <Text style={styles.TextStyle}>{i18n.t('drawer.home')} </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('member')}>
             <Icon
@@ -110,7 +113,7 @@ export class CustomDrawerContent extends Component {
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 27 }}
             />
             <View style={styles.SeparatorLine} />
-            <Text style={styles.TextStyle}>Profile </Text>
+            <Text style={styles.TextStyle}>{i18n.t('drawer.profile')} </Text>
           </TouchableOpacity>
           {/* <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('member')}>
             <Icon
@@ -130,7 +133,7 @@ export class CustomDrawerContent extends Component {
               iconStyle={{ fontSize: 25, fontWeight: 'normal', padding: 25 }}
             />
             <View style={styles.SeparatorLine} />
-            <Text style={styles.TextStyle}>Logout </Text>
+            <Text style={styles.TextStyle}>{i18n.t('drawer.logut')} </Text>
           </TouchableOpacity>
         </ScrollView>
         {/* <View style={{ height: 150, alignItems: 'center', justifyContent: 'center' }}>

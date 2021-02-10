@@ -4,7 +4,8 @@ import { IMAGE } from '../constants/image';
 import { CustomHeader } from '../index';
 import Unorderedlist from 'react-native-unordered-list';
 import Steps from 'react-native-step-indicator';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import ViewPager from '@react-native-community/viewpager';
 
 const PAGES = ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 5', 'Page 5'];
@@ -38,7 +39,8 @@ export class MealPlan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 0
+            currentPage: 0,
+            lan:''
         }
     }
 
@@ -48,6 +50,12 @@ export class MealPlan extends Component {
                 this.viewPager.setPage(nextState.currentPage)
             }
         }
+    }
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
+      
     }
     render() {
         return (
@@ -70,7 +78,7 @@ export class MealPlan extends Component {
                                 stepCount={7}
                                 direction='horizontal'
                                 currentPosition={this.state.currentPage}
-                                labels={['Early Morning', 'Breakfast', 'Mid\nMorning', 'Lunch', 'Evening', 'Dinner', 'Bed\nTime']}
+                                labels={[i18n.t('mealPlan.early'), i18n.t('mealPlan.breack'),i18n.t('mealPlan.midmor'), i18n.t('mealPlan.lunch'), i18n.t('mealPlan.evening'), i18n.t('mealPlan.dinner'),i18n.t('mealPlan.bedtime')]}
                             />
                         </View>
 
@@ -104,13 +112,13 @@ export class MealPlan extends Component {
                                 showsVerticalScrollIndicator={false}
                                 contentInsetAdjustmentBehavior="automatic"
                                 style={styles.scrollView}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Early Morning</Text>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('mealPlan.early')}</Text>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                     <Image source={IMAGE.ICON_EARLY_MORNING}
                                         style={{ height: 240, width: 390 }}>
                                     </Image>
-                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Tea or coffee 1 cup</Text></Unorderedlist>
-                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Biscuit 2 pcs</Text>
+                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.tea_or_coffee')}</Text></Unorderedlist>
+                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.buiscu')}</Text>
                                     </Unorderedlist>
                                 </View>
                             </ScrollView>
@@ -122,13 +130,13 @@ export class MealPlan extends Component {
                                     showsVerticalScrollIndicator={false}
                                     contentInsetAdjustmentBehavior="automatic"
                                     style={styles.scrollView}>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Breakfast</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{ i18n.t('mealPlan.breack')}</Text>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                         <Image source={IMAGE.ICON_EARLY_MORNING2}
                                             style={{ height: 200, width: 390 }}>
                                         </Image>
-                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Chapattis 2 pcs</Text></Unorderedlist>
-                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Egg 1 poaches or, Vegetables 1 cup</Text>
+                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.chapathi')}</Text></Unorderedlist>
+                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.egg')}</Text>
                                         </Unorderedlist>
                                     </View>
                                 </ScrollView>
@@ -139,14 +147,14 @@ export class MealPlan extends Component {
                                         showsVerticalScrollIndicator={false}
                                         contentInsetAdjustmentBehavior="automatic"
                                         style={styles.scrollView}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Mid Morning</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('mealPlan.midmor')}</Text>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                             <Image source={IMAGE.ICON_MID_MORNING}
                                                 style={{ height: 290, width: 350 }}>
                                             </Image>
-                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Milk 250 ml or 1 glass</Text></Unorderedlist>
-                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Biscuit 2 pcs</Text></Unorderedlist>
-                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Apple or Orange</Text></Unorderedlist>
+                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.milk250')} </Text></Unorderedlist>
+                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.biscuits2pcs')}</Text></Unorderedlist>
+                                            <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.appleorrang')} </Text></Unorderedlist>
                                         </View>
                                     </ScrollView>
                                 </View>
@@ -156,12 +164,12 @@ export class MealPlan extends Component {
                                             showsVerticalScrollIndicator={false}
                                             contentInsetAdjustmentBehavior="automatic"
                                             style={styles.scrollView}>
-                                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Lunch</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('mealPlan.lunch')}</Text>
                                             <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                                 <Image source={IMAGE.ICON_MID_LUNCH}
                                                     style={{ height: 340, width: 390 }}>
                                                 </Image>
-                                                <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Cooked rice 4 cup</Text></Unorderedlist>
+                                                <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.cookedrice')} </Text></Unorderedlist>
                                             </View>
                                         </ScrollView>
                                     </View>
@@ -172,13 +180,13 @@ export class MealPlan extends Component {
                                                 showsVerticalScrollIndicator={false}
                                                 contentInsetAdjustmentBehavior="automatic"
                                                 style={styles.scrollView}>
-                                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Evening</Text>
+                                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{ i18n.t('mealPlan.evening')}</Text>
                                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                                     <Image source={IMAGE.ICON_EVENING}
                                                         style={{ height: 340, width: 390 }}>
                                                     </Image>
-                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Biscuits 2 pcs</Text></Unorderedlist>
-                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Fruits on choice </Text>
+                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.biscuits2pcs')}</Text></Unorderedlist>
+                                                    <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.fruitonchoice')} </Text>
                                                     </Unorderedlist>
                                                 </View>
                                             </ScrollView>
@@ -190,15 +198,15 @@ export class MealPlan extends Component {
                                                     showsVerticalScrollIndicator={false}
                                                     contentInsetAdjustmentBehavior="automatic"
                                                     style={styles.scrollView}>
-                                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Dinner</Text>
+                                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('mealPlan.dinner')}</Text>
                                                     <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                                         <Image source={IMAGE.ICON_DINNER}
                                                             style={{ height: 260, width: 380 }}>
                                                         </Image>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Cooked rice 3 cup</Text></Unorderedlist>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Meat or fish 3 pcs </Text></Unorderedlist>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Cooked dhal 2 cup </Text></Unorderedlist>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> Vegetable 1 cup </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.cokkedrice3cup')} </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.meat')}  </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.cookeddal')} </Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.vegitable')} </Text></Unorderedlist>
                                                     </View>
                                                 </ScrollView>
                                             </View>
@@ -209,12 +217,12 @@ export class MealPlan extends Component {
                                                     showsVerticalScrollIndicator={false}
                                                     contentInsetAdjustmentBehavior="automatic"
                                                     style={styles.scrollView}>
-                                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Bed Time</Text>
+                                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('mealPlan.bedtime')}</Text>
                                                     <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
                                                         <Image source={IMAGE.ICON_BET_TIME}
                                                             style={{ height: 340, width: 240 }}>
                                                         </Image>
-                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text> On glass of milk</Text></Unorderedlist>
+                                                        <Unorderedlist bulletUnicode={0x29BF} color='gray' style={{ fontSize: 17 }}><Text>{ i18n.t('mealPlan.oneglas')}</Text></Unorderedlist>
 
                                                     </View>
                                                 </ScrollView>

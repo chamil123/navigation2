@@ -3,23 +3,22 @@ import { Text, View, SafeAreaView, TouchableOpacity, FlatList, StyleSheet, Statu
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Icon from 'react-native-vector-icons/Fontisto';
 import { CustomHeader } from '../index';
+import i18n from 'i18n-js';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class Investigation extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [
-                { "Begin": "Blood grouping and Rh typing", End: "To identify the blood group. Rh status and red cell antibodies." },
-                { "Begin": "Full Blood count", End: "To observe the women’s general blood condition and includes hemoglobin" },
-                { "Begin": "VDRL test ( Venereal disease research laboratory )", End: "For syphilis not all position results indicate active syphilis. Early testing will allowa women to be treated in order prevent infection of the fetus." },
-                { "Begin": "HIV Antibodies", End: "Routine screening to detect HIV infections." },
-                { "Begin": "Urinalysis", End: "To performed at every visit to exclude protein urine." },
-                { "Begin": "Ultrasound", End: "To identify gestational age" },
-                { "Begin": "RBS / PPBS / OGTT", End: "To identify glucose level" },
-         
+                { "Begin": i18n.t('investigation.invhead'), End: i18n.t('investigation.inv1') },
+                { "Begin": i18n.t('investigation.inv2head'), End: i18n.t('investigation.inv2') },
+                { "Begin": i18n.t('investigation.inv3head'), End: i18n.t('investigation.inv3') },
+                { "Begin": i18n.t('investigation.inv4head'), End: i18n.t('investigation.inv4') },
+                { "Begin": i18n.t('investigation.inv5head'), End: i18n.t('investigation.inv5') },
+                { "Begin": i18n.t('investigation.inv6head'), End: i18n.t('investigation.inv6') },
+                { "Begin": i18n.t('investigation.inv7head'), End: i18n.t('investigation.inv7') },
             ]
-
-
         }
     }
 
@@ -33,7 +32,7 @@ export class Investigation extends Component {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
                 <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#fbb146" />
-                <CustomHeader bgcolor='#fbb146' title="Investigation" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title={i18n.t('investigation.invheadding')} bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1, }}>
 
                 </View>
@@ -52,8 +51,8 @@ export class Investigation extends Component {
                                 >
 
                                     <Body >
-                                        <Text >{item.Begin}</Text>
-                                        <Text >{item.End}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{item.Begin}</Text>
+                                        <Text style={{ marginLeft: 10 }}>{item.End}</Text>
                                     </Body>
                                     <Right style={{ width: 5 }}>
                                         <View style={styles.iconMore}>

@@ -14,6 +14,8 @@ import *as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
 import Database from '../Database';
 import { BarIndicator } from 'react-native-indicators';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 
 export class HospitalBagBaby extends Component {
@@ -27,6 +29,7 @@ export class HospitalBagBaby extends Component {
             switchValue: '',
             date: '',
             dbs: '',
+            lan: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -34,16 +37,14 @@ export class HospitalBagBaby extends Component {
         this.loadDbVarable = this.loadDbVarable.bind(this);
         this.getData = this.getData.bind(this);
     }
-    loadDbVarable(result) {
+    async loadDbVarable(result) {
         this.setState({
             dbs: result,
+            lan: await AsyncStorage.getItem('lang'),
         });
         this.getData();
     }
-    abc = (value) => {
-
-        // this.setState({ switchValue: value });
-    }
+  
     componentDidMount() {
         var that = this;
         var date = new Date().getDate(); //Current Date
@@ -53,7 +54,7 @@ export class HospitalBagBaby extends Component {
             date:
                 year + '-' + month + '-' + date,
         });
-        // this.getData();
+
     }
 
     getData = (value, value2) => {
@@ -68,7 +69,7 @@ export class HospitalBagBaby extends Component {
         let int;
         let result;
         if (value != null) {
-            db.updateStatusBaby(this.state.dbs, data).then((result) => {
+            db.updateStatusBaby(this.state.dbs, data,this.state.lan).then((result) => {
                 console.log(result);
                 this.setState({
                     isLoading: false,
@@ -100,7 +101,7 @@ export class HospitalBagBaby extends Component {
     viewListData() {
         let baby_bag = [];
 
-        db.listBabyBagItems(this.state.dbs).then((data) => {
+        db.listBabyBagItems(this.state.dbs,this.state.lan).then((data) => {
 
 
             if (data != null) {
@@ -167,9 +168,7 @@ export class HospitalBagBaby extends Component {
                                 style={{  paddingTop: 10,paddingBottom:10 }}
                                 onPress={() => {
                                     this.getData(item.bId, item.bStatus);
-                                    // this.props.navigation.navigate('ProductDetails', {
-                                    //   prodId: `${item.hId}`,
-                                    // });
+  
                                 }}
                             >
                                 {

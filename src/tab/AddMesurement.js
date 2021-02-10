@@ -7,6 +7,8 @@ import { CustomHeader } from '../index';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 
 export class AddMesurement extends Component {
@@ -23,6 +25,7 @@ export class AddMesurement extends Component {
       TextInpuLValue: '',
       dbs: '',
       isLoading: false,
+      lan: ''
 
     };
     db.initDB().then((result) => {
@@ -31,6 +34,11 @@ export class AddMesurement extends Component {
     this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
+  }
+  async componentDidMount() {
+    this.setState({
+      lan: await AsyncStorage.getItem('lang'),
+    });
   }
   loadDbVarable(result) {
     this.setState({
@@ -105,41 +113,42 @@ export class AddMesurement extends Component {
         <ScrollView style={styles.container}>
           <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
             <View style={{ marginTop: 0, marginLeft: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-              <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Weight chart</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>{i18n.t('growth.heading')} {this.state.userName}</Text>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('growth.subheading')}</Text>
               {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>
-            
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('AreaChart')} style={[styles.buttonh, { backgroundColor: 'green', width: 140 }]}>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
-                    <Icon
-                      name='area-chart'
-                      type='font-awesome'
-                      color='red'
-                      iconStyle={{ fontSize: 13, color: 'gray' }}
-                    />
-                  </View>
-                  <Text style={{ color: 'white', padding: 7 }}>Chart View</Text>
+            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}> */}
+              <View style={{flexDirection:'row'}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AreaChart')} style={[styles.buttonh, { backgroundColor: 'green',  }]}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
+                      <Icon
+                        name='area-chart'
+                        type='font-awesome'
+                        color='red'
+                        iconStyle={{ fontSize: 13, color: 'gray' }}
+                      />
+                    </View>
+                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('growth.chartbtn')}</Text>
 
-                </View>
-              </TouchableOpacity>
-            </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            {/* </View> */}
 
           </View>
           {/* <View style={styles.breadthPo1}> */}
           <View style={styles.breadthPo1}>
-            <Text style={{ marginVertical: 8 }}> Weight Value </Text>
+            <Text style={{ marginVertical: 8 }}>{i18n.t('growth.weight')} </Text>
             <TextInput
               keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder="Enter Weight value" />
+              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder={i18n.t('growth.weightinner')} />
 
 
-            <Text style={{ marginVertical: 8, marginTop: 25 }}> Month Value </Text>
+            <Text style={{ marginVertical: 8, marginTop: 25 }}>{i18n.t('growth.month')} </Text>
             <TextInput
               keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuLValue: TextInputValue })} placeholder="Enter Month value" />
+              autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuLValue: TextInputValue })} placeholder={i18n.t('growth.monthinner')} />
             {/* </View> */}
 
 
@@ -152,13 +161,13 @@ export class AddMesurement extends Component {
 
                 style={styles.linearGradient}>
                 <Text style={styles.buttonText}>
-                  Add
+                {i18n.t('growth.monthinnerbutton')}
 </Text>
               </LinearGradient>
 
 
             </TouchableOpacity>
-  
+
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -219,7 +228,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 25,
     marginTop: 18,
-    width: 120,
+    // width: 120
     elevation: 10,
     shadowColor: '#30C1DD',
     shadowOffset: { width: 0, height: 5 },

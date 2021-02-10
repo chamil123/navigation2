@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView, StatusBar } from 'react-native';
 import { IMAGE } from '../constants/image';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import { CustomHeader } from '../index';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 export class Excercise extends Component {
@@ -34,8 +35,8 @@ export class Excercise extends Component {
               source={IMAGE.ICON_EXCERCISE}
               style={{ width: 300, height: 270, marginLeft: 15, alignItems: 'flex-start', resizeMode: 'cover', position: 'absolute' }}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Hello {this.state.userName}</Text>
-                <Text>Pregnancy exercise</Text>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{i18n.t('excersice.headding')} {this.state.userName}</Text>
+                <Text>{i18n.t('excersice.subheadding')}</Text>
               </View>
             </ImageBackground>
             {/* <Image style={{ width: 250, height: 270, marginLeft: 10, }}
@@ -51,8 +52,8 @@ export class Excercise extends Component {
         </View>
         <View style={styles.footer}>
           <View style={{ paddingLeft: 18, paddingTop: 15 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Most Popular Exercises</Text>
-            <Text style={{ color: 'gray' }}>Keeps your waist in shape</Text>
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{i18n.t('excersice.subheadding')}</Text>
+            <Text style={{ color: 'gray' }}>{i18n.t('excersice.subtopic')}</Text>
           </View>
           <ScrollView
 

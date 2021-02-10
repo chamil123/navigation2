@@ -5,6 +5,8 @@ import { CustomHeader } from '../index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Database from '../Database';
 import moment from 'moment' // 2.20.1
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 
 export class VerticleYearChart2 extends Component {
@@ -22,7 +24,8 @@ export class VerticleYearChart2 extends Component {
             _opvp2: '',
             _mmr: '',
             _je: '', _opvdt: '', _mmr2: '', _opvdt5: '', _hpv1: '', _hpv2: '', _atd: '', _rb_strt: '',
-            _rb_end: ''
+            _rb_end: '',
+            lan: ''
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -35,7 +38,11 @@ export class VerticleYearChart2 extends Component {
         });
         this.loadData();
     }
-
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
+    }
     loadData() {
         db.listBabyDetails(this.state.dbs).then((data) => {
             let result = data;
@@ -164,78 +171,78 @@ export class VerticleYearChart2 extends Component {
                         <View style={{ backgroundColor: '#fbb146', height: 175, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-                                <Text style={{ fontSize: 21, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Vaccination Chart</Text>
+                                <Text style={{ fontSize: 21, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('vaccine.vaccineheadding')}</Text>
                                 {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                             </View>
                         </View>
 
                         <View style={styles.breadthPo1}>
-                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FIRST YEAR OF LIFE</Text>
+                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>{i18n.t('vaccine.firstyesr')}</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
 
-                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>0-4 weeks</Text>
-                            <Text style={{ paddingLeft: 10 }}>BCG(Preferably within 24 hours of birth before leaving hospital)</Text>
+                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>{i18n.t('vaccine.4weeks')}</Text>
+                            <Text style={{ paddingLeft: 10 }}>{i18n.t('vaccine.4w_vaccine')}</Text>
                             <Text style={{ paddingLeft: 10, color: 'red', fontWeight: 'bold' }}>{this.state._bcg}</Text>
 
-                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>2 months</Text>
-                            <Text style={{ paddingLeft: 10 }}>OPV & PENTAVALENT (DTP- Hep B-Hib) 1st dose fIPV (fractional IPV)1st dose</Text>
+                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>{i18n.t('vaccine.2month')}</Text>
+                            <Text style={{ paddingLeft: 10 }}>{i18n.t('vaccine.2m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opv}</Text>
 
-                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>4 months</Text>
-                            <Text style={{ paddingLeft: 10 }}>OPV & PENTAVALENT (DTP- Hep B-Hib) 2nd dose fIPV (fractional IPV)2nd dose</Text>
+                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>{i18n.t('vaccine.4month')}</Text>
+                            <Text style={{ paddingLeft: 10 }}>{i18n.t('vaccine.4m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvp}</Text>
 
-                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>6 months</Text>
-                            <Text style={{ paddingLeft: 10 }}>OPV & PENTAVALENT (DTP- HepB-Hib) 3rd dose</Text>
+                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>{i18n.t('vaccine.6month')}</Text>
+                            <Text style={{ paddingLeft: 10 }}>{i18n.t('vaccine.6m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvp2}</Text>
 
-                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>9 months</Text>
-                            <Text style={{ paddingLeft: 10 }}>MMR 1st dose</Text>
+                            <Text style={{ fontWeight: "bold", paddingBottom: 5 }}>{i18n.t('vaccine.9month')}</Text>
+                            <Text style={{ paddingLeft: 10 }}>{i18n.t('vaccine.9m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 10, color: 'red', fontWeight: 'bold' }}>{this.state._mmr}</Text>
                         </View>
                         <View style={{ marginTop: -120 }}></View>
 
                         <View style={styles.breadthPo2}>
-                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>SECOND YEAR OF LIFE</Text>
+                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>{i18n.t('vaccine.secondyesr')}</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
-                            <Text style={{ paddingTop: 10, }}>12 months- live JE </Text>
+                            <Text style={{ paddingTop: 10, }}>{i18n.t('vaccine.12month')} {i18n.t('vaccine.12m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._je}</Text>
-                            <Text style={{ paddingTop: 10, }}>18 months- OPV and DTP 4th dose</Text>
+                            <Text style={{ paddingTop: 10, }}>{i18n.t('vaccine.18month')} {i18n.t('vaccine.18m_vaccine')}</Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvdt}</Text>
                         </View>
                         <View style={styles.breadthPo2}>
-                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>PRE SCHOOL AGE</Text>
+                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>{i18n.t('vaccine.preschooage')}</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
-                            <Text >3 years- MMR 2 nd dose</Text>
+                            <Text >{i18n.t('vaccine.3rdyear')} {i18n.t('vaccine.preschool_vaccine')}</Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._mmr2}</Text>
                         </View>
                         <View style={styles.breadthPo2}>
-                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>SCHOOL GOING AGE</Text>
+                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>{i18n.t('vaccine.schoolage')}</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
 
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 5 years- OPV and DT 5th dose</Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text>{i18n.t('vaccine.5rdyear')} {i18n.t('vaccine.5rdyear_vaccine')} </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._opvdt5}</Text>
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 10 years (grade 6) – HPV 1st dose </Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text>{i18n.t('vaccine.10rdyear')} {i18n.t('vaccine.10thyear_vaccine')} </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._hpv1}</Text>
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> HPV 2nd dose - after 6 months </Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text>{i18n.t('vaccine.hpvsecont')}  </Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._hpv2}</Text>
 
-                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> 11 years(grade 7)- aTd (adult tetanus diphtheria) 6th dose</Text>
+                            <Text style={{ paddingTop: 5 }}><Text>{'\u2022'}</Text> {i18n.t('vaccine.11rdyear')} {i18n.t('vaccine.11thyear_vaccine')}</Text>
                             <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._atd}</Text>
 
                         </View>
                         <View style={styles.breadthPo2}>
-                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>FEMALES IN THE CHILD BEARING AGE</Text>
+                            <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>{i18n.t('vaccine.15rdyear')}</Text>
                             <View style={{ borderBottomWidth: 0.2, borderBottomColor: 'gray', margin: 0 }}></View>
-                            <Text style={{ paddingTop: 10, }}>15 - 44 Years- Rubella containing vaccine(MMR)</Text>
+                            <Text style={{ paddingTop: 10, }}>{i18n.t('vaccine.15thyear_vaccine')}</Text>
                             <Text style={{ paddingLeft: 0,  color: 'red', fontWeight: 'bold' }}>{this.state._rb_strt} - {this.state._rb_end}
                             </Text>
                             <Text style={{ paddingBottom: 10, paddingTop: 5, color: 'green' }}>
-                                One dose of MMR vaccine should be given to all females between 15 - 44 years of age,
-                                who have not been vaccinated with rubella containing vaccines earlier
+                            {i18n.t('vaccine.discription')}
+                                
                             </Text>
                             {/* <Text style={{ paddingLeft: 0, paddingBottom: 10, color: 'red', fontWeight: 'bold' }}>{this.state._atd}</Text> */}
 

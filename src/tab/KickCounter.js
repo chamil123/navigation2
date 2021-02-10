@@ -11,6 +11,8 @@ import { BarIndicator } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { Avatar } from 'react-native-elements';
 import *as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 var j = 0;
 const _format = 'YYYY-MM-DD';
@@ -40,7 +42,7 @@ export class KickCounter extends Component {
             times: moment().format(_formatTime),
             _max_hours: '',
             _status: 1,
-
+            lan: '',
         }
         // this.loadDbVarable = this.loadDbVarable.bind(this);
         db.initDB().then((result) => {
@@ -48,8 +50,10 @@ export class KickCounter extends Component {
         })
 
     }
-    componentDidMount() {
-   
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
   
     loadDbVarable(result) {
@@ -378,8 +382,8 @@ export class KickCounter extends Component {
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
 
                             {/* <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text> */}
-                            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Kick counter</Text>
-                            <Text style={{ color: 'white' }}>Press the foot button every time your baby kick</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>{i18n.t('kick.heading')}</Text>
+                            <Text style={{ color: 'white' }}>{i18n.t('kick.subheading')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('KickCounterHister')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
@@ -392,7 +396,7 @@ export class KickCounter extends Component {
                                             iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('kick.buttonhis')}</Text>
                                 </View>
                             </TouchableOpacity>
 
@@ -466,12 +470,12 @@ export class KickCounter extends Component {
                             <View style={{ flexDirection: 'row', paddingTop: 10 }}>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', borderRightColor: 'gray', borderRightWidth: 1, paddingRight: 40 }}>
                                     <Text style={{ fontSize: 28, color: 'green', paddingBottom: 10 }}>{this.state._first_time}</Text>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>First Time</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('kick.first')}</Text>
                                 </View>
 
                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 40 }}>
                                     <Text style={{ fontSize: 28, color: 'red', paddingBottom: 10 }}>{this.state._last_time}</Text>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Last Time</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{i18n.t('kick.last')}</Text>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', paddingTop: 10 }}>

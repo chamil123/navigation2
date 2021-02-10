@@ -17,6 +17,8 @@ import *as Animatable from 'react-native-animatable';
 import DatePicker from 'react-native-date-picker';
 import { BarIndicator } from 'react-native-indicators';
 import RadioButtonRN from 'radio-buttons-react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
@@ -37,6 +39,7 @@ export class BreastFeeding extends Component {
             isLoading: true,
             date: new Date(),
             dbs: '',
+            lan: '',
             _radiobuttonValue: '',
         }
         db.initDB().then((result) => {
@@ -52,8 +55,10 @@ export class BreastFeeding extends Component {
         });
         this.loadData();
     }
-    componentDidMount() {
-        // this.loadData();
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     loadData() {
         db.listBabyDetails(this.state.dbs).then((data) => {
@@ -153,7 +158,7 @@ export class BreastFeeding extends Component {
         else {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-                    <CustomHeader bgcolor='#fbb146' title="Breast Feeding" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                    <CustomHeader bgcolor='#fbb146' title={i18n.t('bfeeding.heading')} bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                     <View style={styles.header}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ marginTop: 25, marginLeft: 20 }}>
@@ -170,12 +175,14 @@ export class BreastFeeding extends Component {
                             </View>
                             <View style={{ flexDirection: "column", marginLeft: 40, marginTop: 10 }}>
                                 <Text style={{ fontWeight: 'bold', }}>{this.state._baby_name}</Text>
-                                <Text style={{ color: 'white', paddingTop: 5 }}>Birth date :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
-                                <Text style={{ color: 'white', paddingTop: 5 }}>Birth weight: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
-                                <Text style={{ color: 'white', paddingTop: 5 }}>Gender : <Text style={{ fontWeight: 'bold', color: 'black' }}>{this.state._radiobuttonValue}  </Text> </Text>
-                                <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
-                                    <Text style={styles.buttonText2}>Edit</Text>
-                                </TouchableOpacity>
+                                <Text style={{ color: 'white', paddingTop: 5 }}>{i18n.t('bfeeding.dob')}  :<Text style={{ fontWeight: 'bold', color: 'black' }}> {this.state._babybDate} </Text></Text>
+                                <Text style={{ color: 'white', paddingTop: 5 }}>{i18n.t('bfeeding.bweight')}: <Text style={{ fontWeight: 'bold', color: 'black' }}>  {this.state._babyWeght} </Text> Kg</Text>
+                                <Text style={{ color: 'white', paddingTop: 5 }}>{i18n.t('bfeeding.gender')} : <Text style={{ fontWeight: 'bold', color: 'black' }}>{this.state._radiobuttonValue}  </Text> </Text>
+                                <View style={{flexDirection:'row'}}>
+                                    <TouchableOpacity style={styles.button1} onPress={() => this.RBSheet.open()}>
+                                        <Text style={styles.buttonText2}>{i18n.t('bfeeding.editbtn')}</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.breadthPo1}>
@@ -272,7 +279,7 @@ export class BreastFeeding extends Component {
                             <View style={{ justifyContent: 'center', padding: 10, marginTop: 40 }}>
 
                                 <View style={{ marginTop: 0, marginLeft: 5, paddingBottom: 2 }}>
-                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Breast feeding <Text style={{ color: 'gray', fontWeight: 'normal' }}>position</Text></Text>
+                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{i18n.t('bfeeding.subheding')} <Text style={{ color: 'gray', fontWeight: 'normal' }}>{i18n.t('bfeeding.akara')} </Text></Text>
                                     <View style={{ borderTopWidth: 6, borderTopColor: "#f78a2c", borderRadius: 3, width: 45, marginTop: 10 }}></View>
                                     {/* <Text style={{ color: 'gray',fontSize: 12,marginTop:-4 }}>Atachment</Text> */}
                                 </View>
@@ -287,8 +294,8 @@ export class BreastFeeding extends Component {
                                                 end={{ x: 0, y: 0 }}
                                             >
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cradle</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>{i18n.t('bfeeding.cradle')}</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>{i18n.t('bfeeding.akara')}</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO21}
                                                         style={{ height: 140, width: 140, marginLeft: 10, marginTop: 5 }}>
@@ -302,8 +309,8 @@ export class BreastFeeding extends Component {
                                             >
                                                 {/* <View style={[styles.card, { flexDirection: 'column', backgroundColor: '#a9dfe9' }]}> */}
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Cross Cradle</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
+                                                    <Text style={{ fontSize: 14, fontWeight: 'bold', }}>{i18n.t('bfeeding.cross')}</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>{i18n.t('bfeeding.akara')}</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO22}
                                                         style={{ height: 140, width: 120, marginLeft: 10, marginTop: 5 }}>
@@ -317,8 +324,8 @@ export class BreastFeeding extends Component {
                                             >
                                                 {/* <View style={[styles.card, { flexDirection: 'column', backgroundColor: '#dff19d' }]}> */}
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Foodball</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Hold</Text>
+                                                    <Text style={{ fontSize: 14, fontWeight: 'bold', }}>{i18n.t('bfeeding.football')}</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>{i18n.t('bfeeding.akara')}</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO23}
                                                         style={{ height: 140, width: 140, marginLeft: -5, marginTop: 5 }}>
@@ -332,8 +339,8 @@ export class BreastFeeding extends Component {
                                             >
 
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Laid Back</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Position</Text>
+                                                    <Text style={{ fontSize: 13, fontWeight: 'bold', }}>{i18n.t('bfeeding.laidback')}</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>{i18n.t('bfeeding.akara')}</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO24}
                                                         style={{ height: 100, width: 190, marginLeft: -50, marginTop: 35 }}>
@@ -347,8 +354,8 @@ export class BreastFeeding extends Component {
                                             >
 
                                                 <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>Side</Text>
-                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>Lying</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', }}>{i18n.t('bfeeding.sidelay')}</Text>
+                                                    <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: -5 }}>{i18n.t('bfeeding.laying')}</Text>
 
                                                     <Image source={IMAGE.ICON_BRESTPO25}
                                                         style={{ height: 130, width: 170, marginLeft: -40, marginTop: 15 }}>
@@ -393,7 +400,7 @@ export class BreastFeeding extends Component {
                                             onDateChange={(date) => { this.setState({ date: date }) }}
                                         />
                                         <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
-                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Weight" />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Birth Weight" />
                                         <View style={{ marginTop: 10 }}>
                                             <RadioButtonRN
                                                 data={data}
@@ -406,7 +413,7 @@ export class BreastFeeding extends Component {
 
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Save Baby' Data</Text>
+                                            <Text style={styles.buttonText}>Save Baby's Data</Text>
                                         </TouchableOpacity>
 
 
@@ -484,7 +491,7 @@ export class BreastFeeding extends Component {
         backgroundColor: "red",
         padding: 5,
         borderRadius: 25,
-        width: 80,
+        // width: 80,
         marginTop: 10,
 
         alignItems: 'center',

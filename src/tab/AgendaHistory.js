@@ -4,7 +4,8 @@ import { IMAGE } from '../constants/image';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { Icon } from 'react-native-elements'
 import { CustomHeader } from '../index';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import Database from '../Database';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const db = new Database();
@@ -16,6 +17,7 @@ export class AgendaHistory extends Component {
 
             _list_wgData: [],
             dbs: '',
+            lan: '',
 
         }
         db.initDB().then((result) => {
@@ -32,7 +34,7 @@ export class AgendaHistory extends Component {
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: '#f2f2f2', justifyContent: 'center', alignItems: 'center' }}>
-                <Text >oops! There's no data here!</Text>
+                <Text >{i18n.t('special_notes.oops')}!</Text>
             </View>);
     }
     loadData() {
@@ -86,7 +88,7 @@ export class AgendaHistory extends Component {
                         <View style={{ backgroundColor: '#fbb146', height: 120, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Special Note History</Text>
+                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('special_notes.historynote')}</Text>
 
                             </View>
                         </View>

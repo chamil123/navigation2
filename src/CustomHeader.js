@@ -23,7 +23,7 @@ export class CustomHeader extends Component {
       <View style={{ flexDirection: 'row', height: 55, backgroundColor: bgcolor, borderBottomColor: bdcolor, borderBottomWidth: 1 }} >
 
 
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{  justifyContent: 'center',width:80 }}>
           {
             isHome ?
               <TouchableOpacity
@@ -72,9 +72,9 @@ export class CustomHeader extends Component {
 
 
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center',color:'black',fontSize:15,fontWeight:'bold' }}>{title}</Text>
+          <Text style={{ textAlign: 'center',color:'black',fontSize:15,fontWeight:'bold',}}>{title}</Text>
         </View>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{  justifyContent: 'center',width:80 }}>
           {
             isPost ? <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <Image style={{ width: 20, height: 20, marginRight: 10 }}

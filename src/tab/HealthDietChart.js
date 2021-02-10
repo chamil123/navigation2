@@ -3,8 +3,10 @@ import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, ListV
 import StepIndicator from 'react-native-step-indicator';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
-import dummyData from './datafoodplan';
+// import dummyData from './datafoodplan';
 import *as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 const stepIndicatorStyles = {
     stepIndicatorSize: 25,
@@ -32,9 +34,55 @@ export class HealthDietChart extends Component {
         super();
 
         this.state = {
-            currentPage: 0
+            currentPage: 0,
+            lan: '',
+
+            data: [
+                {
+                  title: '5 % ',
+        
+                  body:
+                    i18n.t('food.5'),
+                  src: IMAGE.ICON_DIET_5,
+        
+        
+                },
+                {
+                  title: '20 %',
+        
+                  body:
+                    i18n.t('food.20'),
+                  src: IMAGE.ICON_DIET_20,
+        
+                },
+                {
+                  title: '35 %',
+        
+                  body:
+                    i18n.t('food.35'),
+                  src: IMAGE.ICON_DIET_35,
+        
+                },
+                {
+                  title: '40 %',
+        
+                  body:
+                    i18n.t('food.40'),
+                  src: IMAGE.ICON_DIET_40,
+        
+                }
+        
+              ]
         };
         this.viewabilityConfig = { itemVisiblePercentThreshold: 0 }
+    }
+     componentDidMount() {
+        // this.setState({
+        //     lan: await AsyncStorage.getItem('lang'),
+        // });
+
+       
+
     }
     keyExtractor = (item, index) => index.toString()
     render() {
@@ -43,7 +91,7 @@ export class HealthDietChart extends Component {
                 <CustomHeader bgcolor='#fbb146' title=""  bcbuttoncolor='#ffc470'  navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={styles.header}>
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: -10 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Food Phyramid</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>{i18n.t('food.hedding')}</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
 
                         <View style={{ height: 100, padding: 10 }}>
@@ -65,14 +113,16 @@ export class HealthDietChart extends Component {
                             stepCount={4}
                             direction='vertical'
                             currentPosition={this.state.currentPage}
-                            labels={dummyData.data.map(item => item.title)}
+                            // labels={this.state.data.title}
+                            labels={this.state.data.map(item => item.title)}
                         />
                     </View>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         keyExtractor={this.keyExtractor}
                         style={{ flexGrow: 1, marginLeft: -10 }}
-                        data={dummyData.data}
+                        // data={dummyData.data}
+                        data={this.state.data}
                         // renderItem={this.renderPage}
                         onViewableItemsChanged={this.onViewableItemsChanged}
                         viewabilityConfig={this.viewabilityConfig}

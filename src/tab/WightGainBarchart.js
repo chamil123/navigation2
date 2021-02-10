@@ -14,6 +14,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import CalendarStrip from 'react-native-slideable-calendar-strip';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import moment from 'moment'; // 2.20.1
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 
 // import Echarts from 'native-echarts';
 const db = new Database();
@@ -48,6 +50,7 @@ export class WightGainBarchart extends Component {
       dbs: '',
       isLoading: false,
       basicOkCancelVisible: false,
+      lan: '',
       data: {
         // color: ['#4cabce', '#d50000', '#003366', '#e5323e'],
         color: ['#4cabce', '#d50000', '#003366'],
@@ -58,7 +61,7 @@ export class WightGainBarchart extends Component {
           }
         },
         legend: {
-          data: ['Min Value', 'Your Value', 'Max Value']
+          data: [ i18n.t('weightGain.min'),  i18n.t('weightGain.your'), i18n.t('weightGain.max'),]
         },
 
         xAxis: [
@@ -78,20 +81,20 @@ export class WightGainBarchart extends Component {
           {
             // name: 'Forest',
             type: 'bar',
-            name: "Min Value",
+            name: i18n.t('weightGain.min'),
             stack: 'color',
             barGap: 0,
             // label: labelOption,
             data: [0]
           },
           {
-            name: 'Your Value',
+            name: i18n.t('weightGain.your'),
             type: 'bar',
             // label: labelOption,
             data: [0]
           },
           {
-            name: 'Max Value',
+            name: i18n.t('weightGain.max'),
             type: 'bar',
             //  label: labelOption,
             data: [0]
@@ -108,7 +111,11 @@ export class WightGainBarchart extends Component {
     })
     this.loadDbVarable = this.loadDbVarable.bind(this);
   }
-
+  async componentDidMount() {
+    this.setState({
+        lan: await AsyncStorage.getItem('lang'),
+    });
+}
   loadDbVarable(result) {
     this.setState({
       dbs: result,
@@ -217,6 +224,7 @@ export class WightGainBarchart extends Component {
       console.log(err);
     })
   }
+  
   saveData() {
     this.RBSheet.close();
     const _format = 'YYYY-MM-DD'
@@ -284,8 +292,8 @@ export class WightGainBarchart extends Component {
     };
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffc15a' }}>
-     
-        <CustomHeader bgcolor='#ffc15a' bcbuttoncolor='#fbb448' title="Weight Gain chart" navigation={this.props.navigation} bdcolor='#ffc15a' />
+
+        <CustomHeader bgcolor='#ffc15a' bcbuttoncolor='#fbb448' title={i18n.t('weightGain.wgchart')} navigation={this.props.navigation} bdcolor='#ffc15a' />
         <FlashMessage duration={1000} />
         <View style={styles.header}>
 
@@ -304,7 +312,7 @@ export class WightGainBarchart extends Component {
         <Animatable.View style={styles.footer} animation="fadeInLeft">
 
           <View style={{ padding: 5 }}>
-            <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>History</Text>
+            <Text style={{ paddingVertical: 10, fontSize: 18, marginLeft: 18, fontWeight: 'bold' }}>{i18n.t('weightGain.buttonhis')}</Text>
 
             <FlatList
 
@@ -316,7 +324,7 @@ export class WightGainBarchart extends Component {
                 shadowOffset: { width: 0, height: 3 },
                 shadowOpacity: 0.7,
                 shadowRadius: 8,
-                marginBottom:50,
+                marginBottom: 50,
 
               }}
               ListEmptyComponent={this.emptyComponent}

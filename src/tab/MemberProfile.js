@@ -11,7 +11,7 @@ import { Avatar, Badge } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob'
 import FlashMessage, { showMessage } from "react-native-flash-message";
-
+import i18n from 'i18n-js';
 // import RNFetchBlob from 'react-native-fetch-blob';
 import { BarIndicator } from 'react-native-indicators';
 const options = {
@@ -36,7 +36,7 @@ export class MemberProfile extends Component {
       imageSource: null,
       dataa: null,
       abc: '',
-
+      lan: '',
     }
   }
   InputUsers() {
@@ -72,11 +72,13 @@ export class MemberProfile extends Component {
       }).catch((error) => {
         console.error(error);
       })
- 
+
   }
   async componentDidMount() {
     const myArray = await AsyncStorage.getItem('memberNames');
-    // Alert.alert('AynStoreage : '+myArray);
+    this.setState({
+      lan: await AsyncStorage.getItem('lang'),
+    });
     const data = new FormData();
     data.append("get_about", "true");
 
@@ -147,7 +149,7 @@ export class MemberProfile extends Component {
           dataa: imdata
 
         });
-       
+
         this.uploadPhoto();
       }
     });
@@ -168,7 +170,7 @@ export class MemberProfile extends Component {
     }).catch((err) => {
       console.log(err);
     });
-    
+
     this.setState({
       isLoading: false,
 
@@ -185,9 +187,9 @@ export class MemberProfile extends Component {
     } else {
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <CustomHeader bgcolor='#fbb146' title="Home detail" isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
+          <CustomHeader bgcolor='#fbb146' title={i18n.t('profile.headding')} isHome={true} navigation={this.props.navigation} bdcolor='#fbb146' />
           <FlashMessage duration={1000} />
-     
+
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior="automatic"
@@ -195,13 +197,13 @@ export class MemberProfile extends Component {
           >
             <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
               <View style={{ marginTop: 0, marginLeft: 20 }}>
-             
+
               </View>
             </View>
 
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bottom: 90 }}>
 
-              
+
               <Avatar
                 rounded
                 showEditButton
@@ -222,11 +224,11 @@ export class MemberProfile extends Component {
                 editButton={{
                   name: 'edit'
                 }}
-              showAccessory
-              onAccessoryPress={() =>  this.selectPhoto()}
-              accessory={{ size:33,style: { backgroundColor: 'gray', height: 42,paddingTop:3, width: 42, borderRadius: 25,alignItems:'center',alignContent:'center' } }}
+                showAccessory
+                onAccessoryPress={() => this.selectPhoto()}
+                accessory={{ size: 33, style: { backgroundColor: 'gray', height: 42, paddingTop: 3, width: 42, borderRadius: 25, alignItems: 'center', alignContent: 'center' } }}
               >
-              
+
               </Avatar>
               <View style={{ marginLeft: 0, flexDirection: 'column', marginBottom: -150 }}>
                 <Title style={styles.title} >
@@ -243,13 +245,13 @@ export class MemberProfile extends Component {
               flex: 1, justifyContent: 'center', paddingHorizontal: 15,
               paddingVertical: 0,
             }}>
-              <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="User Name" ></TextInput>
-             
-              <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="User Name" ></TextInput>
-              <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Mobile Number" ></TextInput>
-              <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Password" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label={i18n.t('profile.username')} ></TextInput>
 
-              <TextInput autoFocus={false} value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label="Address" ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.email')} ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.mobile')} ></TextInput>
+              <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.password')} ></TextInput>
+
+              <TextInput autoFocus={false} value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.address')} ></TextInput>
               <TouchableOpacity style={{ marginTop: 30 }}
                 onPress={() => {
                   this.InputUsers();
@@ -265,7 +267,7 @@ export class MemberProfile extends Component {
                   // locations={[0.3, 0.6,1]} 
                   style={styles.linearGradient}>
                   <Text style={styles.buttonText}>
-                    SAVE
+                  {i18n.t('profile.button')}
     </Text>
                 </LinearGradient>
 

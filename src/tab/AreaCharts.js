@@ -7,6 +7,8 @@ import { BarIndicator } from 'react-native-indicators';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
 import *as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 var colors = ['#5793f3', '#d14a61', '#675bba'];
 
@@ -18,9 +20,10 @@ export class AreaCharts extends Component {
         this.state = {
             isLoading: true,
             basicOkCancelVisible: false,
+            lan: '',
             data: {
                 title: {
-                    // text: 'වයසට අදාල බර ප්‍රස්ථාරය'
+                    text: "",
                 },
                 color: colors,
 
@@ -34,7 +37,7 @@ export class AreaCharts extends Component {
                     }
                 },
                 legend: {
-                    data: ['උග්‍ර අඩු බර', 'මධ්‍යස්ත අඩු බර', 'අඩු බරට අවදානම', 'නියමිත බර', 'අධි බර', 'ඔබේ  දරුවාගේ බර'],
+                    data: [i18n.t('growthchart.ugradu'), i18n.t('growthchart.mdyastha'), i18n.t('growthchart.aduavadanama'), i18n.t('growthchart.niyamith'), i18n.t('growthchart.adhi'), i18n.t('growthchart.yourbaby')],
                 },
               
                 grid: {
@@ -66,7 +69,7 @@ export class AreaCharts extends Component {
                 ],
                 series: [
                     {
-                        name: 'උග්‍ර අඩු බර',
+                        name: i18n.t('growthchart.ugradu'),
                         type: 'line',
 
                         xAxisIndex: 0,
@@ -85,7 +88,7 @@ export class AreaCharts extends Component {
                         data: []
                     },
                     {
-                        name: 'මධ්‍යස්ත අඩු බර ',
+                        name: i18n.t('growthchart.mdyastha'),
                         type: 'line',
                         smooth: true,
 
@@ -105,7 +108,7 @@ export class AreaCharts extends Component {
                         data: []
                     },
                     {
-                        name: 'අඩු බරට අවදානම',
+                        name: i18n.t('growthchart.aduavadanama'),
                         type: 'line',
 
                         smooth: true,
@@ -124,7 +127,7 @@ export class AreaCharts extends Component {
                         data: []
                     },
                     {
-                        name: 'නියමිත බර',
+                        name:  i18n.t('growthchart.niyamith'),
                         type: 'line',
                         smooth: true,
 
@@ -142,7 +145,7 @@ export class AreaCharts extends Component {
                         areaStyle: { color: 'green', opacity: 0.05 },
                         data: []
                     }, {
-                        name: 'අධි බර',
+                        name: i18n.t('growthchart.adhi'),
                         type: 'line',
 
                         smooth: true,
@@ -167,7 +170,7 @@ export class AreaCharts extends Component {
 
                         data: []
                     }, {
-                        name: 'ඔබේ  දරුවාගේ බර',
+                        name: i18n.t('growthchart.yourbaby'),
                         type: 'line',
                         smooth: true,
                         stack: '-10',
@@ -216,6 +219,11 @@ export class AreaCharts extends Component {
             this.chart = ref;
         }
     };
+    async componentDidMount() {
+        this.setState({
+          lan: await AsyncStorage.getItem('lang'),
+        });
+      }
     getData() {
 
         db.listBabyDetails(this.state.dbs).then((data) => {
@@ -303,7 +311,7 @@ export class AreaCharts extends Component {
 
                 <SafeAreaView style={{ flex: 1 }}>
                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
-                    <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="Grouth Chart" navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                    <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title={i18n.t('growthchart.heading')} navigation={this.props.navigation} bdcolor='#F2F2F2' />
                     <ECharts
                         option={this.state.data} height={300} 
                     />

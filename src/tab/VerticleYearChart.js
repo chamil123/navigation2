@@ -4,7 +4,9 @@ import PushNotification from 'react-native-push-notification';
 import StepIndicator from 'react-native-step-indicator';
 import { CustomHeader } from '../index';
 import { IMAGE } from '../constants/image';
-import dummyData from './data';
+import i18n from 'i18n-js';
+import AsyncStorage from '@react-native-community/async-storage';
+// import dummyData from './data';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 const stepIndicatorStyles = {
     stepIndicatorSize: 25,
@@ -32,9 +34,84 @@ export class VerticleYearChart extends Component {
         super();
 
         this.state = {
-            currentPage: 0
+            currentPage: 0,
+            data: [
+                {
+                    title: i18n.t('dietplan.carb'),
+
+                    body:
+                        i18n.t('dietplan.carb_detail'),
+                    src: IMAGE.ICON_CARBOHIDRATE,
+
+                },
+                {
+                    title: i18n.t('dietplan.protein'),
+
+                    body:
+                        i18n.t('dietplan.protein_detail'),
+                    src: IMAGE.ICON_PROTEIN,
+
+                },
+                {
+                    title: i18n.t('dietplan.fat'),
+
+                    body:
+                        i18n.t('dietplan.fat_detail'),
+                    src: IMAGE.ICON_FAT,
+
+                },
+                {
+                    title: i18n.t('dietplan.vita'),
+
+                    body:
+                        i18n.t('dietplan.vita_detail'),
+                    src: IMAGE.ICON_VITAMIN_A,
+
+                },
+                {
+                    title: i18n.t('dietplan.vitb'),
+                    body:
+                        i18n.t('dietplan.vitb_detail'),
+                    src: IMAGE.ICON_VITAMIN_B,
+
+                },
+                {
+                    title: i18n.t('dietplan.vitc'),
+                    body:
+                        i18n.t('dietplan.vitc_detail'),
+                    src: IMAGE.ICON_VITAMIN_C,
+
+                },
+                {
+                    title: i18n.t('dietplan.vitd'),
+                    body:
+                        i18n.t('dietplan.vitd_detail'),
+                    src: IMAGE.ICON_VITAMIN_D,
+
+
+                },
+                {
+                    title: i18n.t('dietplan.vite'),
+                    body:
+                        i18n.t('dietplan.vite_detail'),
+                    src: IMAGE.ICON_VITAMIN_E,
+
+                }, {
+                    title: i18n.t('dietplan.salt'),
+                    body:
+                        i18n.t('dietplan.salt_detail'),
+                    src: IMAGE.ICON_MINERAL,
+
+                },
+
+            ],
         };
         this.viewabilityConfig = { itemVisiblePercentThreshold: 0 }
+    }
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     keyExtractor = (item, index) => index.toString()
     render() {
@@ -43,12 +120,12 @@ export class VerticleYearChart extends Component {
                 <CustomHeader bgcolor='#fbb146' title="" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <View style={styles.header}>
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: -10 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Diet For Healthy Mother</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>{i18n.t('dietplan.hedding')}</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
                     </View>
-                    <View style={{ flexDirection: 'row-reverse',marginHorizontal:20,zIndex:5,top:22}}>
+                    <View style={{ flexDirection: 'row-reverse', marginHorizontal: 20, zIndex: 5, top: 22 }}>
                         <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('MealPlan')}>
-                            <Text style={styles.buttonText}>Meal plan</Text>
+                            <Text style={styles.buttonText}>{i18n.t('dietplan.mealplan')}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -63,14 +140,14 @@ export class VerticleYearChart extends Component {
                             stepCount={9}
                             direction='vertical'
                             currentPosition={this.state.currentPage}
-                            labels={dummyData.data.map(item => item.title)}
+                            labels={this.state.data.map(item => item.title)}
                         />
                     </View>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         keyExtractor={this.keyExtractor}
                         style={{ flexGrow: 1 }}
-                        data={dummyData.data}
+                        data={this.state.data}
                         // renderItem={this.renderPage}
                         onViewableItemsChanged={this.onViewableItemsChanged}
                         viewabilityConfig={this.viewabilityConfig}
@@ -168,7 +245,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 110,
+        // width: 110,
         marginTop: -5,
         marginLeft: 18,
         marginBottom: 10,

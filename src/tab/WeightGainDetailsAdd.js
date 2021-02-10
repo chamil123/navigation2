@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import i18n from 'i18n-js';
 const db = new Database();
 
 const _format = 'YYYY-MM-DD'
@@ -26,6 +27,7 @@ export class WeightGainDetailsAdd extends Component {
             date: new Date(),
             dbs: '',
             userName: '',
+            lan: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -94,8 +96,10 @@ export class WeightGainDetailsAdd extends Component {
         const myArray = await AsyncStorage.getItem('memberNames');
         this.setState({
             userName: myArray,
+            lan: await AsyncStorage.getItem('lang'),
         });
     }
+  
     saveData() {
 
         const { TextInpuPbValue } = this.state;
@@ -143,7 +147,7 @@ export class WeightGainDetailsAdd extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <CustomHeader bgcolor='#fbb146' title="Weight Gain" bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
+                <CustomHeader bgcolor='#fbb146' title={i18n.t('weightGain.mainheading')} bcbuttoncolor='#ffc470' navigation={this.props.navigation} bdcolor='#fbb146' />
                 <FlashMessage duration={1000} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -153,10 +157,11 @@ export class WeightGainDetailsAdd extends Component {
                     {/* <View> */}
                     <View style={{ backgroundColor: '#fbb146', height: 150, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Weight level</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>{i18n.t('weightGain.heading')} {this.state.userName}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('weightGain.subheading')}</Text>
                             {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
+                        <View style={{flexDirection:'row'}}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('WightGainBarchart')} style={styles.button}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
@@ -167,18 +172,16 @@ export class WeightGainDetailsAdd extends Component {
                                         iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'black' }}
                                     />
                                 </View>
-                                <Text style={{ color: 'white', padding: 7 }}>History</Text>
+                                <Text style={{ color: 'white', padding: 7 }}>{i18n.t('weightGain.mainheading')}</Text>
 
                             </View>
-
-
-
                         </TouchableOpacity>
+                        </View>
                     </View>
 
                     <View style={styles.breadthPo1}>
 
-                        <Text style={{ marginVertical: 10 }} >Select date</Text>
+                        <Text style={{ marginVertical: 10 }} >{i18n.t('weightGain.sltdate')}</Text>
 
                         <TouchableOpacity onPress={this._showDatePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
@@ -191,10 +194,10 @@ export class WeightGainDetailsAdd extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <Text style={{ marginVertical: 10 }}> Weight Value </Text>
+                        <Text style={{ marginVertical: 10 }}>{i18n.t('weightGain.waightval')} </Text>
                         <TextInput
                             keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                            autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder="Enter Weight Value" />
+                            autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} placeholder={i18n.t('weightGain.waightvalinner')} />
                         <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                             {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
                                  */}
@@ -206,7 +209,7 @@ export class WeightGainDetailsAdd extends Component {
 
                                 style={styles.linearGradient}>
                                 <Text style={styles.buttonText}>
-                                    Add weight
+                                {i18n.t('weightGain.button')}
 </Text>
                             </LinearGradient>
 
@@ -335,7 +338,7 @@ export class WeightGainDetailsAdd extends Component {
         padding: 7,
         borderRadius: 25,
         marginTop: 18,
-        width: 125,
+        // width: 125,
         elevation: 10,
         shadowColor: '#30C1DD',
         shadowOffset: { width: 0, height: 5 },

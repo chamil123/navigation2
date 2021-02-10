@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 // import ValidationComponent from 'react-native-form-validator';
 import DropDownPicker from 'react-native-dropdown-picker';
+import i18n from 'i18n-js';
 import {
   BallIndicator,
   BarIndicator,
@@ -102,7 +103,7 @@ export class RegisterScreen extends Component {
       PickerValueHolder: '',
       value: null,
       items: [],
-
+      lan: '',
       // emailError: "",
     }
   }
@@ -112,7 +113,7 @@ export class RegisterScreen extends Component {
       // emailError: emailError,
       // passwordError: passwordError
     })
- 
+
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
     const { TextInputPhoneNumber } = this.state;
@@ -225,7 +226,7 @@ export class RegisterScreen extends Component {
 
           //start save data in the server
           if (this.state.errorFound != "false" && this.state.errorFound == "") {
-        
+
             // if (PickerValueHolder !== '') {
             fetch('https://youandmenest.com/tr_reactnative/insert.php', {
               method: 'post',
@@ -292,7 +293,16 @@ export class RegisterScreen extends Component {
 
 
   }
-  componentDidMount() {
+  //   async componentDidMount() {
+  //     const role_id = await AsyncStorage.getItem('lang');
+  //     this.setState({
+  //         lan: await AsyncStorage.getItem('lang'),
+  //     });
+
+  // }
+
+  async componentDidMount() {
+
     fetch('https://youandmenest.com/tr_reactnative/view_role.php', {
       method: 'get',
       header: {
@@ -309,11 +319,13 @@ export class RegisterScreen extends Component {
         }
         console.log(responseJson);
 
+
         this.setState({
           isLoading: false,
           dataSource: responseJson,
           _role_id: role_id,
           items: role_name,
+
 
         }, function () {
           // In this block you can do something with new state.
@@ -321,6 +333,9 @@ export class RegisterScreen extends Component {
       }).catch((error) => {
         console.error(error);
       })
+    this.setState({
+      lan: await AsyncStorage.getItem('lang'),
+    });
   }
 
   handleChangeOption(itemValue) {
@@ -349,13 +364,13 @@ export class RegisterScreen extends Component {
                 paddingVertical: 0
               }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 0, color: 'white' }}>Create Your You And Me Account </Text>
+                  <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 0, color: 'white',alignItems:'center' }}>{i18n.t('SignUp.headding')}</Text>
 
-                  <Text style={{ fontSize: 12, marginTop: -2, color: 'black' }}>Please enter below information </Text>
-                  <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 10, color: 'black' }}>to create an account</Text>
+                  <Text style={{ fontSize: 12, marginTop: 2, color: 'black',textAlign:'center' }}>{i18n.t('SignUp.subtitle1')} </Text>
+                  <Text style={{ fontSize: 12, marginTop: -2, marginBottom: 10, color: 'black' }}>{i18n.t('SignUp.subtitle2')}</Text>
                 </View>
                 <Animatable.View animation="fadeInLeft">
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>User Role :</Text>
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.role1')} :</Text>
                   <View style={{ bborderColor: '#F2F2F2', borderWidth: 0.2, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }}>
 
                     <Picker
@@ -375,7 +390,7 @@ export class RegisterScreen extends Component {
                           )
                       }
                     >
-                      <RedPickerItem label={'Please select an option'} value="red" color='red' fontSize='15' value={0} />
+                      <RedPickerItem label={i18n.t('SignUp.pickerheading')} value="red" color='red' fontSize='15' value={0} />
 
                       {this.state.dataSource.map((item, key) => (
 
@@ -387,25 +402,25 @@ export class RegisterScreen extends Component {
                   <Text style={{ color: 'red' }}>{this.state.optionError}</Text>
 
 
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>User Name :</Text>
-                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter User Name" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.username')} :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.enter_uname')} onEndEditing={this.clearFocus} autoFocus={false} />
                   <Text style={{ color: 'red' }}>{this.state.unameError}</Text>
 
 
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Email address :</Text>
-                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Email address" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.email')} :</Text>
+                  <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.enter_email')} enter_email onEndEditing={this.clearFocus} autoFocus={false} />
                   <Text style={{ color: 'red' }}>{this.state.emailError}</Text>
 
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Mobil number :</Text>
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.mobile')}  :</Text>
                   <TextInput
                     onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
                     keyboardType="numeric"
                     maxLength={10}
-                    style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Mobil number" onEndEditing={this.clearFocus} autoFocus={false} />
+                    style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.enter_mobile')}  onEndEditing={this.clearFocus} autoFocus={false} />
                   <Text style={{ color: 'red' }}>{this.state.mobileError}</Text>
 
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>Password :</Text>
-                  <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder="Enter Password" onEndEditing={this.clearFocus} autoFocus={false} />
+                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.pw')} :</Text>
+                  <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.pwInner')} onEndEditing={this.clearFocus} autoFocus={false} />
                   <Text style={{ color: 'red' }}>{this.state.pwError}</Text>
 
                   <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.props.navigation.navigate('HomeApp')} onPress={this.InputUsers}>
@@ -415,7 +430,7 @@ export class RegisterScreen extends Component {
                       end={{ x: 1, y: 1 }}
                       style={styles.linearGradient}>
                       <Text style={styles.buttonText}>
-                        Sign Up
+                      {i18n.t('SignUp.signUp')}
                 </Text>
                     </LinearGradient>
                   </TouchableOpacity>

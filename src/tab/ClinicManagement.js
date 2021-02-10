@@ -9,13 +9,13 @@ import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
-
+import i18n from 'i18n-js';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 const db = new Database();
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 const _formatTime = 'HH:mm:ss';
-
+const _timenow = moment().format(_formatTime)
 export class ClinicManagement extends Component {
     constructor(props) {
         super(props);
@@ -29,6 +29,7 @@ export class ClinicManagement extends Component {
             dbs: '',
             userName: '',
             timeb: '',
+            lan: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -112,7 +113,9 @@ export class ClinicManagement extends Component {
         const myArray = await AsyncStorage.getItem('memberNames');
         this.setState({
             userName: myArray,
+            lan: await AsyncStorage.getItem('lang'),
         });
+
     }
     saveData() {
         const { TextInputNoteValue } = this.state;
@@ -159,8 +162,8 @@ export class ClinicManagement extends Component {
                     {/* <View> */}
                     <View style={{ backgroundColor: '#fbb146', height: 135, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Special Notes</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>{i18n.t('special_notes.hedding')} {this.state.userName}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('special_notes.subheadding')}</Text>
                             {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0 }}>
@@ -174,7 +177,7 @@ export class ClinicManagement extends Component {
                                             iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('special_notes.history')}</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodAgenda')} style={[styles.buttonh, { backgroundColor: 'green', width: 130 }]}>
@@ -187,7 +190,7 @@ export class ClinicManagement extends Component {
                                             iconStyle={{ fontSize: 13, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>Calendar</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('special_notes.calandar')}</Text>
 
                                 </View>
                             </TouchableOpacity>
@@ -196,7 +199,7 @@ export class ClinicManagement extends Component {
                     </View>
 
                     <View style={styles.breadthPo1}>
-                        <Text style={{ marginVertical: 10 }} >Select Date</Text>
+                        <Text style={{ marginVertical: 10 }} >{i18n.t('special_notes.slt_date')}</Text>
                         <TouchableOpacity onPress={this._showDatePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
                                 {
@@ -207,17 +210,17 @@ export class ClinicManagement extends Component {
                                 }
                             </View>
                         </TouchableOpacity>
-                        <Text style={{ marginVertical: 10, marginTop: 20 }}> Description </Text>
-                        <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }} placeholder="Enter Description here" />
+                        <Text style={{ marginVertical: 10, marginTop: 20 }}>{i18n.t('special_notes.descrpt')}  </Text>
+                        <TextInput multiline={true} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputNoteValue: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 10 }} placeholder={i18n.t('special_notes.inner_descript')} />
 
-                        <Text style={{ marginVertical: 10, marginTop: 20 }} >Select Time</Text>
+                        <Text style={{ marginVertical: 10, marginTop: 20 }} >{i18n.t('special_notes.time')}</Text>
                         <TouchableOpacity onPress={this._showDateTimePicker} >
                             <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }}>
                                 {
-                                    this.state.DateText != '' ?
+                                    this.state.timeb != '' ?
                                         <Text style={styles.datePickerText}>{this.state.timeb}</Text>
                                         :
-                                        <Text style={styles.datePickerText} ></Text>
+                                        <Text style={styles.datePickerText} >{_timenow}</Text>
                                 }
                             </View>
                         </TouchableOpacity>
@@ -230,7 +233,7 @@ export class ClinicManagement extends Component {
 
                                 style={styles.linearGradient}>
                                 <Text style={styles.buttonText}>
-                                    Add Note
+                                {i18n.t('special_notes.button')}
                                 </Text>
                             </LinearGradient>
 

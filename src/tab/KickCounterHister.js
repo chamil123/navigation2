@@ -10,6 +10,8 @@ import Database from '../Database';
 import { BarIndicator } from 'react-native-indicators';
 import { ECharts } from "react-native-echarts-wrapper";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 
 export class KickCounterHister extends Component {
@@ -18,14 +20,14 @@ export class KickCounterHister extends Component {
         this.state = {
             dataSource: [],
             isLoading: true,
-
+            lan: '',
             date: '',
             dbs: '',
             _list_kcData: [],
             data: {
                 backgroundColor: '#F2F2F2',
                 title: {
-                    text: '   Kick Counter History'
+                    text: "    "+i18n.t('kick.kickchart')
                 },
                 tooltip: {},
                 legend: {
@@ -65,8 +67,10 @@ export class KickCounterHister extends Component {
         this.getData();
     }
 
-    componentDidMount() {
-
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     deleteData(id, date) {
         var status = 1;
@@ -174,7 +178,7 @@ export class KickCounterHister extends Component {
                         <View style={styles.brestposition5}></View>
                         <View style={styles.brestposition6}></View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingRight: 15 }}>
-                            <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>History</Text>
+                            <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>{i18n.t('blood.buttonhis')}</Text>
                             <Icon
                                 name='bar-chart'
                                 type='font-awesome'
@@ -214,17 +218,17 @@ export class KickCounterHister extends Component {
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'column' }}>
                                             <Text>{item.kcDate}</Text>
-                                            <Text style={styles.dateText}><Text style={{ fontWeight: 'normal', fontSize: 14 }}>Kicks :</Text> {
+                                            <Text style={styles.dateText}><Text style={{ fontWeight: 'normal', fontSize: 14 }}>{i18n.t('kick.kick')} :</Text> {
 
                                                 item.kcCount
                                             }</Text>
                                         </View>
                                         <View style={{ marginLeft: 15, }}>
-                                            <Text style={{ fontSize: 11, color: 'gray', paddingBottom: 5 }}>Start time</Text>
+                                            <Text style={{ fontSize: 11, color: 'gray', paddingBottom: 5 }}>{i18n.t('kick.first')}</Text>
                                             <Text>{item.kcFirstTime}</Text>
                                         </View>
                                         <View style={{ marginLeft: 15, }}>
-                                            <Text style={{ fontSize: 11, color: 'gray', paddingBottom: 5 }}>End time</Text>
+                                            <Text style={{ fontSize: 11, color: 'gray', paddingBottom: 5 }}>{i18n.t('kick.last')}</Text>
                                             <Text>{item.kcLastTime}</Text>
                                         </View>
                                     </View>

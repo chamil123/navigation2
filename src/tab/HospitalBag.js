@@ -1,8 +1,11 @@
 import React, { Component, useState } from 'react';
 import { Modal, StyleSheet, ImageBackground, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch } from 'react-native';
 import { CustomHeader } from '../index';
+import { Icon } from 'react-native-elements';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Database from '../Database';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import {
     BarIndicator,
 } from 'react-native-indicators';
@@ -21,6 +24,7 @@ export class HospitalBag extends Component {
             switchValue: '',
             date: '',
             dbs: '',
+            lan: '',
             motherbag_count: 0,
             babybag_count: 0,
             lroombag_count: 0,
@@ -44,8 +48,7 @@ export class HospitalBag extends Component {
     });
 
 
-
-    componentDidMount() {
+    async componentDidMount() {
         var that = this;
         var date = new Date().getDate(); //Current Date
         var month = new Date().getMonth() + 1; //Current Month
@@ -53,12 +56,14 @@ export class HospitalBag extends Component {
         that.setState({
             date:
                 year + '-' + month + '-' + date,
+                lan: await AsyncStorage.getItem('lang'),
         });
 
     }
-    loadDbVarable(result) {
+    async loadDbVarable(result) {
         this.setState({
             dbs: result,
+            lan: await AsyncStorage.getItem('lang'),
         });
         this.viewListData();
 
@@ -77,7 +82,7 @@ export class HospitalBag extends Component {
         let int;
         let result;
         if (value != null) {
-            db.updateStatus(this.state.dbs, data).then((result) => {
+            db.updateStatus(this.state.dbs, data,this.state.lan).then((result) => {
                 console.log(result);
                 this.setState({
                     isLoading: false,
@@ -90,7 +95,8 @@ export class HospitalBag extends Component {
                 });
             })
         }
-        db.listBag(this.state.dbs).then((data) => {
+        db.listBag(this.state.dbs,this.state.lan).then((data) => {
+           
             result = data;
             if (result == 0) {
                 db.addItemOfMother_bag(this.state.dbs).then((result) => {
@@ -109,10 +115,8 @@ export class HospitalBag extends Component {
 
     }
     viewListData() {
-
-
         let mother_bag = [];
-        db.listMotherBagItems(this.state.dbs).then((data) => {
+        db.listMotherBagItems(this.state.dbs,this.state.lan).then((data) => {
 
 
             if (data != null) {
@@ -133,32 +137,32 @@ export class HospitalBag extends Component {
             }
         })
 
-        db.countMotherBag(this.state.dbs).then((data) => {
-            if (data != null) {
+        // db.countMotherBag(this.state.dbs).then((data) => {
+        //     if (data != null) {
 
-                this.setState({
-                    motherbag_count: data,
-                    isLoading: false,
-                });
-            }
-        });
+        //         this.setState({
+        //             motherbag_count: data,
+        //             isLoading: false,
+        //         });
+        //     }
+        // });
 
-        db.countBabyBag(this.state.dbs).then((data) => {
-            if (data != null) {
-                this.setState({
-                    babybag_count: data,
-                    isLoading: false,
-                });
-            }
-        });
-        db.countLRoomBag(this.state.dbs).then((data) => {
-            if (data != null) {
-                this.setState({
-                    lroombag_count: data,
-                    isLoading: false,
-                });
-            }
-        });
+        // db.countBabyBag(this.state.dbs).then((data) => {
+        //     if (data != null) {
+        //         this.setState({
+        //             babybag_count: data,
+        //             isLoading: false,
+        //         });
+        //     }
+        // });
+        // db.countLRoomBag(this.state.dbs).then((data) => {
+        //     if (data != null) {
+        //         this.setState({
+        //             lroombag_count: data,
+        //             isLoading: false,
+        //         });
+        //     }
+        // });
 
     }
     keyExtractor = (item, index) => index.toString()

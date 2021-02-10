@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, Image, Text, View, TouchableOpacity, TextInput, DrawerLayoutAndroidBase,StatusBar } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, Image, Text, View, TouchableOpacity, TextInput, DrawerLayoutAndroidBase, StatusBar } from 'react-native';
 import Database from '../Database';
 import { IMAGE } from '../constants/image';
 import Slider from "react-native-slider";
 import { CustomHeader } from '../index';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 
 export class BMICalculator extends Component {
@@ -21,11 +22,15 @@ export class BMICalculator extends Component {
 
       isLoading: false,
       value: 140,
-      weight: 40
+      weight: 40,
+      lan: '',
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     db.loadDB();
+    this.setState({
+      lan: await AsyncStorage.getItem('lang'),
+    });
   }
 
   updateTextInput = (text, field) => {
@@ -65,7 +70,7 @@ export class BMICalculator extends Component {
     const _Bmi_val = (weight / (height * height)).toFixed(2);
 
     try {
-      const items = [['bmi_value', _Bmi_val], ['height', ""+height.toFixed(2)], ['weight', ""+weight.toFixed(2)]]
+      const items = [['bmi_value', _Bmi_val], ['height', "" + height.toFixed(2)], ['weight', "" + weight.toFixed(2)]]
       await AsyncStorage.multiSet(items, () => { });
     } catch (error) {
       // Error saving data
@@ -82,9 +87,9 @@ export class BMICalculator extends Component {
     }
     return (
       <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
-     
-        <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="BMI Calculator" navigation={this.props.navigation} bdcolor='#F2F2F2' />
+        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
+
+        <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title={i18n.t('bmi.hedding')}navigation={this.props.navigation} bdcolor='#F2F2F2' />
         {/* <View style={styles.innerCircle} /> */}
         <View style={{ flex: 1 }}>
 
@@ -107,7 +112,7 @@ export class BMICalculator extends Component {
 
             />
             <Text>
-              Height : {this.state.value.toFixed(0)}.cm
+            {i18n.t('bmi.height')} : {this.state.value.toFixed(0)}.cm
             </Text>
 
             <Slider
@@ -120,11 +125,11 @@ export class BMICalculator extends Component {
 
             />
             <Text>
-              Weight : {this.state.weight.toFixed(2)}.kg
+            {i18n.t('bmi.weight')} : {this.state.weight.toFixed(2)}.kg
             </Text>
             <TouchableOpacity style={styles.button} onPress={this.calculateBmi}>
               {/* <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('BMIMeter')}> */}
-              <Text style={styles.buttonText}>Convert BMI</Text>
+              <Text style={styles.buttonText}> {i18n.t('bmi.trans')} </Text>
             </TouchableOpacity>
 
 
@@ -137,7 +142,7 @@ export class BMICalculator extends Component {
 
 
 
-      
+
 
         </View>
         {/* </ScrollView> */}

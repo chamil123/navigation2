@@ -8,7 +8,10 @@ import moment from 'moment' // 2.20.1
 import AsyncStorage from '@react-native-community/async-storage';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import i18n from 'i18n-js';
 const db = new Database();
+const _format = 'YYYY-MM-DD'
+const _today = moment().format(_format)
 export class BloodPresureDetailsAdd extends Component {
     constructor(props) {
         super(props);
@@ -21,6 +24,7 @@ export class BloodPresureDetailsAdd extends Component {
             date: new Date(),
             dbs: '',
             userName: '',
+            lan: '',
         }
         db.initDB().then((result) => {
             this.loadDbVarable(result);
@@ -31,6 +35,7 @@ export class BloodPresureDetailsAdd extends Component {
         const myArray = await AsyncStorage.getItem('memberNames');
         this.setState({
             userName: myArray,
+            lan: await AsyncStorage.getItem('lang'),
         });
     }
     loadDbVarable(result) {
@@ -99,42 +104,50 @@ export class BloodPresureDetailsAdd extends Component {
                     <View>
                         <View style={{ backgroundColor: '#fbb146', height: 150, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to check your Blood Presure level</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>{i18n.t('blood.heading')} {this.state.userName}</Text>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('blood.subheading')}</Text>
                                 {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                             </View>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
-                                        <Icon
-                                            name='bar-chart'
-                                            type='font-awesome'
-                                            color='red'
-                                            iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'black' }}
-                                        />
+                            <View style={{flexDirection:'row'}}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('BloodPresureBarChart')} style={styles.button}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
+                                            <Icon
+                                                name='bar-chart'
+                                                type='font-awesome'
+                                                color='red'
+                                                iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'black' }}
+                                            />
+                                        </View>
+                                        <Text style={{ color: 'white', padding: 7 }}>{i18n.t('blood.buttonhis')}</Text>
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={styles.breadthPo1}>
-                    
-                            <Text style={{ marginVertical: 15 }}>Select date</Text>
-                     
+
+                            <Text style={{ marginVertical: 15 }}>{i18n.t('blood.sltdate')}</Text>
+
                             <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
                                 <View style={{ borderColor: 'gray', height: 50, borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10, paddingTop: 15 }} placeholder="Select Date">
-                                    <Text style={styles.datePickerText}>{this.state.DateText}</Text>
+                                {
+                                    this.state.DateText != '' ?
+                                        <Text style={styles.datePickerText}>{this.state.DateText}</Text>
+                                        :
+                                        <Text style={styles.datePickerText}>{_today}</Text>
+                                }
+                                    {/* <Text style={styles.datePickerText}>{this.state.DateText}</Text> */}
                                 </View>
                             </TouchableOpacity>
-                            <Text style={{ marginVertical: 15 }}> Systolic Value :</Text>
+                            <Text style={{ marginVertical: 15 }}>{i18n.t('blood.sostolic')}  :</Text>
                             <TextInput
                                 keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                                placeholder="Foobar" onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuSystolicbValue: TextInputValue })} placeholder="Enter Systolic Value"
+                                placeholder="Foobar" onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuSystolicbValue: TextInputValue })} placeholder={i18n.t('blood.sostolinner')}
                             />
-                            <Text style={{ marginVertical: 15 }}> Diastolic  Value :</Text>
+                            <Text style={{ marginVertical: 15 }}>{i18n.t('blood.diastolicInner')}  :</Text>
                             <TextInput
                                 keyboardType='numeric' style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 5, backgroundColor: '#f2f2f2', paddingLeft: 10 }}
-                                onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuDiastolicValue: TextInputValue })} placeholder="Enter Diastolic Value"
+                                onEndEditing={this.clearFocus} autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuDiastolicValue: TextInputValue })} placeholder={i18n.t('blood.diastvalinner')}
                             />
                             <TouchableOpacity onPress={() => this.saveData()} activeOpacity={0.5} >
                                 {/* <Text style={styles.buttonText}>Save Baby' Data</Text>
@@ -144,7 +157,7 @@ export class BloodPresureDetailsAdd extends Component {
                                     end={{ x: 1, y: 0.9 }}
                                     style={styles.linearGradient}>
                                     <Text style={styles.buttonText}>
-                                        Add Blood Presure
+                                        {i18n.t('blood.button')}
                                     </Text>
                                 </LinearGradient>
                             </TouchableOpacity>
@@ -235,7 +248,7 @@ export class BloodPresureDetailsAdd extends Component {
         padding: 7,
         borderRadius: 25,
         marginTop: 18,
-        width: 120,
+
         elevation: 10,
         shadowColor: '#30C1DD',
         shadowOffset: { width: 0, height: 5 },

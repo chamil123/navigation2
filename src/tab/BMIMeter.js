@@ -19,17 +19,18 @@ import * as Progress from 'react-native-progress';
 import Speedometer from 'react-native-speedometer-chart';
 import { ECharts } from "react-native-echarts-wrapper";
 import { color } from 'react-native-reanimated';
-
+import i18n from 'i18n-js';
 export class BMIMeter extends Component {
     state = {
         value: 0,
         _bmiVal: 0,
         _height: 0,
         _weight: 0,
-        _colorPrograssbar: ''
+        _colorPrograssbar: '',
+        lan: '',
     };
     // componentDidMount = () => AsyncStorage.getItem('name').then((value) => this.setState({ 'name': value }))
-    componentDidMount = async () => {
+     componentDidMount = async () => {
         const bmiValue = await AsyncStorage.getItem('bmi_value');
         let colorval;
         if (bmiValue < 18.5) {
@@ -46,7 +47,8 @@ export class BMIMeter extends Component {
             _bmiVal: await AsyncStorage.getItem('bmi_value'),
             _height: await AsyncStorage.getItem('height'),
             _weight: await AsyncStorage.getItem('weight'),
-            _colorPrograssbar: colorval
+            _colorPrograssbar: colorval,
+            lan: await AsyncStorage.getItem('lang'),
         });
 
 
@@ -81,7 +83,7 @@ export class BMIMeter extends Component {
         return (
 
             <SafeAreaView style={{ flex: 1 }}>
-                <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title="BMI Meter" navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                <CustomHeader bgcolor='#F2F2F2' bcbuttoncolor='#fff' title={i18n.t('bmi.result')} navigation={this.props.navigation} bdcolor='#F2F2F2' />
                 <View style={{ flex: 1 }}>
 
                     <View style={styles.innerCircle} />
@@ -106,8 +108,8 @@ export class BMIMeter extends Component {
                                 {/* <View style={{ }}> */}
                                 <Text style={{ fontSize: 70, fontWeight: "bold", marginTop: -10, }}>{this.state._bmiVal}</Text>
                                 <View style={{ flexDirection: "row", justifyContent: 'space-between', marginTop: -10 }}>
-                                    <Text style={{ paddingEnd: 20, color: 'grey' }}>Height: {this.state._height} m</Text>
-                                    <Text style={{ color: 'grey' }}>Weight: {this.state._weight} kg</Text>
+                                    <Text style={{ paddingEnd: 20, color: 'grey' }}>  {i18n.t('bmi.height')} : {this.state._height} m</Text>
+                                    <Text style={{ color: 'grey' }}> {i18n.t('bmi.weight')} : {this.state._weight} kg</Text>
                                 </View>
                                 {/* </View> */}
                                 {/* <Text>Perfect weigth  </Text> */}
@@ -133,28 +135,28 @@ export class BMIMeter extends Component {
                             <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: 15, height: 15, backgroundColor: '#ffd600', marginRight: 10 }}></View>
-                                    <Text >UnderWeight</Text>
+                                    <Text >{i18n.t('bmi.uw')}</Text>
                                 </View>
                                 <Text>0 - 18.5</Text>
                             </View>
                             <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: 15, height: 15, backgroundColor: '#1faa00', marginRight: 10 }}></View>
-                                    <Text >Healthy Weight</Text>
+                                    <Text >{i18n.t('bmi.hw')}</Text>
                                 </View>
                                 <Text>18.5 - 25</Text>
                             </View>
                             <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: 15, height: 15, backgroundColor: '#ff6d00', marginRight: 10 }}></View>
-                                    <Text >Over Weight</Text>
+                                    <Text >{i18n.t('bmi.ow')}</Text>
                                 </View>
                                 <Text>25 - 30</Text>
                             </View>
                             <View style={{ flexDirection: 'row',justifyContent:'space-between',borderBottomWidth:0.2,borderColor:'gray',paddingBottom:13,paddingTop:13 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: 15, height: 15, backgroundColor: '#d50000', marginRight: 10 }}></View>
-                                    <Text >Obese</Text>
+                                    <Text >{i18n.t('bmi.ob')}</Text>
                                 </View>
                                 <Text>{'>'} 30</Text>
                             </View>

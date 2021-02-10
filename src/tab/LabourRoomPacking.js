@@ -1,29 +1,22 @@
 import React, { Component, useState } from 'react';
 import { Modal, StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, FlatList, Switch,StatusBar } from 'react-native';
-
 import { CustomHeader } from '../index';
-
 import { Icon } from 'react-native-elements';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import { IMAGE } from '../constants/image';
 import *as Animatable from 'react-native-animatable';
-
 import Database from '../Database';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 import {
     BarIndicator,
 } from 'react-native-indicators';
 const db = new Database();
-// const dbs=null;
-// var db = openDatabase({ name: 'UserDatabase.db' });
+
 var ddd;
 export class LabourRoomPacking extends Component {
-
-
     constructor(props) {
         super(props);
-
-
-
         this.state = {
             dataSource: [],
             isLoading: true,
@@ -32,7 +25,7 @@ export class LabourRoomPacking extends Component {
             switchValue: '',
             date: '',
             dbs: '',
-
+            lan: '',
 
         }
         db.initDB().then((result) => {
@@ -43,10 +36,6 @@ export class LabourRoomPacking extends Component {
         this.getData = this.getData.bind(this);
 
     }
-    abc = (value) => {
-
-        // this.setState({ switchValue: value });
-    }
     componentDidMount() {
         var that = this;
         var date = new Date().getDate(); //Current Date
@@ -56,11 +45,12 @@ export class LabourRoomPacking extends Component {
             date:
                 year + '-' + month + '-' + date,
         });
-        // this.getData();
+
     }
-    loadDbVarable(result) {
+    async loadDbVarable(result) {
         this.setState({
             dbs: result,
+            lan: await AsyncStorage.getItem('lang'),
         });
         this.viewListData();
     }
@@ -76,7 +66,7 @@ export class LabourRoomPacking extends Component {
         this.setState({ switchValue: value });
         let result;
         if (value != null) {
-            db.updateStatusLabourRoom(this.state.dbs, data).then((result) => {
+            db.updateStatusLabourRoom(this.state.dbs, data,this.state.lan).then((result) => {
                 console.log(result);
                 this.setState({
                     isLoading: false,
@@ -89,7 +79,7 @@ export class LabourRoomPacking extends Component {
                 });
             })
         }
-        db.listBagLabour(this.state.dbs).then((data) => {
+        db.listBagLabour(this.state.dbs,this.state.lan).then((data) => {
             result = data;
             if (result == 0) {
                 db.addItemOfMother_bag(this.state.dbs).then((result) => {
@@ -109,7 +99,7 @@ export class LabourRoomPacking extends Component {
 
 
         let mother_bag = [];
-        db.listLabourRoomBagItems(this.state.dbs).then((data) => {
+        db.listLabourRoomBagItems(this.state.dbs,this.state.lan).then((data) => {
 
 
             if (data != null) {
@@ -154,9 +144,7 @@ export class LabourRoomPacking extends Component {
                             source={IMAGE.ICON_LABOURROOMBAG}
                             resizeMode="contain"
                         />
-                        {/* <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Prepare baby bag</Text>
-                    </TouchableOpacity> */}
+  
                     </View>
                     <Animatable.View style={styles.footer} animation="fadeInUpBig">
                     <View style={styles.brestposition5}></View>
@@ -255,12 +243,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        // paddingVertical: 30,
-        //  paddingHorizontal: 20
     }, header: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
     }, switchEnableBorder: {
         borderColor: 'blue',
         borderWidth: 1
@@ -277,18 +261,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         backgroundColor: 'rgba(255, 224, 175, 0.3)',
         borderRadius: 130,
-        // overflow: 'hidden',
         zIndex: -2,
         position: 'absolute'
     }, brestposition6: {
         width: 140,
         height: 140,
-        // marginRight: 12,
         marginTop: 450,
         marginLeft: 338,
         backgroundColor: 'rgba(242, 242,242, 1)',
         borderRadius: 110,
-        // overflow: 'hidden',
         zIndex: -1,
 
         position: 'absolute'
@@ -301,18 +282,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         backgroundColor: 'rgba(255, 224, 178, 0.2)',
         borderRadius: 130,
-        // overflow: 'hidden',
         zIndex: -2,
         position: 'absolute'
     }, brestposition4: {
         width: 170,
         height: 170,
-        // marginRight: 12,
         marginTop: 52,
         marginLeft: -82,
         backgroundColor: 'rgba(255, 255,255, 1)',
         borderRadius: 110,
-        // overflow: 'hidden',
         zIndex: -1,
 
         position: 'absolute'

@@ -22,6 +22,9 @@ const _today = moment().format(_format)
 const _maxDate = moment().add(31, 'days').format(_format)
 import { extendMoment } from 'moment-range';
 import CustomPushNotification from './CustomPushNotification';
+
+import i18n from 'i18n-js';
+
 const moments = extendMoment(moment);
 const db = new Database();
 const cn = new CustomPushNotification();
@@ -53,6 +56,7 @@ export class PeriodCalandar extends Component {
             startAngle: '', angleLength: '',
             _nextPeriodDate: '',
             _monthlyPeriod: 0,
+            lan: '',
 
         }
         db.initDB().then((result) => {
@@ -67,7 +71,9 @@ export class PeriodCalandar extends Component {
         this.setState({
             isLoading: false,
             _role_id: role_id,
+            lan: await AsyncStorage.getItem('lang'),
         });
+        
     }
     loadDbVarable(result) {
         this.setState({
@@ -511,7 +517,7 @@ export class PeriodCalandar extends Component {
 
                         <View style={{ backgroundColor: '#fbb146', height: 130, zIndex: -1, }}>
 
-                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period Calandar</Text>
+                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>{i18n.t('period_calan.title')}</Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('PeriodHistory')} style={[styles.buttonh, { backgroundColor: '#ED1B26', width: 130, }]}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
@@ -522,7 +528,7 @@ export class PeriodCalandar extends Component {
                                             iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>History</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('period_calan.history')}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -599,20 +605,20 @@ export class PeriodCalandar extends Component {
                                     <View style={[styles.squrecolor, {
                                         backgroundColor: 'red'
                                     }]} />
-                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Period</Text>
+                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>{i18n.t('period_calan.period')}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', paddingRight: 10 }}>
                                     <View style={[styles.squrecolor, {
                                         backgroundColor: '#50cebb'
 
                                     }]} />
-                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Ovulation</Text>
+                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>{i18n.t('period_calan.ovulation')}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', paddingRight: 10 }}>
                                     <View style={[styles.squrecolor, {
                                         backgroundColor: '#f06292'
                                     }]} />
-                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>Next period</Text>
+                                    <Text style={{ fontSize: 12, color: 'gray', paddingLeft: 10 }}>{i18n.t('period_calan.nextp')}</Text>
                                 </View>
 
                             </View>
@@ -711,7 +717,7 @@ export class PeriodCalandar extends Component {
                                                         <View style={{ marginLeft: 8, marginRight: 10, flexDirection: 'column' }}>
                                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                                 <View style={{ marginTop: 0, marginBottom: -10 }}>
-                                                                    <Text style={{ color: '#9e9e9e', fontSize: 12 }}>Last Period</Text>
+                                                                    <Text style={{ color: '#9e9e9e', fontSize: 12 }}>{i18n.t('period_calan.lastp')}</Text>
                                                                     <View style={{ flexDirection: 'row', marginTop: 5 }}>
 
                                                                         <Icon
@@ -735,18 +741,18 @@ export class PeriodCalandar extends Component {
                                                             <Progress.Bar style={{ marginTop: 25, backgroundColor: '#e0e0e0', borderColor: 'white', }} color='#f78a2c' progress={this.state._monthlyPeriod/this.state._reacl_next_p_date} height={5} borderRadius={5} width={250} />
                                                             <View style={{ marginTop: 5 }}>
                                                                 {/* ((this.state._compltedWeeks / 277) * 1).toFixed(2) */}
-                                                                <Text style={{ color: 'black', fontSize: 13, marginLeft: 0, marginTop: 4 }}>Next Period Date : <Text style={{ fontSize: 13, fontWeight: 'bold', color: 'red' }}>
+                                                                <Text style={{ color: 'black', fontSize: 13, marginLeft: 0, marginTop: 4 }}>{i18n.t('period_calan.nextpunder')} : <Text style={{ fontSize: 13, fontWeight: 'bold', color: 'red' }}>
                                                                     {this.state._nextPeriodDate}
                                                                 </Text></Text>
                                                             </View>
                                                         </View>
                                                     </View>
                                                     <View style={{ flexDirection: 'column', }}>
-                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 0 }}>Next Period</Text>
+                                                        <Text style={{ color: '#9e9e9e', fontSize: 12, marginLeft: 0, marginTop: 0 }}>{i18n.t('period_calan.nextperiodp')}</Text>
                                                         <Text style={{ fontSize: 70, marginBottom: -10, marginTop: -18, color: '#424242' }}>
                                                             {this.state._reacl_next_p_date}
                                                         </Text>
-                                                        <Text style={{ marginTop: -7, fontSize: 18 }}>Days left</Text>
+                                                        <Text style={{ marginTop: -7, fontSize: 18 }}>{i18n.t('period_calan.daysleft')}</Text>
 
                                                     </View>
 
@@ -756,7 +762,7 @@ export class PeriodCalandar extends Component {
                                                     {/* calendar-alt */}
                                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                         <View>
-                                                            <Text style={{ color: 'white' }}>Ovulation Start Date <Text style={{ color: 'black', fontWeight: 'bold' }}> {this.state._ovl_date}
+                                                            <Text style={{ color: 'white' }}>{i18n.t('period_calan.ovlstrtdate')} <Text style={{ color: 'black', fontWeight: 'bold' }}> {this.state._ovl_date}
                                                             </Text ></Text>
                                                         </View>
                                                         <View>
