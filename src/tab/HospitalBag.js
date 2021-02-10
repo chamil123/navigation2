@@ -137,32 +137,6 @@ export class HospitalBag extends Component {
             }
         })
 
-        // db.countMotherBag(this.state.dbs).then((data) => {
-        //     if (data != null) {
-
-        //         this.setState({
-        //             motherbag_count: data,
-        //             isLoading: false,
-        //         });
-        //     }
-        // });
-
-        // db.countBabyBag(this.state.dbs).then((data) => {
-        //     if (data != null) {
-        //         this.setState({
-        //             babybag_count: data,
-        //             isLoading: false,
-        //         });
-        //     }
-        // });
-        // db.countLRoomBag(this.state.dbs).then((data) => {
-        //     if (data != null) {
-        //         this.setState({
-        //             lroombag_count: data,
-        //             isLoading: false,
-        //         });
-        //     }
-        // });
 
     }
     keyExtractor = (item, index) => index.toString()
@@ -193,8 +167,8 @@ export class HospitalBag extends Component {
                     <View style={{ backgroundColor: '#fbb146', height: 155, zIndex: -1, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
                         <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Hello {this.state.userName}</Text>
-                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>It's time to prepair your bag</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal', color: 'white', marginTop: -5 }}>{i18n.t('bag.headding')} {this.state.userName}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('bag.subhed')}</Text>
                             {/* <Text style={{ color: 'white' }}>Yesterday remaining 12 kg</Text> */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
@@ -208,10 +182,10 @@ export class HospitalBag extends Component {
                                             iconStyle={{ fontSize: 13, paddingRight: 0, paddingLeft: 0, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>Baby Bag</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('bag.babybag')}</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')} style={[styles.buttonh, { backgroundColor: 'green', width: 170 }]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('LabourRoomPacking')} style={[styles.buttonh, { backgroundColor: 'green', width: 180 }]}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 35 }}>
                                         <Icon
@@ -221,7 +195,7 @@ export class HospitalBag extends Component {
                                             iconStyle={{ fontSize: 13, color: 'gray' }}
                                         />
                                     </View>
-                                    <Text style={{ color: 'white', padding: 7 }}>labour room Pack</Text>
+                                    <Text style={{ color: 'white', padding: 7 }}>{i18n.t('bag.laborropak')}</Text>
 
                                 </View>
                             </TouchableOpacity>
@@ -237,7 +211,7 @@ export class HospitalBag extends Component {
 
                         <View style={{ marginBottom: 30 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'black', marginTop: 25, marginLeft: 18 }}>Prepair Hospital Bag</Text>
+                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'black', marginTop: 25, marginLeft: 18 }}>{i18n.t('bag.hbag')}</Text>
 
                             </View>
 

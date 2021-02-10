@@ -29,7 +29,7 @@ export class MemberProfile extends Component {
       TextInputID: '',
       TextInputName: '',
       TextInputEmail: '',
-      TextInputPhoneNumber: '',
+      // TextInputPhoneNumber: '',
       TextInputpassword: '',
       TextInputAddress: '',
       memberNames: '',
@@ -43,7 +43,7 @@ export class MemberProfile extends Component {
     const { TextInputID } = this.state;
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
-    const { TextInputPhoneNumber } = this.state;
+    // const { TextInputPhoneNumber } = this.state;
     const { TextInputpassword } = this.state;
     const { TextInputAddress } = this.state;
     fetch('https://youandmenest.com/tr_reactnative/updateUser.php', {
@@ -56,7 +56,7 @@ export class MemberProfile extends Component {
         id: TextInputID,
         member_name: TextInputName,
         member_email: TextInputEmail,
-        member_mobilenumber: TextInputPhoneNumber,
+        // member_mobilenumber: TextInputPhoneNumber,
         member_password: TextInputpassword,
 
         member_address: TextInputAddress,
@@ -91,7 +91,7 @@ export class MemberProfile extends Component {
         id = "";
         member_name = "";
         member_email = "";
-        member_mobilenumber = "";
+        // member_mobilenumber = "";
         member_password = "";
         member_address = "";
         abc = "";
@@ -101,7 +101,7 @@ export class MemberProfile extends Component {
           id = responseJson[i].id
           member_name = responseJson[i].member_name
           member_email = responseJson[i].member_email
-          member_mobilenumber = responseJson[i].member_mobilenumber
+          // member_mobilenumber = responseJson[i].member_mobilenumber
           member_password = responseJson[i].member_password
 
           member_address = responseJson[i].member_address
@@ -117,7 +117,7 @@ export class MemberProfile extends Component {
           TextInputID: id,
           TextInputName: member_name,
           TextInputEmail: member_email,
-          TextInputPhoneNumber: member_mobilenumber,
+          // TextInputPhoneNumber: member_mobilenumber,
           TextInputpassword: member_password,
           TextInputAddress: member_address,
           abc: abc,
@@ -208,9 +208,10 @@ export class MemberProfile extends Component {
                 rounded
                 showEditButton
                 size={150}
+                //upload/images/1987668386_1612944296.jpeg
                 source={
                   this.state.abc != '' ? { uri: "https://youandmenest.com/tr_reactnative/" + this.state.abc } :
-                    (this.state.imageSource != null ? this.state.imageSource : require('../images/profiled.png'))
+                    (this.state.imageSource !== null ? this.state.imageSource : require('../images/profiled.png'))
                 }
                 containerStyle={{
                   margin: 10, shadowColor: 'rgba(0,0,0, .4)', // IOS
@@ -248,7 +249,7 @@ export class MemberProfile extends Component {
               <TextInput autoFocus={false} value={this.state.TextInputName} onChangeText={TextInputValue => this.setState({ TextInputName: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label={i18n.t('profile.username')} ></TextInput>
 
               <TextInput autoFocus={false} value={this.state.TextInputEmail} onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.email')} ></TextInput>
-              <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.mobile')} ></TextInput>
+              {/* <TextInput autoFocus={false} value={this.state.TextInputPhoneNumber} onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.mobile')} ></TextInput> */}
               <TextInput autoFocus={false} value={this.state.TextInputpassword} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.password')} ></TextInput>
 
               <TextInput autoFocus={false} value={this.state.TextInputAddress} onChangeText={TextInputValue => this.setState({ TextInputAddress: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 10 }} label={i18n.t('profile.address')} ></TextInput>

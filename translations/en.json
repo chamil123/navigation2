@@ -90,7 +90,10 @@
     "nextperiodp": "Next Period",
     "daysleft": "Days left",
     "nextpunder": "Next Period Date",
-    "ovlstrtdate": "Ovulation Start Date"
+    "ovlstrtdate": "Ovulation Start Date",
+    "periodstdate": "Period started date",
+    "vaccine": "Vaccination",
+    "ovulation_date":"Ovulation date"
   },
   "bmi": {
     "hedding": "BMI Calculator",
@@ -114,7 +117,12 @@
     "time": "Select Time",
     "button": "Add Note",
     "historynote": "Special Note History",
-    "oops": "oops! There's no data here"
+    "oops": "oops! There's no data here",
+    "enter_comment":"Enter Comment",
+    "add_activity":"Add Activity",
+    "update_activity":"Update Activity",
+    "add":"Add",
+    "update":"Update"
   },
   "food": {
     "hedding": "Food Phyramid",
@@ -288,7 +296,13 @@
     "Hold":"Hold",
     "laidback":"Laid Back",
     "sidelay":"Side",
-    "laying":"Lying"
+    "laying":"Lying",
+    "selectbabybir":"Select Baby's birthday",
+    "babyname":"Baby Name",
+    "babyweight":"Birth Weight",
+    "girl":"Girl",
+    "boy":"Boy",
+    "savebabydata":"Save Baby's Data"
   },
   "babyactivity": {
     "heading": "Baby Activity",
@@ -297,7 +311,8 @@
     "elimi": "Elimination",
     "bath": "Bath time",
     "historyact": "History of activities",
-    "oops": "oops! There's no data here!"
+    "oops": "oops! There's no data here!",
+    "bathtime":"Bath Time Tracker"
     
   },
   "drawer": {
@@ -339,5 +354,16 @@
     "oneglas":"On glass of milk"
 
 
+  },
+  "bag": {
+    "hbag": "Prepare Hospital Bag",
+    "babybag": "Baby Bag",
+    "laborropak":"Labor room bag",
+    "subhed": "it is time to prepare your bag",
+    "headding": "Hello",
+    "Preparebabybag":"Prepare a bag for baby",
+    "Preparelabourbag":"Prepare labor room bag",
+    "Preparelabourbaghead":"Labor room bag",
+    "Preparebabybaghead":"Baby bag"
   }
 }

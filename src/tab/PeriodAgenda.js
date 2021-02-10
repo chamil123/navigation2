@@ -250,7 +250,7 @@ export class PeriodAgenda extends Component {
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View style={{ width: 225 }}>
                                     {/* <Text style={{ color: 'gray' }}>Time : {_pTime}</Text> */}
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Vaccination</Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{i18n.t('period_calan.vaccine')}</Text>
                                     <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
                                 </View>
                                 <View style={{ width: 55, height: 55, backgroundColor: '#ffc107', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
@@ -280,7 +280,7 @@ export class PeriodAgenda extends Component {
                             <View style={{ width: 225 }}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{i18n.t('period_calan.ovulation')}</Text>
                                 <Text style={{ fontWeight: 'normal', fontSize: 14 }}>{this.state.tmpArray[i].date}</Text>
-                                <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
+                                <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{i18n.t('period_calan.ovulation_date')}</Text>
                             </View>
                             <View style={{ width: 55, height: 55, backgroundColor: '#50cebb', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ fontSize: 30, color: 'white' }}>O</Text>
@@ -293,7 +293,7 @@ export class PeriodAgenda extends Component {
                         name: <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: 225 }}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{i18n.t('period_calan.period')}</Text>
-                                <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{this.state.tmpArray[i].discription}</Text>
+                                <Text style={{ fontWeight: 'normal', fontSize: 13, marginTop: 3 }}>{i18n.t('period_calan.periodstdate')}</Text>
                             </View>
                             <View style={{ width: 55, height: 55, backgroundColor: 'red', borderRadius: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ fontSize: 30, color: 'white' }}>P</Text>

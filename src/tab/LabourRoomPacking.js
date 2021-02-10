@@ -137,7 +137,7 @@ export class LabourRoomPacking extends Component {
 
                 <SafeAreaView style={{ flex: 1, }}>
                       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
-                    <CustomHeader bgcolor='#F2F2F2' title="labour room bag"  bcbuttoncolor='#fff' navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                    <CustomHeader bgcolor='#F2F2F2' title={i18n.t('bag.Preparelabourbaghead')}  bcbuttoncolor='#fff' navigation={this.props.navigation} bdcolor='#F2F2F2' />
 
                     <View style={styles.header}>
                         <Image style={{ width: 400, height: 290, marginLeft: 0, }}
@@ -151,7 +151,7 @@ export class LabourRoomPacking extends Component {
                     <View style={styles.brestposition6}></View>
                     <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View>
-                        <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold", marginTop: 15 }}>Prepare Labour room bag</Text>
+                        <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold", marginTop: 15 }}>{i18n.t('bag.Preparelabourbag')}</Text>
                         <FlatList
 
 

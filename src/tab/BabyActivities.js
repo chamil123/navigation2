@@ -432,10 +432,10 @@ export class BabyActivities extends Component {
 
 
                                         {/* <TextInput /> */}
-                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label={i18n.t('special_notes.enter_comment')} />
                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                             <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                                <Text style={styles.buttonText}>Add Activity</Text>
+                                                <Text style={styles.buttonText}>{i18n.t('special_notes.add_activity')}</Text>
 
 
                                             </TouchableOpacity>
@@ -462,7 +462,7 @@ export class BabyActivities extends Component {
                                         <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter baby Activity" />
                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                             <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
-                                                <Text style={styles.buttonText}>Update Activity</Text>
+                                                <Text style={styles.buttonText}>{i18n.t('special_notes.update_activity')}</Text>
 
 
                                             </TouchableOpacity>

@@ -64,7 +64,7 @@ export class MealPlan extends Component {
 
                 <View style={styles.header}>
                     <View style={{ marginTop: 0, marginLeft: 20, marginBottom: 20 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>Meal Plan</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>{i18n.t('mealPlan.MealPlan')}</Text>
                         {/* <Text style={{ color: 'white' }}>press on foot after kick</Text> */}
                     </View>
                 </View>

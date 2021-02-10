@@ -13,7 +13,8 @@ import ActionButton from 'react-native-action-button';
 import { TextInput } from 'react-native-paper';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 
 import {
     BarIndicator,
@@ -44,6 +45,7 @@ export class EliminationChart extends Component {
             testing: '',
             update_date: '',
             _updateId: '',
+            lan: '',
             data: {
                 labels: ["."],
 
@@ -63,6 +65,11 @@ export class EliminationChart extends Component {
         })
         this.loadDbVarable = this.loadDbVarable.bind(this);
 
+    }
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     loadDbVarable(result) {
         this.setState({
@@ -221,7 +228,7 @@ export class EliminationChart extends Component {
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                <Text >oops! There's no data here!</Text>
+                <Text >{i18n.t('special_notes.oops')}</Text>
             </View>);
     }
     renderItem = ({ item }) => {
@@ -350,7 +357,7 @@ export class EliminationChart extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Elimination Time</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>{i18n.t('babyactivity.elimi')} </Text>
                             </View>
                         </View>
                       
@@ -378,7 +385,7 @@ export class EliminationChart extends Component {
 
                         <View style={{ flex: 1, paddingHorizontal: 10, marginTop: -50 }}>
                         <FlashMessage duration={1000} />
-                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
+                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>{i18n.t('kick.buttonhis')}</Text>
                             <SafeAreaView style={{ flex: 1 }}>
                                 <FlatList
 
@@ -442,10 +449,10 @@ export class EliminationChart extends Component {
                                         }}
                                         markedDate={[]}
                                     />
-                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label={i18n.t('special_notes.enter_comment')} />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Add </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.add')} </Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -469,7 +476,7 @@ export class EliminationChart extends Component {
                                     <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0, margin: 20 }} label="Enter Comment" />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                         <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
-                                            <Text style={styles.buttonText}>Update </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.update')} </Text>
                                         </TouchableOpacity>
                                     </View>
 

@@ -637,7 +637,7 @@ export class EDDCalculator extends Component {
                                 {/* <TextInput value={this.state.selectedDate} autoFocus={false} keyboardType='numeric' onEndEditing={this.clearFocus} onChangeText={TextInputValue => this.setState({ TextInpuPbValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="BP value" /> */}
                                 {/* <Text>{this.state.selectedDate}</Text> */}
                                 <TouchableOpacity onPress={() => this.addEDD()} style={styles.button}>
-                                    <Text style={styles.buttonText}>Add Edd Date ?</Text>
+                                    <Text style={styles.buttonText}>{i18n.t('special_notes.add')} </Text>
 
 
                                 </TouchableOpacity>

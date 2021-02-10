@@ -15,6 +15,8 @@ import { LineChart, } from "react-native-chart-kit";
 import { BarIndicator, } from 'react-native-indicators';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 var j = 0;
 const _formatTime = 'hh:mm:ss';
@@ -37,6 +39,7 @@ export class UrinationTime extends Component {
             _updateId: '',
             update_date: '',
             dbs: '',
+            lan: '',
             data: {
                 labels: ["."],
 
@@ -58,6 +61,11 @@ export class UrinationTime extends Component {
         this.loadDbVarable = this.loadDbVarable.bind(this);
 
 
+    }
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     loadDbVarable(result) {
         this.setState({
@@ -105,9 +113,7 @@ export class UrinationTime extends Component {
         })
 
     }
-    componentDidMount() {
-        // this.getData();
-    }
+   
     saveData() {
         this.RBSheet.close();
         const _format = 'YYYY-MM-DD'
@@ -286,7 +292,7 @@ export class UrinationTime extends Component {
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                <Text >oops! There's no data here!</Text>
+                <Text >{i18n.t('special_notes.oops')}</Text>
             </View>);
     }
     keyExtractor = (item, index) => index.toString()
@@ -337,7 +343,7 @@ export class UrinationTime extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}> Urination Chart</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>{i18n.t('babyactivity.elimi')}</Text>
                                 {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>
@@ -368,7 +374,7 @@ export class UrinationTime extends Component {
                         {/* </View> */}
 
                         <View style={{ flex: 1, paddingHorizontal: 10, marginTop: -50 }}>
-                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
+                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>{i18n.t('kick.buttonhis')}</Text>
                             <SafeAreaView style={{ flex: 1 }}>
                                 <FlatList
 
@@ -439,10 +445,10 @@ export class UrinationTime extends Component {
                                         markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                     />
                                     {/* <TextInput /> */}
-                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label={i18n.t('special_notes.enter_comment')} />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Add </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.add')} </Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View> :
@@ -475,7 +481,7 @@ export class UrinationTime extends Component {
                                             });
                                         }
                                         } style={styles.buttonUpdate}>
-                                            <Text style={styles.buttonText}>Update </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.update')} </Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>

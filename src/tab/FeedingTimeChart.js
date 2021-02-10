@@ -14,6 +14,8 @@ import { LineChart, } from "react-native-chart-kit";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
 import { BarIndicator } from 'react-native-indicators';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 var j = 0;
 const _formatTime = 'hh:mm:ss';
@@ -36,6 +38,7 @@ export class FeedingTimeChart extends Component {
             dbs: '',
             _updateRbSheet: 0,
             _updateId: '',
+            lan: '',
             data: {
                 labels: ["."],
 
@@ -58,8 +61,10 @@ export class FeedingTimeChart extends Component {
         this.loadDbVarable = this.loadDbVarable.bind(this);
 
     }
-    componentDidMount() {
-
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     loadDbVarable(result) {
         this.setState({
@@ -209,7 +214,7 @@ export class FeedingTimeChart extends Component {
     emptyComponent = () => {
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                <Text >oops! There's no data here!</Text>
+                <Text >{i18n.t('special_notes.oops')}</Text>
             </View>);
     }
     renderItem = ({ item }) => {
@@ -259,9 +264,9 @@ export class FeedingTimeChart extends Component {
                         <View style={styles.iconMore}>
 
                             <Icon
-                                 name='check-circle'
-                                 type='font-awesome'
-                                 color='#009688'
+                                name='check-circle'
+                                type='font-awesome'
+                                color='#009688'
                                 iconStyle={{ fontSize: 20, paddingTop: 8, paddingBottom: 8, paddingLeft: 10, paddingRight: 10, backgroundColor: '#e0f2f1', borderRadius: 8, }}
                                 onPress={() => console.log('hello')} />
                         </View>
@@ -272,7 +277,7 @@ export class FeedingTimeChart extends Component {
                     </Body>
                     <Right>
                         <View style={styles.iconMore}>
-                        <Icon
+                            <Icon
                                 type='font-awesome'
                                 color='gray'
                                 iconStyle={{ fontSize: 22 }}
@@ -339,7 +344,7 @@ export class FeedingTimeChart extends Component {
                         style={styles.scrollView}>
                         <View style={{ backgroundColor: '#fbb146', height: 100, zIndex: -1 }}>
                             <View style={{ marginTop: 0, marginLeft: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Feeding Time</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>{i18n.t('babyactivity.feeding')}</Text>
                                 {/* <Text style={{ color: 'white' }}>Pregnancy Due Date Calculator</Text> */}
                             </View>
                         </View>
@@ -369,7 +374,7 @@ export class FeedingTimeChart extends Component {
                         </View>
 
                         <View style={{ flex: 1, paddingHorizontal: 10, marginTop: -50 }}>
-                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>History</Text>
+                            <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold' }}>{i18n.t('kick.buttonhis')}</Text>
                             <SafeAreaView style={{ flex: 1 }}>
                                 <FlatList
 
@@ -431,10 +436,10 @@ export class FeedingTimeChart extends Component {
                                         markedDate={['2020-08-04', '2018-05-15', '2018-06-04', '2018-05-01',]}
                                     />
                                     {/* <TextInput /> */}
-                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
+                                    <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label={i18n.t('special_notes.enter_comment')} />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Add </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.add')} </Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View> :
@@ -458,7 +463,7 @@ export class FeedingTimeChart extends Component {
                                     <TextInput autoFocus={false} value={this.state.TextInputdaValue} onChangeText={TextInputValue => this.setState({ TextInputdaValue: TextInputValue })} style={{ backgroundColor: '#f2f2f2', marginTop: 0 }} label="Enter comment" />
                                     <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                                         <TouchableOpacity onPress={() => this.updateListData()} style={styles.buttonUpdate}>
-                                            <Text style={styles.buttonText}>Update </Text>
+                                            <Text style={styles.buttonText}>{i18n.t('special_notes.update')} </Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>

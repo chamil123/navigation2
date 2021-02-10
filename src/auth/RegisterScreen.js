@@ -96,7 +96,7 @@ export class RegisterScreen extends Component {
       dataSource: [],
       TextInputName: '',
       TextInputEmail: '',
-      TextInputPhoneNumber: '',
+      // TextInputPhoneNumber: '',
       TextInputpassword: '',
       isLoading: true,
 
@@ -121,7 +121,7 @@ export class RegisterScreen extends Component {
     const { PickerValueHolder } = this.state;
 
 
-    if (TextInputName == '' || TextInputEmail == '' || TextInputPhoneNumber == '' || TextInputpassword == '' || PickerValueHolder == '') {
+    if (TextInputName == '' || TextInputEmail == '' || TextInputpassword == '' || PickerValueHolder == '') {
       if (PickerValueHolder == '') {
         showMessage({
           message: "Somefields not filled",
@@ -152,21 +152,7 @@ export class RegisterScreen extends Component {
           errorFound: "",
         })
       }
-      if (TextInputPhoneNumber == '') {
-        showMessage({
-          message: "Somefields not filled",
-          backgroundColor: 'red'
-        })
-        this.setState({
-          mobileError: "Please enter phone number",
-          errorFound: "true",
-        })
-      } else {
-        this.setState({
-          mobileError: "",
-          errorFound: "",
-        })
-      }
+    
       if (TextInputEmail == '') {
         showMessage({
           message: "Somefields not filled",
@@ -207,18 +193,14 @@ export class RegisterScreen extends Component {
       })
 
       let emailValidateregex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      let mobileValidateregex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+      // let mobileValidateregex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
       if (emailValidateregex.test(TextInputEmail) == true) {
         this.setState({
           emailError: "",
           errorFound: "",
         })
         //email verification success. process continue for further validation
-        if (mobileValidateregex.test(TextInputPhoneNumber) == true) {
-          this.setState({
-            mobileError: "",
-            errorFound: "",
-          })
+        
           //mobile verification success. process continue for further validation
 
 
@@ -237,7 +219,7 @@ export class RegisterScreen extends Component {
               body: JSON.stringify({
                 member_name: TextInputName,
                 member_email: TextInputEmail,
-                member_mobilenumber: TextInputPhoneNumber,
+                // member_mobilenumber: TextInputPhoneNumber,
                 member_password: TextInputpassword,
                 member_role: PickerValueHolder,
               })
@@ -273,12 +255,7 @@ export class RegisterScreen extends Component {
           }
 
           //end save data in the server
-        } else {
-          this.setState({
-            mobileError: "Invalid mobile number",
-            errorFound: "true",
-          })
-        }
+        
 
       } else {
         this.setState({
@@ -411,13 +388,13 @@ export class RegisterScreen extends Component {
                   <TextInput onChangeText={TextInputValue => this.setState({ TextInputEmail: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.enter_email')} enter_email onEndEditing={this.clearFocus} autoFocus={false} />
                   <Text style={{ color: 'red' }}>{this.state.emailError}</Text>
 
-                  <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.mobile')}  :</Text>
-                  <TextInput
+                  {/* <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.mobile')}  :</Text> */}
+                  {/* <TextInput
                     onChangeText={TextInputValue => this.setState({ TextInputPhoneNumber: TextInputValue })}
                     keyboardType="numeric"
                     maxLength={10}
                     style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.enter_mobile')}  onEndEditing={this.clearFocus} autoFocus={false} />
-                  <Text style={{ color: 'red' }}>{this.state.mobileError}</Text>
+                  <Text style={{ color: 'red' }}>{this.state.mobileError}</Text> */}
 
                   <Text style={{ color: 'white', paddingVertical: 10, marginLeft: 2, }}>{i18n.t('SignUp.pw')} :</Text>
                   <TextInput secureTextEntry={true} onChangeText={TextInputValue => this.setState({ TextInputpassword: TextInputValue })} style={{ borderColor: 'gray', borderWidth: 0.5, borderRadius: 8, backgroundColor: '#ffe3b8', paddingLeft: 10 }} placeholder={i18n.t('SignUp.pwInner')} onEndEditing={this.clearFocus} autoFocus={false} />

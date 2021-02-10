@@ -142,7 +142,7 @@ export class HospitalBagBaby extends Component {
 
                 <SafeAreaView style={{ flex: 1, }}>
                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#F2F2F2" />
-                    <CustomHeader bgcolor='#F2F2F2' title="Baby Bag" bcbuttoncolor='#fff'  navigation={this.props.navigation} bdcolor='#F2F2F2' />
+                    <CustomHeader bgcolor='#F2F2F2' title={i18n.t('bag.Preparebabybaghead')} bcbuttoncolor='#fff'  navigation={this.props.navigation} bdcolor='#F2F2F2' />
                     <View style={styles.brestposition3}></View>
                     <View style={styles.brestposition4}></View>
                     <View style={styles.header}>
@@ -156,7 +156,7 @@ export class HospitalBagBaby extends Component {
                         <View style={styles.brestposition5}></View>
                         <View style={styles.brestposition6}></View>
 
-                        <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>Prepare a bag for baby</Text>
+                        <Text style={{ marginHorizontal: 20, fontSize: 18, fontWeight: "bold" }}>{i18n.t('bag.Preparebabybag')}</Text>
                         <FlatList
 
 

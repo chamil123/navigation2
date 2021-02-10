@@ -5,6 +5,8 @@ import { CustomHeader } from '../index';
 import { List, ListItem, Left, Body, Right } from 'native-base';
 import Database from '../Database';
 import { Icon } from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 
 const db = new Database();
 import FlashMessage, { showMessage } from "react-native-flash-message";
@@ -14,7 +16,7 @@ export class PeriodHistory extends Component {
         this.state = {
             isLoading: true,
             _list_bpphistory: [],
-
+            lan: '',
             dbs: '',
             data: {
                 title: {
@@ -49,6 +51,11 @@ export class PeriodHistory extends Component {
             this.loadDbVarable(result);
         })
         this.loadDbVarable = this.loadDbVarable.bind(this);
+    }
+    async componentDidMount() {
+        this.setState({
+            lan: await AsyncStorage.getItem('lang'),
+        });
     }
     loadDbVarable(result) {
         this.setState({
@@ -193,7 +200,7 @@ export class PeriodHistory extends Component {
 
                         <View style={{ backgroundColor: '#fbb146', height: 60, zIndex: -1 }}>
 
-                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>Period History</Text>
+                            <Text style={{ fontSize: 20, marginTop: 0, marginLeft: 15, fontWeight: 'bold', color: 'white' }}>{i18n.t('period_calan.history')}</Text>
                         </View>
 
                         <View style={styles.breadthPo1}>
@@ -220,7 +227,7 @@ export class PeriodHistory extends Component {
                                             onPress={() => console.log('hello')} />
                                     </Left>
                                     <Body style={{ marginLeft: -150 }}>
-                                        <Text style={[{ color: 'gray', fontSize: 12 }, styles.dateText]}>{item.bpValue}Period started date</Text>
+                                        <Text style={[{ color: 'gray', fontSize: 12 }, styles.dateText]}>{item.bpValue}{i18n.t('period_calan.periodstdate')}</Text>
                                         <Text style={{ fontSize: 15 }}>{item.pName}</Text>
 
                                     </Body>

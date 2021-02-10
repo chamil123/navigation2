@@ -10,6 +10,8 @@ import { CustomHeader } from '../index';
 import { Icon } from 'react-native-elements';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Swipeout from 'react-native-swipeout';
+import AsyncStorage from '@react-native-community/async-storage';
+import i18n from 'i18n-js';
 const db = new Database();
 const _formatTime = 'hh:mm:ss';
 
@@ -34,6 +36,7 @@ export class BathTracking extends Component {
       stopwatchReset: false,
       _times: '',
       dbs: '',
+      lan: '',
       _start_Time: '',
       _end_time: '',
       _list_wgData: [],
@@ -54,6 +57,11 @@ export class BathTracking extends Component {
     });
     this.loadData();
   }
+  async componentDidMount() {
+    this.setState({
+        lan: await AsyncStorage.getItem('lang'),
+    });
+}
   toggleStartwatch() {
     var start_Time = this.getFormattedTime();
     this.setState({
@@ -102,7 +110,7 @@ export class BathTracking extends Component {
   emptyComponent = () => {
     return (
       <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-        <Text >oops! There's no data here!</Text>
+        <Text >{i18n.t('special_notes.oops')}</Text>
       </View>);
   }
   renderItem = ({ item }) => {
@@ -228,7 +236,7 @@ export class BathTracking extends Component {
         <View style={{ backgroundColor: '#fbb146', height: 45, }}>
           <View style={{ marginTop: 0, marginLeft: 20 }}>
 
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginTop: 5 }}>Bath Time Tracker</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{i18n.t('babyactivity.bathtime')}</Text>
 
           </View>
         </View>
@@ -309,7 +317,7 @@ export class BathTracking extends Component {
 
 
 
-          <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, paddingTop: 10 }}>History</Text>
+          <Text style={{ paddingBottom: 5, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, paddingTop: 10 }}>{i18n.t('kick.buttonhis')}</Text>
 
           <FlatList
             showsHorizontalScrollIndicator={false}

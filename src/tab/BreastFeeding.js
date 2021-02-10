@@ -143,10 +143,10 @@ export class BreastFeeding extends Component {
     render() {
         const data = [
             {
-                label: 'Girl'
+                label: i18n.t('bfeeding.girl')
             },
             {
-                label: 'Boy'
+                label: i18n.t('bfeeding.boy')
             }
         ];
         let { isLoading } = this.state
@@ -392,15 +392,15 @@ export class BreastFeeding extends Component {
                                     contentInsetAdjustmentBehavior="automatic"
                                     style={styles.scrollView}>
                                     <View style={{ flex: 1, marginBottom: 30 }}>
-                                        <Text style={{ paddingBottom: 5 }}>Select Baby's birthday</Text>
+                                        <Text style={{ paddingBottom: 5 }}>{i18n.t('bfeeding.selectbabybir')}</Text>
                                         <DatePicker
                                             mode="date"
                                             enableAutoDarkMode={true}
                                             date={this.state.date}
                                             onDateChange={(date) => { this.setState({ date: date }) }}
                                         />
-                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Baby Name" />
-                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label="Birth Weight" />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBNValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label={i18n.t('bfeeding.babyname')} />
+                                        <TextInput autoFocus={false} onChangeText={TextInputValue => this.setState({ TextInpuBWValue: TextInputValue })} style={{ backgroundColor: '#fff', marginTop: 0 }} label={i18n.t('bfeeding.babyweight')} />
                                         <View style={{ marginTop: 10 }}>
                                             <RadioButtonRN
                                                 data={data}
@@ -413,7 +413,7 @@ export class BreastFeeding extends Component {
 
 
                                         <TouchableOpacity onPress={() => this.saveData()} style={styles.button}>
-                                            <Text style={styles.buttonText}>Save Baby's Data</Text>
+                                            <Text style={styles.buttonText}>{i18n.t('bfeeding.savebabydata')}</Text>
                                         </TouchableOpacity>
 
 
